@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check } from "lucide-react";
 import { Link } from "react-router-dom";
-
 interface ServiceSectionProps {
   title: string;
   description: string;
@@ -11,7 +10,6 @@ interface ServiceSectionProps {
   reverse?: boolean;
   bgClass?: string;
 }
-
 export function ServiceSection({
   title,
   description,
@@ -19,10 +17,9 @@ export function ServiceSection({
   href,
   features,
   reverse = false,
-  bgClass = "",
+  bgClass = ""
 }: ServiceSectionProps) {
-  return (
-    <section className={`py-16 md:py-24 ${bgClass}`}>
+  return <section className={`py-16 md:py-24 ${bgClass}`}>
       <div className="container">
         <div className={`flex flex-col ${reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12`}>
           <div className="flex-1 flex justify-center">
@@ -31,7 +28,7 @@ export function ServiceSection({
             </div>
           </div>
           
-          <div className="flex-1 text-center lg:text-left">
+          <div className="flex-1 text-center lg:text-left ml-[50px]">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               {title}
             </h2>
@@ -40,12 +37,10 @@ export function ServiceSection({
             </p>
             
             <ul className="space-y-3 mb-8">
-              {features.map((feature, index) => (
-                <li key={index} className="flex items-center gap-3 justify-center lg:justify-start">
+              {features.map((feature, index) => <li key={index} className="flex items-center gap-3 justify-center lg:justify-start">
                   <Check className="h-5 w-5 text-primary flex-shrink-0" />
                   <span className="text-muted-foreground">{feature}</span>
-                </li>
-              ))}
+                </li>)}
             </ul>
             
             <Button asChild size="lg">
@@ -57,6 +52,5 @@ export function ServiceSection({
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 }
