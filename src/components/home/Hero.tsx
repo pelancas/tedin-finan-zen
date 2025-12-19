@@ -2,10 +2,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import tedinLogo from "@/assets/tedin-logo.png";
-
 export function Hero() {
-  return (
-    <section className="relative py-20 md:py-32 overflow-hidden">
+  return <section className="relative py-20 md:py-32 overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-gradient-to-br from-accent/50 via-background to-background -z-10" />
       <div className="absolute top-20 right-10 w-72 h-72 bg-secondary/10 rounded-full blur-3xl -z-10" />
@@ -19,7 +17,7 @@ export function Hero() {
           </div>
           
           <div className="flex flex-col items-center mb-6">
-            <img src={tedinLogo} alt="TEdin" className="h-32 md:h-48 mb-4" />
+            
             <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
               Sua vida financeira na palma da mão
             </h1>
@@ -45,6 +43,5 @@ export function Hero() {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 }
