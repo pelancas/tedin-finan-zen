@@ -18,7 +18,7 @@ export function Hero() {
           
           <div className="flex flex-col items-center mb-6">
             
-            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground text-justify font-sans">
               Sua vida financeira na palma da mão
             </h1>
           </div>
