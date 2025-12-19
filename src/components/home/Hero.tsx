@@ -13,25 +13,24 @@ export function Hero() {
       <div className="absolute inset-0 bg-background/30 -z-10" />
       
       <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
+        <div className="max-w-2xl text-left">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent text-accent-foreground text-sm font-medium mb-6">
             <Sparkles className="h-4 w-4" />
             Finanças simplificadas para você
           </div>
           
-          <div className="flex flex-col items-center mb-6">
-            
-            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground font-sans text-center">
+          <div className="flex flex-col items-start mb-6">
+            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground font-sans text-left">
               Sua vida financeira na palma da mão
             </h1>
           </div>
           
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-xl">
             Sem enrolação. Controle suas despesas, organize seu imposto de renda e 
             tenha consultoria financeira de verdade. Tudo em um só lugar.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-start">
             <Button size="lg" asChild className="text-base">
               <Link to="/despesas">
                 Começar agora
