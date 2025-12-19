@@ -3,6 +3,7 @@ import { Wallet, FileText, Users, Info, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import tedinLogo from "@/assets/tedin-logo.png";
 
 const navItems = [
   { name: "Controle de Despesas", href: "/despesas", icon: Wallet },
@@ -18,9 +19,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
       <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-primary">TE</span>
-          <span className="text-2xl font-bold text-secondary">din</span>
+        <Link to="/" className="flex items-center">
+          <img src={tedinLogo} alt="TEdin" className="h-10" />
         </Link>
 
         {/* Desktop Navigation */}
