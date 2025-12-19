@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
+import tedinLogo from "@/assets/tedin-logo.png";
 
 export function Hero() {
   return (
@@ -17,13 +18,12 @@ export function Hero() {
             Finanças simplificadas para você
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-            <span className="text-primary">TE</span>
-            <span className="text-secondary">din</span>
-            <span className="text-foreground block mt-2">
+          <div className="flex flex-col items-center mb-6">
+            <img src={tedinLogo} alt="TEdin" className="h-24 md:h-32 mb-4" />
+            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
               Sua vida financeira na palma da mão
-            </span>
-          </h1>
+            </h1>
+          </div>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Sem enrolação. Controle suas despesas, organize seu imposto de renda e 
