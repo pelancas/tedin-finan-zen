@@ -18,6 +18,7 @@ const services = [
       "Sincronização com sua conta bancária",
     ],
     bgClass: "bg-emerald-50 dark:bg-emerald-950/20",
+    reverse: false,
   },
   {
     title: "Imposto de Renda",
@@ -31,6 +32,7 @@ const services = [
       "Alerta de prazos importantes",
     ],
     bgClass: "bg-amber-50 dark:bg-amber-950/20",
+    reverse: true,
   },
   {
     title: "Consultoria Financeira",
@@ -44,6 +46,7 @@ const services = [
       "Atendimento humano e próximo",
     ],
     bgClass: "bg-blue-50 dark:bg-blue-950/20",
+    reverse: false,
   },
 ];
 
@@ -52,11 +55,10 @@ const Index = () => {
     <Layout>
       <Hero />
       
-      {services.map((service, index) => (
+      {services.map((service) => (
         <ServiceSection 
           key={service.href} 
-          {...service} 
-          reverse={index % 2 !== 0}
+          {...service}
         />
       ))}
       
