@@ -19,7 +19,7 @@ export function Hero() {
           </div>
           
           <div className="flex flex-col items-center mb-6">
-            <img src={tedinLogo} alt="TEdin" className="h-24 md:h-32 mb-4" />
+            <img src={tedinLogo} alt="TEdin" className="h-32 md:h-48 mb-4" />
             <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
               Sua vida financeira na palma da mão
             </h1>
