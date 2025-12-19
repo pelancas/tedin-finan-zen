@@ -1,15 +1,18 @@
 import { Link, useLocation } from "react-router-dom";
-import { Wallet, FileText, Users, Info, Menu, X } from "lucide-react";
+import { Info, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import tedinLogo from "@/assets/tedin-logo-new.png";
+import iconDespesas from "@/assets/icon-despesas.png";
+import iconLeao from "@/assets/icon-leao.png";
+import iconConsultoria from "@/assets/icon-consultoria.png";
 
 const navItems = [
-  { name: "Controle de Despesas", href: "/despesas", icon: Wallet },
-  { name: "Imposto de Renda", href: "/imposto", icon: FileText },
-  { name: "Consultoria", href: "/consultoria", icon: Users },
-  { name: "Sobre", href: "/sobre", icon: Info },
+  { name: "Despesas", href: "/despesas", icon: iconDespesas, isImage: true },
+  { name: "IR - Imposto", href: "/imposto", icon: iconLeao, isImage: true },
+  { name: "Consultoria", href: "/consultoria", icon: iconConsultoria, isImage: true },
+  { name: "Sobre", href: "/sobre", icon: Info, isImage: false },
 ];
 
 export function Header() {
@@ -36,7 +39,11 @@ export function Header() {
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
               )}
             >
-              <item.icon className="h-4 w-4" />
+              {item.isImage ? (
+                <img src={item.icon as string} alt={item.name} className="h-5 w-5 object-contain" />
+              ) : (
+                <item.icon className="h-4 w-4" />
+              )}
               {item.name}
             </Link>
           ))}
@@ -69,7 +76,11 @@ export function Header() {
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >
-                <item.icon className="h-5 w-5" />
+                {item.isImage ? (
+                  <img src={item.icon as string} alt={item.name} className="h-6 w-6 object-contain" />
+                ) : (
+                  <item.icon className="h-5 w-5" />
+                )}
                 {item.name}
               </Link>
             ))}
