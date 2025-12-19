@@ -1,13 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
-import tedinLogo from "@/assets/tedin-logo.png";
+import heroBackground from "@/assets/hero-background.png";
+
 export function Hero() {
   return <section className="relative py-20 md:py-32 overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-gradient-to-br from-accent/50 via-background to-background -z-10" />
-      <div className="absolute top-20 right-10 w-72 h-72 bg-secondary/10 rounded-full blur-3xl -z-10" />
-      <div className="absolute bottom-10 left-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10" />
+      {/* Background image */}
+      <div 
+        className="absolute inset-0 -z-10 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${heroBackground})` }}
+      />
+      <div className="absolute inset-0 bg-background/30 -z-10" />
       
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
