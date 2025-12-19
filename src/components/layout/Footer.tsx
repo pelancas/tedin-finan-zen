@@ -7,7 +7,7 @@ export function Footer() {
       <div className="container">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <Link to="/">
-            <img src={tedinLogo} alt="TEdin" className="h-8" />
+            <img src={tedinLogo} alt="TEdin" className="h-12" />
           </Link>
           
           <p className="text-sm text-muted-foreground text-center">
