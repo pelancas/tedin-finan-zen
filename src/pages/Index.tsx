@@ -18,7 +18,7 @@ const services = [
       "Sincronização com sua conta bancária",
     ],
     bgClass: "bg-emerald-50 dark:bg-emerald-950/20",
-    reverse: false,
+    reverse: true,
   },
   {
     title: "Imposto de Renda",
@@ -32,7 +32,7 @@ const services = [
       "Alerta de prazos importantes",
     ],
     bgClass: "bg-amber-50 dark:bg-amber-950/20",
-    reverse: true,
+    reverse: false,
   },
   {
     title: "Consultoria Financeira",
@@ -46,7 +46,7 @@ const services = [
       "Atendimento humano e próximo",
     ],
     bgClass: "bg-blue-50 dark:bg-blue-950/20",
-    reverse: false,
+    reverse: true,
   },
 ];
 
