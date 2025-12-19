@@ -26,8 +26,8 @@ export function ServiceSection({
       <div className="container">
         <div className={`flex flex-col ${reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12`}>
           <div className="flex-1 flex justify-center">
-            <div className="w-48 h-48 md:w-64 md:h-64 rounded-full bg-background/50 flex items-center justify-center shadow-lg">
-              <img src={icon} alt={title} className="w-24 h-24 md:w-32 md:h-32 object-contain" />
+            <div className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden shadow-lg">
+              <img src={icon} alt={title} className="w-full h-full object-cover" />
             </div>
           </div>
           
