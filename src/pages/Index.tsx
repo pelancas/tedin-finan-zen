@@ -1,13 +1,15 @@
 import { Layout } from "@/components/layout/Layout";
 import { Hero } from "@/components/home/Hero";
-import { ServiceCard } from "@/components/home/ServiceCard";
-import { Wallet, FileText, Users } from "lucide-react";
+import { ServiceSection } from "@/components/home/ServiceSection";
+import iconDespesas from "@/assets/icon-despesas.png";
+import iconLeao from "@/assets/icon-leao.png";
+import iconConsultoria from "@/assets/icon-consultoria.png";
 
 const services = [
   {
     title: "Controle de Despesas",
     description: "Acompanhe para onde seu dinheiro vai. Simples assim.",
-    icon: Wallet,
+    icon: iconDespesas,
     href: "/despesas",
     features: [
       "Categorize seus gastos automaticamente",
@@ -15,11 +17,12 @@ const services = [
       "Alertas de limite de gastos",
       "Sincronização com sua conta bancária",
     ],
+    bgClass: "bg-emerald-50 dark:bg-emerald-950/20",
   },
   {
     title: "Imposto de Renda",
     description: "Declaração sem dor de cabeça. A gente te guia.",
-    icon: FileText,
+    icon: iconLeao,
     href: "/imposto",
     features: [
       "Passo a passo simplificado",
@@ -27,11 +30,12 @@ const services = [
       "Cálculo automático de restituição",
       "Alerta de prazos importantes",
     ],
+    bgClass: "bg-amber-50 dark:bg-amber-950/20",
   },
   {
     title: "Consultoria Financeira",
     description: "Conselhos reais de quem entende do assunto.",
-    icon: Users,
+    icon: iconConsultoria,
     href: "/consultoria",
     features: [
       "Análise personalizada",
@@ -39,6 +43,7 @@ const services = [
       "Reestruturação de dívidas",
       "Atendimento humano e próximo",
     ],
+    bgClass: "bg-blue-50 dark:bg-blue-950/20",
   },
 ];
 
@@ -47,24 +52,13 @@ const Index = () => {
     <Layout>
       <Hero />
       
-      <section className="py-16 md:py-24 bg-muted/30">
-        <div className="container">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Nossos Serviços
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Ferramentas práticas que funcionam. Sem letras miúdas, sem surpresas.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service) => (
-              <ServiceCard key={service.href} {...service} />
-            ))}
-          </div>
-        </div>
-      </section>
+      {services.map((service, index) => (
+        <ServiceSection 
+          key={service.href} 
+          {...service} 
+          reverse={index % 2 !== 0}
+        />
+      ))}
       
       <section className="py-16 md:py-24">
         <div className="container">
