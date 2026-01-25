@@ -1,28 +1,50 @@
 import { Layout } from "@/components/layout/Layout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, TrendingUp, Shield, MessageCircle, ArrowRight } from "lucide-react";
+import { Users, TrendingUp, Video, Check, ArrowRight } from "lucide-react";
 
-const features = [
-  {
-    icon: MessageCircle,
-    title: "Atendimento humano",
-    description: "Nada de chatbots. Você fala com gente de verdade.",
-  },
+const plans = [
   {
     icon: TrendingUp,
-    title: "Plano de investimentos",
-    description: "Estratégias personalizadas pro seu momento de vida.",
-  },
-  {
-    icon: Shield,
-    title: "Reestruturação de dívidas",
-    description: "Ajudamos você a sair do vermelho de forma sustentável.",
+    title: "Análise de Investimentos",
+    description: "Avaliação completa dos seus investimentos atuais",
+    price: "R$ 197",
+    features: [
+      "Análise detalhada da carteira atual",
+      "Identificação de oportunidades",
+      "Relatório com recomendações",
+      "Sugestões de diversificação",
+    ],
+    highlighted: false,
   },
   {
     icon: Users,
-    title: "Educação financeira",
-    description: "Ensinamos o básico que ninguém te ensinou na escola.",
+    title: "Consultoria Virtual",
+    description: "Acompanhamento completo da sua vida financeira",
+    price: "R$ 397",
+    features: [
+      "Tudo do plano Análise",
+      "Consultoria por videochamada",
+      "Plano de ação personalizado",
+      "Suporte por 30 dias",
+      "Material educativo exclusivo",
+    ],
+    highlighted: true,
+  },
+  {
+    icon: Video,
+    title: "Consultoria Premium",
+    description: "Imersão total na sua vida financeira",
+    price: "R$ 697",
+    features: [
+      "Tudo do plano Virtual",
+      "Reunião online de 2 horas",
+      "Mapeamento completo financeiro",
+      "Planejamento de longo prazo",
+      "Suporte por 60 dias",
+      "Acompanhamento mensal",
+    ],
+    highlighted: false,
   },
 ];
 
@@ -40,31 +62,58 @@ const Consultoria = () => {
             </h1>
             <p className="text-lg text-muted-foreground">
               Orientação profissional de quem entende. 
-              Sem julgamentos, só soluções.
+              Escolha o plano ideal para você.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
-            {features.map((feature) => (
-              <Card key={feature.title} className="border-border">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center mb-2">
-                    <feature.icon className="h-6 w-6 text-accent-foreground" />
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {plans.map((plan) => (
+              <Card 
+                key={plan.title} 
+                className={`border-border relative flex flex-col ${
+                  plan.highlighted 
+                    ? 'ring-2 ring-primary shadow-lg scale-105' 
+                    : ''
+                }`}
+              >
+                {plan.highlighted && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">
+                      Mais Popular
+                    </span>
                   </div>
-                  <CardTitle className="text-lg">{feature.title}</CardTitle>
+                )}
+                <CardHeader className="text-center pb-2">
+                  <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center mx-auto mb-4">
+                    <plan.icon className="h-6 w-6 text-accent-foreground" />
+                  </div>
+                  <CardTitle className="text-xl">{plan.title}</CardTitle>
+                  <CardDescription>{plan.description}</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{feature.description}</p>
+                <CardContent className="flex-1">
+                  <div className="text-center mb-6">
+                    <span className="text-3xl font-bold text-foreground">{plan.price}</span>
+                  </div>
+                  <ul className="space-y-3">
+                    {plan.features.map((feature, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <Check className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                        <span className="text-sm text-muted-foreground">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </CardContent>
+                <CardFooter>
+                  <Button 
+                    className="w-full" 
+                    variant={plan.highlighted ? "default" : "outline"}
+                  >
+                    Escolher plano
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </CardFooter>
               </Card>
             ))}
-          </div>
-
-          <div className="text-center">
-            <Button size="lg" className="text-base">
-              Agendar consulta
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
           </div>
         </div>
       </section>
