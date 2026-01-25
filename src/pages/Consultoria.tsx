@@ -24,7 +24,7 @@ const plans = [
     price: "R$ 397",
     features: [
       "Tudo do plano Análise",
-      "Consultoria por videochamada",
+      "Mapeamento de necessidades financeiras",
       "Plano de ação personalizado",
       "Suporte por 30 dias",
       "Material educativo exclusivo",
