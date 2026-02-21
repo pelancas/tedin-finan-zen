@@ -59,47 +59,6 @@ const Despesas = () => {
   return (
     <Layout>
       {/* Seção 1 — Hero */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-accent/30 to-background">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-6">
-              <Wallet className="h-8 w-8 text-primary-foreground" />
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Controle de Despesas
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              Saber para onde vai seu dinheiro é o primeiro passo.
-              A gente facilita o resto.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
-            {features.map((feature) => (
-              <Card key={feature.title} className="border-border">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center mb-2">
-                    <feature.icon className="h-6 w-6 text-accent-foreground" />
-                  </div>
-                  <CardTitle className="text-lg">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{feature.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="text-center">
-            <Button size="lg" className="text-base" asChild>
-              <a href="https://docs.google.com/spreadsheets/d/1OL4LNo0j7ybXSS0hqpxxGaEK1Wk0ipIR71kevrlmTH8/copy" target="_blank" rel="noopener noreferrer">
-                Começar a controlar
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
-            </Button>
-          </div>
-        </div>
-      </section>
 
       {/* Seção 2 — Modelo TEDin */}
       <section className="py-16 md:py-24 bg-background">
