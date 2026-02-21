@@ -6,6 +6,7 @@ import {
   Copy, BookOpen, CheckCircle2, Target, Layers, Banknote,
   Landmark, PiggyBank, Smartphone, Building2, CircleDollarSign
 } from "lucide-react";
+import planilhaImg from "@/assets/planilha-planejamento.png";
 
 const features = [
   {
@@ -166,26 +167,49 @@ const Despesas = () => {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6 mb-12">
-              <Card className="border-border">
+              <Card className="border-border overflow-hidden">
                 <CardHeader>
                   <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center mb-2">
                     <Layers className="h-5 w-5 text-primary-foreground" />
                   </div>
                   <CardTitle className="text-lg">Planejar</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-3">
                   <p className="text-muted-foreground">Decidir para onde vai cada real</p>
+                  <div className="rounded-xl overflow-hidden border border-border">
+                    <img src={planilhaImg} alt="Exemplo de planilha de planejamento financeiro" className="w-full h-auto" />
+                  </div>
                 </CardContent>
               </Card>
-              <Card className="border-border">
+              <Card className="border-border overflow-hidden">
                 <CardHeader>
                   <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center mb-2">
                     <Banknote className="h-5 w-5 text-primary-foreground" />
                   </div>
                   <CardTitle className="text-lg">Separar</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-3">
                   <p className="text-muted-foreground">Colocar o dinheiro em "envelopes" reais ou digitais</p>
+                  <div className="rounded-xl border border-border p-4 bg-accent/30">
+                    <div className="flex items-center justify-center mb-4">
+                      <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center">
+                        <Wallet className="h-7 w-7 text-primary-foreground" />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      {[
+                        { icon: CreditCard, label: "Dia a dia" },
+                        { icon: Landmark, label: "Contas Fixas" },
+                        { icon: PiggyBank, label: "Reserva" },
+                        { icon: CircleDollarSign, label: "Investimentos" },
+                      ].map((item) => (
+                        <div key={item.label} className="flex items-center gap-2 p-3 rounded-lg bg-background border border-border">
+                          <item.icon className="h-5 w-5 text-primary flex-shrink-0" />
+                          <span className="text-foreground text-sm font-medium">{item.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>
