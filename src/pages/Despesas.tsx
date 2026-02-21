@@ -240,15 +240,15 @@ const Despesas = () => {
       </section>
 
       {/* Seção 4 — Etapa 1: Planejamento */}
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-20 md:py-32 bg-background">
         <div className="container">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <div className="w-16 h-16 rounded-2xl bg-accent flex items-center justify-center mx-auto mb-6">
-                <CircleDollarSign className="h-8 w-8 text-accent-foreground" />
+              <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center mx-auto mb-6">
+                <span className="text-2xl font-bold text-primary-foreground">1</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Etapa 1 — Planejamento completo das despesas
+                Planejamento completo das despesas
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
                 Nesta etapa, você lista toda a sua renda e define todos os destinos do dinheiro, até que o saldo planejado seja zero.
@@ -339,15 +339,15 @@ const Despesas = () => {
       </section>
 
       {/* Seção 6 — Etapa 2: Separação do dinheiro */}
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-20 md:py-32 bg-background">
         <div className="container">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-6">
-                <Banknote className="h-8 w-8 text-primary-foreground" />
+              <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center mx-auto mb-6">
+                <span className="text-2xl font-bold text-primary-foreground">2</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Etapa 2 — Separação do dinheiro (os "envelopes")
+                Separação do dinheiro (os "envelopes")
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
                 Depois de planejar, o Modelo TEDin transforma cada categoria em um envelope, que pode ser físico ou digital.
