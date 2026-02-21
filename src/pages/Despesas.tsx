@@ -1,7 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Wallet, PieChart, Bell, CreditCard, ArrowRight } from "lucide-react";
+import { Wallet, PieChart, Bell, CreditCard, ArrowRight, FileSpreadsheet, Copy, BookOpen } from "lucide-react";
 
 const features = [
   {
@@ -61,10 +61,88 @@ const Despesas = () => {
           </div>
 
           <div className="text-center">
-            <Button size="lg" className="text-base">
-              Começar a controlar
-              <ArrowRight className="ml-2 h-5 w-5" />
+            <Button size="lg" className="text-base" asChild>
+              <a href="https://docs.google.com/spreadsheets/d/1OL4LNo0j7ybXSS0hqpxxGaEK1Wk0ipIR71kevrlmTH8/copy" target="_blank" rel="noopener noreferrer">
+                Começar a controlar
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </a>
             </Button>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-24 bg-background">
+        <div className="container">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="w-16 h-16 rounded-2xl bg-accent flex items-center justify-center mx-auto mb-6">
+                <FileSpreadsheet className="h-8 w-8 text-accent-foreground" />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Planilha de Acompanhamento Financeiro
+              </h2>
+              <p className="text-lg text-muted-foreground mb-8">
+                Faça uma cópia da nossa planilha gratuita no Google Sheets e comece a organizar suas finanças agora mesmo.
+              </p>
+              <Button size="lg" className="text-base" asChild>
+                <a href="https://docs.google.com/spreadsheets/d/1OL4LNo0j7ybXSS0hqpxxGaEK1Wk0ipIR71kevrlmTH8/copy" target="_blank" rel="noopener noreferrer">
+                  <Copy className="mr-2 h-5 w-5" />
+                  Copiar planilha
+                </a>
+              </Button>
+            </div>
+
+            <Card className="border-border">
+              <CardHeader>
+                <CardTitle className="text-xl flex items-center gap-2">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                  Como usar a planilha
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">1</div>
+                    <div>
+                      <h3 className="font-semibold text-foreground mb-1">Tabela "Renda"</h3>
+                      <p className="text-muted-foreground">Coloque os valores esperados de renda, salários e tudo que entra de dinheiro no mês.</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">2</div>
+                    <div>
+                      <h3 className="font-semibold text-foreground mb-1">Tabela "Gastos"</h3>
+                      <p className="text-muted-foreground">Coloque os tipos e os valores esperados para gastos em cada categoria. Você pode adicionar mais linhas se necessário.</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">3</div>
+                    <div>
+                      <h3 className="font-semibold text-foreground mb-1">Tabela "Planejado"</h3>
+                      <p className="text-muted-foreground">Mostra se todo dinheiro de renda tem um destino planejado. Nesse planejamento, todo dinheiro deve ter um destino.</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">4</div>
+                    <div>
+                      <h3 className="font-semibold text-foreground mb-1">Coluna "Gasto"</h3>
+                      <p className="text-muted-foreground">À medida que os valores forem pagos, anote na coluna "Gasto" da tabela "Gastos".</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">5</div>
+                    <div>
+                      <h3 className="font-semibold text-foreground mb-1">Tabela "Saldo Real"</h3>
+                      <p className="text-muted-foreground">Mostra a diferença entre o planejado e o executado, revelando se existe algum saldo adicional ou se o gasto está sendo maior que o esperado.</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
