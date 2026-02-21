@@ -264,35 +264,6 @@ const Despesas = () => {
               </div>
             </div>
 
-            <Card className="border-border">
-              <CardHeader>
-                <CardTitle className="text-xl flex items-center gap-2">
-                  <BookOpen className="h-5 w-5 text-primary" />
-                  Como usar a planilha
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  {[
-                    { title: 'Tabela "Renda"', desc: "Coloque os valores esperados de renda, salários e tudo que entra de dinheiro no mês." },
-                    { title: 'Tabela "Gastos"', desc: "Coloque os tipos e os valores esperados para gastos em cada categoria. Você pode adicionar mais linhas se necessário." },
-                    { title: 'Tabela "Planejado"', desc: "Mostra se todo dinheiro de renda tem um destino planejado. Nesse planejamento, todo dinheiro deve ter um destino." },
-                    { title: 'Coluna "Gasto"', desc: 'À medida que os valores forem pagos, anote na coluna "Gasto" da tabela "Gastos".' },
-                    { title: 'Tabela "Saldo Real"', desc: "Mostra a diferença entre o planejado e o executado, revelando se existe algum saldo adicional ou se o gasto está sendo maior que o esperado." },
-                  ].map((step, index) => (
-                    <div key={index} className="flex gap-4">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
-                        {index + 1}
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground mb-1">{step.title}</h3>
-                        <p className="text-muted-foreground">{step.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </section>
