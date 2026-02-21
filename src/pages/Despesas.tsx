@@ -7,6 +7,7 @@ import {
   Landmark, PiggyBank, Smartphone, Building2, CircleDollarSign
 } from "lucide-react";
 import planilhaImg from "@/assets/planilha-planejamento.png";
+import planilhaAcompanhamentoImg from "@/assets/planilha-acompanhamento.png";
 
 const features = [
   {
@@ -299,6 +300,9 @@ const Despesas = () => {
                   Copiar planilha
                 </a>
               </Button>
+              <div className="mt-10 rounded-xl overflow-hidden border border-border shadow-sm">
+                <img src={planilhaAcompanhamentoImg} alt="Planilha de Acompanhamento Financeiro TEDin" className="w-full h-auto" />
+              </div>
             </div>
 
             <Card className="border-border">
