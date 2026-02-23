@@ -7,11 +7,13 @@ import tedinLogo from "@/assets/tedin-logo-new.png";
 import iconDespesas from "@/assets/icon-despesas.png";
 import iconLeao from "@/assets/icon-leao.png";
 import iconConsultoria from "@/assets/icon-consultoria.png";
+import iconFerramentas from "@/assets/icon-ferramentas.png";
 
 const navItems = [
   { name: "Despesas", href: "/despesas", icon: iconDespesas, isImage: true },
   { name: "IR - Imposto", href: "/imposto", icon: iconLeao, isImage: true },
   { name: "Consultoria", href: "/consultoria", icon: iconConsultoria, isImage: true },
+  { name: "Ferramentas", href: "/ferramentas", icon: iconFerramentas, isImage: true },
   { name: "Sobre", href: "/sobre", icon: Info, isImage: false },
 ];
 
