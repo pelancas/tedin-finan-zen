@@ -14,8 +14,13 @@ const Ferramentas = () => {
             </p>
           </div>
 
-          <div className="text-center text-muted-foreground">
-            <p>Em breve, novas ferramentas estarão disponíveis aqui.</p>
+          <div className="w-full">
+            <iframe
+              src="/calculadora-financeira.html"
+              className="w-full border-0 rounded-lg"
+              style={{ minHeight: "700px" }}
+              title="Calculadora Financeira"
+            />
           </div>
         </div>
       </section>

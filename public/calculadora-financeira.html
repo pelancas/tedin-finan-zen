@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monte sua Jornada Financeira</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #2ECC71;
+    --green-dark: #27AE60;
+    --green-light: #A8F0C6;
+    --orange: #F39C12;
+    --bg: #F7F9FC;
+    --card: #FFFFFF;
+    --text: #1A2332;
+    --muted: #6B7A99;
+    --border: #E8EDF5;
+    --shadow: 0 2px 20px rgba(0,0,0,0.06);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    max-width: 260px;
+    line-height: 1.5;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 290px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+
+  .card-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .age-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .age-input {
+    width: 70px;
+    font-size: 22px;
+    font-weight: 700;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    outline: none;
+  }
+
+  .age-label {
+    font-size: 11px;
+    color: var(--muted);
+    align-self: flex-end;
+    padding-bottom: 4px;
+  }
+
+  .age-sep {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    margin: 0 4px;
+  }
+
+  .value-input {
+    font-size: 20px;
+    font-weight: 700;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    outline: none;
+    width: 100%;
+  }
+
+  .value-display {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .rate-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rate-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--green-dark);
+  }
+
+  .btn-generate {
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s, transform 0.1s;
+  }
+
+  .btn-generate:hover { background: var(--green-dark); }
+  .btn-generate:active { transform: scale(0.98); }
+
+  /* Results panel */
+  .results {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+  }
+
+  .results-header {
+    margin-bottom: 20px;
+  }
+
+  .results-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin-bottom: 4px;
+  }
+
+  .results-title {
+    font-size: 22px;
+    font-weight: 800;
+  }
+
+  .results-title span {
+    color: var(--orange);
+  }
+
+  .total-block {
+    float: right;
+    text-align: right;
+    margin-top: -50px;
+  }
+
+  .total-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  .total-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .independence-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--green-dark);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  /* Chart */
+  .chart-area {
+    position: relative;
+    height: 200px;
+    margin: 20px 0 8px;
+    clear: both;
+  }
+
+  canvas#chart {
+    width: 100%;
+    height: 100%;
+  }
+
+  .chart-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 500;
+    padding: 0 2px;
+    margin-bottom: 24px;
+  }
+
+  .chart-labels span:last-child {
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .stat-value.green { color: var(--green-dark); }
+  .stat-value.orange { color: var(--orange); }
+
+  .stat-underline {
+    height: 2px;
+    border-radius: 2px;
+    margin-top: 6px;
+    width: 40px;
+  }
+  .underline-gray { background: #CDD5E0; }
+  .underline-green { background: var(--green); }
+  .underline-orange { background: var(--orange); }
+
+  /* Tips */
+  .tips-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .tip-card {
+    background: #F0FAF5;
+    border-radius: 14px;
+    padding: 16px;
+  }
+
+  .tip-card h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tip-card p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+  @media (max-width: 700px) {
+    .layout { grid-template-columns: 1fr; }
+    .total-block { float: none; margin-top: 8px; text-align: left; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Monte sua Jornada</h1>
+  <p class="subtitle">Ajuste os valores para visualizar seu futuro financeiro em tempo real.</p>
+
+  <div class="layout">
+    <!-- Controls -->
+    <div class="controls">
+      <div class="card">
+        <div class="card-label">Idade Atual e Meta</div>
+        <div class="age-row">
+          <input class="age-input" type="number" id="idadeAtual" value="25" min="18" max="80">
+          <span class="age-label">anos</span>
+          <div class="age-sep"></div>
+          <input class="age-input" type="number" id="idadeMeta" value="55" min="20" max="90">
+          <span class="age-label">anos</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Patrimônio Atual</div>
+        <div style="display:flex;align-items:baseline;gap:4px">
+          <span style="font-size:14px;font-weight:600;color:var(--muted)">R$</span>
+          <input class="value-input" type="number" id="patrimonioAtual" value="50000" min="0" step="1000">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Aporte Mensal</div>
+        <div style="display:flex;align-items:baseline;gap:4px">
+          <span style="font-size:14px;font-weight:600;color:var(--muted)">R$</span>
+          <input class="value-input" type="number" id="aporteMensal" value="2500" min="0" step="100">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Rentabilidade Real</div>
+        <div class="rate-row">
+          <span style="font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            Taxa de Juros Real
+          </span>
+          <span class="rate-value">5% /ano</span>
+        </div>
+      </div>
+
+      <button class="btn-generate" onclick="calcular()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Gerar Planejamento
+      </button>
+    </div>
+
+    <!-- Results -->
+    <div class="results">
+      <div class="results-header">
+        <div class="results-eyebrow">Crescimento Estimado</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
+          <div class="results-title">Seu futuro em <span id="anosLabel">30</span> anos</div>
+          <div>
+            <div class="total-label">Total Acumulado</div>
+            <div class="total-value" id="totalAcumulado">R$ 2.450.000</div>
+            <div class="independence-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Independência Alcançada aos <span id="idadeMetaLabel">55</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-area">
+        <canvas id="chart"></canvas>
+      </div>
+      <div class="chart-labels">
+        <span>HOJE (<span id="labelHoje">25</span>)</span>
+        <span id="labelMid1">35 ANOS</span>
+        <span id="labelMid2">45 ANOS</span>
+        <span>META (<span id="labelMeta">55 ANOS</span>)</span>
+      </div>
+
+      <div class="stats-row">
+        <div>
+          <div class="stat-label">Total Investido</div>
+          <div class="stat-value" id="totalInvestido">R$ 360.000</div>
+          <div class="stat-underline underline-gray"></div>
+        </div>
+        <div>
+          <div class="stat-label">Juros Ganhos</div>
+          <div class="stat-value green" id="jurosGanhos">R$ 2.090.000</div>
+          <div class="stat-underline underline-green"></div>
+        </div>
+        <div>
+          <div class="stat-label">Renda Passiva</div>
+          <div class="stat-value orange" id="rendaPassiva">R$ 10.208,33 /mês</div>
+          <div class="stat-underline underline-orange"></div>
+        </div>
+      </div>
+
+      <div class="tips-row">
+        <div class="tip-card">
+          <h4>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-dark)" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            Otimização de Aportes
+          </h4>
+          <p id="tipAporte">Adicionar apenas R$ 200 extras por mês anteciparia sua independência em 3.5 anos.</p>
+        </div>
+        <div class="tip-card" style="background:#FFF8EC">
+          <h4>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Poder de Compra
+          </h4>
+          <p>Este cálculo já utiliza juros reais (acima da inflação), garantindo o valor real hoje.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TAXA_ANUAL = 0.05;
+const TAXA_MENSAL = Math.pow(1 + TAXA_ANUAL, 1/12) - 1;
+
+function fmt(v) {
+  return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+function fmtDec(v) {
+  return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function calcular() {
+  const idadeAtual = parseInt(document.getElementById('idadeAtual').value) || 25;
+  const idadeMeta = parseInt(document.getElementById('idadeMeta').value) || 55;
+  const patrimonioInicial = parseFloat(document.getElementById('patrimonioAtual').value) || 0;
+  const aporteMensal = parseFloat(document.getElementById('aporteMensal').value) || 0;
+  const anos = Math.max(1, idadeMeta - idadeAtual);
+  const meses = anos * 12;
+
+  // Compound calculation month by month
+  let saldo = patrimonioInicial;
+  const pontos = [saldo];
+  for (let m = 1; m <= meses; m++) {
+    saldo = saldo * (1 + TAXA_MENSAL) + aporteMensal;
+    if (m % (meses / 100) < 1) pontos.push(saldo);
+  }
+  pontos.push(saldo);
+
+  const totalInvestido = patrimonioInicial + aporteMensal * meses;
+  const jurosGanhos = saldo - totalInvestido;
+  const rendaPassiva = saldo * TAXA_MENSAL;
+
+  // Update labels
+  document.getElementById('anosLabel').textContent = anos;
+  document.getElementById('idadeMetaLabel').textContent = idadeMeta;
+  document.getElementById('labelHoje').textContent = idadeAtual;
+  document.getElementById('labelMeta').textContent = idadeMeta + ' ANOS';
+
+  const mid1Age = Math.round(idadeAtual + anos / 3);
+  const mid2Age = Math.round(idadeAtual + 2 * anos / 3);
+  document.getElementById('labelMid1').textContent = mid1Age + ' ANOS';
+  document.getElementById('labelMid2').textContent = mid2Age + ' ANOS';
+
+  document.getElementById('totalAcumulado').textContent = fmt(saldo);
+  document.getElementById('totalInvestido').textContent = fmt(totalInvestido);
+  document.getElementById('jurosGanhos').textContent = fmt(jurosGanhos);
+  document.getElementById('rendaPassiva').textContent = fmtDec(rendaPassiva) + ' /mês';
+
+  // Tip: extra R$200/mes
+  const extra = 200;
+  let saldoExtra = patrimonioInicial;
+  for (let m = 1; m <= meses; m++) {
+    saldoExtra = saldoExtra * (1 + TAXA_MENSAL) + aporteMensal + extra;
+  }
+  // Find how many months earlier to reach same final value
+  let saldoNorm = patrimonioInicial;
+  let mesesAntecipado = 0;
+  for (let m = 1; m <= meses; m++) {
+    saldoNorm = saldoNorm * (1 + TAXA_MENSAL) + aporteMensal + extra;
+    if (saldoNorm >= saldo && mesesAntecipado === 0) {
+      mesesAntecipado = meses - m;
+    }
+  }
+  const anosAntec = (mesesAntecipado / 12).toFixed(1);
+  document.getElementById('tipAporte').textContent =
+    `Adicionar apenas R$ ${extra.toLocaleString('pt-BR')} extras por mês anteciparia sua independência em ${anosAntec} anos.`;
+
+  desenharGrafico(patrimonioInicial, aporteMensal, meses, saldo);
+}
+
+function desenharGrafico(patrimonioInicial, aporteMensal, meses, valorFinal) {
+  const canvas = document.getElementById('chart');
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width * window.devicePixelRatio;
+  canvas.height = 200 * window.devicePixelRatio;
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = '200px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  const W = rect.width, H = 200;
+  ctx.clearRect(0, 0, W, H);
+
+  // Build data points
+  const steps = 80;
+  const values = [];
+  let s = patrimonioInicial;
+  values.push(s);
+  for (let i = 1; i <= steps; i++) {
+    const m = Math.round(i * meses / steps);
+    let sv = patrimonioInicial;
+    for (let mm = 1; mm <= m; mm++) sv = sv * (1 + TAXA_MENSAL) + aporteMensal;
+    values.push(sv);
+  }
+
+  const maxV = Math.max(...values);
+  const padX = 8, padY = 16;
+
+  const px = (i) => padX + (i / steps) * (W - padX * 2);
+  const py = (v) => H - padY - (v / maxV) * (H - padY * 2);
+
+  // Gradient fill
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, 'rgba(46,204,113,0.25)');
+  grad.addColorStop(1, 'rgba(46,204,113,0.01)');
+  ctx.beginPath();
+  ctx.moveTo(px(0), py(values[0]));
+  for (let i = 1; i <= steps; i++) ctx.lineTo(px(i), py(values[i]));
+  ctx.lineTo(px(steps), H - padY);
+  ctx.lineTo(px(0), H - padY);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  ctx.moveTo(px(0), py(values[0]));
+  for (let i = 1; i <= steps; i++) ctx.lineTo(px(i), py(values[i]));
+  ctx.strokeStyle = '#2ECC71';
+  ctx.lineWidth = 2.5;
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+
+  // Dots
+  const dotPositions = [0, Math.round(steps/3), Math.round(2*steps/3), steps];
+  dotPositions.forEach((i, idx) => {
+    const x = px(i), y = py(values[i]);
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, Math.PI * 2);
+    ctx.fillStyle = idx === dotPositions.length - 1 ? '#F39C12' : '#fff';
+    ctx.strokeStyle = idx === dotPositions.length - 1 ? '#F39C12' : '#2ECC71';
+    ctx.lineWidth = 2.5;
+    ctx.fill();
+    ctx.stroke();
+  });
+}
+
+// Live update on input
+['idadeAtual','idadeMeta','patrimonioAtual','aporteMensal'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcular);
+});
+
+// Format value inputs on blur
+['patrimonioAtual','aporteMensal'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('blur', () => { if (!el.value) el.value = 0; });
+});
+
+calcular();
+window.addEventListener('resize', calcular);
+</script>
+</body>
+</html>
