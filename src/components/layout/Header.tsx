@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import { Info, Menu, X, ChevronDown } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { Info, Menu, X, ChevronDown, LucideIcon } from "lucide-react";
+import { useState, useRef, useEffect, ElementType } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import tedinLogo from "@/assets/tedin-logo-new.png";
@@ -16,12 +16,13 @@ const ferramentasItems = [
   { name: "Indicadores fundamentalistas", href: "/ferramentas/indicadores" },
 ];
 
-const navItems = [
+const mainNavItems = [
   { name: "Despesas", href: "/despesas", icon: iconDespesas, isImage: true },
   { name: "IR - Imposto", href: "/imposto", icon: iconLeao, isImage: true },
   { name: "Consultoria", href: "/consultoria", icon: iconConsultoria, isImage: true },
-  { name: "Sobre", href: "/sobre", icon: Info, isImage: false },
 ];
+
+const sobreItem = { name: "Sobre", href: "/sobre", icon: Info, isImage: false };
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -51,7 +52,7 @@ export function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-1">
-          {navItems.map((item) => (
+          {mainNavItems.map((item) => (
             <Link
               key={item.href}
               to={item.href}
@@ -65,7 +66,10 @@ export function Header() {
               {item.isImage ? (
                 <img src={item.icon as string} alt={item.name} className="h-5 w-5 object-contain" />
               ) : (
-                <item.icon className="h-4 w-4" />
+                (() => {
+                  const Icon = item.icon as ElementType;
+                  return <Icon className="h-4 w-4" />;
+                })()
               )}
               {item.name}
             </Link>
@@ -107,6 +111,25 @@ export function Header() {
               </div>
             )}
           </div>
+
+          {/* Sobre Link */}
+          {(() => {
+            const Icon = sobreItem.icon as ElementType;
+            return (
+              <Link
+                to={sobreItem.href}
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                  location.pathname === sobreItem.href
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                )}
+              >
+                <Icon className="h-4 w-4" />
+                {sobreItem.name}
+              </Link>
+            );
+          })()}
         </nav>
 
         {/* Mobile Menu Button */}
@@ -124,7 +147,7 @@ export function Header() {
       {mobileMenuOpen && (
         <nav className="md:hidden border-t border-border bg-card p-4">
           <div className="flex flex-col gap-2">
-            {navItems.map((item) => (
+            {mainNavItems.map((item) => (
               <Link
                 key={item.href}
                 to={item.href}
@@ -139,7 +162,10 @@ export function Header() {
                 {item.isImage ? (
                   <img src={item.icon as string} alt={item.name} className="h-6 w-6 object-contain" />
                 ) : (
-                  <item.icon className="h-5 w-5" />
+                  (() => {
+                    const Icon = item.icon as ElementType;
+                    return <Icon className="h-5 w-5" />;
+                  })()
                 )}
                 {item.name}
               </Link>
@@ -179,6 +205,26 @@ export function Header() {
                 ))}
               </div>
             )}
+
+            {/* Mobile Sobre */}
+            {(() => {
+              const Icon = sobreItem.icon as ElementType;
+              return (
+                <Link
+                  to={sobreItem.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={cn(
+                    "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
+                    location.pathname === sobreItem.href
+                      ? "bg-accent text-accent-foreground"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  )}
+                >
+                  <Icon className="h-5 w-5" />
+                  {sobreItem.name}
+                </Link>
+              );
+            })()}
           </div>
         </nav>
       )}
