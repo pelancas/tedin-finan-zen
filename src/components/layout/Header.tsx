@@ -11,6 +11,7 @@ import iconFerramentas from "@/assets/icon-ferramentas.png";
 
 const ferramentasItems = [
   { name: "Minha aposentadoria", href: "/ferramentas/aposentadoria" },
+  { name: "Metas de investimento", href: "/ferramentas/metas" },
   { name: "Cálculo de financiamento", href: "/ferramentas/financiamento" },
   { name: "Comparador de investimentos", href: "/ferramentas/investimentos" },
   { name: "Indicadores fundamentalistas", href: "/ferramentas/indicadores" },
