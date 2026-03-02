@@ -31,21 +31,7 @@ const plans = [
     ],
     highlighted: true,
   },
-  {
-    icon: Video,
-    title: "Consultoria Premium",
-    description: "Imersão total na sua vida financeira",
-    price: "R$ 697",
-    features: [
-      "Tudo do plano Virtual",
-      "Reunião online de 2 horas",
-      "Mapeamento completo financeiro",
-      "Planejamento de longo prazo",
-      "Suporte por 60 dias",
-      "Acompanhamento mensal",
-    ],
-    highlighted: false,
-  },
+
 ];
 
 const Consultoria = () => {
