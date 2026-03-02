@@ -8,7 +8,7 @@ const plans = [
     icon: TrendingUp,
     title: "Análise de Investimentos",
     description: "Avaliação completa dos seus investimentos atuais",
-    price: "R$ 197",
+    price: "R$ 175",
     features: [
       "Análise detalhada da carteira atual",
       "Identificação de oportunidades",
@@ -21,11 +21,11 @@ const plans = [
     icon: Users,
     title: "Consultoria Virtual",
     description: "Acompanhamento completo da sua vida financeira",
-    price: "R$ 397",
+    price: "R$ 280",
     features: [
       "Tudo do plano Análise",
       "Mapeamento de necessidades financeiras",
-      "Plano de ação personalizado",
+      "Relatório personalizado",
       "Suporte por 30 dias",
       "Material educativo exclusivo",
     ],
