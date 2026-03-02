@@ -9,6 +9,7 @@ import Despesas from "./pages/Despesas";
 import Imposto from "./pages/Imposto";
 import Consultoria from "./pages/Consultoria";
 import Ferramentas from "./pages/Ferramentas";
+import Fundos from "./pages/investimentos/Fundos";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/consultoria" element={<Consultoria />} />
           <Route path="/ferramentas" element={<Ferramentas />} />
           <Route path="/ferramentas/:tool" element={<Ferramentas />} />
+          <Route path="/investimentos/fundos" element={<Fundos />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
