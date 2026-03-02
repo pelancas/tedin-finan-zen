@@ -848,8 +848,19 @@
     const verdictCard = document.getElementById('verdict-card');
     verdictCard.className = 'verdict-card' + (winA ? '' : ' orange-verdict');
 
+    const fmt = (n) => n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const principal = 1000;
+    const finalA = principal * (1 + netGainA);
+    const finalB = principal * (1 + netGainB);
+    const yieldA = finalA - principal;
+    const yieldB = finalB - principal;
+
     document.getElementById('verdict-text').innerHTML =
-      `O investimento <strong>${typeA}</strong> renderá <strong>${netAnnualA.toFixed(2).replace('.',',')}% a.a. líquido</strong>, enquanto o <strong>${typeB}</strong> renderá <strong>${netAnnualB.toFixed(2).replace('.',',')}% a.a. líquido</strong>, considerando um período de <strong>${timeLabel}</strong>. Nessas condições, o <strong>${winner}</strong> é <strong>${diff}% mais rentável</strong> que o <strong>${loser}</strong> ao ano. ${exemptA || exemptB ? 'A isenção de IR foi considerada no cálculo.' : ''} Lembrando que essas condições são sazonais e podem mudar.`;
+      `O investimento <strong>${typeA}</strong> renderá <strong>${netAnnualA.toFixed(2).replace('.',',')}% a.a. líquido</strong>, enquanto o <strong>${typeB}</strong> renderá <strong>${netAnnualB.toFixed(2).replace('.',',')}% a.a. líquido</strong>, considerando um período de <strong>${timeLabel}</strong>. Nessas condições, o <strong>${winner}</strong> é <strong>${diff}% mais rentável</strong> que o <strong>${loser}</strong> ao ano. ${exemptA || exemptB ? 'A isenção de IR foi considerada no cálculo.' : ''} Lembrando que essas condições são sazonais e podem mudar.
+      <br><br>
+      <strong>Se você investir R$ 1.000,00:</strong><br>
+      📗 <strong>${typeA}</strong> → valor final <strong>R$ ${fmt(finalA)}</strong> <span style="color:var(--green-dark);font-weight:600;">(+ R$ ${fmt(yieldA)})</span><br>
+      📙 <strong>${typeB}</strong> → valor final <strong>R$ ${fmt(finalB)}</strong> <span style="color:#E67E22;font-weight:600;">(+ R$ ${fmt(yieldB)})</span>`;
 
     const results = document.getElementById('results');
     results.classList.add('visible');
