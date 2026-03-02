@@ -13,6 +13,7 @@ const ferramentasItems = [
   { name: "Minha aposentadoria", href: "/ferramentas/aposentadoria" },
   { name: "Metas de investimento", href: "/ferramentas/metas" },
   { name: "Cálculo de financiamento", href: "/ferramentas/financiamento" },
+  { name: "Comparador de renda fixa", href: "/ferramentas/renda-fixa" },
   { name: "Comparador de investimentos", href: "/ferramentas/investimentos" },
   { name: "Indicadores fundamentalistas", href: "/ferramentas/indicadores" },
 ];

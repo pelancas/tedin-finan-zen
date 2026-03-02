@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparador de Renda Fixa</title>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #2ECC71;
+    --green-dark: #27AE60;
+    --orange: #F39C12;
+    --bg: #F7F9FC;
+    --white: #ffffff;
+    --text: #1A2332;
+    --text-muted: #6B7A90;
+    --border: #E2E8F0;
+    --radius: 16px;
+    --shadow: 0 2px 12px rgba(26,35,50,0.07);
+    --shadow-md: 0 4px 24px rgba(26,35,50,0.10);
+  }
+
+  body {
+    font-family: 'Work Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 32px 16px 48px;
+  }
+
+  .wrapper {
+    max-width: 920px;
+    margin: 0 auto;
+  }
+
+  header {
+    margin-bottom: 32px;
+  }
+
+  header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+
+  header p {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* Base rates bar */
+  .base-rates {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    box-shadow: var(--shadow);
+    flex-wrap: wrap;
+  }
+
+  .base-rates span {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .base-rates strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .base-rate-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .base-rate-pill .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+
+  .base-rate-pill .dot.orange { background: var(--orange); }
+
+  /* Time section */
+  .time-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .time-card label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+
+  .time-input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .time-input-group input {
+    width: 100px;
+    border: none;
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    outline: none;
+    transition: background 0.2s;
+  }
+
+  .time-input-group input:focus { background: #EBF9F2; }
+
+  .unit-toggle {
+    display: flex;
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 3px;
+    gap: 2px;
+  }
+
+  .unit-toggle button {
+    border: none;
+    background: transparent;
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .unit-toggle button.active {
+    background: var(--white);
+    color: var(--green-dark);
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+
+  /* Investment card */
+  .inv-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .inv-card.card-a { border-top: 3px solid var(--green); }
+  .inv-card.card-b { border-top: 3px solid var(--orange); }
+
+  .card-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .card-tag .tag-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+
+  .card-a .tag-dot { background: var(--green); }
+  .card-b .tag-dot { background: var(--orange); }
+
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+
+  .field-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px; height: 15px;
+    border-radius: 50%;
+    background: var(--border);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-muted);
+    cursor: help;
+    position: relative;
+  }
+
+  .info-icon:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 400;
+    white-space: nowrap;
+    z-index: 10;
+  }
+
+  /* Custom select */
+  .custom-select {
+    position: relative;
+  }
+
+  .custom-select select {
+    width: 100%;
+    border: none;
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 11px 36px 11px 14px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    appearance: none;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.2s;
+  }
+
+  .custom-select select:focus { background: #EBF9F2; }
+
+  .custom-select::after {
+    content: '▾';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 12px;
+    pointer-events: none;
+  }
+
+  /* Rate type toggle */
+  .rate-toggle {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .rate-toggle button {
+    border: 1.5px solid var(--border);
+    background: transparent;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .rate-toggle button.active-green {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+
+  .rate-toggle button.active-orange {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: #fff;
+  }
+
+  /* Rate inputs */
+  .rate-inputs { display: flex; flex-direction: column; gap: 10px; }
+
+  .rate-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 10px 14px;
+    transition: background 0.2s;
+  }
+
+  .rate-row:focus-within { background: #EBF9F2; }
+
+  .rate-row .rate-prefix {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    white-space: nowrap;
+    min-width: 60px;
+  }
+
+  .rate-row input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    outline: none;
+    width: 0;
+    min-width: 0;
+  }
+
+  .rate-row .rate-suffix {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  /* Tax exempt badge */
+  .tax-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: #E8FAF1;
+    color: var(--green-dark);
+  }
+
+  /* Calc button */
+  .calc-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--green-dark), var(--green));
+    color: #fff;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(39,174,96,0.35);
+    margin-bottom: 20px;
+  }
+
+  .calc-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(39,174,96,0.45);
+  }
+
+  .calc-btn:active { transform: translateY(0); }
+
+  /* Results */
+  .results { display: none; }
+  .results.visible { display: block; }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 640px) { .results-grid { grid-template-columns: 1fr; } }
+
+  .result-card {
+    border-radius: var(--radius);
+    padding: 22px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-card.res-a {
+    background: linear-gradient(135deg, #1DB954 0%, #2ECC71 100%);
+    color: #fff;
+  }
+
+  .result-card.res-b {
+    background: linear-gradient(135deg, #E67E22 0%, #F39C12 100%);
+    color: #fff;
+  }
+
+  .result-card::after {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+  }
+
+  .result-card .res-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.85;
+    margin-bottom: 4px;
+  }
+
+  .result-card .res-type {
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0.9;
+    margin-bottom: 12px;
+  }
+
+  .result-card .res-rate {
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  .result-card .res-rate span {
+    font-size: 18px;
+    font-weight: 600;
+    opacity: 0.85;
+  }
+
+  .result-card .res-sub {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  .winner-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+
+  /* Verdict */
+  .verdict-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--green);
+  }
+
+  .verdict-card.orange-verdict { border-left-color: var(--orange); }
+
+  .verdict-card p {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.65;
+  }
+
+  .verdict-card p strong { font-weight: 700; }
+
+  .disclaimer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 16px;
+    font-weight: 400;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header>
+    <h1>Comparador de Renda Fixa</h1>
+    <p>Compare dois investimentos e descubra qual rende mais para o seu perfil</p>
+  </header>
+
+  <div class="base-rates">
+    <div class="base-rate-pill">
+      <div class="dot"></div>
+      <span>CDI: <strong id="cdi-display">14,65%</strong> a.a.</span>
+    </div>
+    <div class="base-rate-pill">
+      <div class="dot orange"></div>
+      <span>IPCA: <strong>4,50%</strong> a.a.</span>
+    </div>
+    <span style="font-size:11px; color:var(--text-muted); margin-left:auto;">Taxas de referência · atualizar se necessário</span>
+    <div style="display:flex;gap:6px;align-items:center;">
+      <span style="font-size:11px;color:var(--text-muted);">CDI %</span>
+      <input type="number" id="cdi-rate" value="14.65" step="0.01"
+        style="width:70px;border:none;background:var(--bg);border-radius:8px;padding:5px 8px;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:var(--text);outline:none;">
+    </div>
+  </div>
+
+  <!-- Tempo compartilhado -->
+  <div class="time-card">
+    <label>⏱ Tempo de investimento</label>
+    <div class="time-input-group">
+      <input type="number" id="time-value" value="12" min="1">
+      <div class="unit-toggle">
+        <button class="active" id="btn-months" onclick="setUnit('months')">Meses</button>
+        <button id="btn-years" onclick="setUnit('years')">Anos</button>
+      </div>
+    </div>
+    <span id="time-equiv" style="font-size:13px;color:var(--text-muted);font-weight:500;">= 12 meses</span>
+  </div>
+
+  <!-- Cards dos investimentos -->
+  <div class="grid">
+
+    <!-- Card A -->
+    <div class="inv-card card-a">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div class="card-tag"><div class="tag-dot"></div> Investimento A</div>
+        <div id="tax-badge-a"></div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Tipo de investimento <span class="info-icon" data-tip="Escolha o título de renda fixa">i</span></div>
+        <div class="custom-select">
+          <select id="type-a" onchange="updateTaxBadge('a')">
+            <option>CDB</option>
+            <option>LCI</option>
+            <option selected>LCA</option>
+            <option>LC</option>
+            <option>LIG</option>
+            <option>CRI</option>
+            <option>CRA</option>
+            <option>DEBÊNTURE</option>
+            <option>DEBÊNTURE INCENTIVADA</option>
+            <option>TESOURO DIRETO</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Tipo de rentabilidade</div>
+        <div class="rate-toggle" id="toggle-a">
+          <button class="active-green" onclick="setRateType('a','prefixado')">Pré-fixado</button>
+          <button onclick="setRateType('a','cdi')">% do CDI</button>
+          <button onclick="setRateType('a','cdi_spread')">CDI + Taxa</button>
+          <button onclick="setRateType('a','ipca')">IPCA + Taxa</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Rentabilidade <span class="info-icon" data-tip="Taxa anual bruta">i</span></div>
+        <div class="rate-inputs" id="rate-inputs-a">
+          <div class="rate-row">
+            <span class="rate-prefix" id="prefix-a" style="display:none;"></span>
+            <input type="number" id="rate-a" value="13" step="0.1" min="0">
+            <span class="rate-suffix">% a.a.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card B -->
+    <div class="inv-card card-b">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div class="card-tag"><div class="tag-dot"></div> Investimento B</div>
+        <div id="tax-badge-b"></div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Tipo de investimento <span class="info-icon" data-tip="Escolha o título de renda fixa">i</span></div>
+        <div class="custom-select">
+          <select id="type-b" onchange="updateTaxBadge('b')">
+            <option selected>CDB</option>
+            <option>LCI</option>
+            <option>LCA</option>
+            <option>LC</option>
+            <option>LIG</option>
+            <option>CRI</option>
+            <option>CRA</option>
+            <option>DEBÊNTURE</option>
+            <option>DEBÊNTURE INCENTIVADA</option>
+            <option>TESOURO DIRETO</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Tipo de rentabilidade</div>
+        <div class="rate-toggle" id="toggle-b">
+          <button onclick="setRateType('b','prefixado')">Pré-fixado</button>
+          <button class="active-orange" onclick="setRateType('b','cdi')">% do CDI</button>
+          <button onclick="setRateType('b','cdi_spread')">CDI + Taxa</button>
+          <button onclick="setRateType('b','ipca')">IPCA + Taxa</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Rentabilidade <span class="info-icon" data-tip="Taxa anual bruta">i</span></div>
+        <div class="rate-inputs" id="rate-inputs-b">
+          <div class="rate-row">
+            <span class="rate-prefix" id="prefix-b" style="display:none;"></span>
+            <input type="number" id="rate-b" value="120" step="0.1" min="0">
+            <span class="rate-suffix" id="suffix-b">% do CDI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="calc-btn" onclick="calculate()">Calcular e Comparar →</button>
+
+  <!-- Resultados -->
+  <div class="results" id="results">
+    <div class="results-grid">
+      <div class="result-card res-a" id="res-card-a">
+        <div class="res-label">Investimento A</div>
+        <div class="res-type" id="res-type-a">LCA</div>
+        <div class="res-rate" id="res-rate-a">—<span>% a.a.</span></div>
+        <div class="res-sub" id="res-sub-a"></div>
+        <div class="winner-badge" id="winner-a" style="display:none;">🏆 Melhor opção</div>
+      </div>
+      <div class="result-card res-b" id="res-card-b">
+        <div class="res-label">Investimento B</div>
+        <div class="res-type" id="res-type-b">CDB</div>
+        <div class="res-rate" id="res-rate-b">—<span>% a.a.</span></div>
+        <div class="res-sub" id="res-sub-b"></div>
+        <div class="winner-badge" id="winner-b" style="display:none;">🏆 Melhor opção</div>
+      </div>
+    </div>
+
+    <div class="verdict-card" id="verdict-card">
+      <p id="verdict-text"></p>
+    </div>
+
+    <p class="disclaimer">⚠ As taxas são sazonais e podem mudar. Esta calculadora tem caráter informativo.</p>
+  </div>
+
+</div>
+
+<script>
+  // State
+  const state = {
+    a: { type: 'prefixado', activeClass: 'active-green' },
+    b: { type: 'cdi', activeClass: 'active-orange' }
+  };
+
+  let timeUnit = 'months';
+
+  const taxExempt = {
+    'LCI': true, 'LCA': true, 'LC': false, 'LIG': true,
+    'CRI': true, 'CRA': true, 'DEBÊNTURE': false,
+    'DEBÊNTURE INCENTIVADA': true, 'CDB': false, 'TESOURO DIRETO': false
+  };
+
+  // IR tabela regressiva
+  function irRate(months) {
+    if (months <= 6) return 0.225;
+    if (months <= 12) return 0.20;
+    if (months <= 24) return 0.175;
+    return 0.15;
+  }
+
+  function setUnit(unit) {
+    timeUnit = unit;
+    document.getElementById('btn-months').classList.toggle('active', unit === 'months');
+    document.getElementById('btn-years').classList.toggle('active', unit === 'years');
+    updateTimeEquiv();
+  }
+
+  function updateTimeEquiv() {
+    const val = parseFloat(document.getElementById('time-value').value) || 0;
+    const months = timeUnit === 'years' ? Math.round(val * 12) : val;
+    document.getElementById('time-equiv').textContent =
+      timeUnit === 'years' ? `= ${months} meses` : `= ${(val/12).toFixed(1)} anos`;
+  }
+
+  document.getElementById('time-value').addEventListener('input', updateTimeEquiv);
+  document.getElementById('cdi-rate').addEventListener('input', () => {
+    document.getElementById('cdi-display').textContent =
+      parseFloat(document.getElementById('cdi-rate').value || 0).toFixed(2).replace('.', ',') + '%';
+  });
+
+  function updateTaxBadge(side) {
+    const type = document.getElementById(`type-${side}`).value;
+    const badge = document.getElementById(`tax-badge-${side}`);
+    if (taxExempt[type]) {
+      badge.innerHTML = '<span class="tax-badge">✓ Isento IR</span>';
+    } else {
+      badge.innerHTML = '';
+    }
+  }
+
+  function setRateType(side, type) {
+    state[side].type = type;
+    const toggle = document.getElementById(`toggle-${side}`);
+    const buttons = toggle.querySelectorAll('button');
+    const activeClass = state[side].activeClass;
+
+    const typeMap = ['prefixado', 'cdi', 'cdi_spread', 'ipca'];
+    buttons.forEach((btn, i) => {
+      btn.classList.remove('active-green', 'active-orange');
+      if (typeMap[i] === type) btn.classList.add(activeClass);
+    });
+
+    // Update input UI
+    const container = document.getElementById(`rate-inputs-${side}`);
+    const rateInput = document.getElementById(`rate-${side}`);
+    const prefixEl = document.getElementById(`prefix-${side}`);
+
+    if (type === 'prefixado') {
+      prefixEl.style.display = 'none';
+      container.innerHTML = `
+        <div class="rate-row">
+          <input type="number" id="rate-${side}" value="${rateInput.value}" step="0.1" min="0">
+          <span class="rate-suffix">% a.a.</span>
+        </div>`;
+    } else if (type === 'cdi') {
+      container.innerHTML = `
+        <div class="rate-row">
+          <input type="number" id="rate-${side}" value="120" step="1" min="0">
+          <span class="rate-suffix">% do CDI</span>
+        </div>`;
+    } else if (type === 'cdi_spread') {
+      container.innerHTML = `
+        <div class="rate-row" style="background:var(--bg);">
+          <span class="rate-prefix">CDI +</span>
+          <input type="number" id="rate-${side}" value="2" step="0.1" min="0">
+          <span class="rate-suffix">% a.a.</span>
+        </div>`;
+    } else if (type === 'ipca') {
+      container.innerHTML = `
+        <div class="rate-row">
+          <span class="rate-prefix">IPCA +</span>
+          <input type="number" id="rate-${side}" value="6" step="0.1" min="0">
+          <span class="rate-suffix">% a.a.</span>
+        </div>`;
+    }
+  }
+
+  function getAnnualRate(side) {
+    const cdi = parseFloat(document.getElementById('cdi-rate').value) / 100;
+    const ipca = 0.045;
+    const type = state[side].type;
+    const rateInput = document.getElementById(`rate-${side}`);
+    const val = parseFloat(rateInput.value) / 100;
+
+    if (type === 'prefixado') return val;
+    if (type === 'cdi') return cdi * val;
+    if (type === 'cdi_spread') return cdi + val;
+    if (type === 'ipca') return ipca + val;
+    return val;
+  }
+
+  function calculate() {
+    const timeVal = parseFloat(document.getElementById('time-value').value) || 12;
+    const months = timeUnit === 'years' ? Math.round(timeVal * 12) : timeVal;
+
+    const rateA = getAnnualRate('a');
+    const rateB = getAnnualRate('b');
+
+    const typeA = document.getElementById('type-a').value;
+    const typeB = document.getElementById('type-b').value;
+
+    const exemptA = taxExempt[typeA];
+    const exemptB = taxExempt[typeB];
+
+    const ir = irRate(months);
+
+    // Monthly equivalent rate
+    const monthRateA = Math.pow(1 + rateA, 1/12) - 1;
+    const monthRateB = Math.pow(1 + rateB, 1/12) - 1;
+
+    // Gross final
+    const grossA = Math.pow(1 + monthRateA, months) - 1;
+    const grossB = Math.pow(1 + monthRateB, months) - 1;
+
+    // Net gain
+    const netGainA = exemptA ? grossA : grossA * (1 - ir);
+    const netGainB = exemptB ? grossB : grossB * (1 - ir);
+
+    // Net annualized
+    const netAnnualA = (Math.pow(1 + netGainA, 12/months) - 1) * 100;
+    const netAnnualB = (Math.pow(1 + netGainB, 12/months) - 1) * 100;
+
+    // Winner
+    const winA = netAnnualA >= netAnnualB;
+    const winB = netAnnualB > netAnnualA;
+
+    document.getElementById('res-type-a').textContent = typeA;
+    document.getElementById('res-type-b').textContent = typeB;
+
+    document.getElementById('res-rate-a').innerHTML = `${netAnnualA.toFixed(2).replace('.',',')} <span>% a.a. líq.</span>`;
+    document.getElementById('res-rate-b').innerHTML = `${netAnnualB.toFixed(2).replace('.',',')} <span>% a.a. líq.</span>`;
+
+    const ir_label_a = exemptA ? 'Isento de IR' : `IR ${(ir*100).toFixed(1)}%`;
+    const ir_label_b = exemptB ? 'Isento de IR' : `IR ${(ir*100).toFixed(1)}%`;
+    document.getElementById('res-sub-a').textContent = `Bruto: ${(rateA*100).toFixed(2).replace('.',',')}% · ${ir_label_a}`;
+    document.getElementById('res-sub-b').textContent = `Bruto: ${(rateB*100).toFixed(2).replace('.',',')}% · ${ir_label_b}`;
+
+    document.getElementById('winner-a').style.display = winA ? 'inline-flex' : 'none';
+    document.getElementById('winner-b').style.display = winB ? 'inline-flex' : 'none';
+
+    const timeLabel = months === 1 ? '1 mês' : `${months} meses`;
+    const diff = Math.abs(netAnnualA - netAnnualB).toFixed(2).replace('.',',');
+    const winner = winA ? typeA : typeB;
+    const loser = winA ? typeB : typeA;
+    const winRate = winA ? netAnnualA : netAnnualB;
+
+    const verdictCard = document.getElementById('verdict-card');
+    verdictCard.className = 'verdict-card' + (winA ? '' : ' orange-verdict');
+
+    document.getElementById('verdict-text').innerHTML =
+      `O investimento <strong>${typeA}</strong> renderá <strong>${netAnnualA.toFixed(2).replace('.',',')}% a.a. líquido</strong>, enquanto o <strong>${typeB}</strong> renderá <strong>${netAnnualB.toFixed(2).replace('.',',')}% a.a. líquido</strong>, considerando um período de <strong>${timeLabel}</strong>. Nessas condições, o <strong>${winner}</strong> é <strong>${diff}% mais rentável</strong> que o <strong>${loser}</strong> ao ano. ${exemptA || exemptB ? 'A isenção de IR foi considerada no cálculo.' : ''} Lembrando que essas condições são sazonais e podem mudar.`;
+
+    const results = document.getElementById('results');
+    results.classList.add('visible');
+    results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // Init badges
+  updateTaxBadge('a');
+  updateTaxBadge('b');
+</script>
+</body>
+</html>

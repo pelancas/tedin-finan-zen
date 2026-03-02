@@ -12,6 +12,11 @@ const toolsMap: Record<string, { src: string; title: string; minHeight: string }
     title: "Metas de Investimento",
     minHeight: "900px",
   },
+  "renda-fixa": {
+    src: "/comparador-renda-fixa.html",
+    title: "Comparador de Renda Fixa",
+    minHeight: "900px",
+  },
 };
 
 const defaultTool = "aposentadoria";
