@@ -52,7 +52,7 @@ const Consultoria = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="grid md:grid-cols-2 gap-6 mb-12">
             {plans.map((plan) => (
               <Card 
                 key={plan.title} 
@@ -63,7 +63,7 @@ const Consultoria = () => {
                 }`}
               >
                 {plan.highlighted && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <div className="absolute -top-2 left-1/2 -translate-x-1/2">
                     <span className="bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">
                       Mais Popular
                     </span>
