@@ -18,6 +18,13 @@ const ferramentasItems = [
   { name: "Indicadores fundamentalistas", href: "/ferramentas/indicadores" },
 ];
 
+const investimentosItems = [
+  { name: "Renda Fixa", href: "/investimentos/renda-fixa" },
+  { name: "Fundos", href: "/investimentos/fundos" },
+  { name: "FII", href: "/investimentos/fii" },
+  { name: "Ações", href: "/investimentos/acoes" },
+];
+
 const mainNavItems = [
   { name: "Despesas", href: "/despesas", icon: iconDespesas, isImage: true },
   { name: "IR - Imposto", href: "/imposto", icon: iconLeao, isImage: true },
