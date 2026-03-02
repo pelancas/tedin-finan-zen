@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Info, Menu, X, ChevronDown, LucideIcon } from "lucide-react";
+import { Info, Menu, X, ChevronDown, TrendingUp, LucideIcon } from "lucide-react";
 import { useState, useRef, useEffect, ElementType } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,13 @@ const ferramentasItems = [
   { name: "Indicadores fundamentalistas", href: "/ferramentas/indicadores" },
 ];
 
+const investimentosItems = [
+  { name: "Renda Fixa", href: "/investimentos/renda-fixa" },
+  { name: "Fundos", href: "/investimentos/fundos" },
+  { name: "FII", href: "/investimentos/fii" },
+  { name: "Ações", href: "/investimentos/acoes" },
+];
+
 const mainNavItems = [
   { name: "Despesas", href: "/despesas", icon: iconDespesas, isImage: true },
   { name: "IR - Imposto", href: "/imposto", icon: iconLeao, isImage: true },
@@ -29,8 +36,11 @@ const sobreItem = { name: "Sobre", href: "/sobre", icon: Info, isImage: false };
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [ferramentasOpen, setFerramentasOpen] = useState(false);
+  const [investimentosOpen, setInvestimentosOpen] = useState(false);
   const [mobileFerramentasOpen, setMobileFerramentasOpen] = useState(false);
+  const [mobileInvestimentosOpen, setMobileInvestimentosOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const investimentosRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -38,12 +48,16 @@ export function Header() {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setFerramentasOpen(false);
       }
+      if (investimentosRef.current && !investimentosRef.current.contains(e.target as Node)) {
+        setInvestimentosOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const isFerramentasActive = location.pathname.startsWith("/ferramentas");
+  const isInvestimentosActive = location.pathname.startsWith("/investimentos");
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
@@ -76,6 +90,43 @@ export function Header() {
               {item.name}
             </Link>
           ))}
+
+          {/* Investimentos Dropdown */}
+          <div className="relative" ref={investimentosRef}>
+            <button
+              onClick={() => setInvestimentosOpen(!investimentosOpen)}
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                isInvestimentosActive
+                  ? "bg-accent text-accent-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              )}
+            >
+              <TrendingUp className="h-5 w-5" />
+              Investimentos
+              <ChevronDown className={cn("h-3 w-3 transition-transform", investimentosOpen && "rotate-180")} />
+            </button>
+
+            {investimentosOpen && (
+              <div className="absolute right-0 top-full mt-2 w-48 rounded-lg border border-border bg-card shadow-lg py-1 z-50">
+                {investimentosItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={() => setInvestimentosOpen(false)}
+                    className={cn(
+                      "block px-4 py-2.5 text-sm transition-colors",
+                      location.pathname === item.href
+                        ? "bg-accent text-accent-foreground"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Ferramentas Dropdown */}
           <div className="relative" ref={dropdownRef}>
@@ -172,6 +223,41 @@ export function Header() {
                 {item.name}
               </Link>
             ))}
+
+            {/* Mobile Investimentos */}
+            <button
+              onClick={() => setMobileInvestimentosOpen(!mobileInvestimentosOpen)}
+              className={cn(
+                "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors w-full",
+                isInvestimentosActive
+                  ? "bg-accent text-accent-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              )}
+            >
+              <TrendingUp className="h-6 w-6" />
+              Investimentos
+              <ChevronDown className={cn("h-3 w-3 ml-auto transition-transform", mobileInvestimentosOpen && "rotate-180")} />
+            </button>
+
+            {mobileInvestimentosOpen && (
+              <div className="ml-8 flex flex-col gap-1">
+                {investimentosItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={() => { setMobileMenuOpen(false); setMobileInvestimentosOpen(false); }}
+                    className={cn(
+                      "px-4 py-2.5 rounded-lg text-sm transition-colors",
+                      location.pathname === item.href
+                        ? "bg-accent text-accent-foreground"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            )}
 
             {/* Mobile Ferramentas */}
             <button
