@@ -3,7 +3,7 @@ import { Info, Menu, X, ChevronDown, TrendingUp, LucideIcon } from "lucide-react
 import { useState, useRef, useEffect, ElementType } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import tedinLogo from "@/assets/tedin-logo-new.png";
+import tedinLogo from "@/assets/logo-no-bg-sm.png";
 import iconDespesas from "@/assets/icon-despesas.png";
 import iconLeao from "@/assets/icon-leao.png";
 import iconConsultoria from "@/assets/icon-consultoria.png";
