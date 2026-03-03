@@ -160,8 +160,10 @@ const styles = {
   root: {
     fontFamily: "'Work Sans', -apple-system, sans-serif",
     color: "#1A2332",
+    overflowX: "hidden",
+    width: "100%",
   },
-  container: { maxWidth: 1000, margin: "0 auto" },
+  container: { maxWidth: 1000, margin: "0 auto", padding: "0 16px", width: "100%", boxSizing: "border-box" },
   h1: {
     fontFamily: "'Work Sans', sans-serif",
     fontSize: 28,
@@ -181,6 +183,7 @@ const styles = {
     gridTemplateColumns: "290px 1fr",
     gap: 24,
     alignItems: "start",
+    overflow: "hidden",
   },
   controls: { display: "flex", flexDirection: "column", gap: 12 },
   card: {
@@ -224,6 +227,7 @@ const styles = {
     width: "100%",
     fontFamily: "inherit",
     MozAppearance: "textfield",
+    minWidth: 0,
   },
   rateRow: { display: "flex", justifyContent: "space-between", alignItems: "center" },
   rateLabelInner: { fontSize: 13, color: "#6B7A99", display: "flex", alignItems: "center", gap: 6 },
@@ -251,6 +255,8 @@ const styles = {
     borderRadius: 20,
     padding: 28,
     boxShadow: "0 2px 20px rgba(0,0,0,0.06)",
+    minWidth: 0,
+    overflow: "hidden",
   },
   resultsHeader: { marginBottom: 20 },
   resultsEyebrow: {
@@ -277,7 +283,7 @@ const styles = {
     color: "#6B7A99",
     marginBottom: 2,
   },
-  totalValue: { fontSize: 28, fontWeight: 800, color: "#1A2332", lineHeight: 1 },
+  totalValue: { fontSize: 28, fontWeight: 800, color: "#1A2332", lineHeight: 1, wordBreak: "break-word" },
   independenceBadge: {
     display: "inline-flex",
     alignItems: "center",
@@ -287,7 +293,7 @@ const styles = {
     fontWeight: 600,
     marginTop: 4,
   },
-  chartArea: { position: "relative", height: 200, margin: "20px 0 8px" },
+  chartArea: { position: "relative", height: 200, margin: "20px 0 8px", overflow: "hidden" },
   chartLabels: {
     display: "flex",
     justifyContent: "space-between",
@@ -312,7 +318,7 @@ const styles = {
     color: "#6B7A99",
     marginBottom: 6,
   },
-  statValue: { fontSize: 18, fontWeight: 700 },
+  statValue: { fontSize: 18, fontWeight: 700, wordBreak: "break-word" },
   statUnderline: { height: 2, borderRadius: 2, marginTop: 6, width: 40 },
   tipsRow: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 24 },
   tipCard: { background: "#F0FAF5", borderRadius: 14, padding: 16 },
@@ -323,13 +329,49 @@ const styles = {
 
 /* ── Responsive CSS (injected once) ── */
 const responsiveCSS = `
-  @media (max-width: 700px) {
-    .calc-layout-grid { grid-template-columns: 1fr !important; }
-    .calc-tips-grid { grid-template-columns: 1fr !important; }
-    .calc-stats-grid { grid-template-columns: 1fr !important; }
-  }
   input[type=number]::-webkit-inner-spin-button,
   input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+  @media (max-width: 768px) {
+    .calc-layout-grid {
+      grid-template-columns: 1fr !important;
+    }
+    .calc-results-header-row {
+      flex-direction: column !important;
+      gap: 8px !important;
+    }
+    .calc-results-header-row > div:last-child {
+      text-align: left !important;
+    }
+    .calc-results-title-el {
+      font-size: 18px !important;
+    }
+    .calc-total-value-el {
+      font-size: 22px !important;
+    }
+    .calc-stats-grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 8px !important;
+    }
+    .calc-stats-grid .calc-stat-val {
+      font-size: 14px !important;
+    }
+    .calc-tips-grid {
+      grid-template-columns: 1fr !important;
+    }
+    .calc-chart-labels-el {
+      font-size: 9px !important;
+      gap: 2px !important;
+    }
+    .calc-results-panel {
+      padding: 16px !important;
+      border-radius: 14px !important;
+    }
+    .calc-card-el {
+      padding: 14px !important;
+      border-radius: 12px !important;
+    }
+  }
 `;
 
 /* ── Component ── */
@@ -371,7 +413,7 @@ export default function CalculadoraFinanceira() {
           <div className="calc-layout-grid" style={styles.layout}>
             {/* Controls */}
             <div style={styles.controls}>
-              <div style={styles.card}>
+              <div className="calc-card-el" style={styles.card}>
                 <div style={styles.cardLabel}>Idade Atual e Meta</div>
                 <div style={styles.ageRow}>
                   <input
@@ -396,7 +438,7 @@ export default function CalculadoraFinanceira() {
                 </div>
               </div>
 
-              <div style={styles.card}>
+              <div className="calc-card-el" style={styles.card}>
                 <div style={styles.cardLabel}>Patrimônio Atual</div>
                 <div style={styles.valueRow}>
                   <span style={styles.currencyPrefix}>R$</span>
@@ -412,7 +454,7 @@ export default function CalculadoraFinanceira() {
                 </div>
               </div>
 
-              <div style={styles.card}>
+              <div className="calc-card-el" style={styles.card}>
                 <div style={styles.cardLabel}>Aporte Mensal</div>
                 <div style={styles.valueRow}>
                   <span style={styles.currencyPrefix}>R$</span>
@@ -428,7 +470,7 @@ export default function CalculadoraFinanceira() {
                 </div>
               </div>
 
-              <div style={styles.card}>
+              <div className="calc-card-el" style={styles.card}>
                 <div style={styles.cardLabel}>Rentabilidade Real</div>
                 <div style={styles.rateRow}>
                   <span style={styles.rateLabelInner}>
@@ -453,16 +495,16 @@ export default function CalculadoraFinanceira() {
             </div>
 
             {/* Results */}
-            <div style={styles.results}>
+            <div className="calc-results-panel" style={styles.results}>
               <div style={styles.resultsHeader}>
                 <div style={styles.resultsEyebrow}>Crescimento Estimado</div>
-                <div style={styles.headerRow}>
-                  <div style={styles.resultsTitle}>
+                <div className="calc-results-header-row" style={styles.headerRow}>
+                  <div className="calc-results-title-el" style={styles.resultsTitle}>
                     Seu futuro em <span style={styles.resultsTitleHighlight}>{dados.anos}</span> anos
                   </div>
                   <div style={{ textAlign: "right" }}>
                     <div style={styles.totalLabel}>Total Acumulado</div>
-                    <div style={styles.totalValue}>{fmt(dados.saldo)}</div>
+                    <div className="calc-total-value-el" style={styles.totalValue}>{fmt(dados.saldo)}</div>
                     <div style={styles.independenceBadge}>
                       <IconCheck />
                       Independência Alcançada aos {idadeMeta}
@@ -472,9 +514,9 @@ export default function CalculadoraFinanceira() {
               </div>
 
               <div style={styles.chartArea}>
-                <canvas ref={canvasRef} style={{ width: "100%", height: "100%" }} />
+                <canvas ref={canvasRef} style={{ width: "100%", height: "100%", display: "block" }} />
               </div>
-              <div style={styles.chartLabels}>
+              <div className="calc-chart-labels-el" style={styles.chartLabels}>
                 <span>HOJE ({idadeAtual})</span>
                 <span>{dados.mid1Age} ANOS</span>
                 <span>{dados.mid2Age} ANOS</span>
@@ -484,17 +526,17 @@ export default function CalculadoraFinanceira() {
               <div className="calc-stats-grid" style={styles.statsRow}>
                 <div>
                   <div style={styles.statLabel}>Total Investido</div>
-                  <div style={styles.statValue}>{fmt(dados.totalInvestido)}</div>
+                  <div className="calc-stat-val" style={styles.statValue}>{fmt(dados.totalInvestido)}</div>
                   <div style={{ ...styles.statUnderline, background: "#CDD5E0" }} />
                 </div>
                 <div>
                   <div style={styles.statLabel}>Juros Ganhos</div>
-                  <div style={{ ...styles.statValue, color: "#27AE60" }}>{fmt(dados.jurosGanhos)}</div>
+                  <div className="calc-stat-val" style={{ ...styles.statValue, color: "#27AE60" }}>{fmt(dados.jurosGanhos)}</div>
                   <div style={{ ...styles.statUnderline, background: "#2ECC71" }} />
                 </div>
                 <div>
                   <div style={styles.statLabel}>Renda Passiva</div>
-                  <div style={{ ...styles.statValue, color: "#F39C12" }}>{fmtDec(dados.rendaPassiva)} /mês</div>
+                  <div className="calc-stat-val" style={{ ...styles.statValue, color: "#F39C12" }}>{fmtDec(dados.rendaPassiva)} /mês</div>
                   <div style={{ ...styles.statUnderline, background: "#F39C12" }} />
                 </div>
               </div>
