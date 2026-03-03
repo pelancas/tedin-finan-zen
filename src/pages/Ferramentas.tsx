@@ -1,11 +1,11 @@
 import { Layout } from "@/components/layout/Layout";
 import { useParams } from "react-router-dom";
+import { lazy, Suspense } from "react";
 
 const toolsMap: Record<string, { src: string; title: string; minHeight: string }> = {
   aposentadoria: {
-    src: "/calculadora-financeira.html",
+    component: lazy(() => import("@/tools/CalculadoraFinanceira")),
     title: "Calculadora Financeira",
-    minHeight: "700px",
   },
   metas: {
     src: "/metas-investimento.html",
@@ -23,23 +23,18 @@ const defaultTool = "aposentadoria";
 
 const Ferramentas = () => {
   const { tool } = useParams<{ tool: string }>();
-  const current = toolsMap[tool || defaultTool] || toolsMap[defaultTool];
+  const current = toolsMap[tool || "aposentadoria"];
 
   return (
-    <Layout>
-      <section className="py-16 md:py-24">
-        <div className="container">
-          <div className="w-full h-full">
-            <iframe
-              src={current.src}
-              className="w-full border-0 rounded-lg"
-              style={{ minHeight: current.minHeight }}
-              title={current.title}
-            />
-          </div>
-        </div>
-      </section>
-    </Layout>
+          <Layout>
+            <section className="py-16 md:py-24">
+              <div className="container">
+                <Suspense fallback={<div>Carregando...</div>}>
+                  <current.component />
+                </Suspense>
+              </div>
+            </section>
+          </Layout>
   );
 };
 
