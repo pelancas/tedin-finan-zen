@@ -542,13 +542,7 @@ const Fundos = () => {
               {currentContent ? (
                 <div>
                   <h2 className="text-2xl font-bold mb-6">{currentContent.title}</h2>
-              {currentContent.content}
-
-                  {/* Mobile bottom navigation */}
-                  <div className="md:hidden mt-10 p-4 border rounded-lg bg-card">
-                    <h3 className="text-sm font-semibold mb-3 text-muted-foreground">Navegar conteúdos</h3>
-                    <Sidebar />
-                  </div>
+                  {currentContent.content}
                 </div>
               ) : (
                 <p className="text-muted-foreground">Selecione um conteúdo no menu ao lado.</p>
