@@ -3,7 +3,7 @@ import { Info, Menu, X, ChevronDown, TrendingUp, LucideIcon } from "lucide-react
 import { useState, useRef, useEffect, ElementType } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import tedinLogo from "@/assets/logo-no-bg-sm.png";
+import Logo from "@/assets/logo-no-bg-sm.png";
 import iconDespesas from "@/assets/icon-despesas.png";
 import iconLeao from "@/assets/icon-leao.png";
 import iconConsultoria from "@/assets/icon-consultoria.png";
@@ -63,7 +63,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
       <div className="container flex h-20 items-center justify-between">
         <Link to="/" className="flex items-center">
-          <img src={tedinLogo} alt="TEdin" className="h-14" />
+          <img src={Logo} alt="Logo" className="h-14" />
         </Link>
 
         {/* Desktop Navigation */}

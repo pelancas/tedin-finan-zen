@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import tedinLogo from "@/assets/tedin-logo.png";
+import Logo from "@/assets/logo-no-bg.png";
 
 export function Footer() {
   return (
@@ -7,11 +7,11 @@ export function Footer() {
       <div className="container">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <Link to="/">
-            <img src={tedinLogo} alt="TEdin" className="h-12" />
+            <img src={Logo} alt="Logo" className="h-12" />
           </Link>
           
           <p className="text-sm text-muted-foreground text-center">
-            © {new Date().getFullYear()} TEdin. Simplificando suas finanças.
+            © {new Date().getFullYear()} Orienta. Direcionando suas finanças.
           </p>
           
           <nav className="flex gap-4">
