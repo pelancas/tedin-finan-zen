@@ -11,6 +11,7 @@ import Consultoria from "./pages/Consultoria";
 import AnaliseCarteira from "./pages/AnaliseCarteira";
 import Ferramentas from "./pages/Ferramentas";
 import Fundos from "./pages/investimentos/Fundos";
+import ConsultoriaLanding from "./pages/ConsultoriaLanding";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/despesas" element={<Despesas />} />
           <Route path="/imposto" element={<Imposto />} />
           <Route path="/consultoria" element={<Consultoria />} />
+          <Route path="/consultorialanding" element={<ConsultoriaLanding />} />
           <Route path="/consultoria/analisecarteira" element={<AnaliseCarteira />} />
           <Route path="/ferramentas" element={<Ferramentas />} />
           <Route path="/ferramentas/:tool" element={<Ferramentas />} />
