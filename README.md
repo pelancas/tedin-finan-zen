@@ -36,6 +36,15 @@ npm i
 npm run dev
 ```
 
+Cores:
+#FFA726
+#1A2E35
+#0F2A2A
+#1daf66
+#FFFDF5
+
+
+
 **Edit a file directly in GitHub**
 
 - Navigate to the desired file(s).
