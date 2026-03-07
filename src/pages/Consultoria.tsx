@@ -27,7 +27,6 @@ interface ServiceCard {
   features: string[];
   ctaLabel: string;
   accentColor: string;
-  hoverShadow: string;
 }
 
 interface WhyItem {
@@ -53,7 +52,6 @@ const services: ServiceCard[] = [
     ],
     ctaLabel: "Saber Mais",
     accentColor: "#1daf66",
-    hoverShadow: "hover:shadow-[#1daf66]/5",
   },
   {
     icon: Video,
@@ -72,7 +70,6 @@ const services: ServiceCard[] = [
     ],
     ctaLabel: "Contratar Agora",
     accentColor: "#f97316",
-    hoverShadow: "hover:shadow-orange-500/5",
   },
 ];
 
@@ -107,8 +104,11 @@ const gridItems: { icon: LucideIcon; bg: string; iconColor: string; offset: stri
 const Home: React.FC = () => {
   return (
     <Layout>
-      {/* ─── HERO ─────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-[#F8F8F5] py-20 lg:py-32">
+      {/* ─── HERO — fundo #1A2E35 ──────────────────────────────────── */}
+      <section
+        className="relative overflow-hidden py-20 lg:py-32"
+        style={{ background: "#1A2E35" }}
+      >
         <div className="pointer-events-none absolute -left-20 top-0 h-72 w-72 rounded-full bg-[#1daf66] opacity-10 blur-[120px]" />
         <div className="pointer-events-none absolute -right-20 bottom-0 h-72 w-72 rounded-full bg-orange-400 opacity-10 blur-[120px]" />
 
@@ -116,7 +116,7 @@ const Home: React.FC = () => {
           <div className="grid items-center gap-12 lg:grid-cols-2">
             {/* Left */}
             <div className="flex flex-col gap-6 text-center lg:text-left">
-              <span className="inline-flex items-center self-center gap-2 rounded-full border border-[#1daf66]/20 bg-[#1daf66]/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#1daf66] lg:self-start">
+              <span className="inline-flex items-center self-center gap-2 rounded-full border border-[#1daf66]/30 bg-[#1daf66]/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#1daf66] lg:self-start">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#1daf66] opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-[#1daf66]" />
@@ -124,26 +124,26 @@ const Home: React.FC = () => {
                 Expertise Financeira de Elite
               </span>
 
-              <h1 className="text-4xl font-black leading-tight tracking-tight text-slate-900 md:text-5xl lg:text-6xl">
+              <h1 className="text-4xl font-black leading-tight tracking-tight text-white md:text-5xl lg:text-6xl">
                 Planejamento profissional{" "}
-                <span className="bg-gradient-to-r from-[#1daf66] to-emerald-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-[#1daf66] to-emerald-400 bg-clip-text text-transparent">
                   ao seu alcance.
                 </span>
               </h1>
 
-              <p className="mx-auto max-w-xl text-lg text-slate-600 lg:mx-0">
+              <p className="mx-auto max-w-xl text-lg text-white/55 lg:mx-0">
                 Transforme sua vida financeira com estratégias personalizadas e análise de dados
                 precisa. Escolha o melhor caminho para seus investimentos hoje.
               </p>
 
               <div className="flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
-                <Button className="flex items-center justify-center gap-2 rounded-xl bg-[#1daf66] px-8 py-6 text-lg font-bold text-white shadow-xl shadow-[#1daf66]/30 transition-all hover:bg-[#1daf66]/90">
+                <Button className="flex items-center justify-center gap-2 rounded-xl bg-[#1daf66] px-8 py-6 text-lg font-bold text-white shadow-xl shadow-[#1daf66]/30 transition-all hover:-translate-y-1 hover:bg-[#1daf66]/90">
                   Iniciar Consultoria
                   <TrendingUp size={18} />
                 </Button>
                 <Button
                   variant="outline"
-                  className="rounded-xl bg-slate-200 px-8 py-6 text-lg font-bold text-slate-900 transition-colors hover:bg-slate-300 border-0"
+                  className="rounded-xl border-2 border-white/20 px-8 py-6 text-lg font-bold text-white/80 transition-all hover:border-white/40 hover:bg-white/5"
                 >
                   Ver Planos
                 </Button>
@@ -152,18 +152,24 @@ const Home: React.FC = () => {
 
             {/* Right */}
             <div className="relative">
-              <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1daf66]/10 to-orange-50">
-                  <BarChart2 size={96} className="text-[#1daf66]/30" />
+              <div
+                className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-2xl"
+                style={{ border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)" }}
+              >
+                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1daf66]/10 to-orange-400/5">
+                  <BarChart2 size={96} className="text-[#1daf66]/25" />
                 </div>
               </div>
-              <div className="absolute -bottom-6 -left-6 hidden max-w-xs items-center gap-4 rounded-xl border border-slate-100 bg-white p-4 shadow-xl sm:flex">
-                <div className="rounded-lg bg-orange-50 p-2 text-orange-400">
+              <div
+                className="absolute -bottom-6 -left-6 hidden max-w-xs items-center gap-4 rounded-xl p-4 shadow-xl sm:flex"
+                style={{ background: "#0f1e23", border: "1px solid rgba(29,175,102,0.2)" }}
+              >
+                <div className="rounded-lg bg-orange-400/10 p-2 text-orange-400">
                   <CheckCircle2 size={20} />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-slate-500">ROI Médio Anual</p>
-                  <p className="text-lg font-bold text-slate-900">+18.5%</p>
+                  <p className="text-xs font-medium text-white/40">ROI Médio Anual</p>
+                  <p className="text-lg font-bold text-white">+18.5%</p>
                 </div>
               </div>
             </div>
@@ -171,7 +177,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* ─── SERVICES ─────────────────────────────────────────────── */}
+      {/* ─── SERVICES — fundo branco ──────────────────────────────── */}
       <section className="bg-white/50 py-24" id="servicos">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-16 space-y-4 text-center">
@@ -190,8 +196,7 @@ const Home: React.FC = () => {
               return (
                 <div
                   key={s.title}
-                  className={`group relative flex flex-col rounded-2xl border border-slate-200 bg-white p-8 shadow-lg transition-all duration-300 hover:shadow-xl ${s.hoverShadow}`}
-                  style={{ ["--hover-border" as string]: s.accentColor }}
+                  className="group relative flex flex-col rounded-2xl border border-slate-200 bg-white p-8 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 >
                   <div className="mb-6 flex items-start justify-between">
                     <div
@@ -237,8 +242,8 @@ const Home: React.FC = () => {
                   </ul>
 
                   <Button
-                    className="flex w-full items-center justify-center gap-2 rounded-xl py-5 font-bold text-white transition-all group-hover:opacity-90"
-                    style={{ background: s.accentColor === "#1daf66" ? "#1e293b" : "#1e293b" }}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl py-5 font-bold text-white transition-all hover:opacity-90"
+                    style={{ background: "#1A2E35" }}
                   >
                     {s.ctaLabel}
                     <ArrowRight size={16} />
@@ -250,24 +255,27 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* ─── WHY US ───────────────────────────────────────────────── */}
-      <section className="py-24">
+      {/* ─── WHY US — fundo #1A2E35 ───────────────────────────────── */}
+      <section className="py-24" style={{ background: "#1A2E35" }}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-16 lg:grid-cols-2">
             {/* Left */}
             <div>
-              <h2 className="mb-8 text-3xl font-black text-slate-900">
+              <h2 className="mb-8 text-3xl font-black text-white">
                 Por que escolher a FinançasPro?
               </h2>
               <div className="flex flex-col gap-8">
                 {whyItems.map(({ icon: Icon, title, description }) => (
                   <div key={title} className="flex gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#1daf66]/20 text-[#1daf66]">
-                      <Icon size={20} />
+                    <div
+                      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full"
+                      style={{ background: "rgba(29,175,102,0.15)" }}
+                    >
+                      <Icon size={20} className="text-[#1daf66]" />
                     </div>
                     <div>
-                      <h4 className="mb-2 text-lg font-bold text-slate-900">{title}</h4>
-                      <p className="text-slate-600">{description}</p>
+                      <h4 className="mb-2 text-lg font-bold text-white">{title}</h4>
+                      <p className="text-white/50">{description}</p>
                     </div>
                   </div>
                 ))}
@@ -279,10 +287,11 @@ const Home: React.FC = () => {
               {gridItems.map(({ icon: Icon, bg, iconColor, offset }, i) => (
                 <div
                   key={i}
-                  className={`aspect-square overflow-hidden rounded-2xl shadow-lg ${bg} ${offset}`}
+                  className={`aspect-square overflow-hidden rounded-2xl shadow-lg ${offset}`}
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
                 >
                   <div className="flex h-full w-full items-center justify-center">
-                    <Icon size={56} className={iconColor} />
+                    <Icon size={56} className="text-white/20" />
                   </div>
                 </div>
               ))}
@@ -291,7 +300,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* ─── CTA BANNER ───────────────────────────────────────────── */}
+      {/* ─── CTA BANNER — fundo #1daf66 ──────────────────────────── */}
       <section className="py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="relative overflow-hidden rounded-3xl bg-[#1daf66] p-8 text-center text-white shadow-2xl shadow-[#1daf66]/20 md:p-16">
@@ -303,7 +312,10 @@ const Home: React.FC = () => {
               Junte-se a mais de 15.000 investidores que já otimizaram seus lucros com a FinançasPro.
             </p>
             <div className="relative z-10 flex flex-col justify-center gap-4 sm:flex-row">
-              <Button className="rounded-xl bg-white px-10 py-6 text-lg font-bold text-[#1daf66] shadow-xl transition-all hover:bg-slate-100">
+              <Button
+                className="rounded-xl px-10 py-6 text-lg font-bold shadow-xl transition-all hover:-translate-y-1"
+                style={{ background: "#1A2E35", color: "#ffffff" }}
+              >
                 Agendar Minha Análise
               </Button>
               <Button
