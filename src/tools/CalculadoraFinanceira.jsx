@@ -225,8 +225,7 @@ export default function CalculadoraFinanceira() {
       <style>{CSS}</style>
       <div className="cr">
         <div className="cc">
-          <h1 className="ch1">Monte sua Jornada</h1>
-          <p className="csub">Ajuste os valores para visualizar seu futuro financeiro em tempo real.</p>
+
 
           <div className="cla">
             <div className="cco">
@@ -252,7 +251,7 @@ export default function CalculadoraFinanceira() {
 
               <div className="ctog">
                 <button className={"ctbtn"+(isA?" ta":"")} onClick={()=>setModo("aporte")}><IconAporte/>Aporte Mensal</button>
-                <button className={"ctbtn"+(!isA?" tr":"")} onClick={()=>setModo("renda")}><IconRenda/>Renda Passiva</button>
+                <button className={"ctbtn"+(!isA?" tr":"")} onClick={()=>setModo("renda")}><IconRenda/>Renda Esperada</button>
               </div>
 
               {isA ? (
@@ -281,7 +280,7 @@ export default function CalculadoraFinanceira() {
                 <div className="clbl">Rentabilidade Real</div>
                 <div className="crrow">
                   <span className="crla"><IconTrend/>Taxa de Juros Real</span>
-                  <span className="crva">5% /ano</span>
+                  <span className="crva">5% ao ano</span>
                 </div>
               </div>
 
@@ -323,7 +322,7 @@ export default function CalculadoraFinanceira() {
                   <div className="cstu" style={{background:"#e2e8e4"}}/>
                 </div>
                 <div>
-                  <div className="cstl">Juros Ganhos</div>
+                  <div className="cstl">Juros Acumulados</div>
                   <div className="cstv g">{fmt(d.jurosGanhos)}</div>
                   <div className="cstu" style={{background:"#1daf66"}}/>
                 </div>
