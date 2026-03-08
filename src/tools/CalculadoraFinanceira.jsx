@@ -1,70 +1,64 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
+const LOGO_SRC = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAH0AfQDASIAAhEBAxEB/8QAHAABAQEAAwEBAQAAAAAAAAAAAAcGBAUIAQMC/8QAURABAAEDAgEGBwsHCgYABwAAAAECAwQFEQYHEiExQVETFBciYXGxFTZVYnSBkZOywdE1ZnOhpNLiFjIzNFJTcpKUsyMkQlSDwjdkZYKEovD/xAAbAQEAAgMBAQAAAAAAAAAAAAAABAYCAwUHAf/EAEARAQABAwICBAkLBAEEAwAAAAABAgMEBRESMQYhUWETMkFxgaGxwdEUFRYiM1JTkaLh8DQ1QnJiF1Ti8SOSsv/aAAwDAQACEQMRAD8A9lgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADiavqOJpWDXmZlzmW6eiIjpqqnspiO2ZZzhLjbG1jUr2mZdqnDy+dvYp528XKdt9t/7Ufr7Ee5lWbdym1VVtVPJKtYV+7aqu0U7008/57exrgEhFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHE1jUsTSsCvMzLnMt09ERHTVXV2U0x2zL5rGpYmk4NeZmXObbp6IiOmqursppjtlKNf1fL1vP8ayvMop3izZid6bVP3zPbP3OXqep0YdG0ddU8o98urpmmVZlXFV1URznt7o/nUa/q+Xref41leZRTvFmzE702o++qe2fuY/VK67eq13LdVVFdM0zTVTO0xMRHTDQM7rH5Ru/N7IUWu7Xdrmuud5l6Hp9ui3PBTG0RCtcm/G1Gr0UaXqlymjUKY2t3J6Ivx+96O1u3mGiuq3XTXRVNNVM701RO0xPfCxcm/G9OrUUaVqtyKdQpja3cnoi/H73tWvSdX8JtZvT1+Se39/aq+v6B4HfIxo+r5Y7O+O72eblvAFjU8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcPWdTxNJwK8zMuc2inoppjpqrq7KaY7ZfNZ1PE0nArzMyvm0R0U0x01V1dlNMdspRrurZetZ05WXPNpp3i1Zid6bVPdHfPfPb6tocrU9Tow6No6655R75dbTNMqzKuKrqojy9vdH86jXtXy9az5ysqebTTvFmzE702qfvme2fucAFEu3a7tc11zvMrvbt026YoojaIGd1j8o3fm9kNEzusflG783shjCdhfaT5nEf1RVVRXTXRVNNVM701RO0xPe/kZOmsXJtxvTqlNGlatcinPiNrV2eiL8d0/G9rfPMFNVVFUVU1TTVE7xMTtMSsHJtxxTqdNvSdWuRTnRG1q7PRF70T8b2+tbdJ1fwm1m9PX5J7e6e/wBqha/oHgt8nGj6vljs747vZ5uW/AWNTgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABwta1TE0jArzMyvm0R0U0x01V1dlNMdsmt6piaRgVZmZXtTHRTTHTVXV2U0x2yk+uarl6znzl5c7RG8WrUTvTap7o75757fVtEcrU9Tow6do6655R75dbTNLqy6uKrqoj190Gu6tl6znzl5c82I3i1aid6bVPdHfPfPb6tocEFEu3a7tc11zvMrvRRTbpiiiNogAYMxndY/KN35vZDV6Zg5Oo5lGJiW5ruV/REd890Ofx1wBfw8CnU9OuV5VVuj/mqNuno/66Y7vR6N+9LsYd69bquUU7xBaz7GPfpt3Ktpq5J0Aju8PtNVVNUVUzNNUTvExPTEvgCwcmvHFOp029I1e7FOdEbWb1U9F70T8b2+vroDzBTM01RVTMxMTvEx2K/wAmvHEalTb0jV7sRmxHNs3qp6L3on43t9fXbNI1fj2s3p6/JPb3T3qHr+geC3ycaPq+WOzvju9nm5UABZFNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHB1vVcTR8CrLzK5imOiiinpquVdlNMdsmuariaPgVZeXXtHVRRT/OuVdlMR3pPreqZesZ85mZVttvFq1E+bap7o9PfPb9ERydT1OnDp4aeuueUe+XX0vS6suriq6qI9fdBrmq5es585eXO228WrUTvTap7o75757fVtEcIFFuXKrtU11zvMrvRRTbpimmNogAYMhydMwcnUcyjExLc13K/oiO+e6DTMHJ1HMoxMS3Ndyv6IjvnuhVeG9ExtFw/BWtq71fTduzHTVP3R6HU0zTK8yveeqmOc+6HL1LUqMOjaOuqeUe+ThvRMbRcPwVrau9X03bsx01T90eh2oL3atUWqIoojaIUe7dru1zXXO8ylvKZwNzPC61otnzOmrIx6I6u+umO7vhMXqBLeUzgbmeF1rRbPm9NWRjUR1d9dMd3fCtavpG296xHnj3wumgdIN9sbJnzT7p90piArC7D7TM01RVTMxMTvEx2PgCv8mvHEajFvSNYuxGbHm2b1U/03on43t9fXQXmCJmmYmJmJjpiYV3k145jUIt6RrF2IzI82xfqn+m+LPxvT2+vrtmkavx7Wb09fknt7p71D1/o/wCD3ycaOryx2d8d3d5PNyoQCyKaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOBrmq4mj4FWXl19HVRRT/OuVdlMR3uey2t8JXNX1CrMy9WrmY823RFnzbdPdHT9M9v0REbKrvUW58DTvUlYlFiq5/89W1Pp6+5gta1TL1jPnMzKo36rdumfNtU90ffPb9ERwm98n9n4TufUx+J5P7Pwnc+pj8VOuaRqF2qa66d5nvj4rfRrGBRTFNNW0R3T8GCG98n9n4TufUx+J5P7Pwnc+pj8WHzHm/c9cfFl894X3/VPwYJydMwcnUcyjExLc13K/opjtmZ7IbTyf2fhO59TH4tHw9omJouLNqxvXcr6bl2qPOq/CPQkY2gZFdyIvRw0+eEfJ13HotzNmd6vNL+eG9ExtFw/BWvPvV9N27MdNU/dHodqC42rVFqiKKI2iFQu3a7tc11zvMgDY1gAJdymcDc3wutaLZ6OmrIxqI6u+umPbCYPUDDcRcm2manqVebi5VeB4TpuW6LcVUzV3x0xt6la1PRZuVeEx4655x74XTReklNqjwOXPVHKefon4owKr5Jsf4bu/6eP3jyTY/w3d/08fvOT8yZv3PXHxd36S6b+J6p+CVPsTMTExMxMdUwqnkmx/hu7/p4/ePJNj/Dd3/Tx+8fMmb9z1x8T6S6b+J6p+DkcmvHEZ8W9H1i7EZcebYv1T/S/Fq+N6e319dDTWOSexExMa5diY/+Xj95vtFxcrC0+3i5mdOdctxtF6qjm1VR2b9M7z6Vo02cumjweRTy5TvHrUnWYwK7nhcOrnzjaY9MdXqcwB03EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZviLjXQdFrqs3smcjIp6Js48RVVE+meqPp3Y1VRTG8yj5OVZxaOO9VFMd7SCW5XKxcmrbF0aiKe+5f3mfmiHzG5WL0VR4zo1uqnvt35if1xLT8qtdrifSzSuLbwnqq+CpjL8PcdaBrFymzTfqxMiroi3kRFPOnuieqfa1DdTXTVG8S7eNl2Mqjjs1xVHcAyXGPG+Pw3qlGBdwLuRVXZi7zqa4iOmZjb9RXXFEb1McvMsYdvwt+rhp7f/AE1onHlXwvgfI+tj8Dyr4XwPkfWx+DV8ptdrl/SfSvxo/Kfgo4nMcq+Dv06RkxHou0/g7LTOUrh3Lri3f8Zwqp7btven6aZn9cPsZFufK2WukWmXauGm9Hp3j27NoPzxr9jJsUX8e9bvWq43proqiqmY9Ew+37kWrFy7MbxRTNW3ftDc7HFG3F5H9iceVfC+B8j62PwPKvhfA+R9bH4NHym12uH9J9K/Gj8p+Cjji6TmU6hpeLn00TbpyLNN2KZneaedG+362K1PlNw8HUsrCq0q/XVj3q7U1RdiInmzMb9XoZ1XaaI3mU7K1TExLdNy9XtFXLn1+pvxOPKvhfA+R9bH4HlXwvgfI+tj8GHym12oP0n0r8aPyn4KOJx5V8L4HyPrY/B2XDPKDi65rePpdvTb1mq9ztq6rkTEc2maurb0PsZFuZ2iWy10i029cpt0Xd5mdo6p5z6G1Gf404ns8M4+NdvYlzIi/VNMRRVEbbRv2sx5V8L4HyPrY/B9qvUUTtMtmVrmBiXZtXrm1UeTafgo4wOmcp+m5eoWMa9gXsai7XFM3arkTFG/VM+jdvmVFymvxZScLUcbOpmrHr4ojn/JATq9yqYVu7XbnSMiebVMb+Fjs+YruU0eNLHO1PFwOGcivh35c/J5lFE48q+F8D5H1sfg1VviO1XwdPEnitcW/BTc8Dzo53RVttuxpvUVcpacbW8DK4vBXN+GN56p5R5eTvROPKvhfA+R9bH4HlXwvgfI+tj8GPym12o30n0r8aPyn4KOJx5V8L4HyPrY/A8q+F8D5H1sfgfKbXafSfSvxo/Kfgo4nHlXwvgfI+tj8HccI8dY3EOre59rT7tirwdVzn1XImOjbo/W+037dU7RLbY6Q6dfuRat3d6p6o6p+DXgNzsgw/EHKPg6TrGRp0YF7ImxVzKrlNyIiZ26Y+aej5nA8q+F8D5H1sfg0zkW4naZcS50j0y1XNFV2N46p6p+CjjAabyn4GXqGPi16desU3rlNvwlVyJinedt56Opv2dFymvxZTsLUcbOpmrHr4ojnz94AzTQAAAAAAAAAAAAAAAAAAGc5R9Zr0Xhe/es1c3Ivz4CzMT0xNW+8/NETPr2Y1VRTEzKPlZNGLZqvV8qY3Y/lL44vTfu6Lo16bdFEzRkZFE7TVPbTTPZHfPb6uuaBETMxERMzPVEONcuVXKt5eI6lqV/Ub83bs+aPJEdkAoWgcmGdl4tGRqebGDNcbxZpt8+uI+N0xET6Ol/et8luXj41V7S8+nLrpjfwNy3zKqvVO8xv69mfye5tvsmR0a1ObXhfBTt6N/y339W6dKHybccXsTItaRrF6bmLXMUWb1c7zansiZ/s+z1dU9uUV27lVu5TNNdMzFVMxtMTHY+MLdyq3VvCDp+oX9PvxdtTtMc48k90vTyNctnvtsfIqPt1t3yXazXq/C9um/XzsjEq8BcmZ6aoiPNn6Oj1xLCctnvtsfIqPt1p+TVFVnih6J0myqMvRab9HKqaZ/nmYYGs5N+GcHiXKzLWdeybVNiimqnwNVMTO8z17xLn0UTXPDDzbDxLmZfpsWvGnl7WTFZ1Hkr02cS5On5+XTkREzR4aaaqZnunaImPWk9UTTVNNUbTE7TDK5aqt+MlalpGVps0xkRtxctp35NFwLxRlcO6lRvXXXgXKoi/Z33jb+1Ed8fr6lyzK6Lml3rluqKqKrNVVNUT0TE09EvNS78FX68nk5xLlyZmqMWujp7qZqpj9UQlYdyZ3plbehmoXKouYlU7xEbx3eSfbCEAILz96I4N96WkfIrX2IQnir3z6r8tvfblduDfelpHyK19iEJ4q98+q/Lb325Tsr7Ol6D0u/t+N/P8YdaCncnvBuhazwzaz8+xdrv1XK6Zmm7NMbRO0dEIlu3NydoU7TNMvale8DZmN9t+v8Ak9qYtRyVe/3Tv/L/ALVaj+Tjhb/tb/19TmaNwVoGkala1DCsXaMi1vzJquzMRvExPR6plKoxK6aomVqwOiGfj5Vq9XNO1NUTPXPknfsZvl0/J2mfpa/ZCUKvy6fk7TP0tfshKGrK+1lyel391uean2QLPyT8S+6ule5mXc3zMOmIiZnpuW+qJ9cdU/MjDm6HqeTo+q2NRxKtrtmrfbsqjtpn0THQws3Zt1boeh6rVpmVFz/GeqqO74xzh6ReZs3+uXv0lXtejdE1LG1fS7Go4lW9q9Tvt20z2xPpieh5yzf65e/SVe1KzZ3imYWrpzcpuW8euid4nimP0vyV7G/+CU/JK/8AclIVz4HwsfUeTjCwcqma7F6zVTXETMbxz6u2GrFjeqqO5yeiNqq9ev26edVuqPzmEMFx8nXCv/ZXfr6/xZblN4T0TQ+H7WZp2PXbvVZNNuZqu1VebNNU9Uz6IfK8WummZlqy+iWdiWKr9c07UxvO0z8E3B2nCeHY1DiTAwsqmarN69FFcRO28etHiN52Vyzam9cpt085mI/N1bacjPvx/wDxq/bDe+TrhX/srv19f4ufoXCOh6LneO6fjXLd7mTRvN2qronr6Jn0JtvFrpriZXrTOiWdi5du9XNO1MxM7TPwd84euZ9vS9Hy9Qu7c2xamvae2eyPnnaHMTzls1XwGlYuk26vPya/CXIj+xT1R88/ZTLtfBRNS76tmxg4dy/5Yjq889UetJ8i7cv37l+7VNVy5VNddU9szO8y/gNp2mrado6JlxXhUzMzvJHRO8PQ3Bmqe7HDOFnTVvcqt827/jp6KvpmN/neeVN5D9V2uZujXKuiqPGLUenoir/1+iUrEr4a9u1bOh2d8nzvBTPVXG3pjrj3x6VRAdR60AAAAAAAAAAAAAAAAAAJfy636udpWNE+btcuT6/NiPvVBL+XWxVztKyYjzdrlufX5sx96PlfZSrvSvi+aru3d/8AqExafkuwredxph03qYqos869MT30x0fr2lmGn5L863g8Z4dV6qKaL3OszM9k1R0fr2hzLW3HG7yvSOD5dZ8Jy4o9q7gO292RHlewbeHxjcrtUxTGVZpvzEd8zNM/TNO/zse1/K7nW83jG5RaqiqMW1TYmY74map+iatvmZBxb23hJ2eG63wfOF7wfLin9/Wo/IXfqp1HU8bfza7NFzb00zMf+zg8tnvtsfIqPt1udyF2KqtR1PJ282i1Rb39NUzP/q4PLZ77bHyKj7daRP8ATQsV3i+jFG/3ur85YZp+T/iezwzk5d29iXMiL9FNMRRVEbbTPf62YESmqaJ3hUcTKu4l6m9anaqOSoZ/KtTVi3KcLSq6L8xMUV3LsTTTPftEdPqS+ZmZmZneZ6Zkfvp+Hk5+Zaw8S1N2/dnm0URMRvPzs67ldyY3Ss7U8zU66YvVcUx1RER290dr8aKaq66aKKZqqqnaIiN5mXoLRNPq0rgyzgV/0lrEmK/8UxM1frmWb4B4AjSsi3qesVUXcujptWaemm1PfM9tX6o9Lcaj+T8j9FV7JTsazNETVVzX7otod3BtV5F+Nqqo2iOyO/z9jzQA5ry96I4N96WkfIrX2IQnir3z6r8tvfblduDfelpHyK19iEJ4q98+q/Lb325Tsr7Ol6D0u/t+N/P8Yda7DC1vWMHHjHw9UzMezEzMUW71VNMTPX0RLr3caXwxruqYdOXgadcv2KpmIrpqpiJmOvrlDpiqZ+qo2LTkVV7Y8TNX/Hffb0P5/lNxF8Oaj/qKvxUrkb1LUNRwtRqz83IyqqLlEUzduTVzYmJ6t2B/kRxV8D3v89H4qHyR6Nqej4efRqWJXjVXblE0RVMTvERO/VKVjRc8JHFut3Rq1qFOo0Tfivh6+fFtyntcHl0/J2mfpa/ZCUKvy6fk7TP0tfshKGvK+1lzel391uean2QDQ8neDjanxVYwMujn2b1q7TVH/jq6Y9Mdbr+JNIydD1i/p2TG8253or26K6J6qo//ALvaeCeHi8jizh3Ixoytvq7zT5piIn17+pp+SfiX3K1T3Ly7m2Hl1RFMzPRbudUT6p6p+ZjM3+uXv0lXtfkTMzO8zvMk1zNMUz5Gd7OuXsa3j19cUTO3mnbq9XrF85NPeNpn6Or7dSBr5yae8bTP0dX26knC8efMs/Qb+uuf6++GiYblr96Vn5ZR9ituWG5a/elZ+WUfYrTr/wBnK9dIP7Ze/wBUad5wF78tK+UUujd5wF78tK+UUuRb8eHjmn/1dr/an2w9BAO497EC5RdV91uLcy9TVzrNqrwFru5tPRvHrnefnWTjXVPcfhnNzqaubdi3zLX+Oroj6N9/meekDNr5UvPunOdtFvEpn/lPsj3jf4HDXheSbKzvB/8AM1XfG6J26eZRvTt9HPn52Ct08+5TRNUUxVMRzp6o9MrpicR8IY+lWtNp1fFqsW7MWebO/TTEbdzRj0U1b8UuB0aw8fIqvTkVxTHDMRvMR11eWN+z3oS7ThTU50fiLC1DeYotXI8Jt20T0VfqmXBzrVuzm37Nm7TetUXKqaLlPVXTE9E/PD8WiJmmd1et3K8e7FdPOmd/TD07TMVUxVTMTExvEx2vrM8mWq+6nCOLNdW97G/5e5/9vV/+uzTO3RVFVMTD3nEyacqxReo5VREgDJIAAAAAAAAAAAAAAAAGc5RtGq1vhe/Ys087Isz4ezER0zVTvvHzxMx69mjGNVMVRMS0ZWNRlWarNfKqNnmEiZid4naYUvlL4Huxfu61o1mblFczXkY9EbzTPbVTHbHfHZ7Jo41y3Vbq2l4hqWm39Ovzaux5p8kx2w3+gcp2oYWLRj6lh05/MjaLsXOZXMenomJ/U/TW+VHOycaqzpmBRhVVRtN2u5z6o9UbRET9KeDP5Rc223S46SanFrwXhZ29G/57b+t9rqqrrqrrqmqqqd5mZ3mZ73wUPk24HvZWRa1fWLM28WiYrs2K42m7PZMx/Z9vq68Lduq5VtCFp+n39QvxasxvM858kR2y2PJdo1ej8L25v0c3Iy6vD3ImOmmJjzY+jp9cywnLZ77bHyKj7dayo1y2e+2x8io+3Wn5NMU2eGHonSbFoxNFpsUcqZpj+edhmo4I0ONe0zWsaimJybdqi7jz8eJno+eN4+dl1I5C/wAoan+io9soVimKrkRKiaDj0ZOfbs3I3ireJ/8ArKb1RNMzTVExMdExPY/TGvXcbIt5Fiubd21VFdFUddMxO8S2HK3oPuXr/j9ijbFzt6+jqpuf9UfP1/PPcxbCumaKpiUTOxLmDk1Wa+dM/wDqfe9EcI61a17QbGoUbRcmObeoj/orjrj749Ew5+o/k/I/RVeyUZ5KeIPcjXYw8ivbDzZiireeiiv/AKavun1+hZtR/J+R+iq9kurZu+Eo38r1vQ9VjUsDjnx4jarz9vp5vNADkPGHojg33paR8itfYhCeKvfPqvy299uV24N96WkfIrX2IQnir3z6r8tvfblOyvs6XoPS7+3438/xh1qq8m/FegaTwtZwtQ1CLF+m5XM0eCrq6Jno6YiYSoRbV2bc7wqGlapd0y9N61ETO23Xv7pjsXj+XvCXwvT9Rc/dcrS+LeHtUzreDg6jF7Iub8yjwVcb7RMz0zER1RLz61HJV7/dO/8AL/tVpVGXXVVETELXgdMc3IyrdmqinaqqInqnyzt2tfy6fk7TP0tfshKFX5dPydpn6Wv2QlDTlfay43S7+63PNT7Iarkn9/WD/hu/7dSjcpvDXu7o/jGNb3z8WJqt7R03Ke2j749PrTnkn9/WD/hu/wC3UuiTi0RXammVn6KYlvM0i5Yux1VVT7Kev0PMM9E7SN3ytcNe5upe6+Jb2xMur/iREdFu51z809fr39DCIFyiaKuGVA1DBuYORVYuc49ceSfSL5yae8bTP0dX26kDXzk0942mfo6vt1JOF48+ZaOg39dc/wBffDRMNy1+9Kz8so+xW3LDctfvSs/LKPsVp1/7OV66Qf2y9/qjTvOAvflpXyil0bvOAvflpXyilyLfjw8c0/8Aq7X+1Pth6CB8rqpopmqqYppiN5meqIdx72l3LfqvOvYWjW6uiiPGLsR3zvFMfRzvphM3Z8U6nVrHEGbqMzPNu3Z8Hv2UR0Ux9EQ6xxb1fHXMvDdazvl2dcvRymdo80dUA3vBvJ9RrmhW9Tyc+5jeFrq5lFNuJ3pidt+vviXc+SjE+Gb/ANTH4s6ca5VG8Ql2OjGpX7dN2i31VRvHXHKfSlIofFHJxb0rQsrUcbUbuRXj0xXNuq1Eb07xvO+/ZG8/MnjXct1W52qc7P03J0+5FvIp2mY38k+xvuRbVfFtdv6Xcq2t5lvnUR8enp9nO+iFgeatJzbunanjZ9n+ksXabkenaer53pDDyLWXiWcqxVzrV6im5RPfExvCfh1708PY9D6E53hcWrHqnronq80/vv8Am/UBMXUAAAAAAAAAAAAAAAAAAZviLgnQdbrqvXsecfJq6ZvY8xTNU+mOqfo3aQY1UxVG0wj5OLZyqOC9TFUd6W5XJPdirfF1miqnuuWJiY+eJl8xeSi/NUeM6zbpp7Yt2Jqn9cwqY0/JbXY4n0T0ri38H66vizHD3AugaPXTepsVZeRT0xdyJirmz3xHVHt9LTg3U0U0xtEO3jYljFo4LNEUx3DG8bcDfyl1a3n+6nivMsxa5ni/P32mqd9+dHe2QV0U1xtUwzcGxm2vBX6d6fPMezZMPJL+cH7H/G0nAvB38l8jKu+6Pjfh6KadvAczm7TM/wBqd+tqxrpx7dM7xCBi9HtOxLsXrNvaqOU71e+XU8WaHY4h0a5p1+vwUzMVW7vN5026o7du3o3j52G8kv5wfsf8anj7XZorneqG3O0PBzrnhMi3vVttvvMeyYTDyS/nB+x/xqHh4mRb0ajBysvxm9FnwdV/mc3n9G3OmN56fncwfaLNFHiwywdGwsCapx6OHi6p65n2zKYeSX84P2P+M8kv5wfsf8anjX8ltdiB9FNJ/C/VV8XE0bD9ztJxMDwnhfFrNFrn83bnc2Ijfbs6mE1Xkv8AHtUy833c8H4xeru8zxTfm86qZ235/T1qMNldqiuIiYdHL0nEzLdNu/RvTTy65j2SmHkl/OD9j/jPJL+cH7H/ABqeNfyW12Od9FNJ/C/VV8Uw8kv5wfsf8btOFOTz3C17G1X3Y8Y8Bzv+H4tzedzqZp6+dPf3N2PsY1uJ3iG2z0Z0yzcpuUWtqqZiY66ucelm+OuFv5T4+LZ8e8U8BXVVv4Ln87eIjvjbqZTyS/nB+x/xqePtdi3XO9UNuXoGn5l2b1+3vVPl3qj2SwvCfJ77g67Y1T3X8Y8FFUeD8W5m+9Mx186e/uboGdFumiNqUzB0/HwLc2senhpmd+cz1+mZ7HF1fT8bVNNv6fl0c6zep5tXfHdMemJ6U68kv/1/9j/jU8fK7NFzrqhoz9HwtQqirIo4pjvmPZMJh5Jfzg/Y/wCNvuGtL9xtDxdM8P4fwFMx4Tmc3nbzM9W87dfe7EfKLNFE70w+YOi4OBXNzHo4ZmNucz1emZHR8bcP/wApNIowPG/Febei7z/B8/faJjbbeO93g2VUxVG0p2Rj28m1VauxvTPVP8hMPJL+cH7H/G52gcmvuVrOJqPu14bxe5FfM8V5vO27N+fOygjTGNaid4hxrfRjS7dcV02uuOuPrVfEcLXMO7qOkZWBZyfFq8i3NvwvM53NieiejeOzftc0bpjeNncuUU3KJoq5T1Jh5Jfzg/Y/4zyS/nB+x/xqeNHyW12OB9FNJ/C/VV8XG0nCtadpmNgWemjHtU24nbbfaNt/n63JBIiNlgoopopimmOqH55Nm3k413HvU863domiuO+JjaU0nkljfo1/o+R/xqeNddqi540Ofn6Rh6hNM5NHFty65jn5phMPJL+cH7H/ABt5wtpd3RdEsaZdzPG/AbxTc8HzPN33iNt56t9nZj5RZoonemGGDomDgXJuY9HDMxtzmer0zIA2uqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwXKLwhey6a9W0ablOTEb3seiqYi78amP7Xo7fX14XKppp3iN2m/crt0cVNO/c3o82TkZMTMTeuxMdcc6TxjI/v7v+eUP5d/xcf58j7nr/AGekx5s8YyP7+7/nk8YyP7+7/nl8+Xf8T58j7nr/AGekx5s8YyP7+7/nlR+Tjjed7ej61e3383Hya5+imqfZLZbzKa6tpjZvx9Xt3a+CqOH0qYAmOuAAAADqOKNexdCwvC3drl+veLNmJ6ap+6PSkWp6rn6jm3MvJyK6rlc9UVTEUx3RHZCDlZ1FieHbeVW13pVj6TXFqKeOvyxE7bR3z1/kuggXh7/99c/zSeHv/wB9c/zSifO8fc9f7K9/1Ep/7f8AV/4r6IF4e/8A31z/ADSeHv8A99c/zSfO8fc9f7H/AFEp/wC3/V/4r6Inw9p2p63qEYmJduREdN27NU823T3z6e6O36ZV/RdMxtJwKMTGiqYjpqrrnequrtmZTsXJqvxxcO0edatC1m9qtE3Zs8FHkmZ3380bR1d7mgJawAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJ/wAo/BUZ0XNX0i1tlR51+xTH9L8aPjejt9fXKJiYmYmJiY64l6XYDlG4JjPi5q2kWojLjzr1mmP6b0x8b2+vrgZONv8AXocLUtN4t7tqOvywkw+zExMxMTEx0TEvjnK8AApfJvxtzfB6NrN7o6KcfIrnq7qap9kqa8zqVyb8bc3wejaze83opx8iuerupqn2S6GNk/4Vu9pupcrV2fNPxU4B0FgHUcU69i6Fg+Fu7XL9e8WbMT01T90ek4p17F0LB8Ld2uX694s2Ynpqn7o9KP6rqGVqedczMy5Ny7X9FMdkRHZDn5ubFmOGnxvYp3SfpPRplE2LE73Z/T3z39keme9quoZWp51zMzLk3Ltf0Ux2REdkOKCuzM1TvLxu5cru1zXXO8zzkAfGA7Hh7RszXNQjExKdojpu3ZjzbdPfPp7o7fpk4d0bM1zPjFxY5tMbTduzHm26e+e+e6O36ZWLQ9Kw9HwKMPDt82mOmqqf51dXbVM97oYWFN6eKrxfaufRfovVqNUZGRG1qP1ft2z6IfNC0nD0bT6MPDo2pjprrn+dXV21TPe54LFERTG0PYrdum3TFFEbRHKAB9ZgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDyjcFRqEXNW0m1EZkedes0x/TemPje319cmqiaappqiYmJ2mJ7HpdguUbgqNRpuatpNqIzI6b1mmOi96Y+N7fX1wcnG3+vQ4epabxb3bUdflhJB9qiaappqiYmJ2mJ7HxzVdAAUrk3425ngtG1m95nRTj5Fc9XdTVPd3S23FOv4uhYPhbu1y/XExZsxPTVPf6I9Lz+7anJyMq1buZN65dqpoiiJrq3mKY6Ij1N1WdXatbRzNS6R39PwZiiN6pnaJ7Of57bdTl6rqGVqedczMy7Ny7X9FMdkRHZDig48zNU7y8ouXK7tc11zvM85AHxgOy4d0XM1zPjFxY5tFO03bsx5tunvnvnujt+mThzRczXM+MbFjm0U7TevTHm26fvnujt+mVi0TS8PR8CjDwrfNop6aqp/nV1dtUz2y6OFhTeniq8X2rp0X6L1ajVGRkRtaj9X7ds/k+aHpWHo+BRh4Vvm0R01VT/Orq7apntlzgWGIiI2h7FRRTbpimmNogAfWQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADB8o3BVOpU3NV0m3FObEb3bVPVe9MfG9vr65JVTVTVNNUTTVE7TEx0xL0uwnKNwVTqdNeq6VbinNiN7tqOq96Y+N7fWg5ONv9ehw9S03j3u2o6/LCRD7VTVTVNNUTTVE7TExtMS+Oaro7HD/AKtR8/tdc7HD/q1Hz+1oyPFV3pN/S0/7R7JfsAhqOOz4b0TM13PjGxo5tunab16Y823T9890HDeiZeu58Y2NHMt07TevTHm24++e6Fi0bTMTSMCjCwrfMt09MzP86ue2qZ7ZdHCwpvTx1+L7V16L9FqtQqjIyI2tR+r9u980XS8TSMCjCwrfNop6aqp/nV1dtUz2y5oLDEREbQ9hoopt0xTTG0QAPrIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABheUXgqnVKa9U0q3FOdEb3bUdEXo74+N7UjrpqorqorpmmqmdpiY2mJ7npZhuUXgunVaK9U0u3FOfTG9y3HRF+P3vag5ONxfWo5uJqOm8e921HX5Y7Ugdjh/1aj5/a4FdNVFdVFdM01UztVTMbTE9zn4f9Wo+f2uNkeK866Tf0tP8AtHsl+ztOGtDzNdz/ABfGjmWqNpvXpjzbcffM9kHDOh5evZ/i+P5lqjab16Y6LcffM9kLDo+m4mk4FGFhW+Zao6Zmemap7apntmW3CwZvTx1+L7WPRfotVqFUZOTG1qOUfe/Y0bTMPScCjCwrfMt09MzP86ue2qZ7ZcwFhiIiNoewUUU0UxTTG0QAPrIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABh+UTgujVqK9T0yiKM+mN67cdEX4/e9Paw/CGgZ2tZMYluiqzRamYyLtVPRa6Z6Nv7XoXB/Nu3btzVNu3TRNdXOq5sbc6e+fSh3sKi7VEy4WpaBjahcoquconeY7eqfj1uNpGm4mlYFvCwrXMtUfPNU9tUz2zLlglxERG0O3RRTRTFNMbRAA+sgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH//Z";
+
 const TAXA_ANUAL = 0.05;
 const TAXA_MENSAL = Math.pow(1 + TAXA_ANUAL, 1 / 12) - 1;
 
 function fmt(v) {
-  return (
-    "R$ " +
-    v.toLocaleString("pt-BR", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    })
-  );
+  return "R$ " + Math.round(v).toLocaleString("pt-BR");
 }
-
 function fmtDec(v) {
-  return (
-    "R$ " +
-    v.toLocaleString("pt-BR", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })
-  );
+  return "R$ " + v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-function calcularDados(idadeAtual, idadeMeta, patrimonioInicial, aporteMensal) {
+function calcSaldo(p, a, m) {
+  let s = p;
+  for (let i = 1; i <= m; i++) s = s * (1 + TAXA_MENSAL) + a;
+  return s;
+}
+
+function calcAporte(p, m, alvo) {
+  const f = Math.pow(1 + TAXA_MENSAL, m);
+  if (f === 1) return (alvo - p * f) / m;
+  return (alvo - p * f) * TAXA_MENSAL / (f - 1);
+}
+
+function calcularDados(idadeAtual, idadeMeta, patrimonio, aporteMensal, rendaMeta, modo) {
   const anos = Math.max(1, idadeMeta - idadeAtual);
   const meses = anos * 12;
+  let saldo, aporteEfetivo;
 
-  let saldo = patrimonioInicial;
-  for (let m = 1; m <= meses; m++) {
-    saldo = saldo * (1 + TAXA_MENSAL) + aporteMensal;
+  if (modo === "aporte") {
+    aporteEfetivo = aporteMensal;
+    saldo = calcSaldo(patrimonio, aporteEfetivo, meses);
+  } else {
+    const saldoNecessario = rendaMeta / TAXA_MENSAL;
+    saldo = saldoNecessario;
+    aporteEfetivo = Math.max(0, calcAporte(patrimonio, meses, saldoNecessario));
   }
 
-  const totalInvestido = patrimonioInicial + aporteMensal * meses;
-  const jurosGanhos = saldo - totalInvestido;
+  const totalInvestido = Math.max(0, patrimonio + aporteEfetivo * meses);
+  const jurosGanhos = Math.max(0, saldo - totalInvestido);
   const rendaPassiva = saldo * TAXA_MENSAL;
 
   const extra = 200;
-  let saldoNorm = patrimonioInicial;
-  let mesesAntecipado = 0;
+  let mesesAntec = 0, sv = patrimonio;
   for (let m = 1; m <= meses; m++) {
-    saldoNorm = saldoNorm * (1 + TAXA_MENSAL) + aporteMensal + extra;
-    if (saldoNorm >= saldo && mesesAntecipado === 0) {
-      mesesAntecipado = meses - m;
-    }
+    sv = sv * (1 + TAXA_MENSAL) + aporteEfetivo + extra;
+    if (sv >= saldo && mesesAntec === 0) mesesAntec = meses - m;
   }
-  const anosAntec = (mesesAntecipado / 12).toFixed(1);
-
-  const mid1Age = Math.round(idadeAtual + anos / 3);
-  const mid2Age = Math.round(idadeAtual + (2 * anos) / 3);
 
   return {
-    anos,
-    meses,
-    saldo,
-    totalInvestido,
-    jurosGanhos,
-    rendaPassiva,
-    anosAntec,
-    mid1Age,
-    mid2Age,
+    anos, meses, saldo, aporteEfetivo, totalInvestido, jurosGanhos, rendaPassiva,
+    anosAntec: (mesesAntec / 12).toFixed(1),
+    mid1Age: Math.round(idadeAtual + anos / 3),
+    mid2Age: Math.round(idadeAtual + (2 * anos) / 3),
     extra,
   };
 }
 
-function desenharGrafico(canvas, patrimonioInicial, aporteMensal, meses) {
+function desenharGrafico(canvas, p, a, meses, modo) {
   const rect = canvas.parentElement.getBoundingClientRect();
   const dpr = window.devicePixelRatio || 1;
   canvas.width = rect.width * dpr;
@@ -73,494 +67,284 @@ function desenharGrafico(canvas, patrimonioInicial, aporteMensal, meses) {
   canvas.style.height = "200px";
   const ctx = canvas.getContext("2d");
   ctx.scale(dpr, dpr);
-  const W = rect.width,
-    H = 200;
+  const W = rect.width, H = 200;
   ctx.clearRect(0, 0, W, H);
 
   const steps = 80;
   const values = [];
   for (let i = 0; i <= steps; i++) {
     const m = Math.round((i * meses) / steps);
-    let sv = patrimonioInicial;
-    for (let mm = 1; mm <= m; mm++) sv = sv * (1 + TAXA_MENSAL) + aporteMensal;
+    let sv = p;
+    for (let mm = 1; mm <= m; mm++) sv = sv * (1 + TAXA_MENSAL) + a;
     values.push(sv);
   }
 
-  const maxV = Math.max(...values);
-  const padX = 8,
-    padY = 16;
+  const maxV = Math.max(...values, 1);
+  const padX = 8, padY = 16;
   const px = (i) => padX + (i / steps) * (W - padX * 2);
   const py = (v) => H - padY - (v / maxV) * (H - padY * 2);
 
+  const line = modo === "aporte" ? "#1daf66" : "#FFA726";
+  const g0   = modo === "aporte" ? "rgba(29,175,102,0.18)" : "rgba(255,167,38,0.15)";
+  const g1   = modo === "aporte" ? "rgba(29,175,102,0.01)" : "rgba(255,167,38,0.01)";
+  const dot  = modo === "aporte" ? "#a8e6c8" : "#FFD08A";
+
   const grad = ctx.createLinearGradient(0, 0, 0, H);
-  grad.addColorStop(0, "rgba(46,204,113,0.25)");
-  grad.addColorStop(1, "rgba(46,204,113,0.01)");
-  ctx.beginPath();
-  ctx.moveTo(px(0), py(values[0]));
+  grad.addColorStop(0, g0); grad.addColorStop(1, g1);
+  ctx.beginPath(); ctx.moveTo(px(0), py(values[0]));
   for (let i = 1; i <= steps; i++) ctx.lineTo(px(i), py(values[i]));
-  ctx.lineTo(px(steps), H - padY);
-  ctx.lineTo(px(0), H - padY);
-  ctx.closePath();
-  ctx.fillStyle = grad;
-  ctx.fill();
+  ctx.lineTo(px(steps), H - padY); ctx.lineTo(px(0), H - padY);
+  ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
 
-  ctx.beginPath();
-  ctx.moveTo(px(0), py(values[0]));
+  ctx.beginPath(); ctx.moveTo(px(0), py(values[0]));
   for (let i = 1; i <= steps; i++) ctx.lineTo(px(i), py(values[i]));
-  ctx.strokeStyle = "#2ECC71";
-  ctx.lineWidth = 2.5;
-  ctx.lineJoin = "round";
-  ctx.stroke();
+  ctx.strokeStyle = line; ctx.lineWidth = 2.5; ctx.lineJoin = "round"; ctx.stroke();
 
-  const dotPositions = [0, Math.round(steps / 3), Math.round((2 * steps) / 3), steps];
-  dotPositions.forEach((i, idx) => {
-    const x = px(i),
-      y = py(values[i]);
-    ctx.beginPath();
-    ctx.arc(x, y, 5, 0, Math.PI * 2);
-    ctx.fillStyle = idx === dotPositions.length - 1 ? "#F39C12" : "#fff";
-    ctx.strokeStyle = idx === dotPositions.length - 1 ? "#F39C12" : "#2ECC71";
-    ctx.lineWidth = 2.5;
-    ctx.fill();
-    ctx.stroke();
+  [0, Math.round(steps/3), Math.round(2*steps/3), steps].forEach((i, idx, arr) => {
+    ctx.beginPath(); ctx.arc(px(i), py(values[i]), 5, 0, Math.PI * 2);
+    ctx.fillStyle   = idx === arr.length - 1 ? dot : "#fff";
+    ctx.strokeStyle = idx === arr.length - 1 ? dot : line;
+    ctx.lineWidth = 2.5; ctx.fill(); ctx.stroke();
   });
 }
 
-/* ── Icons ── */
-const IconTrend = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-    <polyline points="17 6 23 6 23 12" />
-  </svg>
-);
-const IconStar = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-  </svg>
-);
-const IconCheck = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-    <polyline points="22 4 12 14.01 9 11.01" />
-  </svg>
-);
-const IconBolt = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#27AE60" strokeWidth="2.5">
-    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-  </svg>
-);
-const IconShield = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F39C12" strokeWidth="2.5">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-  </svg>
-);
+/* Icons */
+const IconTrend  = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>;
+const IconCheck  = () => <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>;
+const IconWave   = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1daf66" strokeWidth="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>;
+const IconCoin   = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFA726" strokeWidth="2.2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>;
+const IconBolt   = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1daf66" strokeWidth="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>;
+const IconShield = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFA726" strokeWidth="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
+const IconAporte = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>;
+const IconRenda  = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>;
 
-/* ── Styles ── */
-const styles = {
-  root: {
-    fontFamily: "'Work Sans', -apple-system, sans-serif",
-    color: "#1A2332",
-    overflowX: "hidden",
-    width: "100%",
-  },
-  container: { maxWidth: 1000, margin: "0 auto", padding: "0 16px", width: "100%", boxSizing: "border-box" },
-  h1: {
-    fontFamily: "'Work Sans', sans-serif",
-    fontSize: 28,
-    fontWeight: 800,
-    color: "#1A2332",
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 13,
-    color: "#6B7A99",
-    marginBottom: 32,
-    maxWidth: 260,
-    lineHeight: 1.5,
-  },
-  layout: {
-    display: "grid",
-    gridTemplateColumns: "290px 1fr",
-    gap: 24,
-    alignItems: "start",
-    overflow: "hidden",
-  },
-  controls: { display: "flex", flexDirection: "column", gap: 12 },
-  card: {
-    background: "#FFFFFF",
-    border: "1px solid #E8EDF5",
-    borderRadius: 16,
-    padding: 20,
-    boxShadow: "0 2px 20px rgba(0,0,0,0.06)",
-  },
-  cardLabel: {
-    fontSize: 10,
-    fontWeight: 600,
-    letterSpacing: "0.08em",
-    textTransform: "uppercase",
-    color: "#6B7A99",
-    marginBottom: 10,
-  },
-  ageRow: { display: "flex", alignItems: "center", gap: 8 },
-  ageInput: {
-    width: 70,
-    fontSize: 22,
-    fontWeight: 700,
-    border: "none",
-    background: "transparent",
-    color: "#1A2332",
-    outline: "none",
-    fontFamily: "inherit",
-    MozAppearance: "textfield",
-  },
-  ageLabel: { fontSize: 11, color: "#6B7A99", alignSelf: "flex-end", paddingBottom: 4 },
-  ageSep: { flex: 1, height: 1, background: "#E8EDF5", margin: "0 4px" },
-  valueRow: { display: "flex", alignItems: "baseline", gap: 4 },
-  currencyPrefix: { fontSize: 14, fontWeight: 600, color: "#6B7A99" },
-  valueInput: {
-    fontSize: 20,
-    fontWeight: 700,
-    border: "none",
-    background: "transparent",
-    color: "#1A2332",
-    outline: "none",
-    width: "100%",
-    fontFamily: "inherit",
-    MozAppearance: "textfield",
-    minWidth: 0,
-  },
-  rateRow: { display: "flex", justifyContent: "space-between", alignItems: "center" },
-  rateLabelInner: { fontSize: 13, color: "#6B7A99", display: "flex", alignItems: "center", gap: 6 },
-  rateValue: { fontSize: 18, fontWeight: 700, color: "#27AE60" },
-  btnGenerate: {
-    background: "#2ECC71",
-    color: "white",
-    border: "none",
-    borderRadius: 14,
-    padding: 16,
-    fontSize: 15,
-    fontWeight: 700,
-    cursor: "pointer",
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    fontFamily: "inherit",
-    transition: "background 0.2s, transform 0.1s",
-  },
-  results: {
-    background: "#FFFFFF",
-    border: "1px solid #E8EDF5",
-    borderRadius: 20,
-    padding: 28,
-    boxShadow: "0 2px 20px rgba(0,0,0,0.06)",
-    minWidth: 0,
-    overflow: "hidden",
-  },
-  resultsHeader: { marginBottom: 20 },
-  resultsEyebrow: {
-    fontSize: 11,
-    fontWeight: 600,
-    letterSpacing: "0.12em",
-    textTransform: "uppercase",
-    color: "#27AE60",
-    marginBottom: 4,
-  },
-  resultsTitle: { fontFamily: "'Work Sans', sans-serif", fontSize: 22, fontWeight: 800 },
-  resultsTitleHighlight: { color: "#F39C12" },
-  headerRow: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    flexWrap: "wrap",
-    gap: 12,
-  },
-  totalLabel: {
-    fontSize: 10,
-    textTransform: "uppercase",
-    letterSpacing: "0.08em",
-    color: "#6B7A99",
-    marginBottom: 2,
-  },
-  totalValue: { fontSize: 28, fontWeight: 800, color: "#1A2332", lineHeight: 1, wordBreak: "break-word" },
-  independenceBadge: {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: 4,
-    fontSize: 11,
-    color: "#27AE60",
-    fontWeight: 600,
-    marginTop: 4,
-  },
-  chartArea: { position: "relative", height: 200, margin: "20px 0 8px", overflow: "hidden" },
-  chartLabels: {
-    display: "flex",
-    justifyContent: "space-between",
-    fontSize: 10,
-    color: "#6B7A99",
-    fontWeight: 500,
-    padding: "0 2px",
-    marginBottom: 24,
-  },
-  chartLabelLast: { color: "#F39C12", fontWeight: 700 },
-  statsRow: {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
-    gap: 16,
-    paddingTop: 20,
-    borderTop: "1px solid #E8EDF5",
-  },
-  statLabel: {
-    fontSize: 10,
-    textTransform: "uppercase",
-    letterSpacing: "0.08em",
-    color: "#6B7A99",
-    marginBottom: 6,
-  },
-  statValue: { fontSize: 18, fontWeight: 700, wordBreak: "break-word" },
-  statUnderline: { height: 2, borderRadius: 2, marginTop: 6, width: 40 },
-  tipsRow: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 24 },
-  tipCard: { background: "#F0FAF5", borderRadius: 14, padding: 16 },
-  tipCardOrange: { background: "#FFF8EC", borderRadius: 14, padding: 16 },
-  tipH4: { fontSize: 13, fontWeight: 700, marginBottom: 6, display: "flex", alignItems: "center", gap: 6 },
-  tipP: { fontSize: 12, color: "#6B7A99", lineHeight: 1.5 },
-};
-
-/* ── Responsive CSS (injected once) ── */
-const responsiveCSS = `
+const CSS = `
+  @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   input[type=number]::-webkit-inner-spin-button,
   input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
-
-  @media (max-width: 768px) {
-    .calc-layout-grid {
-      grid-template-columns: 1fr !important;
-    }
-    .calc-results-header-row {
-      flex-direction: column !important;
-      gap: 8px !important;
-    }
-    .calc-results-header-row > div:last-child {
-      text-align: left !important;
-    }
-    .calc-results-title-el {
-      font-size: 18px !important;
-    }
-    .calc-total-value-el {
-      font-size: 22px !important;
-    }
-    .calc-stats-grid {
-      grid-template-columns: repeat(3, 1fr) !important;
-      gap: 8px !important;
-    }
-    .calc-stats-grid .calc-stat-val {
-      font-size: 14px !important;
-    }
-    .calc-tips-grid {
-      grid-template-columns: 1fr !important;
-    }
-    .calc-chart-labels-el {
-      font-size: 9px !important;
-      gap: 2px !important;
-    }
-    .calc-results-panel {
-      padding: 16px !important;
-      border-radius: 14px !important;
-    }
-    .calc-card-el {
-      padding: 14px !important;
-      border-radius: 12px !important;
-    }
+  input[type=number] { -moz-appearance: textfield; }
+  :root {
+    --deep:#1daf66; --dark:#1A2E35; --accent:#FFA726; --bg:#FFFDF5;
+    --card:#fff; --text:#1A2E35; --muted:#475569; --border:#e2e8e4;
+    --shadow:0 2px 20px rgba(26,46,53,0.07);
+  }
+  .cr { font-family:'Work Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; padding:40px 20px; }
+  .cc { max-width:1020px; margin:0 auto; }
+  .ch1 { font-size:28px; font-weight:800; color:var(--dark); margin-bottom:4px; }
+  .csub { font-size:13px; color:var(--muted); margin-bottom:32px; line-height:1.5; }
+  .cla { display:grid; grid-template-columns:300px 1fr; gap:24px; align-items:start; }
+  .cco { display:flex; flex-direction:column; gap:12px; }
+  .ccard { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px; box-shadow:var(--shadow); }
+  .clbl { font-size:10px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+  .cage { display:flex; align-items:center; gap:8px; }
+  .cage input { width:70px; font-family:inherit; font-size:22px; font-weight:700; border:none; background:transparent; color:var(--text); outline:none; }
+  .cagel { font-size:11px; color:var(--muted); align-self:flex-end; padding-bottom:4px; }
+  .cages { flex:1; height:1px; background:var(--border); margin:0 4px; }
+  .cvrow { display:flex; align-items:baseline; gap:4px; }
+  .cpfx { font-size:14px; font-weight:600; color:var(--muted); }
+  .cvin { font-family:inherit; font-size:20px; font-weight:700; border:none; background:transparent; color:var(--text); outline:none; width:100%; }
+  .crrow { display:flex; justify-content:space-between; align-items:center; }
+  .crla { font-size:13px; color:var(--muted); display:flex; align-items:center; gap:6px; }
+  .crva { font-size:18px; font-weight:700; color:var(--deep); }
+  .ctog { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:6px; box-shadow:var(--shadow); display:grid; grid-template-columns:1fr 1fr; gap:4px; }
+  .ctbtn { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding:12px 8px; border-radius:12px; border:none; cursor:pointer; font-family:inherit; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; background:transparent; color:var(--muted); transition:background 0.2s,color 0.2s,box-shadow 0.2s; }
+  .ctbtn.ta { background:var(--deep); color:#fff; box-shadow:0 2px 12px rgba(29,175,102,0.3); }
+  .ctbtn.tr { background:var(--accent); color:#fff; box-shadow:0 2px 12px rgba(255,167,38,0.35); }
+  .cpan { margin-top:4px; }
+  .cpan.pr .ccard { border-color:var(--accent); }
+  .clogo { display:flex; justify-content:center; padding-top:8px; }
+  .clogo img { width:96px; height:auto; opacity:0.9; transition:opacity 0.2s,transform 0.2s; }
+  .clogo img:hover { opacity:1; transform:scale(1.04); }
+  .cres { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:28px; box-shadow:var(--shadow); min-width:0; overflow:hidden; }
+  .crh { margin-bottom:20px; }
+  .chb { display:grid; grid-template-columns:1fr auto; gap:12px; align-items:stretch; }
+  .cdb { display:flex; align-items:center; justify-content:space-between; gap:16px; border-radius:14px; padding:16px 20px; margin-bottom:4px; }
+  .cdb.da { background:linear-gradient(135deg,#e8faf2,#d4f5e4); border:1.5px solid #a8e6c8; }
+  .cdb.dr { background:linear-gradient(135deg,#fff5e6,#ffeacc); border:1.5px solid #ffd08a; }
+  .cdbl { display:flex; flex-direction:column; gap:3px; }
+  .cdbe { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; }
+  .da .cdbe { color:#189954; } .dr .cdbe { color:#e07b00; }
+  .cdbs { font-size:12px; font-weight:500; color:var(--muted); }
+  .cdbv { font-size:30px; font-weight:800; line-height:1.1; letter-spacing:-0.5px; }
+  .da .cdbv { color:#1daf66; } .dr .cdbv { color:#FFA726; }
+  .cdbi { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .da .cdbi { background:rgba(29,175,102,0.18); } .dr .cdbi { background:rgba(255,167,38,0.18); }
+  .ctcard { background:#f5f7f6; border:1.5px solid var(--border); border-radius:14px; padding:16px 20px; display:flex; flex-direction:column; justify-content:center; gap:3px; min-width:180px; }
+  .ctce { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
+  .ctcv { font-size:26px; font-weight:800; color:var(--dark); line-height:1.1; letter-spacing:-0.5px; }
+  .cbadge { display:inline-flex; align-items:center; gap:4px; font-size:11px; color:var(--deep); font-weight:600; margin-top:4px; }
+  .ccha { position:relative; height:200px; margin:20px 0 8px; overflow:hidden; }
+  canvas.cch { width:100%; height:100%; display:block; }
+  .cchl { display:flex; justify-content:space-between; font-size:10px; color:var(--muted); font-weight:500; padding:0 2px; margin-bottom:24px; }
+  .cchl span:last-child { color:var(--deep); font-weight:700; }
+  .cst { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; padding-top:20px; border-top:1px solid var(--border); }
+  .cstl { font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); margin-bottom:6px; }
+  .cstv { font-size:18px; font-weight:700; word-break:break-word; }
+  .cstv.g { color:var(--deep); } .cstv.o { color:var(--accent); }
+  .cstu { height:2px; border-radius:2px; margin-top:6px; width:40px; }
+  .ctips { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:24px; }
+  .ctip { background:#edf7f1; border-radius:14px; padding:16px; }
+  .ctip.ot { background:#fff8ed; }
+  .ctip h4 { font-size:13px; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+  .ctip p { font-size:12px; color:var(--muted); line-height:1.5; }
+  @media(max-width:700px){
+    .cla{grid-template-columns:1fr;}
+    .chb{grid-template-columns:1fr;}
+    .ctcard{min-width:unset;}
+    .ctips{grid-template-columns:1fr;}
+    .cres{padding:16px;}
   }
 `;
 
-/* ── Component ── */
 export default function CalculadoraFinanceira() {
+  const [modo, setModo]             = useState("aporte");
   const [idadeAtual, setIdadeAtual] = useState(25);
-  const [idadeMeta, setIdadeMeta] = useState(55);
-  const [patrimonioAtual, setPatrimonioAtual] = useState(50000);
-  const [aporteMensal, setAporteMensal] = useState(2500);
+  const [idadeMeta, setIdadeMeta]   = useState(55);
+  const [patrimonio, setPatrimonio] = useState(50000);
+  const [aporteM, setAporteM]       = useState(2500);
+  const [rendaMeta, setRendaMeta]   = useState(10000);
   const canvasRef = useRef(null);
 
-  const dados = calcularDados(idadeAtual, idadeMeta, patrimonioAtual, aporteMensal);
+  const d = calcularDados(idadeAtual, idadeMeta, patrimonio, aporteM, rendaMeta, modo);
+  const isA = modo === "aporte";
 
-  const redrawChart = useCallback(() => {
-    if (canvasRef.current) {
-      desenharGrafico(canvasRef.current, patrimonioAtual, aporteMensal, dados.meses);
-    }
-  }, [patrimonioAtual, aporteMensal, dados.meses]);
+  const redraw = useCallback(() => {
+    if (canvasRef.current)
+      desenharGrafico(canvasRef.current, patrimonio, d.aporteEfetivo, d.meses, modo);
+  }, [patrimonio, d.aporteEfetivo, d.meses, modo]);
 
   useEffect(() => {
-    redrawChart();
-    window.addEventListener("resize", redrawChart);
-    return () => window.removeEventListener("resize", redrawChart);
-  }, [redrawChart]);
+    redraw();
+    window.addEventListener("resize", redraw);
+    return () => window.removeEventListener("resize", redraw);
+  }, [redraw]);
 
   return (
     <>
-      <style>{responsiveCSS}</style>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet"
-      />
-      <div style={styles.root}>
-        <div style={styles.container}>
-          <h1 style={styles.h1}>Monte sua Jornada</h1>
-          <p style={styles.subtitle}>
-            Ajuste os valores para visualizar seu futuro financeiro em tempo real.
-          </p>
+      <style>{CSS}</style>
+      <div className="cr">
+        <div className="cc">
+          <h1 className="ch1">Monte sua Jornada</h1>
+          <p className="csub">Ajuste os valores para visualizar seu futuro financeiro em tempo real.</p>
 
-          <div className="calc-layout-grid" style={styles.layout}>
-            {/* Controls */}
-            <div style={styles.controls}>
-              <div className="calc-card-el" style={styles.card}>
-                <div style={styles.cardLabel}>Idade Atual e Meta</div>
-                <div style={styles.ageRow}>
-                  <input
-                    style={styles.ageInput}
-                    type="number"
-                    value={idadeAtual}
-                    min={18}
-                    max={80}
-                    onChange={(e) => setIdadeAtual(parseInt(e.target.value) || 18)}
-                  />
-                  <span style={styles.ageLabel}>anos</span>
-                  <div style={styles.ageSep} />
-                  <input
-                    style={styles.ageInput}
-                    type="number"
-                    value={idadeMeta}
-                    min={20}
-                    max={90}
-                    onChange={(e) => setIdadeMeta(parseInt(e.target.value) || 55)}
-                  />
-                  <span style={styles.ageLabel}>anos</span>
+          <div className="cla">
+            <div className="cco">
+
+              <div className="ccard">
+                <div className="clbl">Idade Atual e Meta</div>
+                <div className="cage">
+                  <input type="number" value={idadeAtual} min={18} max={80} onChange={e => setIdadeAtual(parseInt(e.target.value)||18)} />
+                  <span className="cagel">anos</span>
+                  <div className="cages" />
+                  <input type="number" value={idadeMeta} min={20} max={90} onChange={e => setIdadeMeta(parseInt(e.target.value)||55)} />
+                  <span className="cagel">anos</span>
                 </div>
               </div>
 
-              <div className="calc-card-el" style={styles.card}>
-                <div style={styles.cardLabel}>Patrimônio Atual</div>
-                <div style={styles.valueRow}>
-                  <span style={styles.currencyPrefix}>R$</span>
-                  <input
-                    style={styles.valueInput}
-                    type="number"
-                    value={patrimonioAtual}
-                    min={0}
-                    step={1000}
-                    onChange={(e) => setPatrimonioAtual(parseFloat(e.target.value) || 0)}
-                    onBlur={(e) => { if (!e.target.value) setPatrimonioAtual(0); }}
-                  />
+              <div className="ccard">
+                <div className="clbl">Patrimônio Atual</div>
+                <div className="cvrow">
+                  <span className="cpfx">R$</span>
+                  <input className="cvin" type="number" value={patrimonio} min={0} step={1000} onChange={e => setPatrimonio(parseFloat(e.target.value)||0)} />
                 </div>
               </div>
 
-              <div className="calc-card-el" style={styles.card}>
-                <div style={styles.cardLabel}>Aporte Mensal</div>
-                <div style={styles.valueRow}>
-                  <span style={styles.currencyPrefix}>R$</span>
-                  <input
-                    style={styles.valueInput}
-                    type="number"
-                    value={aporteMensal}
-                    min={0}
-                    step={100}
-                    onChange={(e) => setAporteMensal(parseFloat(e.target.value) || 0)}
-                    onBlur={(e) => { if (!e.target.value) setAporteMensal(0); }}
-                  />
-                </div>
+              <div className="ctog">
+                <button className={"ctbtn"+(isA?" ta":"")} onClick={()=>setModo("aporte")}><IconAporte/>Aporte Mensal</button>
+                <button className={"ctbtn"+(!isA?" tr":"")} onClick={()=>setModo("renda")}><IconRenda/>Renda Passiva</button>
               </div>
 
-              <div className="calc-card-el" style={styles.card}>
-                <div style={styles.cardLabel}>Rentabilidade Real</div>
-                <div style={styles.rateRow}>
-                  <span style={styles.rateLabelInner}>
-                    <IconTrend />
-                    Taxa de Juros Real
-                  </span>
-                  <span style={styles.rateValue}>5% /ano</span>
-                </div>
-              </div>
-
-              <button
-                style={styles.btnGenerate}
-                onClick={redrawChart}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#27AE60")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "#2ECC71")}
-                onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.98)")}
-                onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
-              >
-                <IconStar />
-                Gerar Planejamento
-              </button>
-            </div>
-
-            {/* Results */}
-            <div className="calc-results-panel" style={styles.results}>
-              <div style={styles.resultsHeader}>
-                <div style={styles.resultsEyebrow}>Crescimento Estimado</div>
-                <div className="calc-results-header-row" style={styles.headerRow}>
-                  <div className="calc-results-title-el" style={styles.resultsTitle}>
-                    Seu futuro em <span style={styles.resultsTitleHighlight}>{dados.anos}</span> anos
-                  </div>
-                  <div style={{ textAlign: "right" }}>
-                    <div style={styles.totalLabel}>Total Acumulado</div>
-                    <div className="calc-total-value-el" style={styles.totalValue}>{fmt(dados.saldo)}</div>
-                    <div style={styles.independenceBadge}>
-                      <IconCheck />
-                      Independência Alcançada aos {idadeMeta}
+              {isA ? (
+                <div className="cpan pa">
+                  <div className="ccard">
+                    <div className="clbl">Aporte Mensal</div>
+                    <div className="cvrow">
+                      <span className="cpfx">R$</span>
+                      <input className="cvin" type="number" value={aporteM} min={0} step={100} onChange={e => setAporteM(parseFloat(e.target.value)||0)} />
                     </div>
                   </div>
                 </div>
+              ) : (
+                <div className="cpan pr">
+                  <div className="ccard">
+                    <div className="clbl">Renda Passiva Esperada / mês</div>
+                    <div className="cvrow">
+                      <span className="cpfx" style={{color:"#FFA726"}}>R$</span>
+                      <input className="cvin" type="number" value={rendaMeta} min={0} step={500} style={{color:"#FFA726"}} onChange={e => setRendaMeta(parseFloat(e.target.value)||0)} />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="ccard">
+                <div className="clbl">Rentabilidade Real</div>
+                <div className="crrow">
+                  <span className="crla"><IconTrend/>Taxa de Juros Real</span>
+                  <span className="crva">5% /ano</span>
+                </div>
               </div>
 
-              <div style={styles.chartArea}>
-                <canvas ref={canvasRef} style={{ width: "100%", height: "100%", display: "block" }} />
+              <div className="clogo"><img src={LOGO_SRC} alt="Orienta" /></div>
+
+            </div>
+
+            <div className="cres">
+              <div className="crh">
+                <div className="chb">
+                  <div className={"cdb "+(isA?"da":"dr")}>
+                    <div className="cdbl">
+                      <div className="cdbe">{isA?"Renda passiva gerada":"Aporte necessário"}</div>
+                      <div className="cdbv">{isA?fmtDec(d.rendaPassiva)+"/mês":fmtDec(d.aporteEfetivo)+"/mês"}</div>
+                      <div className="cdbs">{isA?"com base no seu planejamento":"para atingir sua meta"}</div>
+                    </div>
+                    <div className="cdbi">{isA?<IconWave/>:<IconCoin/>}</div>
+                  </div>
+                  <div className="ctcard">
+                    <div className="ctce">Total acumulado</div>
+                    <div className="ctcv">{fmt(d.saldo)}</div>
+                    <div className="cbadge"><IconCheck/>Independência aos {idadeMeta} anos</div>
+                  </div>
+                </div>
               </div>
-              <div className="calc-chart-labels-el" style={styles.chartLabels}>
+
+              <div className="ccha"><canvas ref={canvasRef} className="cch"/></div>
+              <div className="cchl">
                 <span>HOJE ({idadeAtual})</span>
-                <span>{dados.mid1Age} ANOS</span>
-                <span>{dados.mid2Age} ANOS</span>
-                <span style={styles.chartLabelLast}>META ({idadeMeta} ANOS)</span>
+                <span>{d.mid1Age} ANOS</span>
+                <span>{d.mid2Age} ANOS</span>
+                <span>META ({idadeMeta} ANOS)</span>
               </div>
 
-              <div className="calc-stats-grid" style={styles.statsRow}>
+              <div className="cst">
                 <div>
-                  <div style={styles.statLabel}>Total Investido</div>
-                  <div className="calc-stat-val" style={styles.statValue}>{fmt(dados.totalInvestido)}</div>
-                  <div style={{ ...styles.statUnderline, background: "#CDD5E0" }} />
+                  <div className="cstl">Total Investido</div>
+                  <div className="cstv">{fmt(d.totalInvestido)}</div>
+                  <div className="cstu" style={{background:"#e2e8e4"}}/>
                 </div>
                 <div>
-                  <div style={styles.statLabel}>Juros Ganhos</div>
-                  <div className="calc-stat-val" style={{ ...styles.statValue, color: "#27AE60" }}>{fmt(dados.jurosGanhos)}</div>
-                  <div style={{ ...styles.statUnderline, background: "#2ECC71" }} />
+                  <div className="cstl">Juros Ganhos</div>
+                  <div className="cstv g">{fmt(d.jurosGanhos)}</div>
+                  <div className="cstu" style={{background:"#1daf66"}}/>
                 </div>
                 <div>
-                  <div style={styles.statLabel}>Renda Passiva</div>
-                  <div className="calc-stat-val" style={{ ...styles.statValue, color: "#F39C12" }}>{fmtDec(dados.rendaPassiva)} /mês</div>
-                  <div style={{ ...styles.statUnderline, background: "#F39C12" }} />
+                  <div className="cstl">Renda Passiva</div>
+                  <div className="cstv o">{fmtDec(d.rendaPassiva)} /mês</div>
+                  <div className="cstu" style={{background:"#FFA726"}}/>
                 </div>
               </div>
 
-              <div className="calc-tips-grid" style={styles.tipsRow}>
-                <div style={styles.tipCard}>
-                  <h4 style={styles.tipH4}>
-                    <IconBolt />
-                    Otimização de Aportes
-                  </h4>
-                  <p style={styles.tipP}>
-                    Adicionar apenas R$ {dados.extra.toLocaleString("pt-BR")} extras por mês
-                    anteciparia sua independência em {dados.anosAntec} anos.
-                  </p>
+              <div className="ctips">
+                <div className="ctip">
+                  <h4><IconBolt/>{isA?"Otimização de Aportes":"Patrimônio Alvo"}</h4>
+                  <p>{isA
+                    ? `Adicionar R$ ${d.extra.toLocaleString("pt-BR")} extras/mês anteciparia sua independência em ${d.anosAntec} anos.`
+                    : `Para gerar ${fmtDec(rendaMeta)}/mês você precisa acumular ${fmt(d.saldo)} em ${d.anos} anos.`
+                  }</p>
                 </div>
-                <div style={styles.tipCardOrange}>
-                  <h4 style={styles.tipH4}>
-                    <IconShield />
-                    Poder de Compra
-                  </h4>
-                  <p style={styles.tipP}>
-                    Este cálculo já utiliza juros reais (acima da inflação), garantindo o valor
-                    real hoje.
-                  </p>
+                <div className="ctip ot">
+                  <h4><IconShield/>Poder de Compra</h4>
+                  <p>Este cálculo utiliza juros reais (acima da inflação), garantindo que os valores reflitam o poder de compra de hoje.</p>
                 </div>
               </div>
             </div>
