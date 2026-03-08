@@ -43,6 +43,8 @@ Cores:
 #1daf66
 #FFFDF5
 
+Fonte:
+work sans
 
 
 **Edit a file directly in GitHub**
