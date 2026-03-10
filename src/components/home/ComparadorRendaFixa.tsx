@@ -71,7 +71,7 @@ const RATE_DEFAULTS: Record<RateType, number> = {
 };
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
-const styles: Record<string, React.CSSProperties | ((...args: any[]) => React.CSSProperties)> = {
+const styles = {
   root: {
     fontFamily: "'Work Sans', sans-serif",
     background: "#F7F9FC",
