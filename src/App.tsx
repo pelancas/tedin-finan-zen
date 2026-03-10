@@ -11,6 +11,7 @@ import Consultoria from "./pages/Consultoria";
 import AnaliseCarteira from "./pages/AnaliseCarteira";
 import ConsultoriaFinanceira from "./pages/ConsultoriaFinanceira";
 import Ferramentas from "./pages/Ferramentas";
+import ComparadorRF from "./comparador-renda-fixa.html";
 import Fundos from "./pages/investimentos/Fundos";
 import NotFound from "./pages/NotFound";
 
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/consultoria/consultoriafinanceira" element={<ConsultoriaFinanceira />} />
           <Route path="/ferramentas" element={<Ferramentas />} />
           <Route path="/ferramentas/:tool" element={<Ferramentas />} />
+          <Route path="/ferramentas/comparadorrf" element={<ComparadorRF />} />
           <Route path="/investimentos/fundos" element={<Fundos />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
