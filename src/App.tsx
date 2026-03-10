@@ -11,7 +11,7 @@ import Consultoria from "./pages/Consultoria";
 import AnaliseCarteira from "./pages/AnaliseCarteira";
 import ConsultoriaFinanceira from "./pages/ConsultoriaFinanceira";
 import Ferramentas from "./pages/Ferramentas";
-import ComparadorRF from "./comparador-renda-fixa.html";
+import ComparadorRF from "./comparador-renda-fixa";
 import Fundos from "./pages/investimentos/Fundos";
 import NotFound from "./pages/NotFound";
 
