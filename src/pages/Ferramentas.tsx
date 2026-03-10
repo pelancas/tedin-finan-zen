@@ -24,7 +24,6 @@ const toolsMap: Record<string, ToolConfig> = {
     type: "iframe",
     src: "/comparador-renda-fixa.html",
     title: "Comparador de Renda Fixa",
-    minHeight: "900px",
   },
 };
 
