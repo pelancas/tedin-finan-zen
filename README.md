@@ -37,10 +37,10 @@ npm run dev
 ```
 
 Cores:
-#1daf66 Principal
-#FFA726 Secundaria
-#1A2E35 
+#FFA726
+#1A2E35
 #0F2A2A
+#1daf66
 #FFFDF5
 
 Fonte:
