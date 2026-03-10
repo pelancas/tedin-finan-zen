@@ -13,9 +13,8 @@ const toolsMap: Record<string, { src: string; title: string; minHeight: string }
     minHeight: "900px",
   },
   "renda-fixa": {
-    src: "/comparador-renda-fixa.html",
+    component: lazy(() => import("@/tools/ComparadorRF")),
     title: "Comparador de Renda Fixa",
-    minHeight: "900px",
   },
 };
 
