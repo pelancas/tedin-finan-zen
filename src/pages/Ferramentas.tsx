@@ -6,7 +6,7 @@ const CalculadoraFinanceira = lazy(() => import("@/tools/CalculadoraFinanceira")
 
 type ToolConfig =
   | { type: "component"; component: React.LazyExoticComponent<ComponentType<any>>; title: string }
-  | { type: "iframe"; src: string; title: string; minHeight: string };
+  | { type: "iframe"; src: string; title: string; minHeight?: string };
 
 const toolsMap: Record<string, ToolConfig> = {
   aposentadoria: {
