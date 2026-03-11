@@ -348,20 +348,6 @@ export function Header() {
               Consultoria
             </Link>
 
-            {/* Mobile Sobre */}
-            <Link
-              to="/sobre"
-              onClick={closeMobile}
-              className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
-                location.pathname === "/sobre"
-                  ? "bg-accent text-accent-foreground"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              )}
-            >
-              <Info className="h-5 w-5" />
-              Sobre
-            </Link>
           </div>
         </nav>
       )}
