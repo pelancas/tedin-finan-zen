@@ -25,7 +25,7 @@ const rendaFixaItems = [
   { name: "Guias", href: "/investimentos/renda-fixa/guias" },
 ];
 
-const sobreItem = { name: "Sobre", href: "/sobre", icon: Info };
+
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
