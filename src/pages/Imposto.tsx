@@ -367,38 +367,7 @@ const Imposto = () => {
         {/* ══════════════════════════════════════════
             PARA QUEM É
         ══════════════════════════════════════════ */}
-        <section style={{ backgroundColor: C.white, padding: "88px 24px", borderTop: `1px solid ${C.accentDark}10` }}>
-          <div style={inner}>
-            <h2 style={{ margin: "0 0 12px", fontSize: 34, fontWeight: 800, color: C.accentDeep, letterSpacing: "-0.5px" }}>
-              Para quem é essa planilha?
-            </h2>
-            <p style={{ margin: "0 0 44px", fontSize: 16, color: `${C.accentDark}90`, lineHeight: 1.7, maxWidth: 640 }}>
-              Ideal para quem investe em{" "}
-              <strong style={{ color: C.accentDeep }}>qualquer um dos produtos abaixo</strong>,
-              mesmo que tenha poucos valores ou poucas operações:
-            </p>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 32 }}>
-              {INVESTMENT_TYPES.map(t => (
-                <div key={t} style={{
-                  display: "flex", alignItems: "center", gap: 10,
-                  padding: "13px 16px", borderRadius: 12,
-                  border: `1px solid ${C.accentDark}12`,
-                  backgroundColor: C.bgLight,
-                }}>
-                  <CheckCircle size={14} color={C.primary} style={{ flexShrink: 0 }} />
-                  <span style={{ fontSize: 13, fontWeight: 500, color: C.accentDark }}>{t}</span>
-                </div>
-              ))}
-            </div>
-
-            <p style={{ margin: 0, fontSize: 15, color: `${C.accentDark}90` }}>
-              Se você investe em{" "}
-              <strong style={{ color: C.accentDeep }}>mais de um tipo de produto</strong>,
-              a planilha é ainda mais importante.
-            </p>
-          </div>
-        </section>
 
         {/* ══════════════════════════════════════════
             MATERIAIS DE APOIO
