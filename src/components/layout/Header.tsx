@@ -201,19 +201,6 @@ export function Header() {
             Consultoria
           </Link>
 
-          {/* Sobre */}
-          <Link
-            to={sobreItem.href}
-            className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
-              location.pathname === sobreItem.href
-                ? "bg-accent text-accent-foreground"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted"
-            )}
-          >
-            <Info className="h-4 w-4" />
-            {sobreItem.name}
-          </Link>
         </nav>
 
         {/* Mobile Menu Button */}
