@@ -303,7 +303,7 @@ const ComparadorRendaFixa = () => {
       {/* ── Seção 1 — Configurações ── */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-4xl mx-auto  min-h-screen">
 
             {/* Header */}
             <div className="text-center mb-12">
