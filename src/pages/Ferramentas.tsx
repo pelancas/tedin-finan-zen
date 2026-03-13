@@ -55,11 +55,7 @@ const Ferramentas = () => {
                 src={current.src}
                 title={current.title}
                 className="w-full border-0"
-                onLoad={(e) => {
-                  const iframe = e.target;
-                  iframe.style.height =
-                    iframe.contentWindow.document.body.scrollHeight + "px";
-                }}
+                style={{ minHeight: current.minHeight || "600px" }}
               />
             )}
           </Suspense>

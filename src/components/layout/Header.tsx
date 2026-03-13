@@ -143,6 +143,81 @@ export function Header() {
         </Button>
       </div>
 
+      {/* Desktop Mega Menu Panels */}
+      {planejamentoOpen && (
+        <div className="hidden md:block absolute left-0 right-0 top-full border-b border-border bg-card shadow-lg z-40">
+          <div className="container py-6">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">Planejamento</h3>
+            <div className="flex flex-col gap-1">
+              {planejamentoItems.map((item) => (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  onClick={() => setPlanejamentoOpen(false)}
+                  className={cn(
+                    "text-sm py-1.5 transition-colors hover:text-primary",
+                    location.pathname === item.href
+                      ? "text-primary font-medium"
+                      : "text-muted-foreground"
+                  )}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {investimentosOpen && (
+        <div className="hidden md:block absolute left-0 right-0 top-full border-b border-border bg-card shadow-lg z-40">
+          <div className="container py-6">
+            <div className="grid grid-cols-2 gap-12">
+              <div>
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">Renda Fixa</h3>
+                <div className="flex flex-col gap-1">
+                  {rendaFixaItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      onClick={() => { setInvestimentosOpen(false); setRendaFixaOpen(false); }}
+                      className={cn(
+                        "text-sm py-1.5 transition-colors hover:text-primary",
+                        location.pathname === item.href
+                          ? "text-primary font-medium"
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">Outros</h3>
+                <div className="flex flex-col gap-1">
+                  {investimentosItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      onClick={() => setInvestimentosOpen(false)}
+                      className={cn(
+                        "text-sm py-1.5 transition-colors hover:text-primary",
+                        location.pathname === item.href
+                          ? "text-primary font-medium"
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
         <nav className="md:hidden border-t border-border bg-card p-4">
