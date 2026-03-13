@@ -59,7 +59,7 @@ export function Header() {
   const closeMobile = () => setMobileMenuOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
+    <header className="sticky top-0 z-50 w-full bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60 border-b border-border relative">
       <div className="container flex h-20 items-center justify-between">
         <Link to="/" className="flex items-center">
           <img src={Logo} alt="Logo" className="h-14" />
