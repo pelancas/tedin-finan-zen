@@ -35,9 +35,29 @@ export function Header() {
   const [mobileInvestimentosOpen, setMobileInvestimentosOpen] = useState(false);
   const [rendaFixaOpen, setRendaFixaOpen] = useState(false);
   const [mobileRendaFixaOpen, setMobileRendaFixaOpen] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const lastScrollY = useRef(0);
   const planejamentoRef = useRef<HTMLDivElement>(null);
   const investimentosRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY < 10) {
+        setHeaderVisible(true);
+      } else if (currentScrollY > lastScrollY.current) {
+        setHeaderVisible(false);
+        setPlanejamentoOpen(false);
+        setInvestimentosOpen(false);
+      } else {
+        setHeaderVisible(true);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -59,7 +79,10 @@ export function Header() {
   const closeMobile = () => setMobileMenuOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60 border-b border-border relative">
+    <header className={cn(
+      "sticky top-0 z-50 w-full bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60 border-b border-border relative transition-transform duration-300",
+      !headerVisible && "-translate-y-full"
+    )}>
       <div className="container flex h-20 items-center justify-between">
         <Link to="/" className="flex items-center">
           <img src={Logo} alt="Logo" className="h-14" />
