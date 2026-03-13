@@ -54,8 +54,12 @@ const Ferramentas = () => {
               <iframe
                 src={current.src}
                 title={current.title}
-                className="w-full min-h-screen overflow-visible"
-                style={{ minHeight: current.minHeight }}
+                className="w-full border-0"
+                onLoad={(e) => {
+                  const iframe = e.target;
+                  iframe.style.height =
+                    iframe.contentWindow.document.body.scrollHeight + "px";
+                }}
               />
             )}
           </Suspense>
