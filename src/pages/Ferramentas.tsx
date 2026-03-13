@@ -54,7 +54,7 @@ const Ferramentas = () => {
               <iframe
                 src={current.src}
                 title={current.title}
-                className="w-full border-0"
+                className="w-full min-h-screen overflow-visible"
                 style={{ minHeight: current.minHeight }}
               />
             )}
