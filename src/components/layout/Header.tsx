@@ -59,128 +59,57 @@ export function Header() {
   const closeMobile = () => setMobileMenuOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
+    <header className="sticky top-0 z-50 w-full bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60 border-b border-border relative">
       <div className="container flex h-20 items-center justify-between">
         <Link to="/" className="flex items-center">
           <img src={Logo} alt="Logo" className="h-14" />
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-1">
-          {/* Planejamento Dropdown */}
-          <div className="relative" ref={planejamentoRef}>
+        <nav className="hidden md:flex items-center gap-0 h-full">
+          {/* Planejamento */}
+          <div ref={planejamentoRef}>
             <button
-              onClick={() => setPlanejamentoOpen(!planejamentoOpen)}
+              onClick={() => { setPlanejamentoOpen(!planejamentoOpen); setInvestimentosOpen(false); setRendaFixaOpen(false); }}
               className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                "flex items-center gap-2 px-5 h-20 text-sm font-medium transition-colors border-b-2",
                 isPlanejamentoActive
-                  ? "bg-accent text-accent-foreground"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  ? "border-primary text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
               )}
             >
-              <Calculator className="h-5 w-5" />
+              <Calculator className="h-4 w-4" />
               Planejamento
               <ChevronDown className={cn("h-3 w-3 transition-transform", planejamentoOpen && "rotate-180")} />
             </button>
-            {planejamentoOpen && (
-              <div className="absolute left-0 top-full mt-2 w-56 rounded-lg border border-border bg-card shadow-lg py-1 z-50">
-                {planejamentoItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    to={item.href}
-                    onClick={() => setPlanejamentoOpen(false)}
-                    className={cn(
-                      "block px-4 py-2.5 text-sm transition-colors",
-                      location.pathname === item.href
-                        ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                    )}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            )}
           </div>
 
-          {/* Investimentos Dropdown */}
-          <div className="relative" ref={investimentosRef}>
+          {/* Investimentos */}
+          <div ref={investimentosRef}>
             <button
-              onClick={() => { setInvestimentosOpen(!investimentosOpen); setRendaFixaOpen(false); }}
+              onClick={() => { setInvestimentosOpen(!investimentosOpen); setPlanejamentoOpen(false); setRendaFixaOpen(false); }}
               className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                "flex items-center gap-2 px-5 h-20 text-sm font-medium transition-colors border-b-2",
                 isInvestimentosActive
-                  ? "bg-accent text-accent-foreground"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  ? "border-primary text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
               )}
             >
-              <TrendingUp className="h-5 w-5" />
+              <TrendingUp className="h-4 w-4" />
               Investimentos
               <ChevronDown className={cn("h-3 w-3 transition-transform", investimentosOpen && "rotate-180")} />
             </button>
-            {investimentosOpen && (
-              <div className="absolute left-0 top-full mt-2 w-56 rounded-lg border border-border bg-card shadow-lg py-1 z-50">
-                {/* Renda Fixa with sub-dropdown */}
-                <div className="relative">
-                  <button
-                    onClick={() => setRendaFixaOpen(!rendaFixaOpen)}
-                    className={cn(
-                      "flex items-center justify-between w-full px-4 py-2.5 text-sm transition-colors",
-                      location.pathname.startsWith("/investimentos/renda-fixa")
-                        ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                    )}
-                  >
-                    Renda Fixa
-                    <ChevronDown className={cn("h-3 w-3 transition-transform", rendaFixaOpen && "rotate-180")} />
-                  </button>
-                  {rendaFixaOpen && (
-                    <div className="ml-4 border-l border-border">
-                      {rendaFixaItems.map((item) => (
-                        <Link
-                          key={item.href}
-                          to={item.href}
-                          onClick={() => { setInvestimentosOpen(false); setRendaFixaOpen(false); }}
-                          className={cn(
-                            "block px-4 py-2 text-sm transition-colors",
-                            location.pathname === item.href
-                              ? "bg-accent text-accent-foreground"
-                              : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                          )}
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                {investimentosItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    to={item.href}
-                    onClick={() => setInvestimentosOpen(false)}
-                    className={cn(
-                      "block px-4 py-2.5 text-sm transition-colors",
-                      location.pathname === item.href
-                        ? "bg-accent text-accent-foreground"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                    )}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            )}
           </div>
 
           {/* Impostos */}
           <Link
             to="/imposto"
+            onClick={() => { setPlanejamentoOpen(false); setInvestimentosOpen(false); }}
             className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+              "flex items-center gap-2 px-5 h-20 text-sm font-medium transition-colors border-b-2",
               location.pathname === "/imposto"
-                ? "bg-accent text-accent-foreground"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                ? "border-primary text-foreground"
+                : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
             )}
           >
             <img src={iconLeao} alt="Impostos" className="h-5 w-5 object-contain" />
@@ -190,17 +119,17 @@ export function Header() {
           {/* Consultoria */}
           <Link
             to="/consultoria"
+            onClick={() => { setPlanejamentoOpen(false); setInvestimentosOpen(false); }}
             className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+              "flex items-center gap-2 px-5 h-20 text-sm font-medium transition-colors border-b-2",
               location.pathname.startsWith("/consultoria")
-                ? "bg-accent text-accent-foreground"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                ? "border-primary text-foreground"
+                : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
             )}
           >
             <img src={iconConsultoria} alt="Consultoria" className="h-5 w-5 object-contain" />
             Consultoria
           </Link>
-
         </nav>
 
         {/* Mobile Menu Button */}
@@ -213,6 +142,81 @@ export function Header() {
           {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </Button>
       </div>
+
+      {/* Desktop Mega Menu Panels */}
+      {planejamentoOpen && (
+        <div className="hidden md:block absolute left-0 right-0 top-full border-b border-border bg-card shadow-lg z-40">
+          <div className="container py-6">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">Planejamento</h3>
+            <div className="flex flex-col gap-1">
+              {planejamentoItems.map((item) => (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  onClick={() => setPlanejamentoOpen(false)}
+                  className={cn(
+                    "text-sm py-1.5 transition-colors hover:text-primary",
+                    location.pathname === item.href
+                      ? "text-primary font-medium"
+                      : "text-muted-foreground"
+                  )}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {investimentosOpen && (
+        <div className="hidden md:block absolute left-0 right-0 top-full border-b border-border bg-card shadow-lg z-40">
+          <div className="container py-6">
+            <div className="grid grid-cols-2 gap-12">
+              <div>
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">Renda Fixa</h3>
+                <div className="flex flex-col gap-1">
+                  {rendaFixaItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      onClick={() => { setInvestimentosOpen(false); setRendaFixaOpen(false); }}
+                      className={cn(
+                        "text-sm py-1.5 transition-colors hover:text-primary",
+                        location.pathname === item.href
+                          ? "text-primary font-medium"
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">Outros</h3>
+                <div className="flex flex-col gap-1">
+                  {investimentosItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      onClick={() => setInvestimentosOpen(false)}
+                      className={cn(
+                        "text-sm py-1.5 transition-colors hover:text-primary",
+                        location.pathname === item.href
+                          ? "text-primary font-medium"
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
