@@ -22,7 +22,7 @@ const investimentosItems = [
 
 const rendaFixaItems = [
   { name: "Comparador de renda fixa", href: "/ferramentas/renda-fixa" },
-  { name: "Guias", href: "/investimentos/renda-fixa/guias" },
+  { name: "Guias", href: "/investimentos/rendafixa" },
 ];
 
 

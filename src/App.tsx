@@ -12,6 +12,9 @@ import AnaliseCarteira from "./pages/AnaliseCarteira";
 import ConsultoriaFinanceira from "./pages/ConsultoriaFinanceira";
 import Ferramentas from "./pages/Ferramentas";
 import Fundos from "./pages/investimentos/Fundos";
+import RendaFixa from "./pages/investimentos/RendaFixa";
+import FII from "./pages/investimentos/FII";
+import Acoes from "./pages/investimentos/Acoes";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +36,9 @@ const App = () => (
           <Route path="/ferramentas" element={<Ferramentas />} />
           <Route path="/ferramentas/:tool" element={<Ferramentas />} />
           <Route path="/investimentos/fundos" element={<Fundos />} />
+          <Route path="/investimentos/rendafixa" element={<RendaFixa />} />
+          <Route path="/investimentos/fii" element={<FII />} />
+          <Route path="/investimentos/acoes" element={<Acoes />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
