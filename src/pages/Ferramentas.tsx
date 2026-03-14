@@ -4,6 +4,7 @@ import { lazy, Suspense, ComponentType } from "react";
 
 const CalculadoraFinanceira = lazy(() => import("@/tools/CalculadoraFinanceira"));
 const CalculadoraMetasFinanceiras = lazy(() => import("@/tools/CalculadoraMetasFinanceiras"));
+const CalculadoraMilhao = lazy(() => import("@/tools/CalculadoraMilhao"));
 
 type ToolConfig =
   | { type: "component"; component: React.LazyExoticComponent<ComponentType<any>>; title: string }
@@ -19,6 +20,11 @@ const toolsMap: Record<string, ToolConfig> = {
     type: "component",
     component: CalculadoraMetasFinanceiras,
     title: "Metas Financeiras",
+  },
+  "primeiro-milhao": {
+    type: "component",
+    component: CalculadoraMilhao,
+    title: "Calculadora do Primeiro Milhão",
   },
   "renda-fixa": {
     type: "iframe",
