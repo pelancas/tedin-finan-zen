@@ -55,32 +55,7 @@ const Index = () => {
     <Layout>     
       <Hero />
       
-      {services.map((service) => (
-        <ServiceSection 
-          key={service.href} 
-          {...service}
-        />
-      ))}
-      
-      <section className="py-16 md:py-24">
-        <div className="container">
-          <div className="bg-primary rounded-2xl p-8 md:p-12 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-primary-foreground mb-4">
-              Pronto para organizar sua vida financeira?
-            </h2>
-            <p className="text-primary-foreground/80 mb-6 max-w-xl mx-auto">
-              Milhares de pessoas já simplificaram suas finanças com a TEdin. 
-              Você pode ser a próxima.
-            </p>
-            <a 
-              href="/sobre" 
-              className="inline-flex items-center justify-center rounded-lg bg-secondary px-6 py-3 text-sm font-medium text-secondary-foreground hover:opacity-90 transition-opacity"
-            >
-              Fale com a gente
-            </a>
-          </div>
-        </div>
-      </section>
+
     </Layout>
   );
 };
