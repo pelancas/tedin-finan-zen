@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Calculadora de Metas Financeiras | InvestTax</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1daf66",
+                        "secondary": "#FFA726",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#0F2A2A",
+                        "card-dark": "#1A2E35",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Work Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<!-- Header -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-card-dark px-6 md:px-20 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-tight">InvestTax</h2>
+</div>
+<nav class="hidden lg:flex items-center gap-9">
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Início</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Investimentos</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Impostos</a>
+<a class="text-primary text-sm font-semibold border-b-2 border-primary" href="#">Ferramentas</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<label class="hidden md:flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full overflow-hidden border border-slate-200 dark:border-slate-700">
+<div class="text-slate-500 bg-slate-50 dark:bg-slate-800 flex items-center justify-center px-3">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="w-full min-w-0 flex-1 border-none bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-0 px-2 text-sm" placeholder="Buscar ferramenta..."/>
+</div>
+</label>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="User profile picture showing a professional man" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCIk-YoI_eavYXsQWXi8U974hwumOfoWRhlUlSRYi170Gzo5fXPZ1BUxLnOnxDSx5qN46JyyZZPd_jsLuvecQb8Py5mwJ7M_foomKGid6Tf8G37OpFszZCL3xPGDo0A2nOErZQM_YZoCURX2nWRWhfdunlc_-BEfMnQks8STxSoQdjzlIbKJNBdSPclNYiqV5KaVO_icoohffsj3kKi43Up-U3G5t_jaNrM5ciX7Rir_U2IjglBGgfNbiLEvtD-PCYsCHoX7Ss4q1O3");'></div>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="bg-background-dark py-12 md:py-20 px-6 md:px-20 text-white relative overflow-hidden">
+<div class="max-w-6xl mx-auto relative z-10">
+<nav class="flex gap-2 mb-6 text-slate-400 text-sm font-medium">
+<a class="hover:text-primary" href="#">Home</a>
+<span>/</span>
+<a class="hover:text-primary" href="#">Ferramentas</a>
+<span>/</span>
+<span class="text-white">Calculadora</span>
+</nav>
+<h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tight mb-4">
+                    Calculadora de <span class="text-primary">Metas Financeiras</span>
+</h1>
+<p class="text-slate-300 text-lg md:text-xl max-w-2xl font-light">
+                    Planeje seu futuro com precisão. Defina seus objetivos e descubra o caminho exato para a sua liberdade financeira através de cálculos baseados em rendimentos reais.
+                </p>
+</div>
+<!-- Decorative background element -->
+<div class="absolute right-0 top-0 w-1/3 h-full opacity-10 pointer-events-none">
+<svg class="h-full w-full" viewbox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<path d="M44.7,-76.4C58.3,-69.2,70.1,-57.4,77.6,-43.3C85.2,-29.2,88.5,-12.8,87.3,3.3C86.1,19.4,80.4,35.2,70.9,48.2C61.3,61.2,47.9,71.4,33.1,77.4C18.3,83.4,2.2,85.1,-13.7,81.9C-29.5,78.7,-45.1,70.5,-57.8,59.3C-70.5,48.1,-80.4,33.9,-84.6,18.5C-88.7,3,-87.1,-13.7,-80.3,-28.4C-73.6,-43.1,-61.7,-55.8,-48.2,-63C-34.7,-70.2,-19.5,-71.9,-2.4,-67.7C14.7,-63.5,29.3,-53.4,44.7,-76.4Z" fill="#1daf66" transform="translate(100 100)"></path>
+</svg>
+</div>
+</section>
+<!-- Main Content Area -->
+<main class="max-w-7xl mx-auto px-6 md:px-20 py-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Left Column: Calculator -->
+<div class="lg:col-span-8 flex flex-col gap-8">
+<div class="flex flex-col gap-3">
+<h2 class="text-slate-900 dark:text-white text-3xl font-bold leading-tight flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl">savings</span>
+                        Quanto preciso poupar por mês?
+                    </h2>
+<p class="text-slate-600 dark:text-slate-400 text-lg">Diga-nos quanto você quer guardar e quando quer atingir sua meta.</p>
+</div>
+<div class="bg-white dark:bg-card-dark p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col gap-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Input 1 -->
+<div class="flex flex-col gap-2">
+<label class="text-slate-700 dark:text-slate-300 text-sm font-semibold">Meta de Economia (R$)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium">R$</span>
+<input class="w-full pl-12 pr-4 py-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Ex: 50.000,00" type="text"/>
+</div>
+</div>
+<!-- Input 2 -->
+<div class="flex flex-col gap-2">
+<label class="text-slate-700 dark:text-slate-300 text-sm font-semibold">Saldo Inicial (R$)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium">R$</span>
+<input class="w-full pl-12 pr-4 py-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Ex: 5.000,00" type="text"/>
+</div>
+</div>
+<!-- Input 3 -->
+<div class="flex flex-col gap-2">
+<label class="text-slate-700 dark:text-slate-300 text-sm font-semibold">Prazo para Crescer</label>
+<div class="flex gap-2">
+<input class="flex-1 px-4 py-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Valor" type="number"/>
+<select class="w-1/3 px-4 py-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
+<option>Anos</option>
+<option>Meses</option>
+</select>
+</div>
+</div>
+<!-- Input 4 -->
+<div class="flex flex-col gap-2">
+<label class="text-slate-700 dark:text-slate-300 text-sm font-semibold">Taxa de Juros Estimada (% ao ano)</label>
+<div class="relative">
+<input class="w-full px-4 py-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Ex: 10,5" type="text"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium">%</span>
+</div>
+</div>
+</div>
+<button class="bg-primary hover:bg-opacity-90 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all flex items-center justify-center gap-2 group">
+                        Calcular Meta
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+<!-- Visual Results Preview Placeholder -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="p-6 bg-white dark:bg-card-dark rounded-xl border-l-4 border-primary shadow-sm">
+<p class="text-sm text-slate-500 uppercase font-bold mb-1">Total a Poupar</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white">R$ 0,00</p>
+</div>
+<div class="p-6 bg-white dark:bg-card-dark rounded-xl border-l-4 border-secondary shadow-sm">
+<p class="text-sm text-slate-500 uppercase font-bold mb-1">Parcela Mensal</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white">R$ 0,00</p>
+</div>
+<div class="p-6 bg-white dark:bg-card-dark rounded-xl border-l-4 border-slate-400 shadow-sm">
+<p class="text-sm text-slate-500 uppercase font-bold mb-1">Juros Ganhos</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white">R$ 0,00</p>
+</div>
+</div>
+</div>
+<!-- Sidebar -->
+<aside class="lg:col-span-4 flex flex-col gap-8">
+<!-- Promo Card -->
+<div class="relative rounded-xl overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark to-transparent z-10"></div>
+<img class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Stacked gold coins with a small green plant growing on top" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiIAZZ1_Gx_i7qJnBZuqdTW1gDH3BRnNYO_BEfyALedW6hdQWTMrCxvimHAEd8ExDNnqlKeuvR-2F8QjxPY9Dqa6TRS04rbJ4IHfWuEKjtYGv7TfDybTd72owjQcX4oPr4yCEaVGqfCSdYjZuiJMMUjzND-N92XHg60Wl0AW6pVWYbkVseir6LsmR7lMTIUZUghLYar5-r4fWxk-6_SdT0ZodH-4-NK0c10UUt2AWOvWW4ONhyInd5nJ0-mswYeBWEQUOaxjfpSaAH"/>
+<div class="absolute bottom-0 left-0 p-6 z-20">
+<span class="bg-secondary text-white text-[10px] font-bold px-2 py-1 rounded uppercase mb-2 inline-block">Destaque</span>
+<h3 class="text-white text-xl font-bold mb-2">Guia de Investimentos 2024</h3>
+<p class="text-slate-300 text-sm mb-4">Descubra as melhores taxas para seu perfil.</p>
+<a class="text-primary font-bold text-sm flex items-center gap-1 hover:underline" href="#">
+                            Saiba mais <span class="material-symbols-outlined text-sm">open_in_new</span>
+</a>
+</div>
+</div>
+<!-- Resources Links -->
+<div class="bg-white dark:bg-card-dark p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+<h3 class="text-slate-900 dark:text-white text-xl font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">menu_book</span>
+                        Recursos Úteis
+                    </h3>
+<ul class="flex flex-col gap-4">
+<li>
+<a class="group flex items-start gap-3 text-slate-700 dark:text-slate-300 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary">article</span>
+<div>
+<p class="font-medium text-sm">28 Formas de Economizar</p>
+<p class="text-xs text-slate-500">Pequenas mudanças, grandes resultados.</p>
+</div>
+</a>
+</li>
+<hr class="border-slate-100 dark:border-slate-700"/>
+<li>
+<a class="group flex items-start gap-3 text-slate-700 dark:text-slate-300 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary">query_stats</span>
+<div>
+<p class="font-medium text-sm">Controle de Gastos Mensais</p>
+<p class="text-xs text-slate-500">Planilha gratuita para download.</p>
+</div>
+</a>
+</li>
+<hr class="border-slate-100 dark:border-slate-700"/>
+<li>
+<a class="group flex items-start gap-3 text-slate-700 dark:text-slate-300 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary">account_balance</span>
+<div>
+<p class="font-medium text-sm">Renda Fixa vs Variável</p>
+<p class="text-xs text-slate-500">Qual o melhor para sua meta?</p>
+</div>
+</a>
+</li>
+<hr class="border-slate-100 dark:border-slate-700"/>
+<li>
+<a class="group flex items-start gap-3 text-slate-700 dark:text-slate-300 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary">calculate</span>
+<div>
+<p class="font-medium text-sm">Calculadora de Juros Compostos</p>
+<p class="text-xs text-slate-500">O poder do tempo ao seu favor.</p>
+</div>
+</a>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+<!-- Footer -->
+<footer class="bg-white dark:bg-card-dark border-t border-slate-200 dark:border-slate-800 mt-12 py-12 px-6 md:px-20">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-8">
+<div class="flex flex-col gap-4 max-w-xs">
+<div class="flex items-center gap-3 text-primary">
+<div class="size-6">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold">InvestTax</h2>
+</div>
+<p class="text-slate-500 text-sm leading-relaxed">
+                        Sua plataforma completa para gestão de investimentos e planejamento tributário inteligente.
+                    </p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-8">
+<div class="flex flex-col gap-3">
+<h4 class="font-bold text-slate-900 dark:text-white">Ferramentas</h4>
+<a class="text-sm text-slate-500 hover:text-primary" href="#">Calculadora</a>
+<a class="text-sm text-slate-500 hover:text-primary" href="#">Planejamento</a>
+<a class="text-sm text-slate-500 hover:text-primary" href="#">Simuladores</a>
+</div>
+<div class="flex flex-col gap-3">
+<h4 class="font-bold text-slate-900 dark:text-white">Empresa</h4>
+<a class="text-sm text-slate-500 hover:text-primary" href="#">Sobre Nós</a>
+<a class="text-sm text-slate-500 hover:text-primary" href="#">Carreiras</a>
+<a class="text-sm text-slate-500 hover:text-primary" href="#">Contato</a>
+</div>
+<div class="flex flex-col gap-3">
+<h4 class="font-bold text-slate-900 dark:text-white">Redes Sociais</h4>
+<div class="flex gap-4">
+<a class="text-slate-400 hover:text-primary" href="#"><span class="material-symbols-outlined">share</span></a>
+<a class="text-slate-400 hover:text-primary" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-slate-400 hover:text-primary" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+</div>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-slate-400 text-xs text-center md:text-left">
+                    © 2024 InvestTax - Todos os direitos reservados. Investir envolve riscos. Consulte sempre um profissional.
+                </p>
+<div class="flex gap-6 text-xs text-slate-400">
+<a class="hover:text-primary" href="#">Privacidade</a>
+<a class="hover:text-primary" href="#">Termos de Uso</a>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

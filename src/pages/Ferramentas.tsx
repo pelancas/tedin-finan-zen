@@ -16,9 +16,9 @@ const toolsMap: Record<string, ToolConfig> = {
     title: "Calculadora Financeira",
   },
   metas: {
-    type: "component",
-    component: MetasFinanceiras,
-    title: "Calculadora Financeira",
+    type: "iframe",
+    src: "tools/MetasFinanceiras.html",
+    title: "Metas Financeiras",
   },
   "renda-fixa": {
     type: "iframe",
