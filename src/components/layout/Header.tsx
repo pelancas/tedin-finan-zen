@@ -101,6 +101,7 @@ export function Header() {
                   : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
               )}
             >
+              <Calculator className="h-4 w-4" />
               Planejamento
               <ChevronDown className={cn("h-3 w-3 transition-transform", planejamentoOpen && "rotate-180")} />
             </button>
@@ -143,6 +144,7 @@ export function Header() {
                   : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
               )}
             >
+              <TrendingUp className="h-4 w-4" />
               Investimentos
               <ChevronDown className={cn("h-3 w-3 transition-transform", investimentosOpen && "rotate-180")} />
             </button>
