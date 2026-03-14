@@ -228,7 +228,7 @@ export function Header() {
             )}
           >
             <img src={iconConsultoria} alt="Consultoria" className="h-5 w-5 object-contain" />
-            Consultoria
+            Orienta +
           </Link>
         </nav>
 
