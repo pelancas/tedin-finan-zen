@@ -118,9 +118,9 @@ export default function CalculadoraMetasFinanceiras() {
 
         .vt-root {
           font-family: 'Work Sans', sans-serif;
-          --vt-dark:    #FFA726;
+          --vt-dark:    #1daf66;
           --vt-darker:  #1A2E35;
-          --vt-mid:     #1daf66;
+          --vt-mid:     #FFA726;
           --vt-light:   #FFFDF5;
           --vt-cream:   #FFFDF5;
         }
