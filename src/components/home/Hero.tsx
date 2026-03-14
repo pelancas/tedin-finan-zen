@@ -7,6 +7,8 @@ export function Hero() {
   return <section className="relative py-20 md:py-32 overflow-hidden">
       {/* Background image */}
       <>
+
+      
   <meta charSet="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>Orienta+ | Consultoria Financeira Especializada</title>
