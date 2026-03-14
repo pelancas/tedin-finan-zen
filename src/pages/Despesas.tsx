@@ -60,324 +60,397 @@ const Despesas = () => {
     <Layout>
       {/* Seção 1 — Hero */}
 
-      {/* Seção 2 — Modelo TEDin */}
-      <section className="py-16 md:py-24 bg-background">
-        <div className="container">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-6">
-                <Target className="h-8 w-8 text-primary-foreground" />
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Modelo TEDin
-              </h2>
-              <p className="text-lg font-medium text-foreground mb-4">
-                Planejamento inteligente com controle real do dinheiro
-              </p>
-              <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-                O Modelo TEDin é um método híbrido de organização financeira que une o planejamento completo das despesas (orçamento base zero) com a separação prática do dinheiro (técnica do envelope).
-              </p>
-              <p className="text-muted-foreground font-medium max-w-2xl mx-auto mb-10">
-                O objetivo é simples: dar destino a cada real e evitar que o dinheiro se misture.
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
-              {modeloBeneficios.map((beneficio) => (
-                <div key={beneficio} className="flex items-start gap-3 p-4 rounded-xl bg-accent/50 border border-border">
-                  <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-foreground text-sm">{beneficio}</span>
-                </div>
-              ))}
-            </div>
+      <main>
+      {/* Hero Section */}
+      <section className="max-w-7xl mx-auto px-6 py-20 flex flex-col md:flex-row items-center gap-16">
+        <div className="flex-1 flex flex-col gap-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider w-fit">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
+            </span>
+            Método Exclusivo
+          </div>
+          <h1 className="text-slate-900 text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight">
+            Planejamento inteligente com
+            <span className="text-primary">
+              controle real
+            </span>
+            do dinheiro
+          </h1>
+          <p className="text-slate-600 text-xl leading-relaxed max-w-2xl">
+            Conheça o método híbrido que une
+            <span className="text-primary font-bold">
+              Zero Base Budget
+            </span>
+            e a
+            <span className="text-secondary font-bold">
+              Técnica dos Envelopes
+            </span>
+            para transformar sua vida financeira de forma definitiva.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <button className="bg-primary hover:bg-primary/90 text-white font-bold px-10 py-5 rounded-2xl shadow-xl shadow-primary/20 flex items-center gap-3 text-lg group transition-all">
+              Começar Planejamento
+              <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
+                arrow_forward
+              </span>
+            </button>
+            <button className="bg-white border-2 border-slate-200 hover:border-primary/30 text-slate-700 font-bold px-10 py-5 rounded-2xl flex items-center gap-3 text-lg transition-all">
+              Ver Planilha Grátis
+            </button>
           </div>
         </div>
-      </section>
-
-      {/* Seção 3 — O princípio do Modelo TEDin */}
-      <section className="py-16 md:py-24 bg-accent/20">
-        <div className="container">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                O princípio do Modelo TEDin
-              </h2>
-              <p className="text-lg text-primary font-semibold mb-6">
-                Todo dinheiro precisa de um destino definido e separado.
-              </p>
-              <p className="text-muted-foreground mb-2">Isso significa que:</p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-4 mb-12">
-              <Card className="border-border text-center">
-                <CardContent className="pt-6">
-                  <p className="text-foreground font-medium">Nenhum valor fica "sem função"</p>
-                </CardContent>
-              </Card>
-              <Card className="border-border text-center">
-                <CardContent className="pt-6">
-                  <p className="text-foreground font-medium">Poupar e investir fazem parte do planejamento, não do que "sobrar"</p>
-                </CardContent>
-              </Card>
-              <Card className="border-border text-center">
-                <CardContent className="pt-6">
-                  <p className="text-foreground font-medium">Cada categoria tem um limite claro</p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6 mb-12">
-              <Card className="border-border overflow-hidden">
-                <CardHeader>
-                  <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center mb-2">
-                    <Layers className="h-5 w-5 text-primary-foreground" />
-                  </div>
-                  <CardTitle className="text-lg">Planejar</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-muted-foreground">Decidir para onde vai cada real</p>
-                  <div className="rounded-xl overflow-hidden border border-border">
-                    <img src={planilhaImg} alt="Exemplo de planilha de planejamento financeiro" className="w-full h-auto" />
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="border-border overflow-hidden">
-                <CardHeader>
-                  <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center mb-2">
-                    <Banknote className="h-5 w-5 text-primary-foreground" />
-                  </div>
-                  <CardTitle className="text-lg">Separar</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-muted-foreground">Colocar o dinheiro em "envelopes" reais ou digitais</p>
-                  <div className="rounded-xl border border-border p-4 bg-accent/30">
-                    <div className="flex items-center justify-center mb-4">
-                      <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center">
-                        <Wallet className="h-7 w-7 text-primary-foreground" />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      {[
-                        { icon: CreditCard, label: "Dia a dia" },
-                        { icon: Landmark, label: "Contas Fixas" },
-                        { icon: PiggyBank, label: "Reserva" },
-                        { icon: CircleDollarSign, label: "Investimentos" },
-                      ].map((item) => (
-                        <div key={item.label} className="flex items-center gap-2 p-3 rounded-lg bg-background border border-border">
-                          <item.icon className="h-5 w-5 text-primary flex-shrink-0" />
-                          <span className="text-foreground text-sm font-medium">{item.label}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Card className="border-border">
-              <CardHeader>
-                <CardTitle className="text-xl">Como o Modelo TEDin funciona no dia a dia</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {etapaDiaDia.map((passo, index) => (
-                    <div key={index} className="flex gap-4 items-start">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
-                        {index + 1}
-                      </div>
-                      <p className="text-muted-foreground pt-1">{passo}</p>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-foreground font-medium mt-6 text-center border-t border-border pt-6">
-                  O controle deixa de ser apenas "anotação" e passa a ser comportamental.
+        <div className="flex-1 w-full aspect-square md:aspect-[4/5] lg:aspect-square rounded-[2rem] bg-gradient-to-br from-primary/10 via-primary/5 to-transparent flex items-center justify-center border-2 border-primary/10 relative overflow-hidden">
+          <span className="material-symbols-outlined text-primary text-[10rem] opacity-30 select-none">
+            insights
+          </span>
+          <div className="absolute bottom-10 left-10 right-10 bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-white shadow-xl">
+            <div className="flex gap-4">
+              <div className="bg-primary text-white p-3 rounded-lg">
+                <span className="material-symbols-outlined">
+                  trending_up
+                </span>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase">
+                  Crescimento Patrimonial
                 </p>
-              </CardContent>
-            </Card>
+                <p className="text-xl font-black text-slate-900">
+                  +42% no primeiro ano
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
-
-      {/* Seção 4 — Etapa 1: Planejamento */}
-      <section className="py-20 md:py-32 bg-background">
-        <div className="container">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-primary-foreground">1</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Planejamento completo das despesas
-              </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-                Nesta etapa, você lista toda a sua renda e define todos os destinos do dinheiro, até que o saldo planejado seja zero.
-              </p>
-              <p className="text-muted-foreground mb-2">Isso inclui:</p>
+      {/* Principles Banner */}
+      <section className="bg-primary/5 border-y border-primary/10">
+        <div className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center">
+          <div className="flex flex-col gap-4">
+            <span className="text-primary font-bold text-sm uppercase tracking-[0.2em]">
+              Princípio Fundamental
+            </span>
+            <h2 className="text-4xl font-black text-slate-900 leading-tight">
+              Todo dinheiro precisa de um destino definido.
+            </h2>
+          </div>
+          <div className="bg-white p-8 rounded-3xl border border-primary/20 shadow-sm relative">
+            <span className="material-symbols-outlined absolute -top-4 -left-4 bg-primary text-white p-2 rounded-full scale-125">
+              format_quote
+            </span>
+            <p className="italic text-slate-700 text-lg leading-relaxed">
+              "Nenhum valor fica sem função. Se sobrou no planejamento, esse 'sobra' já deve ter um envelope de destino, seja reserva ou investimento."
+            </p>
+          </div>
+        </div>
+      </section>
+      {/* Benefits Grid */}
+      <section className="max-w-7xl mx-auto px-6 py-24">
+        <div className="text-center mb-16">
+          <h3 className="text-3xl font-black text-slate-900 mb-4">
+            Por que usar o Modelo ORIENTA?
+          </h3>
+          <p className="text-slate-500 max-w-xl mx-auto">
+            A estrutura perfeita para quem busca liberdade financeira com responsabilidade e método.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="group flex flex-col gap-6 rounded-[2rem] border border-primary/10 bg-white p-8 hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/5 transition-all">
+            <div className="bg-primary/10 w-14 h-14 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+              <span className="material-symbols-outlined text-3xl">
+                visibility
+              </span>
             </div>
-
-            <div className="grid sm:grid-cols-2 gap-4 mb-10">
-              {etapa1Inclui.map((item) => (
-                <div key={item} className="flex items-start gap-3 p-4 rounded-xl bg-accent/50 border border-border">
-                  <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-foreground text-sm">{item}</span>
+            <div>
+              <h4 className="font-black text-xl mb-2 text-slate-800">
+                Clareza Total
+              </h4>
+              <p className="text-slate-500 leading-relaxed">
+                Tenha visão 360º das suas finanças e saiba exatamente o destino de cada centavo.
+              </p>
+            </div>
+          </div>
+          <div className="group flex flex-col gap-6 rounded-[2rem] border border-secondary/10 bg-white p-8 hover:border-secondary/40 hover:shadow-2xl hover:shadow-secondary/5 transition-all">
+            <div className="bg-secondary/10 w-14 h-14 rounded-2xl flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
+              <span className="material-symbols-outlined text-3xl">
+                shield_with_heart
+              </span>
+            </div>
+            <div>
+              <h4 className="font-black text-xl mb-2 text-slate-800">
+                Menos Impulso
+              </h4>
+              <p className="text-slate-500 leading-relaxed">
+                Limites claros baseados em valores reais que reduzem drasticamente gastos por impulso.
+              </p>
+            </div>
+          </div>
+          <div className="group flex flex-col gap-6 rounded-[2rem] border border-primary/10 bg-white p-8 hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/5 transition-all">
+            <div className="bg-primary/10 w-14 h-14 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+              <span className="material-symbols-outlined text-3xl">
+                savings
+              </span>
+            </div>
+            <div>
+              <h4 className="font-black text-xl mb-2 text-slate-800">
+                Poupe Primeiro
+              </h4>
+              <p className="text-slate-500 leading-relaxed">
+                Priorize seus sonhos separando o consumo dos seus investimentos logo no início do mês.
+              </p>
+            </div>
+          </div>
+          <div className="group flex flex-col gap-6 rounded-[2rem] border border-secondary/10 bg-white p-8 hover:border-secondary/40 hover:shadow-2xl hover:shadow-secondary/5 transition-all">
+            <div className="bg-secondary/10 w-14 h-14 rounded-2xl flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
+              <span className="material-symbols-outlined text-3xl">
+                alt_route
+              </span>
+            </div>
+            <div>
+              <h4 className="font-black text-xl mb-2 text-slate-800">
+                Flexibilidade
+              </h4>
+              <p className="text-slate-500 leading-relaxed">
+                Um sistema robusto mas adaptável que evolui conforme sua realidade financeira muda.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* How it Works (Flow) */}
+      <section className="bg-slate-900 py-24 text-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row gap-16 items-start">
+            <div className="flex-1 sticky top-32">
+              <h3 className="text-4xl font-black mb-6">
+                Como funciona o fluxo ORIENTA
+              </h3>
+              <p className="text-slate-400 text-lg mb-8">
+                Um ciclo contínuo de 5 etapas para manter sua saúde financeira em dia.
+              </p>
+              <div className="hidden md:block">
+                <img alt="Financial planning" className="rounded-3xl w-full aspect-video object-cover opacity-50 grayscale hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9xYNQCHro-SyOcfP_vHRWyY3uyZpolx2iehpOF5-RFeMmQm1Y8JqQ4u-HbWkfeBxap1RJZrvcpN7DZT-kpjff01rJ6c2_x2dN1IfaWIUujFkrdl0No4Jz_Vyo7b4CDP71IC5XhX-0y5ye6Tqr1n5yG34kIo5rD61S0o0oIAJh2oizgWTF_tfnvAJt26wCQicFvw3-GoalNh5RRz6k4g6S8kIYhvdxQWCrqodNdP1l-gRruDV5EJ5uM0oLwUsZp0YRlDrGNf-bXS8" />
+              </div>
+            </div>
+            <div className="flex-1">
+              <div className="space-y-12">
+                <div className="flex gap-6">
+                  <span className="flex-shrink-0 w-12 h-12 rounded-full bg-primary flex items-center justify-center font-bold text-xl">
+                    1
+                  </span>
+                  <div>
+                    <h4 className="text-xl font-bold text-primary mb-2">
+                      Entrada
+                    </h4>
+                    <p className="text-slate-400 leading-relaxed">
+                      Identifique sua receita líquida total do mês, somando todas as fontes de renda após impostos.
+                    </p>
+                  </div>
                 </div>
-              ))}
-            </div>
-
-            <Card className="border-primary/30 bg-primary/5">
-              <CardContent className="pt-6 text-center space-y-4">
-                <p className="text-foreground font-semibold text-lg">
-                  "Zero" não significa gastar tudo, significa <span className="text-primary">planejar tudo</span>.
-                </p>
-                <p className="text-muted-foreground">Ao final do planejamento:</p>
-                <p className="text-foreground font-mono text-lg font-bold">
-                  renda – despesas – investimentos = 0 (planejado)
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Seção 5 — Planilha de Acompanhamento Financeiro */}
-      <section className="py-16 md:py-24 bg-accent/20">
-        <div className="container">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="w-16 h-16 rounded-2xl bg-accent flex items-center justify-center mx-auto mb-6">
-                <FileSpreadsheet className="h-8 w-8 text-accent-foreground" />
+                <div className="flex gap-6 border-l-2 border-primary/20 pl-6 ml-6">
+                  <span className="flex-shrink-0 w-12 h-12 rounded-full bg-primary flex items-center justify-center font-bold text-xl">
+                    2
+                  </span>
+                  <div>
+                    <h4 className="text-xl font-bold text-primary mb-2">
+                      Planejamento
+                    </h4>
+                    <p className="text-slate-400 leading-relaxed">
+                      Aplique o Orçamento Base Zero: atribua cada real a uma categoria. A conta deve fechar em zero: Receita - Gastos = 0.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-6 border-l-2 border-primary/20 pl-6 ml-6">
+                  <span className="flex-shrink-0 w-12 h-12 rounded-full bg-primary flex items-center justify-center font-bold text-xl">
+                    3
+                  </span>
+                  <div>
+                    <h4 className="text-xl font-bold text-primary mb-2">
+                      Distribuição
+                    </h4>
+                    <p className="text-slate-400 leading-relaxed">
+                      Transfira os valores planejados para seus envelopes digitais (contas, caixinhas) ou envelopes físicos.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-6 border-l-2 border-primary/20 pl-6 ml-6">
+                  <span className="flex-shrink-0 w-12 h-12 rounded-full bg-primary flex items-center justify-center font-bold text-xl">
+                    4
+                  </span>
+                  <div>
+                    <h4 className="text-xl font-bold text-primary mb-2">
+                      Execução
+                    </h4>
+                    <p className="text-slate-400 leading-relaxed">
+                      Gaste exclusivamente o que está dentro de cada envelope. Se o envelope de "Lazer" acabou, as saídas param por ali.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-6 border-l-2 border-secondary/20 pl-6 ml-6">
+                  <span className="flex-shrink-0 w-12 h-12 rounded-full bg-secondary flex items-center justify-center font-bold text-xl">
+                    5
+                  </span>
+                  <div>
+                    <h4 className="text-xl font-bold text-secondary mb-2">
+                      Ajuste
+                    </h4>
+                    <p className="text-slate-400 leading-relaxed">
+                      Ao final do mês, avalie o que funcionou e o que não funcionou. Refine os valores para o próximo ciclo mensal.
+                    </p>
+                  </div>
+                </div>
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Planilha de Acompanhamento Financeiro
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8">
-                Faça uma cópia da nossa planilha gratuita no Google Sheets e comece a organizar suas finanças agora mesmo.
-              </p>
-              <Button size="lg" className="text-base" asChild>
-                <a href="https://docs.google.com/spreadsheets/d/1OL4LNo0j7ybXSS0hqpxxGaEK1Wk0ipIR71kevrlmTH8/copy" target="_blank" rel="noopener noreferrer">
-                  <Copy className="mr-2 h-5 w-5" />
-                  Copiar planilha
-                </a>
-              </Button>
-              <div className="mt-10 rounded-xl overflow-hidden border border-border shadow-sm">
-                <img src={planilhaAcompanhamentoImg} alt="Planilha de Acompanhamento Financeiro TEDin" className="w-full h-auto" />
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* Seção 6 — Etapa 2: Separação do dinheiro */}
-      <section className="py-20 md:py-32 bg-background">
-        <div className="container">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-primary-foreground">2</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Separação do dinheiro (os "envelopes")
-              </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
-                Depois de planejar, o Modelo TEDin transforma cada categoria em um envelope, que pode ser físico ou digital.
-              </p>
-              <p className="text-primary font-semibold">
-                Você escolhe a forma que melhor se adapta à sua rotina.
-              </p>
-            </div>
-
-            <div className="space-y-8">
-              {/* Opção 1 */}
-              <Card className="border-border">
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center">
-                      <Building2 className="h-5 w-5 text-accent-foreground" />
-                    </div>
-                    <CardTitle className="text-lg">Opção 1 — Envelopes com bancos digitais diferentes</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-muted-foreground">
-                    Cada conta representa um objetivo específico.
-                  </p>
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {[
-                      "Conta 1: despesas do dia a dia",
-                      "Conta 2: contas fixas",
-                      "Conta 3: reserva de emergência",
-                      "Conta 4: investimentos",
-                    ].map((item) => (
-                      <div key={item} className="flex items-center gap-2 p-3 rounded-lg bg-accent/50 border border-border">
-                        <Landmark className="h-4 w-4 text-primary flex-shrink-0" />
-                        <span className="text-foreground text-sm">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="text-muted-foreground text-sm italic">
-                    Essa opção funciona bem para quem prefere separação rígida e menor risco de misturar valores.
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* Opção 2 */}
-              <Card className="border-border">
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center">
-                      <Smartphone className="h-5 w-5 text-accent-foreground" />
-                    </div>
-                    <CardTitle className="text-lg">Opção 2 — Envelopes dentro da mesma conta (caixinhas ou metas)</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-muted-foreground">
-                    Alguns bancos permitem criar subdivisões internas dentro da mesma conta. Você mantém uma conta principal e várias "caixinhas" ou "metas", cada uma com um objetivo.
-                  </p>
-                  <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
-                    {["Mercado", "Lazer", "Reserva de emergência", "Viagens", "Investimentos"].map((item) => (
-                      <div key={item} className="flex items-center gap-2 p-3 rounded-lg bg-accent/50 border border-border">
-                        <PiggyBank className="h-4 w-4 text-primary flex-shrink-0" />
-                        <span className="text-foreground text-sm">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="text-muted-foreground text-sm italic">
-                    Na prática, é como ter vários envelopes digitais, sem abrir várias contas.
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* Opção 3 */}
-              <Card className="border-border">
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center">
-                      <Banknote className="h-5 w-5 text-accent-foreground" />
-                    </div>
-                    <CardTitle className="text-lg">Opção 3 — Envelope clássico (dinheiro físico)</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-muted-foreground">
-                    Para quem prefere controle visual ou tem dificuldade com gastos impulsivos: o dinheiro é separado em espécie, cada envelope recebe um nome e, ao acabar o valor, o gasto daquela categoria termina.
-                  </p>
-                  <p className="text-muted-foreground">Funciona especialmente bem para:</p>
-                  <div className="grid sm:grid-cols-3 gap-3">
-                    {["Lazer", "Alimentação fora de casa", "Gastos pessoais variáveis"].map((item) => (
-                      <div key={item} className="flex items-center gap-2 p-3 rounded-lg bg-accent/50 border border-border">
-                        <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                        <span className="text-foreground text-sm">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </div>
         </div>
       </section>
+      {/* Deep Dive Sections (Planning & Separation) */}
+      <section className="max-w-7xl mx-auto px-6 py-24">
+        <div className="grid lg:grid-cols-2 gap-12">
+          {/* Step 1: Planning */}
+          <div className="bg-white rounded-[2.5rem] p-10 border border-primary/10 shadow-xl flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-4 mb-8">
+                <span className="bg-primary/10 p-4 rounded-2xl text-primary">
+                  <span className="material-symbols-outlined text-4xl">
+                    calculate
+                  </span>
+                </span>
+                <h3 className="text-3xl font-black text-slate-900">
+                  Passo 1: Planejar
+                </h3>
+              </div>
+              <p className="text-slate-600 text-lg mb-8">
+                No Orçamento Base Zero, cada real ganho deve ser atribuído a uma categoria específica. Isso garante controle absoluto sobre o fluxo de caixa.
+              </p>
+              <div className="font-mono text-primary bg-primary/5 p-6 rounded-2xl border border-primary/20 mb-8 text-center text-xl font-bold">
+                Receita - Despesas - Investimentos = 0
+              </div>
+            </div>
+            <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-bold uppercase tracking-widest text-primary">
+                  Ferramenta Gratuita
+                </span>
+                <span className="material-symbols-outlined text-primary">
+                  verified
+                </span>
+              </div>
+              <h4 className="text-xl font-bold text-slate-800 mb-3">
+                Planilha Modelo ORIENTA
+              </h4>
+              <p className="text-slate-500 mb-6">
+                Template profissional pronto no Google Sheets para você apenas preencher e começar hoje.
+              </p>
+              <button className="w-full bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white transition-all font-bold py-4 rounded-2xl flex items-center justify-center gap-3">
+                <span className="material-symbols-outlined">
+                  content_copy
+                </span>
+                Copiar Planilha Grátis
+              </button>
+            </div>
+          </div>
+          {/* Step 2: Separation */}
+          <div className="flex flex-col gap-8">
+            <div className="flex items-center gap-4">
+              <span className="bg-secondary/10 p-4 rounded-2xl text-secondary">
+                <span className="material-symbols-outlined text-4xl">
+                  layers
+                </span>
+              </span>
+              <h3 className="text-3xl font-black text-slate-900">
+                Passo 2: Separar
+              </h3>
+            </div>
+            <p className="text-slate-600 text-lg">
+              O segredo da consistência é a separação física ou digital. Escolha a modalidade que melhor se adapta ao seu estilo de vida:
+            </p>
+            <div className="grid gap-4">
+              <div className="group flex gap-5 p-6 rounded-2xl border border-slate-200 bg-white hover:border-primary/40 transition-all">
+                <div className="text-primary">
+                  <span className="material-symbols-outlined text-3xl">
+                    account_balance
+                  </span>
+                </div>
+                <div>
+                  <h5 className="font-black text-slate-800 text-lg">
+                    Múltiplos Bancos
+                  </h5>
+                  <p className="text-slate-500">
+                    Contas separadas para gastos fixos e lazer para evitar confusão mental.
+                  </p>
+                </div>
+              </div>
+              <div className="group flex gap-5 p-6 rounded-2xl border border-slate-200 bg-white hover:border-primary/40 transition-all">
+                <div className="text-primary">
+                  <span className="material-symbols-outlined text-3xl">
+                    folder_shared
+                  </span>
+                </div>
+                <div>
+                  <h5 className="font-black text-slate-800 text-lg">
+                    Sub-contas / Caixinhas
+                  </h5>
+                  <p className="text-slate-500">
+                    Organização digital dentro do mesmo aplicativo bancário.
+                  </p>
+                </div>
+              </div>
+              <div className="group flex gap-5 p-6 rounded-2xl border border-slate-200 bg-white hover:border-primary/40 transition-all">
+                <div className="text-primary">
+                  <span className="material-symbols-outlined text-3xl">
+                    mail
+                  </span>
+                </div>
+                <div>
+                  <h5 className="font-black text-slate-800 text-lg">
+                    Envelopes Físicos
+                  </h5>
+                  <p className="text-slate-500">
+                    O método tátil clássico com dinheiro em espécie para categorias variáveis.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="p-8 rounded-[2rem] bg-gradient-to-br from-primary to-emerald-700 text-white shadow-xl">
+              <h4 className="font-black text-xl mb-6 flex items-center gap-2">
+                <span className="material-symbols-outlined">
+                  checklist
+                </span>
+                Exemplo de Estrutura de Envelopes
+              </h4>
+              <div className="grid grid-cols-2 gap-y-4 gap-x-8">
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-emerald-300">
+                    check_circle
+                  </span>
+                  Dia-a-dia
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-emerald-300">
+                    check_circle
+                  </span>
+                  Boletos Fixos
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-emerald-300">
+                    check_circle
+                  </span>
+                  Emergência
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-emerald-300">
+                    check_circle
+                  </span>
+                  Investimentos
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
     </Layout>
   );
 };
