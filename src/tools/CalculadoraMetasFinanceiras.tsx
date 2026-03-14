@@ -463,7 +463,10 @@ export default function CalculadoraMetasFinanceiras() {
             </div>
           </aside>
 
-           {/* Blog Section */}
+
+
+        </main>
+                   {/* Blog Section */}
                  <article className="max-w-4xl mx-auto px-6 md:px-20 pb-16 prose prose-lg dark:prose-invert prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground">
                    <h2 className="text-3xl font-bold text-foreground mb-6">Por que poupar dinheiro?</h2>
            
@@ -572,8 +575,6 @@ export default function CalculadoraMetasFinanceiras() {
                      </p>
                    </div>
                  </article>
-
-        </main>
       </div>
     </>
   );
