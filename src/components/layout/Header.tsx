@@ -212,7 +212,6 @@ export function Header() {
                 : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
             )}
           >
-            <img src={iconLeao} alt="Impostos" className="h-5 w-5 object-contain" />
             Impostos
           </Link>
 
