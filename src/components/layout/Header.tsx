@@ -44,13 +44,14 @@ export function Header() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY.current;
       if (currentScrollY < 10) {
         setHeaderVisible(true);
-      } else if (currentScrollY > lastScrollY.current) {
+      } else if (delta > 5) {
         setHeaderVisible(false);
         setPlanejamentoOpen(false);
         setInvestimentosOpen(false);
-      } else {
+      } else if (delta < -5) {
         setHeaderVisible(true);
       }
       lastScrollY.current = currentScrollY;
