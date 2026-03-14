@@ -4,7 +4,8 @@ import { useState, useRef, useEffect, ElementType } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Logo from "@/assets/logo-no-bg-sm.png";
-
+import iconLeao from "@/assets/icon-leao.png";
+import iconConsultoria from "@/assets/icon-consultoria.png";
 
 const planejamentoItems = [
   { name: "Despesas", href: "/despesas" },
@@ -225,6 +226,7 @@ export function Header() {
                 : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
             )}
           >
+            <img src={iconConsultoria} alt="Consultoria" className="h-5 w-5 object-contain" />
             Orienta +
           </Link>
         </nav>
