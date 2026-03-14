@@ -118,11 +118,11 @@ export default function CalculadoraMetasFinanceiras() {
 
         .vt-root {
           font-family: 'Work Sans', sans-serif;
-          --vt-dark:    #1a4537;
-          --vt-darker:  #1c211f;
-          --vt-mid:     #618c70;
-          --vt-light:   #abccb5;
-          --vt-cream:   #d9d4c4;
+          --vt-dark:    #FFA726;
+          --vt-darker:  #1A2E35;
+          --vt-mid:     #1daf66;
+          --vt-light:   #FFFDF5;
+          --vt-cream:   #FFFDF5;
         }
 
         /* Hero */
