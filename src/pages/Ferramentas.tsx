@@ -45,22 +45,22 @@ const Ferramentas = () => {
 
   return (
     <Layout>
-      <section className="py-16 md:py-24">
-        <div className="container">
-          <Suspense fallback={<div>Carregando...</div>}>
-            {current.type === "component" ? (
-              <current.component />
-            ) : (
+      <Suspense fallback={<div className="py-16 text-center">Carregando...</div>}>
+        {current.type === "component" ? (
+          <current.component />
+        ) : (
+          <section className="py-16 md:py-24">
+            <div className="container">
               <iframe
                 src={current.src}
                 title={current.title}
                 className="w-full border-0"
                 style={{ minHeight: current.minHeight || "600px" }}
               />
-            )}
-          </Suspense>
-        </div>
-      </section>
+            </div>
+          </section>
+        )}
+      </Suspense>
     </Layout>
   );
 };
