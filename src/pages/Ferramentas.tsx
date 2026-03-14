@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { lazy, Suspense, ComponentType } from "react";
 
 const CalculadoraFinanceira = lazy(() => import("@/tools/CalculadoraFinanceira"));
+const MetasFinanceiras = lazy(() => import("@/tools/MetasFinanceiras"));
 
 type ToolConfig =
   | { type: "component"; component: React.LazyExoticComponent<ComponentType<any>>; title: string }
@@ -15,10 +16,9 @@ const toolsMap: Record<string, ToolConfig> = {
     title: "Calculadora Financeira",
   },
   metas: {
-    type: "iframe",
-    src: "/metas-investimento.html",
-    title: "Metas de Investimento",
-    minHeight: "900px",
+    type: "component",
+    component: MetasFinanceiras,
+    title: "Calculadora Financeira",
   },
   "renda-fixa": {
     type: "iframe",
