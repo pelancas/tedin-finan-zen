@@ -46,6 +46,10 @@ Cores:
 Fonte:
 work sans
 
+npm run dev
+git add .
+git commit -m "xxxxxxx"
+
 
 **Edit a file directly in GitHub**
 
