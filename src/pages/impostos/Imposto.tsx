@@ -133,15 +133,7 @@ const Imposto = () => {
                 }}>
                   <Download size={16} /> Baixar Checklist PDF
                 </button>
-                <button style={{
-                  display: "inline-flex", alignItems: "center", gap: 9,
-                  padding: "16px 32px", borderRadius: 12, fontSize: 16, fontWeight: 700,
-                  cursor: "pointer",
-                  border: `2px solid ${C.accentDark}18`,
-                  backgroundColor: C.white, color: C.accentDark,
-                }}>
-                  Ver Tutorial
-                </button>
+
               </div>
             </div>
 
@@ -227,61 +219,44 @@ const Imposto = () => {
             alignItems: "center",
           }}>
 
-            {/* Left — document previews */}
-            <div style={{ position: "relative", paddingBottom: 56, paddingRight: 32 }}>
-              <div style={{
-                position: "absolute",
-                bottom: 0, right: 0,
-                width: "72%",
-                backgroundColor: C.white,
-                border: `1px solid ${C.accentDark}12`,
-                borderRadius: 18,
-                padding: "24px",
-                transform: "rotate(4deg)",
-                boxShadow: "0 4px 24px rgba(15,42,42,0.1)",
-                zIndex: 0,
-              }}>
-                <div style={{ height: 100, background: `linear-gradient(120deg, ${C.primary}20, ${C.secondary}15)`, borderRadius: 10 }} />
-                <div style={{ marginTop: 14, height: 7, width: "70%", backgroundColor: `${C.accentDark}15`, borderRadius: 4 }} />
-                <div style={{ marginTop: 8, height: 7, width: "50%", backgroundColor: `${C.accentDark}10`, borderRadius: 4 }} />
-              </div>
+          {/* Left — document previews */}
+          <div style={{ position: "relative", paddingBottom: 56, paddingRight: 32 }}>
 
-              <div style={{
-                position: "relative",
-                backgroundColor: C.white,
-                border: `1px solid ${C.accentDark}12`,
-                borderRadius: 18,
-                padding: "32px",
-                boxShadow: "0 16px 56px rgba(15,42,42,0.14)",
-                zIndex: 1,
-                transform: "rotate(-2deg)",
-              }}>
-                <div style={{
-                  background: `linear-gradient(135deg, ${C.accentDeep}, ${C.accentDark})`,
-                  borderRadius: 10,
-                  padding: "14px 18px",
-                  marginBottom: 20,
-                }}>
-                  <div style={{ display: "flex", gap: 6, marginBottom: 8 }}>
-                    {["#f87171","#fbbf24","#4ade80"].map(c => (
-                      <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: c }} />
-                    ))}
-                  </div>
-                  <div style={{ height: 6, width: "60%", backgroundColor: "rgba(255,255,255,.3)", borderRadius: 3 }} />
-                  <div style={{ marginTop: 6, height: 6, width: "40%", backgroundColor: "rgba(255,255,255,.2)", borderRadius: 3 }} />
-                </div>
-                {INVESTMENT_TYPES.slice(0, 6).map((t, i) => (
-                  <div key={t} style={{
-                    display: "flex", alignItems: "center", gap: 10,
-                    padding: "8px 0",
-                    borderBottom: i < 5 ? `1px solid ${C.accentDark}10` : "none",
-                  }}>
-                    <CheckCircle size={13} color={C.primary} style={{ flexShrink: 0 }} />
-                    <span style={{ fontSize: 12, color: C.accentDark, fontWeight: 500 }}>{t}</span>
-                  </div>
-                ))}
-              </div>
+            {/* Card de trás — rotacionado +4deg */}
+            <div style={{
+              position: "absolute",
+              bottom: 0, right: 0,
+              width: "72%",
+              borderRadius: 18,
+              overflow: "hidden",
+              transform: "rotate(4deg)",
+              boxShadow: "0 4px 24px rgba(15,42,42,0.1)",
+              zIndex: 0,
+            }}>
+              <img
+                src="/src/assets/IRPF2.png"
+                alt="IRPF 2"
+                style={{ width: "100%", display: "block", objectFit: "cover" }}
+              />
             </div>
+
+            {/* Card da frente — rotacionado -2deg */}
+            <div style={{
+              position: "relative",
+              borderRadius: 18,
+              overflow: "hidden",
+              boxShadow: "0 16px 56px rgba(15,42,42,0.14)",
+              zIndex: 1,
+              transform: "rotate(-2deg)",
+            }}>
+              <img
+                src="/src/assets/IRPF2.png"
+                alt="IRPF 2"
+                style={{ width: "100%", display: "block", objectFit: "cover" }}
+              />
+            </div>
+
+          </div>
 
             {/* Right copy */}
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
@@ -351,13 +326,13 @@ const Imposto = () => {
                   Assista aos tutoriais e baixe documentos oficiais auxiliares.
                 </p>
               </div>
-              <button style={{
+              {/*<button style={{
                 display: "flex", alignItems: "center", gap: 7,
                 background: "none", border: "none", cursor: "pointer",
                 color: C.accentDark, fontWeight: 700, fontSize: 14,
               }}>
                 Ver todos os vídeos <ExternalLink size={14} />
-              </button>
+              </button>*/}
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 28 }}>

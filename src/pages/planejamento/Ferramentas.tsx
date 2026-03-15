@@ -46,7 +46,7 @@ const toolsMap: Record<string, ToolConfig> = {
     title: "Comparador de Renda Fixa",
       minHeight: {
     mobile: "1500px",
-    desktop: "900px"
+    desktop: "1200px"
   }
   },
 };

@@ -2,9 +2,9 @@ import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
-  Wallet, PieChart, Bell, CreditCard, ArrowRight, FileSpreadsheet,
-  Copy, BookOpen, CheckCircle2, Target, Layers, Banknote,
-  Landmark, PiggyBank, Smartphone, Building2, CircleDollarSign
+  Wallet, PieChart, Bell, CreditCard, ArrowRight, TrendingUp,
+  Quote, Shield, Eye, Route, Calculator, BadgeCheck, Circle, Copy,
+  Layers, PiggyBank, BookCheck, Mail, ListCheck
 } from "lucide-react";
 import planilhaImg from "@/assets/planilha-planejamento.png";
 import planilhaAcompanhamentoImg from "@/assets/planilha-acompanhamento.png";
@@ -72,28 +72,16 @@ const Despesas = () => {
             Método Exclusivo
           </div>
           <h1 className="text-slate-900 text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight">
-            Planejamento inteligente com
-            <span className="text-primary">
-              controle real
-            </span>
-            do dinheiro
+            Planejamento inteligente com <span className="text-primary"> controle real </span> do dinheiro
           </h1>
           <p className="text-slate-600 text-xl leading-relaxed max-w-2xl">
-            Conheça o método híbrido que une
-            <span className="text-primary font-bold">
-              Zero Base Budget
-            </span>
-            e a
-            <span className="text-secondary font-bold">
-              Técnica dos Envelopes
-            </span>
-            para transformar sua vida financeira de forma definitiva.
+            Conheça o método híbrido que une <span className="text-primary font-bold"> Zero Base Budget </span> e a  <span className="text-secondary font-bold"> Técnica dos Envelopes  </span> para transformar sua vida financeira de forma definitiva.
           </p>
           <div className="flex flex-wrap gap-4">
             <button className="bg-primary hover:bg-primary/90 text-white font-bold px-10 py-5 rounded-2xl shadow-xl shadow-primary/20 flex items-center gap-3 text-lg group transition-all">
               Começar Planejamento
               <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
-                arrow_forward
+                <ArrowRight size={20} />
               </span>
             </button>
             <button className="bg-white border-2 border-slate-200 hover:border-primary/30 text-slate-700 font-bold px-10 py-5 rounded-2xl flex items-center gap-3 text-lg transition-all">
@@ -102,14 +90,17 @@ const Despesas = () => {
           </div>
         </div>
         <div className="flex-1 w-full aspect-square md:aspect-[4/5] lg:aspect-square rounded-[2rem] bg-gradient-to-br from-primary/10 via-primary/5 to-transparent flex items-center justify-center border-2 border-primary/10 relative overflow-hidden">
-          <span className="material-symbols-outlined text-primary text-[10rem] opacity-30 select-none">
-            insights
-          </span>
+          <img
+            src="/src/assets/PlanilhaDespesas1.png"
+            alt="Planilha de Despesas"
+            style={{ width: "100%",  display: "block", objectFit: "contain" }}
+          />
+
           <div className="absolute bottom-10 left-10 right-10 bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-white shadow-xl">
             <div className="flex gap-4">
               <div className="bg-primary text-white p-3 rounded-lg">
                 <span className="material-symbols-outlined">
-                  trending_up
+                  <TrendingUp size={15} />
                 </span>
               </div>
               <div>
@@ -137,7 +128,7 @@ const Despesas = () => {
           </div>
           <div className="bg-white p-8 rounded-3xl border border-primary/20 shadow-sm relative">
             <span className="material-symbols-outlined absolute -top-4 -left-4 bg-primary text-white p-2 rounded-full scale-125">
-              format_quote
+              <Quote size={20} />
             </span>
             <p className="italic text-slate-700 text-lg leading-relaxed">
               "Nenhum valor fica sem função. Se sobrou no planejamento, esse 'sobra' já deve ter um envelope de destino, seja reserva ou investimento."
@@ -159,7 +150,7 @@ const Despesas = () => {
           <div className="group flex flex-col gap-6 rounded-[2rem] border border-primary/10 bg-white p-8 hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/5 transition-all">
             <div className="bg-primary/10 w-14 h-14 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
               <span className="material-symbols-outlined text-3xl">
-                visibility
+                <Eye size={20} />
               </span>
             </div>
             <div>
@@ -174,7 +165,7 @@ const Despesas = () => {
           <div className="group flex flex-col gap-6 rounded-[2rem] border border-secondary/10 bg-white p-8 hover:border-secondary/40 hover:shadow-2xl hover:shadow-secondary/5 transition-all">
             <div className="bg-secondary/10 w-14 h-14 rounded-2xl flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
               <span className="material-symbols-outlined text-3xl">
-                shield_with_heart
+                <Shield size={20} />
               </span>
             </div>
             <div>
@@ -189,7 +180,7 @@ const Despesas = () => {
           <div className="group flex flex-col gap-6 rounded-[2rem] border border-primary/10 bg-white p-8 hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/5 transition-all">
             <div className="bg-primary/10 w-14 h-14 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
               <span className="material-symbols-outlined text-3xl">
-                savings
+                <PiggyBank size={20} />
               </span>
             </div>
             <div>
@@ -204,7 +195,7 @@ const Despesas = () => {
           <div className="group flex flex-col gap-6 rounded-[2rem] border border-secondary/10 bg-white p-8 hover:border-secondary/40 hover:shadow-2xl hover:shadow-secondary/5 transition-all">
             <div className="bg-secondary/10 w-14 h-14 rounded-2xl flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
               <span className="material-symbols-outlined text-3xl">
-                alt_route
+                <Route size={20} />
               </span>
             </div>
             <div>
@@ -314,7 +305,7 @@ const Despesas = () => {
               <div className="flex items-center gap-4 mb-8">
                 <span className="bg-primary/10 p-4 rounded-2xl text-primary">
                   <span className="material-symbols-outlined text-4xl">
-                    calculate
+                    <Calculator size={20} />
                   </span>
                 </span>
                 <h3 className="text-3xl font-black text-slate-900">
@@ -334,7 +325,7 @@ const Despesas = () => {
                   Ferramenta Gratuita
                 </span>
                 <span className="material-symbols-outlined text-primary">
-                  verified
+                  <BadgeCheck size={20} />
                 </span>
               </div>
               <h4 className="text-xl font-bold text-slate-800 mb-3">
@@ -345,7 +336,7 @@ const Despesas = () => {
               </p>
               <button className="w-full bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white transition-all font-bold py-4 rounded-2xl flex items-center justify-center gap-3">
                 <span className="material-symbols-outlined">
-                  content_copy
+                  <Copy size={20} />
                 </span>
                 Copiar Planilha Grátis
               </button>
@@ -356,7 +347,7 @@ const Despesas = () => {
             <div className="flex items-center gap-4">
               <span className="bg-secondary/10 p-4 rounded-2xl text-secondary">
                 <span className="material-symbols-outlined text-4xl">
-                  layers
+                  <Layers size={20} />
                 </span>
               </span>
               <h3 className="text-3xl font-black text-slate-900">
@@ -370,7 +361,7 @@ const Despesas = () => {
               <div className="group flex gap-5 p-6 rounded-2xl border border-slate-200 bg-white hover:border-primary/40 transition-all">
                 <div className="text-primary">
                   <span className="material-symbols-outlined text-3xl">
-                    account_balance
+                    <BookCheck size={20} />
                   </span>
                 </div>
                 <div>
@@ -385,7 +376,7 @@ const Despesas = () => {
               <div className="group flex gap-5 p-6 rounded-2xl border border-slate-200 bg-white hover:border-primary/40 transition-all">
                 <div className="text-primary">
                   <span className="material-symbols-outlined text-3xl">
-                    folder_shared
+                    <CreditCard size={20} />
                   </span>
                 </div>
                 <div>
@@ -400,7 +391,7 @@ const Despesas = () => {
               <div className="group flex gap-5 p-6 rounded-2xl border border-slate-200 bg-white hover:border-primary/40 transition-all">
                 <div className="text-primary">
                   <span className="material-symbols-outlined text-3xl">
-                    mail
+                    <Mail size={20} />
                   </span>
                 </div>
                 <div>
@@ -416,32 +407,32 @@ const Despesas = () => {
             <div className="p-8 rounded-[2rem] bg-gradient-to-br from-primary to-emerald-700 text-white shadow-xl">
               <h4 className="font-black text-xl mb-6 flex items-center gap-2">
                 <span className="material-symbols-outlined">
-                  checklist
+                  <ListCheck size={20} />
                 </span>
                 Exemplo de Estrutura de Envelopes
               </h4>
               <div className="grid grid-cols-2 gap-y-4 gap-x-8">
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-emerald-300">
-                    check_circle
+                    <Circle size={10} />
                   </span>
                   Dia-a-dia
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-emerald-300">
-                    check_circle
+                    <Circle size={10} />
                   </span>
                   Boletos Fixos
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-emerald-300">
-                    check_circle
+                    <Circle size={10} />
                   </span>
                   Emergência
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-emerald-300">
-                    check_circle
+                    <Circle size={10} />
                   </span>
                   Investimentos
                 </div>
