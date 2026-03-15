@@ -266,12 +266,11 @@ export default function CalculadoraFinanceira() {
             </nav>
             <h1>
               Calculadora de{" "}
-              <span>Metas Financeiras</span>
+              <span>Aposentadoria</span>
             </h1>
             <p>
-              Planeje seu futuro com precisão. Defina seus objetivos e descubra
-              o caminho exato para a sua liberdade financeira através de
-              cálculos baseados em rendimentos reais.
+              Uma calculadora de renda mensal de aposentadoria estima quanto você poderá receber por mês no futuro com base nas contribuições, no tempo de investimento e na taxa de rendimento. Com esses dados, ela projeta o valor acumulado e transforma esse montante em uma renda mensal estimada para a aposentadoria.
+
             </p>
           </div>
           {/* Decorative blob */}

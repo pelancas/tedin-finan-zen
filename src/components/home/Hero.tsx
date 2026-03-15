@@ -85,18 +85,10 @@ export function Hero() {
           <img
             alt="Consultoria Financeira"
             className="w-full h-full object-cover opacity-80"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-RfzxSmT8ArVeoluFY7oD_TsiRnR6y_VtDsBO7VQYF7hbCA8yVVr7qTqoXC4MsVUV2CCr8hgDUYuESr7YV4yvdoQuHWt3eUrMtXTE_lnsnQTKG_-z_I680Qw61ekpzs5kGaYUTdsS3VW7l8dXoEYIXoZuX739fH4c7ZGJC3bXEewefL9pfBY_yYy2YFN8LenGd9UzVukEXo1uNdkEbdC2FE3qwd0XIqP1kEQ_jpXt68OYxxHo-Cxr47V8h3wPQAuk15y0URmeHRw"
+            src="/src/assets/Calculadora.png"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent" />
-          <div className="absolute bottom-6 left-6 right-6 p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20">
-            <p className="text-white font-medium italic text-sm">
-              "A Orienta+ mudou completamente minha forma de enxergar meus
-              investimentos. Hoje durmo tranquilo."
-            </p>
-            <p className="text-primary text-xs font-bold mt-2">
-              — Ricardo M., Empresário
-            </p>
-          </div>
+
         </div>
       </div>
     </div>
@@ -159,144 +151,8 @@ export function Hero() {
       </div>
     </div>
   </section>
-  {/* Investimentos Section - Remains Dark for contrast */}
-  <section className="py-24 bg-background-dark" id="investimentos">
-    <div className="max-w-7xl mx-auto px-4 lg:px-8">
-      <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
-        <div className="max-w-xl">
-          <h2 className="text-primary font-bold tracking-widest uppercase text-sm mb-3">
-            Onde Investir
-          </h2>
-          <h3 className="text-3xl md:text-4xl font-black text-white mb-4">
-            Tendências de Mercado
-          </h3>
-          <p className="text-slate-400">
-            Análise em tempo real dos melhores setores para alocação de capital
-            hoje.
-          </p>
-        </div>
-        <button className="text-primary font-bold flex items-center gap-2 hover:gap-3 transition-all">
-          Ver Relatório Completo{" "}
-          <span className="material-symbols-outlined">east</span>
-        </button>
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-surface-dark p-6 rounded-2xl border border-white/5">
-          <span className="text-slate-400 text-xs font-bold uppercase block mb-1">
-            Renda Fixa
-          </span>
-          <div className="text-2xl font-bold text-white mb-2">12.5% a.a.</div>
-          <div className="text-primary text-xs flex items-center gap-1">
-            <span className="material-symbols-outlined text-sm">
-              trending_up
-            </span>{" "}
-            +0.4% este mês
-          </div>
-        </div>
-        <div className="bg-surface-dark p-6 rounded-2xl border border-white/5">
-          <span className="text-slate-400 text-xs font-bold uppercase block mb-1">
-            Ações (Ibov)
-          </span>
-          <div className="text-2xl font-bold text-white mb-2">118.432</div>
-          <div className="text-red-400 text-xs flex items-center gap-1">
-            <span className="material-symbols-outlined text-sm">
-              trending_down
-            </span>{" "}
-            -1.2% este mês
-          </div>
-        </div>
-        <div className="bg-surface-dark p-6 rounded-2xl border border-white/5">
-          <span className="text-slate-400 text-xs font-bold uppercase block mb-1">
-            Fundos Imob.
-          </span>
-          <div className="text-2xl font-bold text-white mb-2">3.120 pts</div>
-          <div className="text-primary text-xs flex items-center gap-1">
-            <span className="material-symbols-outlined text-sm">
-              trending_up
-            </span>{" "}
-            +2.1% este mês
-          </div>
-        </div>
-        <div className="bg-surface-dark p-6 rounded-2xl border border-white/5">
-          <span className="text-slate-400 text-xs font-bold uppercase block mb-1">
-            Dólar
-          </span>
-          <div className="text-2xl font-bold text-white mb-2">R$ 4,92</div>
-          <div className="text-slate-400 text-xs flex items-center gap-1">
-            <span className="material-symbols-outlined text-sm">
-              horizontal_rule
-            </span>{" "}
-            Estável
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  {/* Impostos Section - Lightened (Light Background) */}
-  <section
-    className="py-20 bg-background-light text-surface-dark"
-    id="impostos"
-  >
-    <div className="max-w-7xl mx-auto px-4 lg:px-8 grid md:grid-cols-2 gap-16 items-center">
-      <div className="order-2 md:order-1 relative">
-        <img
-          alt="Consultoria Tributária"
-          className="rounded-3xl shadow-2xl grayscale hover:grayscale-0 transition-all duration-500 border border-slate-200"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSqPfPlULcivkFDKHqONg3n0277soe1q8ckzRaOlT4FEScSAsUlWsdL_0xJXuXkAltv9FPiqIs1H4bZQ4m4BEFjk1oEIXWIpRckoI9E9uKijHM_H9DGckjjQAc-NQIvgn-FQEh8xgBDuEl-uYC1Up11vuNuPcnlexVgxm4JNAOGOeRU0FQwNeAmNsoomjsOci-Sw52eQjS0sEWMWWWcf0x6Wtk8MWvkhjGjm8hhgaK2sxLEBkHjryqB-HT4sDw0HXlYuVnlg-7Rbs"
-        />
-        <div className="absolute -top-6 -right-6 bg-secondary text-white p-6 rounded-2xl shadow-xl">
-          <span className="material-symbols-outlined text-4xl mb-2 block">
-            receipt_long
-          </span>
-          <p className="font-bold">Economia Fiscal</p>
-          <p className="text-xs opacity-90">
-            Reduza sua carga tributária legalmente.
-          </p>
-        </div>
-      </div>
-      <div className="order-1 md:order-2 flex flex-col gap-6">
-        <h2 className="text-primary font-bold tracking-widest uppercase text-sm">
-          Eficiência Fiscal
-        </h2>
-        <h3 className="text-3xl md:text-4xl font-black">
-          Impostos sem dor de cabeça.
-        </h3>
-        <p className="text-slate-600 leading-relaxed">
-          Nossa equipe de especialistas revisa sua situação tributária para
-          garantir que você não pague nem um centavo a mais do que o necessário.
-        </p>
-        <ul className="space-y-4">
-          <li className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-primary">
-              check_circle
-            </span>
-            <span className="font-medium">
-              Declaração de IR completa e simplificada
-            </span>
-          </li>
-          <li className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-primary">
-              check_circle
-            </span>
-            <span className="font-medium">
-              Planejamento tributário sucessório
-            </span>
-          </li>
-          <li className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-primary">
-              check_circle
-            </span>
-            <span className="font-medium">
-              Regularização de ativos no exterior
-            </span>
-          </li>
-        </ul>
-        <button className="w-fit border-b-2 border-primary text-primary font-bold pb-1 hover:text-surface-dark transition-colors">
-          Falar com Especialista Tributário
-        </button>
-      </div>
-    </div>
-  </section>
+
+
   {/* Orienta+ Featured Section - Premium Dark CTA */}
   <section className="py-24 bg-background-dark" id="orientaplus">
     <div className="max-w-7xl mx-auto px-4 lg:px-8">
