@@ -5,10 +5,24 @@ import { lazy, Suspense, ComponentType } from "react";
 const CalculadoraFinanceira = lazy(() => import("@/tools/CalculadoraFinanceira"));
 const CalculadoraMetasFinanceiras = lazy(() => import("@/tools/CalculadoraMetasFinanceiras"));
 const CalculadoraMilhao = lazy(() => import("@/tools/CalculadoraMilhao"));
+const ComparadorRendaFixa = lazy(() => import("@/tools/ComparadorRendaFixa"));
+const isMobile = window.innerWidth < 768;
 
 type ToolConfig =
-  | { type: "component"; component: React.LazyExoticComponent<ComponentType<any>>; title: string }
-  | { type: "iframe"; src: string; title: string; minHeight?: string };
+  | {
+      type: "component";
+      component: React.LazyExoticComponent<React.ComponentType<any>>;
+      title: string;
+    }
+  | {
+      type: "iframe";
+      src: string;
+      title: string;
+      minHeight?: {
+        mobile: string;
+        desktop: string;
+      };
+    };
 
 const toolsMap: Record<string, ToolConfig> = {
   aposentadoria: {
@@ -30,6 +44,10 @@ const toolsMap: Record<string, ToolConfig> = {
     type: "iframe",
     src: "/comparador-renda-fixa.html",
     title: "Comparador de Renda Fixa",
+      minHeight: {
+    mobile: "1500px",
+    desktop: "900px"
+  }
   },
 };
 
@@ -61,7 +79,11 @@ const Ferramentas = () => {
                 src={current.src}
                 title={current.title}
                 className="w-full border-0"
-                style={{ minHeight: current.minHeight || "600px" }}
+                style={{
+                  minHeight: isMobile
+                    ? current.minHeight?.mobile
+                    : current.minHeight?.desktop
+                }}
               />
             </div>
           </section>

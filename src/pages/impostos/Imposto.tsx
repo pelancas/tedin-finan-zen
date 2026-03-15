@@ -159,53 +159,17 @@ const Imposto = () => {
                 justifyContent: "center",
                 minHeight: 340,
               }}>
-                <div style={{
-                  backgroundColor: C.white,
-                  borderRadius: 16,
-                  padding: "24px 28px",
-                  boxShadow: "0 12px 48px rgba(15,42,42,0.15)",
-                  display: "flex", flexDirection: "column", gap: 14,
-                  width: "100%", maxWidth: 340,
-                }}>
-                  <div style={{ display: "flex", gap: 6 }}>
-                    {["#f87171","#fbbf24","#4ade80"].map(c => (
-                      <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: c }} />
-                    ))}
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                    <div style={{
-                      width: 46, height: 46, borderRadius: 12, flexShrink: 0,
-                      backgroundColor: `${C.primary}15`,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                    }}>
-                      <CheckCircle size={24} color={C.primary} />
-                    </div>
-                    <div>
-                      <p style={{ margin: 0, fontWeight: 700, fontSize: 15, color: C.accentDeep }}>Documentação OK</p>
-                      <p style={{ margin: "3px 0 0", fontSize: 12, color: `${C.accentDark}80` }}>Todos os informes validados</p>
-                    </div>
-                  </div>
-
-                  {INVESTMENT_TYPES.slice(0, 5).map((t, i) => (
-                    <div key={t} style={{
-                      display: "flex", alignItems: "center", gap: 10,
-                      padding: "7px 0",
-                      borderBottom: i < 4 ? `1px solid ${C.accentDark}10` : "none",
-                    }}>
-                      <CheckCircle size={13} color={C.primary} style={{ flexShrink: 0 }} />
-                      <span style={{ fontSize: 12, color: C.accentDark, fontWeight: 500 }}>{t}</span>
-                      <div style={{ marginLeft: "auto", width: 40, height: 5, borderRadius: 99, backgroundColor: `${C.accentDark}12` }}>
-                        <div style={{
-                          width: `${[80, 60, 100, 45, 70][i]}%`,
-                          height: "100%", borderRadius: 99, backgroundColor: C.primary,
-                        }} />
-                      </div>
-                    </div>
-                  ))}
-                  <p style={{ margin: 0, textAlign: "right", fontSize: 11, color: C.primary, fontWeight: 600 }}>
-                    + 9 mais itens
-                  </p>
-                </div>
+                <img
+                  src="/src/assets/IRPF1.png"
+                  alt="IRPF"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    borderRadius: 16,
+                    display: "block",
+                  }}
+                />
               </div>
             </div>
 
