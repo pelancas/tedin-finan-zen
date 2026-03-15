@@ -220,13 +220,13 @@ export function Header() {
             to="/consultoria"
             onClick={() => { setPlanejamentoOpen(false); setInvestimentosOpen(false); }}
             className={cn(
-              "flex items-center gap-2 px-5 h-20 text-sm font-medium transition-colors border-b-2",
+              "flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors",
+              "bg-primary text-white hover:bg-primary/90",
               location.pathname.startsWith("/consultoria")
-                ? "border-primary text-foreground"
-                : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                ? "ring-2 ring-primary"
+                : ""
             )}
           >
-            <img src={iconConsultoria} alt="Consultoria" className="h-5 w-5 object-contain" />
             Orienta +
           </Link>
         </nav>
