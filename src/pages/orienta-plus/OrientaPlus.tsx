@@ -172,8 +172,8 @@ const Home: React.FC = () => {
                   <CheckCircle2 size={20} />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-white/40">ROI Médio Anual</p>
-                  <p className="text-lg font-bold text-white">+18.5%</p>
+                  <p className="text-xs font-medium text-white/40">Retorno esperado:</p>
+                  <p className="text-lg font-bold text-white">+Finanças</p>
                 </div>
               </div>
             </div>
@@ -313,7 +313,7 @@ const Home: React.FC = () => {
               Pronto para transformar seu futuro financeiro?
             </h2>
             <p className="relative z-10 mx-auto mb-10 max-w-2xl text-lg text-white/90">
-              Junte-se a mais de 15.000 investidores que já otimizaram seus lucros com a FinançasPro.
+              Junte-se aos investidores que já orientaram seus lucros.
             </p>
             <div className="relative z-10 flex flex-col justify-center gap-4 sm:flex-row">
               <Button
