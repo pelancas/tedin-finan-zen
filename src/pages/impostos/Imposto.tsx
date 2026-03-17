@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
+import IRPF1 from '@/assets/IRPF1.png';
+import IRPF2 from '@/assets/IRPF2.png';
 import {
   CalendarDays, CheckCircle, Clock, Ban, Info,
   ShieldCheck, Zap, Play, Download, ArrowRight,
@@ -152,7 +154,7 @@ const Imposto = () => {
                 minHeight: 340,
               }}>
                 <img
-                  src="/src/assets/IRPF1.png"
+                  src={IRPF1}
                   alt="IRPF"
                   style={{
                     width: "100%",
@@ -234,7 +236,7 @@ const Imposto = () => {
               zIndex: 0,
             }}>
               <img
-                src="/src/assets/IRPF2.png"
+                src={IRPF2}
                 alt="IRPF 2"
                 style={{ width: "100%", display: "block", objectFit: "cover" }}
               />

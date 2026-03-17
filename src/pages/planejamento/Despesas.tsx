@@ -1,6 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import PlanilhaDespesas1 from '@/assets/PlanilhaDespesas1.png';
 import {
   Wallet, PieChart, Bell, CreditCard, ArrowRight, TrendingUp,
   Quote, Shield, Eye, Route, Calculator, BadgeCheck, Circle, Copy,
@@ -88,7 +89,7 @@ const Despesas = () => {
         </div>
         <div className="flex-1 w-full aspect-square md:aspect-[4/5] lg:aspect-square rounded-[2rem] bg-gradient-to-br from-primary/10 via-primary/5 to-transparent flex items-center justify-center border-2 border-primary/10 relative overflow-hidden">
           <img
-            src="/src/assets/PlanilhaDespesas1.png"
+            src={PlanilhaDespesas1}
             alt="Planilha de Despesas"
             style={{ width: "100%",  display: "block", objectFit: "contain" }}
           />
