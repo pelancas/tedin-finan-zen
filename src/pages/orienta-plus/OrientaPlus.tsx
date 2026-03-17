@@ -86,9 +86,9 @@ const services: ServiceCard[] = [
 const whyItems: WhyItem[] = [
   {
     icon: Lightbulb,
-    title: "Análise Baseada em Dados",
+    title: "Análise Especializada",
     description:
-      "Utilizamos algoritmos proprietários e análise fundamentalista para prever tendências de mercado com alta precisão.",
+      "Pessoas que trabalham com mercado, te ensinando o que não fazer.",
   },
   {
     icon: Shield,
@@ -100,7 +100,7 @@ const whyItems: WhyItem[] = [
     icon: HeadphonesIcon,
     title: "Suporte Humanizado",
     description:
-      "Nada de bots. Nossos especialistas estão prontos para tirar suas dúvidas e ajustar sua estratégia conforme suas mudanças de vida.",
+      "Nossos especialistas estão prontos para tirar suas dúvidas e ajustar sua estratégia conforme suas mudanças de vida.",
   },
 ];
 
@@ -131,7 +131,7 @@ const Home: React.FC = () => {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#1daf66] opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-[#1daf66]" />
                 </span>
-                Expertise Financeira de Elite
+                Expertise Financeira
               </span>
 
               <h1 className="text-4xl font-black leading-tight tracking-tight text-white md:text-5xl lg:text-6xl">
@@ -148,14 +148,8 @@ const Home: React.FC = () => {
 
               <div className="flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
                 <Button className="flex items-center justify-center gap-2 rounded-xl bg-[#1daf66] px-8 py-6 text-lg font-bold text-white shadow-xl shadow-[#1daf66]/30 transition-all hover:-translate-y-1 hover:bg-[#1daf66]/90">
-                  Iniciar Consultoria
+                  Iniciar Planejamento
                   <TrendingUp size={18} />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="rounded-xl border-2 border-white/20 px-8 py-6 text-lg font-bold text-white/80 transition-all hover:border-white/40 hover:bg-white/5"
-                >
-                  Ver Planos
                 </Button>
               </div>
             </div>
@@ -272,7 +266,7 @@ const Home: React.FC = () => {
             {/* Left */}
             <div>
               <h2 className="mb-8 text-3xl font-black text-white">
-                Por que escolher a FinançasPro?
+                Por que escolher a Orienta?
               </h2>
               <div className="flex flex-col gap-8">
                 {whyItems.map(({ icon: Icon, title, description }) => (
@@ -327,12 +321,6 @@ const Home: React.FC = () => {
                 style={{ background: "#1A2E35", color: "#ffffff" }}
               >
                 Agendar Minha Análise
-              </Button>
-              <Button
-                variant="outline"
-                className="rounded-xl border border-white/30 bg-black/10 px-10 py-6 text-lg font-bold text-white backdrop-blur-sm transition-all hover:bg-white/10"
-              >
-                Falar com Consultor
               </Button>
             </div>
           </div>

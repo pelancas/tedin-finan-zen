@@ -79,13 +79,10 @@ const Despesas = () => {
           </p>
           <div className="flex flex-wrap gap-4">
             <button className="bg-primary hover:bg-primary/90 text-white font-bold px-10 py-5 rounded-2xl shadow-xl shadow-primary/20 flex items-center gap-3 text-lg group transition-all">
-              Começar Planejamento
+              Ver Planilha Grátis
               <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
                 <ArrowRight size={20} />
               </span>
-            </button>
-            <button className="bg-white border-2 border-slate-200 hover:border-primary/30 text-slate-700 font-bold px-10 py-5 rounded-2xl flex items-center gap-3 text-lg transition-all">
-              Ver Planilha Grátis
             </button>
           </div>
         </div>
@@ -108,7 +105,7 @@ const Despesas = () => {
                   Crescimento Patrimonial
                 </p>
                 <p className="text-xl font-black text-slate-900">
-                  +42% no primeiro ano
+                  Atinja seus objetivos
                 </p>
               </div>
             </div>
@@ -213,7 +210,7 @@ const Despesas = () => {
       <section className="bg-slate-900 py-24 text-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row gap-16 items-start">
-            <div className="flex-1 sticky top-32">
+            <div className="flex-1">
               <h3 className="text-4xl font-black mb-6">
                 Como funciona o fluxo ORIENTA
               </h3>

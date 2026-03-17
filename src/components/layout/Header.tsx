@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Logo from "@/assets/logo-no-bg-sm.png";
 import iconLeao from "@/assets/icon-leao.png";
-import iconConsultoria from "@/assets/icon-consultoria.png";
+
 
 const planejamentoItems = [
   { name: "Despesas", href: "/despesas" },
@@ -81,7 +81,7 @@ export function Header() {
 
   return (
     <header className={cn(
-      "sticky top-0 z-50 w-full bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60 border-b border-border relative transition-transform duration-300",
+      "sticky top-0 z-50 w-full bg-white border-b border-border relative transition-transform duration-300",
       !headerVisible && "-translate-y-full"
     )}>
       <div className="container flex h-20 items-center justify-between">
@@ -90,7 +90,7 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-0 h-full">
+        <nav className="hidden md:flex items-center gap-0 h-full ">
           {/* Planejamento */}
           <div ref={planejamentoRef}>
             <button
@@ -109,7 +109,7 @@ export function Header() {
 
             {/* Planejamento Mega Menu */}
             {planejamentoOpen && (
-              <div className="absolute left-0 right-0 top-full border-b border-border bg-card shadow-lg z-40">
+              <div className="absolute left-0 right-0 top-full border-b bg-white/100 border-border shadow-lg z-40">
                 <div className="container py-6">
                   <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">Planejamento</h3>
                   <div className="flex flex-col gap-1">
@@ -152,7 +152,7 @@ export function Header() {
 
             {/* Investimentos Mega Menu */}
             {investimentosOpen && (
-              <div className="absolute left-0 right-0 top-full border-b border-border bg-card shadow-lg z-40">
+              <div className="absolute left-0 right-0 top-full border-b border-border bg-card bg-white/100 shadow-lg z-40">
                 <div className="container py-6">
                   <div className="grid grid-cols-2 gap-12">
                     <div>
@@ -358,7 +358,6 @@ export function Header() {
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
               )}
             >
-              <img src={iconLeao} alt="Impostos" className="h-6 w-6 object-contain" />
               Impostos
             </Link>
 

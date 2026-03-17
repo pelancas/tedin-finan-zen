@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronDown, ChevronRight, ShieldAlert, BookOpen, Play, Wrench, HelpCircle } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { fundosContent } from "@/content/fundos";
+import { acoesContent } from "@/content/acoes";
 import { parseMarkdownContent, type ContentItem } from "@/lib/content-parser";
 
 const categories = [
@@ -14,11 +14,7 @@ const categories = [
     label: "Cuidados iniciais",
     icon: ShieldAlert,
     subcategories: [
-      { id: "o-que-sao", label: "Mas o que raios são fundos" },
-      { id: "porque-investir", label: "Porque querem que eu invista em um" },
-      { id: "multimercado", label: "Multimercado: linguiça ou bilhete premiado?" },
-      { id: "como-enganam", label: "Como te enganam - não são todos" },
-      { id: "taxa-e-bom", label: "Ter taxa é bom?" },
+      { id: "o-que-sao-acoes", label: "Mas o que raios são ações?" },
     ],
   },
   {
@@ -26,37 +22,11 @@ const categories = [
     label: "Guias",
     icon: BookOpen,
     subcategories: [
-      { id: "guia-iniciante", label: "Guia para iniciantes" },
-      { id: "guia-comparacao", label: "Como comparar fundos" },
+      { id: "cursos-acoes", label: "Guia para iniciantes" },
+
     ],
   },
-  {
-    id: "videos",
-    label: "Vídeos",
-    icon: Play,
-    subcategories: [
-      { id: "video-intro", label: "O que são Fundos de Investimento?" },
-      { id: "video-pratica", label: "Fundos de Investimento na Prática" },
-    ],
-  },
-  {
-    id: "ferramentas",
-    label: "Ferramentas",
-    icon: Wrench,
-    subcategories: [
-      { id: "comparador", label: "Comparador de Fundos" },
-    ],
-  },
-  {
-    id: "duvidas",
-    label: "Dúvidas comuns",
-    icon: HelpCircle,
-    subcategories: [
-      { id: "risco", label: "Qual o risco de investir em fundos?" },
-      { id: "resgatar", label: "Posso resgatar a qualquer hora?" },
-      { id: "imposto", label: "Como funciona o imposto?" },
-    ],
-  },
+  
 ];
 
 const Fundos = () => {
@@ -65,7 +35,7 @@ const Fundos = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const contentItems = useMemo<ContentItem[]>(
-    () => fundosContent.map(parseMarkdownContent),
+    () => acoesContent.map(parseMarkdownContent),
     []
   );
 

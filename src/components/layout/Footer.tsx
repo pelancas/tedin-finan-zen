@@ -7,7 +7,6 @@ const planejamentoItems = [
   { name: "Despesas", href: "/despesas" },
   { name: "Calculadora de aposentadoria", href: "/ferramentas/aposentadoria" },
   { name: "Metas de investimentos", href: "/ferramentas/metas" },
-  { name: "Primeiro milhão", href: "/ferramentas/primeiro-milhao" },
 ];
 
 const rendaFixaItems = [
