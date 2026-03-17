@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metas de Investimento</title>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green: #2ECC71;
+  --green-dark: #27AE60;
+  --green-light: #E8F8F0;
+  --orange: #F39C12;
+  --orange-light: #FFF8EC;
+  --blue: #3498DB;
+  --blue-light: #EBF5FB;
+  --bg: #F7F9FC;
+  --card: #FFFFFF;
+  --text: #1A2332;
+  --muted: #6B7A99;
+  --border: #E8EDF5;
+  --shadow: 0 2px 20px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+}
+
+body {
+  font-family: 'Work Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 40px 20px 60px;
+}
+
+.container {
+  max-width: 1020px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  margin-bottom: 36px;
+}
+.header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.header p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Tab switcher */
+.tabs {
+  display: inline-flex;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 4px;
+  gap: 2px;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow);
+}
+.tab-btn {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 11px;
+  cursor: pointer;
+  background: transparent;
+  color: var(--muted);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: var(--green);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(46,204,113,0.35);
+}
+
+/* Panels */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* Grid layout */
+.layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.input-prefix {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.prefix-symbol {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.value-input {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  outline: none;
+  width: 100%;
+  min-width: 0;
+}
+
+.rate-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.rate-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
+.btn-calc {
+  background: var(--green);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-calc:hover { background: var(--green-dark); }
+.btn-calc:active { transform: scale(0.98); }
+
+/* Results panel */
+.results-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+
+.results-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green-dark);
+  margin-bottom: 6px;
+}
+
+.results-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+.results-title .highlight-green { color: var(--green-dark); }
+.results-title .highlight-orange { color: var(--orange); }
+.results-title .highlight-blue { color: var(--blue); }
+
+/* Hero metric */
+.hero-metric {
+  background: linear-gradient(135deg, var(--green-light) 0%, #fff 100%);
+  border: 1px solid #C3EFDA;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.hero-metric.orange-theme {
+  background: linear-gradient(135deg, var(--orange-light) 0%, #fff 100%);
+  border-color: #FAD9A1;
+}
+.hero-metric-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.hero-metric.orange-theme .hero-metric-icon { background: var(--orange); }
+.hero-metric-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.hero-metric-value {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+}
+.hero-metric-sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* Chart */
+.chart-area {
+  height: 180px;
+  margin: 8px 0;
+  position: relative;
+}
+canvas {
+  width: 100%;
+  height: 100%;
+}
+.chart-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.chart-labels .end-label { color: var(--orange); font-weight: 700; }
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.stat-value {
+  font-size: 17px;
+  font-weight: 700;
+}
+.stat-value.green { color: var(--green-dark); }
+.stat-value.orange { color: var(--orange); }
+.stat-bar {
+  height: 3px;
+  border-radius: 3px;
+  width: 36px;
+  margin-top: 6px;
+}
+.bar-gray { background: #CDD5E0; }
+.bar-green { background: var(--green); }
+.bar-orange { background: var(--orange); }
+
+/* Milestone timeline */
+.milestones {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.milestone {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.milestone-pct {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.milestone-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.milestone-time {
+  font-size: 11px;
+  color: var(--green-dark);
+  font-weight: 600;
+}
+
+/* Tip cards */
+.tips-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 20px;
+}
+.tip-card {
+  background: var(--green-light);
+  border-radius: 14px;
+  padding: 16px;
+}
+.tip-card.orange { background: var(--orange-light); }
+.tip-card h4 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tip-card p {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+}
+.empty-state svg { opacity: 0.3; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-in { animation: fadeIn 0.3s ease forwards; }
+
+@media (max-width: 720px) {
+  .layout { grid-template-columns: 1fr; }
+  .milestones { grid-template-columns: repeat(3, 1fr); }
+  .stats-grid { grid-template-columns: repeat(3, 1fr); }
+  .tips-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>Metas de Investimento</h1>
+    <p>Calcule seu caminho para a independência financeira com taxa real de 5% ao ano.</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('prazo')">
+      ⏱ Quanto tempo para chegar lá?
+    </button>
+    <button class="tab-btn" onclick="switchTab('aporte')">
+      💰 Qual aporte para minha renda?
+    </button>
+  </div>
+
+  <!-- ============ PANEL 1: PRAZO ============ -->
+  <div class="panel active" id="panel-prazo">
+    <div class="layout">
+      <div class="controls">
+
+        <div class="card">
+          <div class="card-label">Patrimônio Atual</div>
+          <div class="input-prefix">
+            <span class="prefix-symbol">R$</span>
+            <input class="value-input" type="number" id="p1-patrimonio" value="20000" min="0" step="1000">
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">Valor Desejado (Meta)</div>
+          <div class="input-prefix">
+            <span class="prefix-symbol">R$</span>
+            <input class="value-input" type="number" id="p1-meta" value="1000000" min="0" step="10000">
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">Aporte Mensal</div>
+          <div class="input-prefix">
+            <span class="prefix-symbol">R$</span>
+            <input class="value-input" type="number" id="p1-aporte" value="2000" min="0" step="100">
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">Rentabilidade Real</div>
+          <div class="rate-row">
+            <span style="font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              Taxa de Juros Real
+            </span>
+            <span class="rate-value">5% /ano</span>
+          </div>
+        </div>
+
+        <button class="btn-calc" onclick="calcPrazo()">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Calcular Prazo
+        </button>
+      </div>
+
+      <!-- Results -->
+      <div class="results-card" id="result-prazo">
+        <div class="empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <p>Preencha os campos ao lado<br>e calcule seu prazo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PANEL 2: APORTE ============ -->
+  <div class="panel" id="panel-aporte">
+    <div class="layout">
+      <div class="controls">
+
+        <div class="card">
+          <div class="card-label">Patrimônio Atual</div>
+          <div class="input-prefix">
+            <span class="prefix-symbol">R$</span>
+            <input class="value-input" type="number" id="p2-patrimonio" value="20000" min="0" step="1000">
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">Renda Passiva Desejada / mês</div>
+          <div class="input-prefix">
+            <span class="prefix-symbol">R$</span>
+            <input class="value-input" type="number" id="p2-renda" value="10000" min="0" step="500">
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">Prazo para Atingir (anos)</div>
+          <div class="input-prefix">
+            <input class="value-input" type="number" id="p2-prazo" value="20" min="1" max="60" step="1" style="font-size:22px">
+            <span class="prefix-symbol" style="font-size:15px;align-self:center">anos</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">Rentabilidade Real</div>
+          <div class="rate-row">
+            <span style="font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              Taxa de Juros Real
+            </span>
+            <span class="rate-value">5% /ano</span>
+          </div>
+        </div>
+
+        <button class="btn-calc" onclick="calcAporte()">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Calcular Aporte
+        </button>
+      </div>
+
+      <!-- Results -->
+      <div class="results-card" id="result-aporte">
+        <div class="empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <p>Preencha os campos ao lado<br>e descubra seu aporte ideal.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const TAXA_ANUAL = 0.05;
+const TAXA_MENSAL = Math.pow(1 + TAXA_ANUAL, 1/12) - 1;
+
+function fmt(v, dec=0) {
+  return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+}
+function fmtNum(v, dec=0) {
+  return v.toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (i===0 && tab==='prazo') || (i===1 && tab==='aporte')));
+  document.getElementById('panel-prazo').classList.toggle('active', tab === 'prazo');
+  document.getElementById('panel-aporte').classList.toggle('active', tab === 'aporte');
+}
+
+/* ==============================
+   CALCULATOR 1: PRAZO
+   ============================== */
+function calcPrazo() {
+  const patrimonio = parseFloat(document.getElementById('p1-patrimonio').value) || 0;
+  const meta = parseFloat(document.getElementById('p1-meta').value) || 0;
+  const aporte = parseFloat(document.getElementById('p1-aporte').value) || 0;
+
+  if (meta <= 0) return;
+  if (patrimonio >= meta) {
+    renderPrazoResult(0, patrimonio, meta, aporte);
+    return;
+  }
+
+  // Find months needed
+  let saldo = patrimonio;
+  let meses = 0;
+  const MAX = 12 * 100;
+  while (saldo < meta && meses < MAX) {
+    saldo = saldo * (1 + TAXA_MENSAL) + aporte;
+    meses++;
+  }
+
+  if (meses >= MAX) {
+    document.getElementById('result-prazo').innerHTML = `
+      <div class="empty-state">
+        <p>⚠️ Com este aporte, o valor desejado pode não ser atingido.<br>Tente aumentar o aporte mensal.</p>
+      </div>`;
+    return;
+  }
+
+  renderPrazoResult(meses, patrimonio, meta, aporte);
+}
+
+function renderPrazoResult(meses, patrimonio, meta, aporte) {
+  const anos = Math.floor(meses / 12);
+  const mesesResto = meses % 12;
+  const totalInvestido = patrimonio + aporte * meses;
+  const jurosGanhos = meta - totalInvestido;
+  const rendaPassiva = meta * TAXA_MENSAL;
+
+  // Milestones: 25%, 50%, 75%
+  const milestones = [0.25, 0.50, 0.75].map(pct => {
+    const alvo = patrimonio + (meta - patrimonio) * pct;
+    let s = patrimonio, m = 0;
+    while (s < alvo && m < 99999) { s = s * (1 + TAXA_MENSAL) + aporte; m++; }
+    return { pct: Math.round(pct * 100), val: alvo, anos: Math.floor(m/12), meses: m%12 };
+  });
+
+  // Chart data
+  const steps = 80;
+  const values = [patrimonio];
+  for (let i = 1; i <= steps; i++) {
+    const m = Math.round(i * meses / steps);
+    let s = patrimonio;
+    for (let mm = 1; mm <= m; mm++) s = s * (1 + TAXA_MENSAL) + aporte;
+    values.push(Math.min(s, meta * 1.01));
+  }
+
+  const prazoLabel = anos > 0 ? `${anos} ano${anos>1?'s':''}${mesesResto>0?' e '+mesesResto+' mes'+(mesesResto>1?'es':''):''}` : `${meses} mes${meses>1?'es':''}`;
+
+  document.getElementById('result-prazo').innerHTML = `
+    <div class="animate-in">
+      <div class="results-eyebrow">Projeção de Prazo</div>
+      <div class="results-title">Meta de <span class="highlight-green">${fmt(meta)}</span> atingida em</div>
+
+      <div class="hero-metric">
+        <div class="hero-metric-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div>
+          <div class="hero-metric-label">Tempo Necessário</div>
+          <div class="hero-metric-value">${prazoLabel}</div>
+          <div class="hero-metric-sub">Renda passiva gerada: ${fmt(rendaPassiva, 2)}/mês</div>
+        </div>
+      </div>
+
+      <div class="chart-area"><canvas id="chart-prazo"></canvas></div>
+      <div class="chart-labels">
+        <span>HOJE</span>
+        <span>${Math.round(anos/3*10)/10} anos</span>
+        <span>${Math.round(anos*2/3*10)/10} anos</span>
+        <span class="end-label">META (${anos} ANOS)</span>
+      </div>
+
+      <div class="stats-grid">
+        <div>
+          <div class="stat-label">Total Investido</div>
+          <div class="stat-value">${fmt(Math.max(totalInvestido, 0))}</div>
+          <div class="stat-bar bar-gray"></div>
+        </div>
+        <div>
+          <div class="stat-label">Juros Ganhos</div>
+          <div class="stat-value green">${fmt(Math.max(jurosGanhos, 0))}</div>
+          <div class="stat-bar bar-green"></div>
+        </div>
+        <div>
+          <div class="stat-label">Renda / mês</div>
+          <div class="stat-value orange">${fmt(rendaPassiva, 2)}</div>
+          <div class="stat-bar bar-orange"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:18px">
+        <div class="card-label" style="margin-bottom:10px">Marcos do Caminho</div>
+        <div class="milestones">
+          ${milestones.map(m => `
+            <div class="milestone">
+              <div class="milestone-pct">${m.pct}%</div>
+              <div class="milestone-val">${fmt(m.val)}</div>
+              <div class="milestone-time">${m.anos > 0 ? m.anos+'a '+m.meses+'m' : m.meses+'m'}</div>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <div class="tips-row">
+        <div class="tip-card">
+          <h4>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-dark)" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            Aporte +R$ 500
+          </h4>
+          <p id="tip-prazo-extra">Calculando...</p>
+        </div>
+        <div class="tip-card orange">
+          <h4>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Juros Compostos
+          </h4>
+          <p>Os juros representam <strong>${meta > 0 ? Math.round(Math.max(jurosGanhos,0)/meta*100) : 0}%</strong> do seu patrimônio final — o poder dos juros compostos trabalhando por você.</p>
+        </div>
+      </div>
+    </div>`;
+
+  drawChart('chart-prazo', values, meta, '#2ECC71', '#F39C12');
+
+  // Tip: +500/mes
+  const extraAporte = aporte + 500;
+  let s2 = patrimonio, m2 = 0;
+  while (s2 < meta && m2 < 99999) { s2 = s2 * (1 + TAXA_MENSAL) + extraAporte; m2++; }
+  const diff = meses - m2;
+  const diffAnos = Math.floor(Math.abs(diff)/12);
+  const diffMeses = Math.abs(diff)%12;
+  document.getElementById('tip-prazo-extra').textContent =
+    `Aumentar o aporte em R$ 500/mês anteciparia sua meta em ${diffAnos > 0 ? diffAnos+'a e ' : ''}${diffMeses} mes${diffMeses!==1?'es':''}.`;
+}
+
+/* ==============================
+   CALCULATOR 2: APORTE
+   ============================== */
+function calcAporte() {
+  const patrimonio = parseFloat(document.getElementById('p2-patrimonio').value) || 0;
+  const rendaDesejada = parseFloat(document.getElementById('p2-renda').value) || 0;
+  const prazoAnos = parseFloat(document.getElementById('p2-prazo').value) || 20;
+
+  if (rendaDesejada <= 0) return;
+
+  // Meta de patrimônio = renda / taxa mensal
+  const metaPatrimonio = rendaDesejada / TAXA_MENSAL;
+  const meses = Math.round(prazoAnos * 12);
+
+  // Calcular aporte necessário via fórmula FV
+  // FV = PV*(1+r)^n + PMT*((1+r)^n - 1)/r
+  // metaPatrimonio = patrimonio*(1+r)^n + PMT*((1+r)^n - 1)/r
+  // PMT = (metaPatrimonio - patrimonio*(1+r)^n) * r / ((1+r)^n - 1)
+  const fator = Math.pow(1 + TAXA_MENSAL, meses);
+  const aporteMensal = (metaPatrimonio - patrimonio * fator) * TAXA_MENSAL / (fator - 1);
+
+  if (aporteMensal < 0) {
+    // Already enough
+    renderAporteResult(0, patrimonio, metaPatrimonio, rendaDesejada, prazoAnos, meses, true);
+  } else {
+    renderAporteResult(aporteMensal, patrimonio, metaPatrimonio, rendaDesejada, prazoAnos, meses, false);
+  }
+}
+
+function renderAporteResult(aporte, patrimonio, metaPatrimonio, rendaDesejada, prazoAnos, meses, jaAlcancou) {
+  const totalInvestido = patrimonio + (jaAlcancou ? 0 : aporte * meses);
+  const jurosGanhos = metaPatrimonio - totalInvestido;
+
+  // Chart
+  const steps = 80;
+  const values = [patrimonio];
+  for (let i = 1; i <= steps; i++) {
+    const m = Math.round(i * meses / steps);
+    let s = patrimonio;
+    const ap = jaAlcancou ? 0 : aporte;
+    for (let mm = 1; mm <= m; mm++) s = s * (1 + TAXA_MENSAL) + ap;
+    values.push(s);
+  }
+
+  // Comparison: what if +20% aporte
+  let aporteExtra = aporte * 1.2;
+  let sExtra = patrimonio;
+  for (let mm = 1; mm <= meses; mm++) sExtra = sExtra * (1 + TAXA_MENSAL) + aporteExtra;
+  const rendaExtra = sExtra * TAXA_MENSAL;
+
+  document.getElementById('result-aporte').innerHTML = `
+    <div class="animate-in">
+      <div class="results-eyebrow">Aporte Necessário</div>
+      <div class="results-title">Para renda de <span class="highlight-orange">${fmt(rendaDesejada, 2)}/mês</span> em ${prazoAnos} anos</div>
+
+      <div class="hero-metric orange-theme">
+        <div class="hero-metric-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div>
+          <div class="hero-metric-label">${jaAlcancou ? 'Patrimônio já suficiente!' : 'Aporte Mensal Necessário'}</div>
+          <div class="hero-metric-value">${jaAlcancou ? '✅ Meta já atingida' : fmt(aporte, 2)+'/mês'}</div>
+          <div class="hero-metric-sub">Patrimônio alvo: ${fmt(metaPatrimonio)} → Renda: ${fmt(rendaDesejada, 2)}/mês</div>
+        </div>
+      </div>
+
+      <div class="chart-area"><canvas id="chart-aporte"></canvas></div>
+      <div class="chart-labels">
+        <span>HOJE</span>
+        <span>${Math.round(prazoAnos/3)} anos</span>
+        <span>${Math.round(prazoAnos*2/3)} anos</span>
+        <span class="end-label">META (${prazoAnos} ANOS)</span>
+      </div>
+
+      <div class="stats-grid">
+        <div>
+          <div class="stat-label">Total Investido</div>
+          <div class="stat-value">${fmt(Math.max(totalInvestido, 0))}</div>
+          <div class="stat-bar bar-gray"></div>
+        </div>
+        <div>
+          <div class="stat-label">Juros Ganhos</div>
+          <div class="stat-value green">${fmt(Math.max(jurosGanhos, 0))}</div>
+          <div class="stat-bar bar-green"></div>
+        </div>
+        <div>
+          <div class="stat-label">Patrimônio Final</div>
+          <div class="stat-value orange">${fmt(metaPatrimonio)}</div>
+          <div class="stat-bar bar-orange"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:18px">
+        <div class="card-label" style="margin-bottom:10px">Marcos do Caminho</div>
+        <div class="milestones">
+          ${[0.25, 0.50, 0.75].map(pct => {
+            const alvo = patrimonio + (metaPatrimonio - patrimonio) * pct;
+            let s = patrimonio, m = 0;
+            const ap = jaAlcancou ? 0 : aporte;
+            while (s < alvo && m < 99999) { s = s * (1 + TAXA_MENSAL) + ap; m++; }
+            const a = Math.floor(m/12), ms = m%12;
+            return `<div class="milestone">
+              <div class="milestone-pct">${Math.round(pct*100)}%</div>
+              <div class="milestone-val">${fmt(alvo)}</div>
+              <div class="milestone-time">${a > 0 ? a+'a '+ms+'m' : ms+'m'}</div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+
+      <div class="tips-row">
+        <div class="tip-card">
+          <h4>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-dark)" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            +20% de Aporte
+          </h4>
+          <p>Com ${fmt(aporteExtra, 0)}/mês (+20%), sua renda passiva seria de <strong>${fmt(rendaExtra, 2)}/mês</strong> — ${fmt(rendaExtra - rendaDesejada, 2)} a mais por mês.</p>
+        </div>
+        <div class="tip-card orange">
+          <h4>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Regra dos 4%
+          </h4>
+          <p>Para uma retirada segura de ${fmt(rendaDesejada, 2)}/mês, você precisa de um patrimônio de <strong>${fmt(metaPatrimonio)}</strong>.</p>
+        </div>
+      </div>
+    </div>`;
+
+  drawChart('chart-aporte', values, metaPatrimonio, '#F39C12', '#F39C12');
+}
+
+/* ==============================
+   SHARED CHART RENDERER
+   ============================== */
+function drawChart(canvasId, values, maxVal, lineColor, dotColor) {
+  requestAnimationFrame(() => {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = 180 * dpr;
+    canvas.style.width = rect.width + 'px';
+    canvas.style.height = '180px';
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    const W = rect.width, H = 180;
+    ctx.clearRect(0, 0, W, H);
+
+    const steps = values.length - 1;
+    const maxV = Math.max(maxVal, ...values) * 1.02;
+    const padX = 8, padY = 14;
+    const px = i => padX + (i / steps) * (W - padX * 2);
+    const py = v => H - padY - (v / maxV) * (H - padY * 2);
+
+    // Gradient fill
+    const grad = ctx.createLinearGradient(0, 0, 0, H);
+    const rgb = lineColor === '#2ECC71' ? '46,204,113' : '243,156,18';
+    grad.addColorStop(0, `rgba(${rgb},0.20)`);
+    grad.addColorStop(1, `rgba(${rgb},0.01)`);
+    ctx.beginPath();
+    ctx.moveTo(px(0), py(values[0]));
+    for (let i = 1; i <= steps; i++) ctx.lineTo(px(i), py(values[i]));
+    ctx.lineTo(px(steps), H - padY);
+    ctx.lineTo(px(0), H - padY);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Line
+    ctx.beginPath();
+    ctx.moveTo(px(0), py(values[0]));
+    for (let i = 1; i <= steps; i++) ctx.lineTo(px(i), py(values[i]));
+    ctx.strokeStyle = lineColor;
+    ctx.lineWidth = 2.5;
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+
+    // Horizontal goal line
+    ctx.beginPath();
+    ctx.setLineDash([6, 4]);
+    ctx.moveTo(padX, py(maxVal));
+    ctx.lineTo(W - padX, py(maxVal));
+    ctx.strokeStyle = 'rgba(243,156,18,0.5)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Dots
+    [0, Math.round(steps/3), Math.round(steps*2/3), steps].forEach((i, idx) => {
+      const x = px(i), y = py(values[i]);
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.fillStyle = idx === 3 ? dotColor : '#fff';
+      ctx.strokeStyle = idx === 3 ? dotColor : lineColor;
+      ctx.lineWidth = 2.5;
+      ctx.fill();
+      ctx.stroke();
+    });
+  });
+}
+
+// Auto-calculate on load
+calcPrazo();
+calcAporte();
+
+// Live on input
+['p1-patrimonio','p1-meta','p1-aporte'].forEach(id =>
+  document.getElementById(id).addEventListener('input', calcPrazo));
+['p2-patrimonio','p2-renda','p2-prazo'].forEach(id =>
+  document.getElementById(id).addEventListener('input', calcAporte));
+
+window.addEventListener('resize', () => { calcPrazo(); calcAporte(); });
+</script>
+</body>
+</html>
