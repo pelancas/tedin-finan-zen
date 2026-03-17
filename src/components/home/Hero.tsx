@@ -47,20 +47,14 @@ export function Hero() {
           Sua segurança financeira em primeiro lugar
         </div>
         <h1 className="text-4xl md:text-6xl font-black text-white leading-[1.1] tracking-tight">
-          Transforme seu futuro com{" "}
-          <span className="text-primary">orientação especializada.</span>
+          Oriente{" "}
+          <span className="text-primary">seu futuro.</span>
         </h1>
         <p className="text-lg text-slate-300 max-w-lg leading-relaxed">
-          Navegue pelo mundo do das finanças com a
-          confiança de quem tem especialistas ao seu lado.
+          Se torne um orientado e navegue pelo mundo do das finanças com
+          guias especializados ao seu lado.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
-          <button 
-          onClick={() => window.location.href = "/orientaplus"}
-          className="bg-primary text-white h-14 px-8 rounded-xl font-bold text-lg hover:scale-[1.02] transition-transform flex items-center justify-center gap-2">
-            Ver planos{" "}
-            <span className="material-symbols-outlined">arrow_forward</span>
-          </button>
         </div>
         <div className="flex items-center gap-4 text-sm text-slate-400">
           <div className="flex -space-x-2">
