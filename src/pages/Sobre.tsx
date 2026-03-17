@@ -57,7 +57,7 @@ const Sobre = () => {
                 <h2 className="text-2xl font-bold text-foreground mb-4">Nossa história</h2>
                 <div className="space-y-4 text-muted-foreground">
                   <p>
-                    A TEdin começou em 2023, quando um grupo de amigos cansou de ver 
+                    A Orienta começou em 2025, quando um grupo de amigos cansou de ver 
                     tanta gente perdida com as próprias finanças. Não por falta de 
                     inteligência, mas por falta de ferramentas acessíveis.
                   </p>
