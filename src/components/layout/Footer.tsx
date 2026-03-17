@@ -35,7 +35,7 @@ export function Footer() {
               Direcionando suas finanças com educação, ferramentas e consultoria personalizada.
             </p>
             <Button asChild className="w-fit mt-2">
-              <Link to="/consultoria">Agende sua consultoria</Link>
+              <Link to="/orientaplus">Saiba mais</Link>
             </Button>
 
             {/* Redes sociais */}
@@ -100,8 +100,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/consultoria" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Consultoria
+                <Link to="/orientaplus" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Orienta+
                 </Link>
               </li>
               <li>

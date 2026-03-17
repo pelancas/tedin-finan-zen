@@ -1,6 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
 import { Hero } from "@/components/home/Hero";
-import { ServiceSection } from "@/components/home/ServiceSection";
 import iconDespesas from "@/assets/icon-despesas.png";
 import iconLeao from "@/assets/icon-leao.png";
 import iconConsultoria from "@/assets/icon-consultoria.png";

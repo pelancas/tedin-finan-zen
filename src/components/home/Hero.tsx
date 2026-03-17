@@ -51,16 +51,15 @@ export function Hero() {
           <span className="text-primary">orientação especializada.</span>
         </h1>
         <p className="text-lg text-slate-300 max-w-lg leading-relaxed">
-          Navegue pelo mundo do planejamento, investimentos e impostos com a
+          Navegue pelo mundo do das finanças com a
           confiança de quem tem especialistas ao seu lado.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
-          <button className="bg-primary text-white h-14 px-8 rounded-xl font-bold text-lg hover:scale-[1.02] transition-transform flex items-center justify-center gap-2">
-            Agendar Consultoria{" "}
+          <button 
+          onClick={() => window.location.href = "/orientaplus"}
+          className="bg-primary text-white h-14 px-8 rounded-xl font-bold text-lg hover:scale-[1.02] transition-transform flex items-center justify-center gap-2">
+            Ver planos{" "}
             <span className="material-symbols-outlined">arrow_forward</span>
-          </button>
-          <button className="bg-surface-dark text-white h-14 px-8 rounded-xl font-bold text-lg hover:bg-slate-700 transition-colors">
-            Ver Planos
           </button>
         </div>
         <div className="flex items-center gap-4 text-sm text-slate-400">
@@ -75,7 +74,7 @@ export function Hero() {
               <span className="material-symbols-outlined text-xs">person</span>
             </div>
           </div>
-          <span>+10.000 clientes satisfeitos em todo o Brasil</span>
+          <span>Uma abordagem para todos os públicos</span>
         </div>
       </div>
       <div className="relative">
@@ -171,44 +170,20 @@ export function Hero() {
         </div>
         <div className="relative z-10 max-w-2xl">
           <div className="bg-secondary text-background-dark text-xs font-black px-4 py-1.5 rounded-full w-fit mb-6 shadow-lg">
-            PREMIUM COMMUNITY
+            PREMIUM SERVICES
           </div>
           <h2 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
             Chegou a Orienta<span className="text-secondary">+</span>
           </h2>
           <p className="text-white/90 text-xl mb-10 leading-relaxed">
-            Uma experiência exclusiva com acesso direto a analistas,
-            masterclasses semanais e uma comunidade de investidores de alta
-            performance.
+            Uma experiência exclusiva com acesso direto analises completas,
+            com uma abordagem única.
           </p>
-          <div className="grid sm:grid-cols-2 gap-8 mb-12">
-            <div className="flex gap-4">
-              <span className="material-symbols-outlined text-secondary text-4xl">
-                groups
-              </span>
-              <div>
-                <h4 className="text-white font-bold text-lg">Networking VIP</h4>
-                <p className="text-white/70 text-sm">
-                  Conecte-se com outros investidores e troque insights valiosos.
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <span className="material-symbols-outlined text-secondary text-4xl">
-                school
-              </span>
-              <div>
-                <h4 className="text-white font-bold text-lg">
-                  Conteúdo Exclusivo
-                </h4>
-                <p className="text-white/70 text-sm">
-                  Aulas práticas e relatórios que não chegam ao grande público.
-                </p>
-              </div>
-            </div>
-          </div>
-          <button className="bg-white text-primary px-10 py-4 rounded-xl font-black text-lg hover:bg-slate-100 transition-all shadow-xl shadow-black/20">
-            Faça parte da Orienta+
+          
+          <button 
+            onClick={() => window.location.href = "/orientaplus"}
+            className="bg-white text-primary px-10 py-4 rounded-xl font-black text-lg hover:bg-slate-100 transition-all shadow-xl shadow-black/20">
+            Entrenda o Orienta+
           </button>
         </div>
       </div>

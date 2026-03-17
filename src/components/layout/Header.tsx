@@ -11,7 +11,7 @@ const planejamentoItems = [
   { name: "Despesas", href: "/despesas" },
   { name: "Calculadora de aposentadoria", href: "/ferramentas/aposentadoria" },
   { name: "Metas de investimentos", href: "/ferramentas/metas" },
-  { name: "Primeiro milhão", href: "/ferramentas/primeiro-milhao" },
+
 ];
 
 const investimentosItems = [
@@ -217,12 +217,12 @@ export function Header() {
 
           {/* Consultoria */}
           <Link
-            to="/consultoria"
+            to="/orientaplus"
             onClick={() => { setPlanejamentoOpen(false); setInvestimentosOpen(false); }}
             className={cn(
               "flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors",
               "bg-primary text-white hover:bg-primary/90",
-              location.pathname.startsWith("/consultoria")
+              location.pathname.startsWith("/orientaplus")
                 ? "ring-2 ring-primary"
                 : ""
             )}
@@ -364,17 +364,17 @@ export function Header() {
 
             {/* Mobile Consultoria */}
             <Link
-              to="/consultoria"
+              to="/orientaplus"
               onClick={closeMobile}
               className={cn(
                 "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
-                location.pathname.startsWith("/consultoria")
+                location.pathname.startsWith("/orientaplus")
                   ? "bg-accent text-accent-foreground"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
               )}
             >
-              <img src={iconConsultoria} alt="Consultoria" className="h-6 w-6 object-contain" />
-              Consultoria
+
+              Orienta+
             </Link>
 
           </div>

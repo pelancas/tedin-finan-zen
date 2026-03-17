@@ -7,9 +7,9 @@ import Index from "./pages/Index";
 import Sobre from "./pages/Sobre";
 import Despesas from "./pages/planejamento/Despesas";
 import Imposto from "./pages/impostos/Imposto";
-import Consultoria from "./pages/orienta-plus/Consultoria";
+import OrientaPlus from "./pages/orienta-plus/OrientaPlus";
 import AnaliseCarteira from "./pages/orienta-plus/AnaliseCarteira";
-import ConsultoriaFinanceira from "./pages/orienta-plus/ConsultoriaFinanceira";
+import PlanejamentoFinanceiro from "./pages/orienta-plus/PlanejamentoFinanceiro";
 import Ferramentas from "./pages/planejamento/Ferramentas";
 import Fundos from "./pages/investimentos/Fundos";
 import RendaFixa from "./pages/investimentos/RendaFixa";
@@ -30,9 +30,9 @@ const App = () => (
           <Route path="/sobre" element={<Sobre />} />
           <Route path="/despesas" element={<Despesas />} />
           <Route path="/imposto" element={<Imposto />} />
-          <Route path="/consultoria" element={<Consultoria />} />
-          <Route path="/consultoria/analisecarteira" element={<AnaliseCarteira />} />
-          <Route path="/consultoria/consultoriafinanceira" element={<ConsultoriaFinanceira />} />
+          <Route path="/orientaplus" element={<OrientaPlus />} />
+          <Route path="/orientaplus/analisecarteira" element={<AnaliseCarteira />} />
+          <Route path="/orientaplus/planejamentofinanceiro" element={<PlanejamentoFinanceiro />} />
           <Route path="/ferramentas" element={<Ferramentas />} />
           <Route path="/ferramentas/:tool" element={<Ferramentas />} />
           <Route path="/investimentos/fundos" element={<Fundos />} />

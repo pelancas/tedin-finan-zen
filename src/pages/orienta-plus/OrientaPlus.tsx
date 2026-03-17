@@ -61,7 +61,7 @@ const services: ServiceCard[] = [
     icon: BookOpenText,
     badge: "Recomendado",
     badgeColor: "#f97316",
-    title: "Planejamento Virtual",
+    title: "Diagnóstico Financeiro",
     description:
       "Descubra como melhorar suas finanças com um diagnóstico completo e 30 dias de suporte especializado.",
     price: "R$ 299",
