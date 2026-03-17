@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroBackground from "@/assets/hero-background.png";
+import calculadoraImg from '@/assets/Calculadora.png'; 
 
 export function Hero() {
   return <section className="relative overflow-hidden">
@@ -84,7 +84,7 @@ export function Hero() {
           <img
             alt="Consultoria Financeira"
             className="w-full h-full object-cover opacity-80"
-            src="/src/assets/Calculadora.png"
+            src={calculadoraImg}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent" />
 
