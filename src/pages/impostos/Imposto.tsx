@@ -252,7 +252,7 @@ const Imposto = () => {
               transform: "rotate(-2deg)",
             }}>
               <img
-                src="/src/assets/IRPF2.png"
+                src={IRPF2}
                 alt="IRPF 2"
                 style={{ width: "100%", display: "block", objectFit: "cover" }}
               />
