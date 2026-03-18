@@ -118,7 +118,7 @@ const Fundos = () => {
                 </>
               )}
             </div>
-            <h1 className="text-2xl md:text-3xl font-bold">Fundos de Investimento</h1>
+            <h1 className="text-2xl md:text-3xl font-bold">Ações</h1>
           </div>
 
           {/* Mobile toggle */}

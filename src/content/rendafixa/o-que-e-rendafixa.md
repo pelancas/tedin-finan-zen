@@ -2,7 +2,7 @@
 id: o-que-e-rendafixa
 title: O que é a tal da renda fixa
 category: cuidados
-summary: 
+summary: Entenda mais o que é
 ---
 
 ## O que é Renda Fixa

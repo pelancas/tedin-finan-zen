@@ -93,19 +93,14 @@ export function Footer() {
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Mais</h3>
             <ul className="flex flex-col gap-2">
-              <li>
+              {/*<li>
                 <Link to="/imposto" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   Impostos
                 </Link>
-              </li>
+              </li>*/}
               <li>
                 <Link to="/orientaplus" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   Orienta+
-                </Link>
-              </li>
-              <li>
-                <Link to="/sobre" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Sobre
                 </Link>
               </li>
             </ul>

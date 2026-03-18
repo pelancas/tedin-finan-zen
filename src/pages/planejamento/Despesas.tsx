@@ -78,7 +78,9 @@ const Despesas = () => {
             Conheça o método híbrido que une <span className="text-primary font-bold"> Zero Base Budget </span> e a  <span className="text-secondary font-bold"> Técnica dos Envelopes  </span> para transformar sua vida financeira de forma definitiva.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button className="bg-primary hover:bg-primary/90 text-white font-bold px-10 py-5 rounded-2xl shadow-xl shadow-primary/20 flex items-center gap-3 text-lg group transition-all">
+            <button 
+            onClick={() => window.open("https://docs.google.com/spreadsheets/d/1gjiN7VDOJa5G2Qw4LnwqiAp07CRjs9Nc1fCGKrdZe40/copy", "_blank")}
+            className="bg-primary hover:bg-primary/90 text-white font-bold px-10 py-5 rounded-2xl shadow-xl shadow-primary/20 flex items-center gap-3 text-lg group transition-all">
               Ver Planilha Grátis
               <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
                 <ArrowRight size={20} />
@@ -331,7 +333,9 @@ const Despesas = () => {
               <p className="text-slate-500 mb-6">
                 Template profissional pronto no Google Sheets para você apenas preencher e começar hoje.
               </p>
-              <button className="w-full bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white transition-all font-bold py-4 rounded-2xl flex items-center justify-center gap-3">
+              <button 
+              onClick={() => window.open("https://docs.google.com/spreadsheets/d/1gjiN7VDOJa5G2Qw4LnwqiAp07CRjs9Nc1fCGKrdZe40/copy", "_blank")}
+              className="w-full bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white transition-all font-bold py-4 rounded-2xl flex items-center justify-center gap-3">
                 <span className="material-symbols-outlined">
                   <Copy size={20} />
                 </span>

@@ -294,10 +294,10 @@ export default function CalculadoraFinanceira() {
               <div className="ccard">
                 <div className="clbl">Idade Atual e Meta</div>
                 <div className="cage">
-                  <input type="number" value={idadeAtual} min={18} max={80} onChange={e => setIdadeAtual(parseInt(e.target.value)||18)} />
+                  <input type="number" value={idadeAtual} min={18} max={80} onChange={e => setIdadeAtual(parseInt(e.target.value))} />
                   <span className="cagel">anos</span>
                   <div className="cages" />
-                  <input type="number" value={idadeMeta} min={20} max={90} onChange={e => setIdadeMeta(parseInt(e.target.value)||55)} />
+                  <input type="number" value={idadeMeta} min={20} max={90} onChange={e => setIdadeMeta(parseInt(e.target.value))} />
                   <span className="cagel">anos</span>
                 </div>
               </div>

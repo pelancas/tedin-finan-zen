@@ -15,7 +15,7 @@ const categories = [
     icon: ShieldAlert,
     subcategories: [
       { id: "o-que-e-rendafixa", label: "Mas o que raios é a renda fixa" },
-      { id: "cursos-rendafixa", label: "Entenda mais sobre esse produto" },
+      { id: "tipos-rendafixa", label: "Entenda mais sobre esse produto" },
     ],
   },
   {

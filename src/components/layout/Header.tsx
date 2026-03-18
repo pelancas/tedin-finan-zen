@@ -201,7 +201,7 @@ export function Header() {
             )}
           </div>
 
-          {/* Impostos */}
+          {/* Impostos 
           <Link
             to="/imposto"
             onClick={() => { setPlanejamentoOpen(false); setInvestimentosOpen(false); }}
@@ -213,7 +213,7 @@ export function Header() {
             )}
           >
             Impostos
-          </Link>
+          </Link>*/}
 
           {/* Consultoria */}
           <Link

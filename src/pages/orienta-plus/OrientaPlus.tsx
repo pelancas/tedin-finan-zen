@@ -26,6 +26,7 @@ interface ServiceCard {
   priceLabel: string;
   features: string[];
   ctaLabel: string;
+  ctaLink: string;
   accentColor: string;
 }
 
@@ -55,6 +56,7 @@ const services: ServiceCard[] = [
       "Relatório independente",
     ],
     ctaLabel: "Saber Mais",
+    ctaLink: "https://wa.me/5531971778537?text=Ol%C3%A1,%20vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20a%20an%C3%A1lise%20de%20carteira",
     accentColor: "#1daf66",
   },
   {
@@ -78,7 +80,8 @@ const services: ServiceCard[] = [
       "Suporte dedicado via WhatsApp por 30 dias",
       "Plano de ação personalizado passo a passo",
     ],
-    ctaLabel: "Contratar Agora",
+    ctaLabel: "Contratar Agora" ,
+    ctaLink: "https://wa.me/5531971778537?text=Ol%C3%A1,%20vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20diagn%C3%B3stico%20financeiro",
     accentColor: "#f97316",
   },
 ];
@@ -147,7 +150,9 @@ const Home: React.FC = () => {
               </p>
 
               <div className="flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
-                <Button className="flex items-center justify-center gap-2 rounded-xl bg-[#1daf66] px-8 py-6 text-lg font-bold text-white shadow-xl shadow-[#1daf66]/30 transition-all hover:-translate-y-1 hover:bg-[#1daf66]/90">
+                <Button 
+                  onClick={() => window.open("https://wa.me/5531971778537?text=Ol%C3%A1,%20vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20diagn%C3%B3stico%20financeiro", "_blank")}
+                  className="flex items-center justify-center gap-2 rounded-xl bg-[#1daf66] px-8 py-6 text-lg font-bold text-white shadow-xl shadow-[#1daf66]/30 transition-all hover:-translate-y-1 hover:bg-[#1daf66]/90">
                   Iniciar Planejamento
                   <TrendingUp size={18} />
                 </Button>
@@ -249,8 +254,9 @@ const Home: React.FC = () => {
                     className="flex w-full items-center justify-center gap-2 rounded-xl py-5 font-bold text-white transition-all hover:opacity-90"
                     style={{ background: "#1A2E35" }}
                   >
-                    {s.ctaLabel}
-                    <ArrowRight size={16} />
+                    <a href={s.ctaLink} target="_blank" rel="noopener noreferrer">
+                    {s.ctaLabel} 
+                    </a>
                   </Button>
                 </div>
               );
@@ -317,6 +323,7 @@ const Home: React.FC = () => {
             </p>
             <div className="relative z-10 flex flex-col justify-center gap-4 sm:flex-row">
               <Button
+                onClick={() => window.open("https://wa.me/5531971778537?text=Ol%C3%A1,%20vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20diagn%C3%B3stico%20financeiro", "_blank")}
                 className="rounded-xl px-10 py-6 text-lg font-bold shadow-xl transition-all hover:-translate-y-1"
                 style={{ background: "#1A2E35", color: "#ffffff" }}
               >
