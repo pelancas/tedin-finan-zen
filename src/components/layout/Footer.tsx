@@ -36,17 +36,20 @@ export function Footer() {
             <Button asChild className="w-fit mt-2">
               <Link to="/orientaplus">Saiba mais</Link>
             </Button>
+            <Button asChild className="w-fit mt-2">
+              <Link to="https://wa.me/5531971778537">Entre em contato</Link>
+            </Button>
 
-            {/* Redes sociais */}
+            {/*{/* Redes sociais */}
             <div className="flex items-center gap-3 mt-4">
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
+              <a href="https://www.instagram.com/orienta.financas/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
                 <Instagram className="h-5 w-5" />
-              </a>
+              {/*</a>
               <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
                 <Youtube className="h-5 w-5" />
               </a>
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
-                <Linkedin className="h-5 w-5" />
+                <Linkedin className="h-5 w-5" />*/}
               </a>
             </div>
           </div>
