@@ -3,6 +3,7 @@ id: o-que-sao
 title: Mas o que raios são fundos
 category: cuidados
 summary: Se você já ouviu falar de fundos de investimento e ficou confuso, calma. Vamos descomplicar.
+order: 1
 ---
 
 ## A ideia por trás

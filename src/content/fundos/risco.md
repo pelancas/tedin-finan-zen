@@ -3,6 +3,7 @@ id: risco
 title: Qual o risco de investir em fundos?
 category: duvidas
 summary: Todo investimento tem risco. Em fundos, o risco depende do tipo e da estratégia.
+order: 1
 ---
 
 ## Tipos de risco

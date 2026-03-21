@@ -3,6 +3,7 @@ id: guia-iniciante
 title: Guia para iniciantes
 category: guias
 summary: Um guia completo sobre fundos de investimento para quem está começando.
+order: 1
 ---
 
 ## Guia Completo – InfoMoney

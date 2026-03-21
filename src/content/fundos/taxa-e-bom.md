@@ -3,6 +3,7 @@ id: taxa-e-bom
 title: Ter taxa é bom?
 category: cuidados
 summary: Parece contraditório, mas sim — em alguns casos, pagar taxa faz sentido.
+order: 5
 ---
 
 ## Taxa de administração

@@ -3,6 +3,7 @@ id: guia-comparacao
 title: Como comparar fundos
 category: guias
 summary: Antes de investir em qualquer fundo, saiba o que comparar para tomar a melhor decisão.
+order: 2
 ---
 
 ## O que analisar

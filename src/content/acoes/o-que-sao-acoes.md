@@ -2,7 +2,8 @@
 id: o-que-sao-acoes
 title: O que seria uma ação?
 category: cuidados
-summary: 
+summary:
+order: 1
 ---
 ## O que é uma Ação
 

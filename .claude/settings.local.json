@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find 'C:\\\\Users\\\\IsadoraLara\\\\OneDrive - GRUPO VERMONT\\\\Orienta\\\\tedin-finan-zen' -type f -name tina* -o -name *tina*)",
+      "Bash(find 'C:\\\\Users\\\\IsadoraLara\\\\OneDrive - GRUPO VERMONT\\\\Orienta\\\\tedin-finan-zen' -maxdepth 2 -type f \\\\\\(-name *.config.* -o -name CLAUDE.md \\\\\\))",
+      "Bash(npx tsc:*)"
+    ]
+  }
+}

@@ -3,6 +3,7 @@ export interface ContentMeta {
   title: string;
   category: string;
   summary: string;
+  order: number;
   video?: string;
 }
 
@@ -47,6 +48,7 @@ export function parseMarkdownContent(raw: string): ContentItem {
       title: meta.title || "",
       category: meta.category || "",
       summary: meta.summary || "",
+      order: parseInt(meta.order || "0", 10),
       video: meta.video,
     },
     body,
