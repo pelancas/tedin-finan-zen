@@ -4,6 +4,7 @@ title: Posso resgatar a qualquer hora?
 category: duvidas
 summary: Depende do fundo. Alguns permitem resgate no mesmo dia, outros levam semanas.
 order: 2
+author: Tedin
 ---
 
 ## Prazos importantes

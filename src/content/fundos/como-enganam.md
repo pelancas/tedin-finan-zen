@@ -4,6 +4,7 @@ title: Como te enganam - não são todos
 category: cuidados
 summary: Existem fundos excelentes. Mas existem armadilhas disfarçadas de investimento. Saiba identificar.
 order: 4
+author: Tedin
 ---
 
 ## Truques comuns

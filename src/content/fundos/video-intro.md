@@ -5,6 +5,7 @@ category: videos
 summary: Entenda de forma simples como funcionam os fundos de investimento, seus tipos e como escolher o melhor para o seu perfil.
 video: https://www.youtube.com/embed/8QnAr1sF4Sg
 order: 1
+author: Tedin
 ---
 
 ## Sobre o vídeo

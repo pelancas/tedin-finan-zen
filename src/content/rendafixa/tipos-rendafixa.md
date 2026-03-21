@@ -4,6 +4,7 @@ title: Os tipos de renda fixa
 category: cuidados
 summary: Descubra quais são os tipos de renda fixa, e o que eles significam.
 order: 2
+author: Tedin
 ---
 
 ## Renda Fixa – Principais Tipos (por emissor)

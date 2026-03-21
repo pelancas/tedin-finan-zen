@@ -4,6 +4,7 @@ title: Porque querem que eu invista em um
 category: cuidados
 summary: Todo mundo parece empurrar fundos pra você. Seu gerente, influenciadores, até o app do banco. Mas por quê?
 order: 2
+author: Tedin
 ---
 
 ## O interesse do banco
