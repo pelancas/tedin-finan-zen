@@ -77,14 +77,18 @@ export default function ContentPage({ folder, badgeLabel, pageTitle, categories:
     contentByCategory.get(cat.id)?.some((item) => item.meta.id === selectedContent)
   );
 
-  // Other topics: items from same category (excluding current), then from other categories
-  const otherTopics = useMemo(() => {
+  // Other topics: grouped by category in sortedCategories order, items sorted by order within each category
+  const otherTopicsGrouped = useMemo(() => {
     const others = contentItems.filter((c) => c.meta.id !== selectedContent);
-    // Same category first, then rest
-    const sameCategory = others.filter((c) => c.meta.category === currentContent?.meta.category);
-    const differentCategory = others.filter((c) => c.meta.category !== currentContent?.meta.category);
-    return [...sameCategory, ...differentCategory];
-  }, [contentItems, selectedContent, currentContent]);
+    const groups: { category: CategoryConfig; items: ContentItem[] }[] = [];
+    for (const cat of sortedCategories) {
+      const items = others.filter((c) => c.meta.category === cat.id);
+      if (items.length > 0) {
+        groups.push({ category: cat, items });
+      }
+    }
+    return groups;
+  }, [contentItems, selectedContent, sortedCategories]);
 
   return (
     <Layout>
@@ -241,22 +245,18 @@ export default function ContentPage({ folder, badgeLabel, pageTitle, categories:
           {/* Right: sidebar with other topics */}
           <aside className="cp-aside">
             <MobileTopicsToggle
-              otherTopics={otherTopics}
+              groups={otherTopicsGrouped}
               selectedContent={selectedContent}
               onSelect={setSelectedContent}
-              categories={sortedCategories}
-              contentByCategory={contentByCategory}
               defaultLabelMap={defaultLabelMap}
             />
 
             <div className="cp-card" style={{ display: "none" }} id="cp-desktop-sidebar" />
 
             <DesktopSidebar
-              otherTopics={otherTopics}
+              groups={otherTopicsGrouped}
               selectedContent={selectedContent}
               onSelect={setSelectedContent}
-              categories={sortedCategories}
-              contentByCategory={contentByCategory}
               defaultLabelMap={defaultLabelMap}
             />
           </aside>
@@ -267,18 +267,14 @@ export default function ContentPage({ folder, badgeLabel, pageTitle, categories:
 }
 
 function MobileTopicsToggle({
-  otherTopics,
+  groups,
   selectedContent,
   onSelect,
-  categories,
-  contentByCategory,
   defaultLabelMap,
 }: {
-  otherTopics: ContentItem[];
+  groups: { category: CategoryConfig; items: ContentItem[] }[];
   selectedContent: string;
   onSelect: (id: string) => void;
-  categories: CategoryConfig[];
-  contentByCategory: Map<string, ContentItem[]>;
   defaultLabelMap: Record<string, string>;
 }) {
   const [open, setOpen] = useState(false);
@@ -295,7 +291,7 @@ function MobileTopicsToggle({
       {open && (
         <div className="cp-card" style={{ marginBottom: "1rem" }}>
           <TopicList
-            otherTopics={otherTopics}
+            groups={groups}
             selectedContent={selectedContent}
             onSelect={(id) => { onSelect(id); setOpen(false); }}
             defaultLabelMap={defaultLabelMap}
@@ -307,16 +303,14 @@ function MobileTopicsToggle({
 }
 
 function DesktopSidebar({
-  otherTopics,
+  groups,
   selectedContent,
   onSelect,
   defaultLabelMap,
 }: {
-  otherTopics: ContentItem[];
+  groups: { category: CategoryConfig; items: ContentItem[] }[];
   selectedContent: string;
   onSelect: (id: string) => void;
-  categories: CategoryConfig[];
-  contentByCategory: Map<string, ContentItem[]>;
   defaultLabelMap: Record<string, string>;
 }) {
   return (
@@ -329,7 +323,7 @@ function DesktopSidebar({
         Outros Temas
       </h3>
       <TopicList
-        otherTopics={otherTopics}
+        groups={groups}
         selectedContent={selectedContent}
         onSelect={onSelect}
         defaultLabelMap={defaultLabelMap}
@@ -339,39 +333,63 @@ function DesktopSidebar({
 }
 
 function TopicList({
-  otherTopics,
+  groups,
   selectedContent,
   onSelect,
   defaultLabelMap,
 }: {
-  otherTopics: ContentItem[];
+  groups: { category: CategoryConfig; items: ContentItem[] }[];
   selectedContent: string;
   onSelect: (id: string) => void;
   defaultLabelMap: Record<string, string>;
 }) {
   return (
-    <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 0 }}>
-      {otherTopics.map((item, i) => (
-        <li key={item.meta.id}>
-          <button
-            className={`cp-topic-btn ${selectedContent === item.meta.id ? "cp-topic-active" : ""}`}
-            onClick={() => onSelect(item.meta.id)}
-          >
-            <svg className="cp-topic-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-              <polyline points="14 2 14 8 20 8" />
-              <line x1="16" y1="13" x2="8" y2="13" />
-              <line x1="16" y1="17" x2="8" y2="17" />
-              <polyline points="10 9 9 9 8 9" />
-            </svg>
-            <div>
-              <p className="cp-topic-title">{item.meta.title}</p>
-              <p className="cp-topic-cat">{defaultLabelMap[item.meta.category] || item.meta.category}</p>
-            </div>
-          </button>
-          {i < otherTopics.length - 1 && <hr className="cp-divider" />}
-        </li>
-      ))}
-    </ul>
+    <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+      {groups.map((group, gi) => {
+        const CatIcon = defaultIconMap[group.category.id] || BookOpen;
+        return (
+          <div key={group.category.id}>
+            {gi > 0 && <hr className="cp-divider" style={{ margin: "0.75rem 0" }} />}
+            <p style={{
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.06em",
+              color: "#1daf66",
+              marginBottom: "0.25rem",
+              marginTop: gi > 0 ? "0.25rem" : 0,
+              display: "flex",
+              alignItems: "center",
+              gap: "0.4rem",
+            }}>
+              <CatIcon size={14} />
+              {defaultLabelMap[group.category.id] || group.category.id}
+            </p>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              {group.items.map((item, i) => (
+                <li key={item.meta.id}>
+                  <button
+                    className={`cp-topic-btn ${selectedContent === item.meta.id ? "cp-topic-active" : ""}`}
+                    onClick={() => onSelect(item.meta.id)}
+                  >
+                    <svg className="cp-topic-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                      <polyline points="14 2 14 8 20 8" />
+                      <line x1="16" y1="13" x2="8" y2="13" />
+                      <line x1="16" y1="17" x2="8" y2="17" />
+                      <polyline points="10 9 9 9 8 9" />
+                    </svg>
+                    <div>
+                      <p className="cp-topic-title">{item.meta.title}</p>
+                    </div>
+                  </button>
+                  {i < group.items.length - 1 && <hr className="cp-divider" />}
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
+    </div>
   );
 }

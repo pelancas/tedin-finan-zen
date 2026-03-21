@@ -4,7 +4,7 @@ title: O que seria uma ação?
 category: cuidados
 summary:
 order: 1
-author: Tedin
+author: Isadora Lara
 ---
 ## O que é uma Ação
 

@@ -5,7 +5,8 @@
       "Bash(find 'C:\\\\Users\\\\IsadoraLara\\\\OneDrive - GRUPO VERMONT\\\\Orienta\\\\tedin-finan-zen' -maxdepth 2 -type f \\\\\\(-name *.config.* -o -name CLAUDE.md \\\\\\))",
       "Bash(npx tsc:*)",
       "Bash(npm run:*)",
-      "Bash(echo \"EXIT: $?\")"
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(grep -E \"\\\\.\\(ts|tsx\\)$\")"
     ]
   }
 }

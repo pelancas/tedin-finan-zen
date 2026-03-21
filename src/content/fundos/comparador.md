@@ -4,7 +4,7 @@ title: Comparador de Fundos
 category: ferramentas
 summary: Ferramentas essenciais para analisar e comparar fundos de investimento antes de tomar uma decisão.
 order: 1
-author: Tedin
+author: Isadora Lara
 ---
 
 ## Mais Retorno – Comparador de Fundos
