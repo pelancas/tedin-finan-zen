@@ -85,7 +85,7 @@ export function Header() {
       !headerVisible && "-translate-y-full"
     )}>
       <div className="container flex h-20 items-center justify-between">
-        <Link to="../" className="flex items-center">
+        <Link to="/" className="flex items-center">
           <img src={Logo} alt="Logo" className="h-14" />
         </Link>
 
