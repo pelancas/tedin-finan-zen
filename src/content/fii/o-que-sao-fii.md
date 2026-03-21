@@ -2,7 +2,9 @@
 id: o-que-sao-fii
 title: O que seria um fundo imobiliário?
 category: cuidados
-summary: 
+summary:
+order: 1
+author: Tedin
 ---
 ## O que são Fundos Imobiliários (FIIs)
 

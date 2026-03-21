@@ -4,6 +4,8 @@ title: Fundos de Investimento na Prática
 category: videos
 summary: Aprenda na prática como investir em fundos, analisar taxas e comparar rentabilidades.
 video: https://www.youtube.com/embed/YHnaVTXMI_I
+order: 2
+author: Tedin
 ---
 
 ## Sobre o vídeo

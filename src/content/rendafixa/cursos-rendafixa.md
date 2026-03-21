@@ -3,6 +3,8 @@ id: cursos-rendafixa
 title: Cursos gratuitos para aprender mais sobre esse investimento
 category: guias
 summary: Curso da GRATUITO da Anbima para entender mais sobre esse produto
+order: 1
+author: Tedin
 ---
 
 https://cursos.anbima.com.br/detalhes-item/mercado-de-renda-fixa
