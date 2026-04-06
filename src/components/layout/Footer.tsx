@@ -1,23 +1,26 @@
 import { Link } from "react-router-dom";
 import Logo from "@/assets/logo-no-bg.png";
 import { Button } from "@/components/ui/button";
-import { Instagram, Youtube, Linkedin } from "lucide-react";
+import { Instagram } from "lucide-react";
 
-const planejamentoItems = [
-  { name: "Despesas", href: "/despesas" },
-  { name: "Calculadora de aposentadoria", href: "/ferramentas/aposentadoria" },
-  { name: "Metas de investimentos", href: "/ferramentas/metas" },
+const planejamentoLinks = [
+  { name: "Despesas", href: "/planejamento/despesas" },
+  { name: "Calculadora de aposentadoria", href: "/planejamento/calculadoras/aposentadoria" },
+  { name: "Calculadora de metas", href: "/planejamento/calculadoras/metas" },
+  { name: "Calculadora do milhão", href: "/planejamento/calculadoras/milhao" },
 ];
 
-const rendaFixaItems = [
-  { name: "Comparador de renda fixa", href: "/ferramentas/renda-fixa" },
-  { name: "Guias", href: "/investimentos/rendafixa" },
-];
-
-const investimentosItems = [
-  { name: "Fundos", href: "/investimentos/fundos" },
-  { name: "FII", href: "/investimentos/fii" },
+const investimentosLinks = [
   { name: "Ações", href: "/investimentos/acoes" },
+  { name: "FII", href: "/investimentos/fii" },
+  { name: "Fundos", href: "/investimentos/fundos" },
+  { name: "Renda Fixa", href: "/investimentos/renda-fixa" },
+  { name: "Comparador de renda fixa", href: "/investimentos/renda-fixa/comparador" },
+];
+
+const outrosLinks = [
+  { name: "Impostos", href: "/impostos" },
+  { name: "Orienta+", href: "/orientaplus" },
 ];
 
 export function Footer() {
@@ -40,16 +43,9 @@ export function Footer() {
               <Link to="https://wa.me/5531971778537">Entre em contato</Link>
             </Button>
 
-            {/*{/* Redes sociais */}
             <div className="flex items-center gap-3 mt-4">
               <a href="https://www.instagram.com/orienta.financas/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
                 <Instagram className="h-5 w-5" />
-              {/*</a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
-                <Youtube className="h-5 w-5" />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
-                <Linkedin className="h-5 w-5" />*/}
               </a>
             </div>
           </div>
@@ -58,7 +54,7 @@ export function Footer() {
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Planejamento</h3>
             <ul className="flex flex-col gap-2">
-              {planejamentoItems.map((item) => (
+              {planejamentoLinks.map((item) => (
                 <li key={item.href}>
                   <Link to={item.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                     {item.name}
@@ -70,19 +66,9 @@ export function Footer() {
 
           {/* Investimentos */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Renda Fixa</h3>
-            <ul className="flex flex-col gap-2 mb-4">
-              {rendaFixaItems.map((item) => (
-                <li key={item.href}>
-                  <Link to={item.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Outros Investimentos</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Investimentos</h3>
             <ul className="flex flex-col gap-2">
-              {investimentosItems.map((item) => (
+              {investimentosLinks.map((item) => (
                 <li key={item.href}>
                   <Link to={item.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                     {item.name}
@@ -96,16 +82,13 @@ export function Footer() {
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Mais</h3>
             <ul className="flex flex-col gap-2">
-              {/*<li>
-                <Link to="/imposto" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Impostos
-                </Link>
-              </li>*/}
-              <li>
-                <Link to="/orientaplus" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Orienta+
-                </Link>
-              </li>
+              {outrosLinks.map((item) => (
+                <li key={item.href}>
+                  <Link to={item.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

@@ -5,7 +5,6 @@ import { lazy, Suspense, ComponentType } from "react";
 const CalculadoraFinanceira = lazy(() => import("@/tools/CalculadoraFinanceira"));
 const CalculadoraMetasFinanceiras = lazy(() => import("@/tools/CalculadoraMetasFinanceiras"));
 const CalculadoraMilhao = lazy(() => import("@/tools/CalculadoraMilhao"));
-const ComparadorRendaFixa = lazy(() => import("@/tools/ComparadorRendaFixa"));
 const isMobile = window.innerWidth < 768;
 
 type ToolConfig =
@@ -35,19 +34,10 @@ const toolsMap: Record<string, ToolConfig> = {
     component: CalculadoraMetasFinanceiras,
     title: "Metas Financeiras",
   },
-  "primeiro-milhao": {
+  milhao: {
     type: "component",
     component: CalculadoraMilhao,
     title: "Calculadora do Primeiro Milhão",
-  },
-  "renda-fixa": {
-    type: "iframe",
-    src: "/comparador-renda-fixa.html",
-    title: "Comparador de Renda Fixa",
-      minHeight: {
-    mobile: "1500px",
-    desktop: "1200px"
-  }
   },
 };
 
