@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, TrendingUp, Calculator, Receipt } from "lucide-react";
+import { Menu, X, ChevronDown, TrendingUp, Calculator } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -73,7 +73,6 @@ export function Header() {
 
   const isPlanejamentoActive = location.pathname.startsWith("/planejamento");
   const isInvestimentosActive = location.pathname.startsWith("/investimentos");
-  const isImpostosActive = location.pathname === "/impostos";
 
   const closeMobile = () => setMobileMenuOpen(false);
 
@@ -84,7 +83,8 @@ export function Header() {
     )}>
       <div className="container flex h-20 items-center justify-between">
         <Link to="/" className="flex items-center">
-          <img src={Logo} alt="Logo" className="h-14" />
+          <img src={Logo} alt="Logo" className="hidden md:block h-14" />
+          <img src="/favicon.png" alt="Logo" className="md:hidden h-10" />
         </Link>
 
         {/* Desktop Navigation */}
@@ -220,34 +220,6 @@ export function Header() {
             )}
           </div>
 
-          {/* Impostos */}
-          <Link
-            to="/impostos"
-            onClick={() => { setPlanejamentoOpen(false); setInvestimentosOpen(false); }}
-            className={cn(
-              "flex items-center gap-2 px-5 h-20 text-sm font-medium transition-colors border-b-2",
-              isImpostosActive
-                ? "border-primary text-foreground"
-                : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            )}
-          >
-            Impostos
-          </Link>
-
-          {/* Orienta+ */}
-          <Link
-            to="/orientaplus"
-            onClick={() => { setPlanejamentoOpen(false); setInvestimentosOpen(false); }}
-            className={cn(
-              "flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors",
-              "bg-primary text-white hover:bg-primary/90",
-              location.pathname.startsWith("/orientaplus")
-                ? "ring-2 ring-primary"
-                : ""
-            )}
-          >
-            Orienta +
-          </Link>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -381,34 +353,6 @@ export function Header() {
               </div>
             )}
 
-            {/* Mobile Impostos */}
-            <Link
-              to="/impostos"
-              onClick={closeMobile}
-              className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
-                isImpostosActive
-                  ? "bg-accent text-accent-foreground"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              )}
-            >
-              <Receipt className="h-5 w-5" />
-              Impostos
-            </Link>
-
-            {/* Mobile Orienta+ */}
-            <Link
-              to="/orientaplus"
-              onClick={closeMobile}
-              className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
-                location.pathname.startsWith("/orientaplus")
-                  ? "bg-accent text-accent-foreground"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              )}
-            >
-              Orienta+
-            </Link>
 
           </div>
         </nav>

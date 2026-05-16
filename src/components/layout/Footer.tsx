@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import Logo from "@/assets/logo-no-bg.png";
-import { Button } from "@/components/ui/button";
 import { Instagram } from "lucide-react";
 
 const planejamentoLinks = [
@@ -18,10 +17,6 @@ const investimentosLinks = [
   { name: "Comparador de renda fixa", href: "/investimentos/renda-fixa/comparador" },
 ];
 
-const outrosLinks = [
-  { name: "Impostos", href: "/impostos" },
-  { name: "Orienta+", href: "/orientaplus" },
-];
 
 export function Footer() {
   return (
@@ -36,12 +31,6 @@ export function Footer() {
             <p className="text-sm text-muted-foreground max-w-xs">
               Direcionando suas finanças com educação, ferramentas e consultoria personalizada.
             </p>
-            <Button asChild className="w-fit mt-2">
-              <Link to="/orientaplus">Saiba mais</Link>
-            </Button>
-            <Button asChild className="w-fit mt-2">
-              <Link to="https://wa.me/5531971778537">Entre em contato</Link>
-            </Button>
 
             <div className="flex items-center gap-3 mt-4">
               <a href="https://www.instagram.com/orienta.financas/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -78,19 +67,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Outros */}
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Mais</h3>
-            <ul className="flex flex-col gap-2">
-              {outrosLinks.map((item) => (
-                <li key={item.href}>
-                  <Link to={item.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+
         </div>
 
         {/* Bottom bar */}
