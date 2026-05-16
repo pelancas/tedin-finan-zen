@@ -436,7 +436,7 @@ export default function CalculadoraMetasFinanceiras() {
 
           <div className="bg-primary/10 border border-primary/30 rounded-lg p-6 mt-8">
             <p className="text-foreground font-semibold mb-0">
-              ✅ Em resumo: o primeiro milhão é resultado de tempo, consistência e juros compostos. Use a calculadora acima para descobrir quanto você precisa poupar por mês para alcançar esse objetivo.
+              ✅ Em resusssmo: o primeiro milhão é resultado de tempo, consistência e juros compostos. Use a calculadora acima para descobrir quanto você precisa poupar por mês para alcançar esse objetivo.
             </p>
           </div>
         </CalculadoraTextBlock>
