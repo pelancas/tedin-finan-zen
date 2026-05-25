@@ -6,7 +6,21 @@
       "Bash(npx tsc:*)",
       "Bash(npm run:*)",
       "Bash(echo \"EXIT: $?\")",
-      "Bash(grep -E \"\\\\.\\(ts|tsx\\)$\")"
+      "Bash(grep -E \"\\\\.\\(ts|tsx\\)$\")",
+      "Bash(git checkout *)",
+      "Bash(git merge *)",
+      "Bash(git stash *)",
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(xargs ls -la)",
+      "Bash(Start-Process npm *)",
+      "Bash(Start-Sleep -Seconds 4)",
+      "Bash(curl -s http://localhost:5199)",
+      "Bash(Select-String -Pattern \"<title|body\")",
+      "Bash(Select-Object -First 3)",
+      "PowerShell(cd \"c:\\\\Users\\\\IsadoraLara\\\\OneDrive - GRUPO VERMONT\\\\Orienta\\\\tedin-finan-zen\"; Start-Process npm -ArgumentList \"run\",\"dev\",\"--\",\"--port\",\"5199\" -WindowStyle Hidden; Start-Sleep -Seconds 5; try { $r = Invoke-WebRequest -Uri \"http://localhost:5199\" -TimeoutSec 5 -UseBasicParsing; \"Status: $\\($r.StatusCode\\)\" } catch { \"Error: $_\" })",
+      "Bash(node verify_seguros.mjs)",
+      "Bash(npx playwright *)"
     ]
   }
 }

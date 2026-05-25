@@ -18,6 +18,7 @@ import RendaFixa from "./pages/investimentos/RendaFixa";
 import ComparadorRendaFixa from "./pages/investimentos/ComparadorRendaFixa";
 import FII from "./pages/investimentos/FII";
 import Acoes from "./pages/investimentos/Acoes";
+import Seguros from "./pages/seguros/Seguros";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/investimentos/fundos" element={<Fundos />} />
           <Route path="/investimentos/renda-fixa" element={<RendaFixa />} />
           <Route path="/investimentos/renda-fixa/comparador" element={<ComparadorRendaFixa />} />
+          <Route path="/seguros" element={<Seguros />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </HashRouter>
