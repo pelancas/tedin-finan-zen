@@ -115,7 +115,7 @@ function CalculadoraVida() {
         </p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+      <div className="seg-inputs-grid">
         <InputField
           label="Dívidas totais"
           value={dividas}
@@ -219,7 +219,7 @@ function CalculadoraAcidentes() {
         </p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+      <div className="seg-inputs-grid">
         <InputField
           label="Dívidas totais"
           value={dividas}
@@ -318,6 +318,23 @@ export default function Seguros() {
 
   return (
     <Layout>
+      <style>{`
+        .seg-inputs-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+        }
+        .seg-calc-card { padding: 32px; }
+        .seg-tips-card { padding: 28px 32px; }
+        .seg-faq-card  { padding: 8px 32px; }
+        @media (max-width: 560px) {
+          .seg-inputs-grid { grid-template-columns: 1fr; }
+          .seg-calc-card   { padding: 20px; }
+          .seg-tips-card   { padding: 20px; }
+          .seg-faq-card    { padding: 8px 16px; }
+        }
+      `}</style>
+
       {/* Hero */}
       <section style={{ background: "#1A2E35", padding: "72px 0 56px" }}>
         <div className="container">
@@ -376,9 +393,9 @@ export default function Seguros() {
           </div>
 
           {/* Calculator Card */}
-          <div style={{
+          <div className="seg-calc-card" style={{
             background: "#fff", borderRadius: "16px",
-            border: "1px solid #e2e8f0", padding: "32px",
+            border: "1px solid #e2e8f0",
             boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
           }}>
             <h2 style={{ fontSize: "20px", fontWeight: 700, color: "#1A2E35", marginBottom: "8px" }}>
@@ -446,8 +463,8 @@ export default function Seguros() {
       <section style={{ padding: "64px 0" }}>
         <div className="container" style={{ maxWidth: "800px" }}>
           {/* Como burlar */}
-          <div style={{
-            background: "#f0faf5", borderRadius: "16px", padding: "28px 32px",
+          <div className="seg-tips-card" style={{
+            background: "#f0faf5", borderRadius: "16px",
             border: "1px solid #86efac",
           }}>
             <h3 style={{ fontSize: "18px", fontWeight: 700, color: "#166534", marginBottom: "12px" }}>
@@ -489,7 +506,7 @@ export default function Seguros() {
             O vocabulário do mercado de seguros, sem enrolação.
           </p>
 
-          <div style={{ background: "#fff", borderRadius: "16px", padding: "8px 32px", border: "1px solid #e2e8f0" }}>
+          <div className="seg-faq-card" style={{ background: "#fff", borderRadius: "16px", border: "1px solid #e2e8f0" }}>
             {[
               {
                 pergunta: "O que é prêmio?",
