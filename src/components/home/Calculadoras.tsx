@@ -42,8 +42,10 @@ export function Calculadoras() {
       background: "#f8faf8",
       padding: "5rem 1.5rem",
       fontFamily: "'Work Sans', sans-serif",
+      position: "relative",
+      overflow: "hidden",
     }}>
-      <div style={{ maxWidth: "80rem", margin: "0 auto" }}>
+      <div style={{ maxWidth: "80rem", margin: "0 auto", position: "relative", zIndex: 1 }}>
 
         {/* Header */}
         <div style={{ marginBottom: "3rem" }}>

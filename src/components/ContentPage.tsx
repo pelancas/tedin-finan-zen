@@ -1,9 +1,22 @@
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import ReactMarkdown from "react-markdown";
+import rehypeSanitize from "rehype-sanitize";
 import { useContentFolder } from "@/lib/useContentFolder";
 import type { PostMeta } from "@/lib/useContentFolder";
 import { ShieldAlert, BookOpen, Play, Wrench, HelpCircle, ChevronRight } from "lucide-react";
+
+function isSafeVideoUrl(url: string): boolean {
+  try {
+    const { hostname, protocol } = new URL(url);
+    return (
+      protocol === "https:" &&
+      (hostname === "www.youtube.com" || hostname === "youtube.com" || hostname === "www.youtube-nocookie.com")
+    );
+  } catch {
+    return false;
+  }
+}
 
 const categoryIcons: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   cuidados: ShieldAlert,
@@ -162,10 +175,7 @@ export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPa
             <h1>{pageTitle}</h1>
             {index?.description && <p className="cp-hero-desc">{index.description}</p>}
           </div>
-          <svg className="cp-hero-blob" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <path d="M44.7,-76.4C58.3,-69.2,70.1,-57.4,77.6,-43.3C85.2,-29.2,88.5,-12.8,87.3,3.3C86.1,19.4,80.4,35.2,70.9,48.2C61.3,61.2,47.9,71.4,33.1,77.4C18.3,83.4,2.2,85.1,-13.7,81.9C-29.5,78.7,-45.1,70.5,-57.8,59.3C-70.5,48.1,-80.4,33.9,-84.6,18.5C-88.7,3,-87.1,-13.7,-80.3,-28.4C-73.6,-43.1,-61.7,-55.8,-48.2,-63C-34.7,-70.2,-19.5,-71.9,-2.4,-67.7C14.7,-63.5,29.3,-53.4,44.7,-76.4Z" fill="#abccb5" transform="translate(100 100)" />
-          </svg>
-        </section>
+          </section>
 
         <div className="cp-body">
           {/* Article */}
@@ -183,7 +193,7 @@ export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPa
             )}
             {!loading && !error && !loadingPost && selectedPost && (
               <>
-                {selectedPost.meta.video && (
+                {selectedPost.meta.video && isSafeVideoUrl(selectedPost.meta.video) && (
                   <div className="cp-video-wrap">
                     <iframe src={selectedPost.meta.video} title={selectedPost.meta.title}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -191,7 +201,7 @@ export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPa
                   </div>
                 )}
                 <article className="prose prose-lg max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground">
-                  <ReactMarkdown components={{
+                  <ReactMarkdown rehypePlugins={[rehypeSanitize]} components={{
                     a: ({ href, children }) => (
                       <a href={href} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">{children}</a>
                     ),

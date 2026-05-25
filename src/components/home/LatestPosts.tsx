@@ -23,6 +23,10 @@ interface PostCard {
   folderHref: string;
 }
 
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + "/";
+
 const folders: { key: string; label: string; href: string }[] = [
   { key: "fundos",    label: "Fundos",     href: "/investimentos/fundos" },
   { key: "acoes",     label: "Ações",       href: "/investimentos/acoes" },
@@ -39,7 +43,7 @@ export function LatestPosts() {
   useEffect(() => {
     Promise.all(
       folders.map((f) =>
-        fetch(`/content/${f.key}/index.json`)
+        fetch(`${base}content/${f.key}/index.json`)
           .then((r) => (r.ok ? (r.json() as Promise<FolderIndex>) : null))
           .then((data): PostCard[] => {
             if (!data) return [];
@@ -82,8 +86,10 @@ export function LatestPosts() {
       background: "#1A2E35",
       padding: "5rem 1.5rem",
       fontFamily: "'Work Sans', sans-serif",
+      position: "relative",
+      overflow: "hidden",
     }}>
-      <div style={{ maxWidth: "80rem", margin: "0 auto" }}>
+      <div style={{ maxWidth: "80rem", margin: "0 auto", position: "relative", zIndex: 1 }}>
 
         {/* Header */}
         <div style={{ marginBottom: "3rem" }}>

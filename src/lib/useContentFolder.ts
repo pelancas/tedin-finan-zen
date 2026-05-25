@@ -30,6 +30,10 @@ export interface UseContentFolderResult {
   selectPost: (id: string) => void;
 }
 
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + "/";
+
 export function useContentFolder(folder: string): UseContentFolderResult {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +52,7 @@ export function useContentFolder(folder: string): UseContentFolderResult {
     setSelectedId(null);
     setSelectedPost(null);
 
-    fetch(`/content/${folder}/index.json`)
+    fetch(`${base}content/${folder}/index.json`)
       .then((r) => {
         if (!r.ok) throw new Error(`Não foi possível carregar o índice de ${folder}`);
         return r.json() as Promise<FolderIndex>;
@@ -85,7 +89,7 @@ export function useContentFolder(folder: string): UseContentFolderResult {
     }
 
     setLoadingPost(true);
-    fetch(`/content/${folder}/${postMeta.file}`)
+    fetch(`${base}content/${folder}/${postMeta.file}`)
       .then((r) => {
         if (!r.ok) throw new Error(`Não foi possível carregar o post ${postMeta.file}`);
         return r.text();
