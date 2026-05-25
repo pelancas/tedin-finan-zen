@@ -13,7 +13,7 @@
       "category": "cuidados",
       "summary": "Entenda o que são FIIs e como eles funcionam.",
       "order": 1,
-      "author": "Isadora Lara"
+      "author": "IFL"
     },
     {
       "id": "cursos-fii",
@@ -22,7 +22,7 @@
       "category": "guias",
       "summary": "Curso gratuito da Anbima para entender mais sobre fundos imobiliários.",
       "order": 1,
-      "author": "Isadora Lara"
+      "author": "IFL"
     }
   ]
 }

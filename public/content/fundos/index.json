@@ -16,7 +16,7 @@
       "category": "cuidados",
       "summary": "Se você já ouviu falar de fundos de investimento e ficou confuso, calma. Vamos descomplicar.",
       "order": 1,
-      "author": "Isadora Lara"
+      "author": "IFL"
     },
     {
       "id": "porque-investir",
@@ -25,7 +25,7 @@
       "category": "cuidados",
       "summary": "Todo mundo parece empurrar fundos pra você. Seu gerente, influenciadores, até o app do banco. Mas por quê?",
       "order": 2,
-      "author": "Isadora Lara"
+      "author": "IFL"
     },
     {
       "id": "multimercado",
@@ -34,7 +34,7 @@
       "category": "cuidados",
       "summary": "Fundos multimercado são os mais livres do mercado. Isso pode ser ótimo — ou péssimo.",
       "order": 3,
-      "author": "Isadora Lara"
+      "author": "IFL"
     },
     {
       "id": "como-enganam",
@@ -43,7 +43,7 @@
       "category": "cuidados",
       "summary": "Existem fundos excelentes. Mas existem armadilhas disfarçadas de investimento. Saiba identificar.",
       "order": 4,
-      "author": "Isadora Lara"
+      "author": "IFL"
     },
     {
       "id": "taxa-e-bom",
@@ -52,7 +52,7 @@
       "category": "cuidados",
       "summary": "Parece contraditório, mas sim — em alguns casos, pagar taxa faz sentido.",
       "order": 5,
-      "author": "Isadora Lara"
+      "author": "IFL"
     },
     {
       "id": "guia-iniciante",
@@ -61,7 +61,7 @@
       "category": "guias",
       "summary": "Um guia completo sobre fundos de investimento para quem está começando.",
       "order": 1,
-      "author": "Isadora Lara"
+      "author": "IFL"
     },
     {
       "id": "guia-comparacao",
@@ -70,7 +70,7 @@
       "category": "guias",
       "summary": "Antes de investir em qualquer fundo, saiba o que comparar para tomar a melhor decisão.",
       "order": 2,
-      "author": "Isadora Lara"
+      "author": "IFL"
     },
     {
       "id": "video-intro",
@@ -79,7 +79,7 @@
       "category": "videos",
       "summary": "Entenda de forma simples como funcionam os fundos de investimento, seus tipos e como escolher o melhor para o seu perfil.",
       "order": 1,
-      "author": "Isadora Lara",
+      "author": "IFL",
       "video": "https://www.youtube.com/embed/8QnAr1sF4Sg"
     },
     {
@@ -89,7 +89,7 @@
       "category": "videos",
       "summary": "Aprenda na prática como investir em fundos, analisar taxas e comparar rentabilidades.",
       "order": 2,
-      "author": "Isadora Lara",
+      "author": "IFL",
       "video": "https://www.youtube.com/embed/YHnaVTXMI_I"
     },
     {
@@ -99,7 +99,7 @@
       "category": "ferramentas",
       "summary": "Ferramentas essenciais para analisar e comparar fundos de investimento antes de tomar uma decisão.",
       "order": 1,
-      "author": "Isadora Lara"
+      "author": "IFL"
     },
     {
       "id": "risco",
@@ -108,7 +108,7 @@
       "category": "duvidas",
       "summary": "Todo investimento tem risco. Em fundos, o risco depende do tipo e da estratégia.",
       "order": 1,
-      "author": "Isadora Lara"
+      "author": "IFL"
     },
     {
       "id": "resgatar",
@@ -117,7 +117,7 @@
       "category": "duvidas",
       "summary": "Depende do fundo. Alguns permitem resgate no mesmo dia, outros levam semanas.",
       "order": 2,
-      "author": "Isadora Lara"
+      "author": "IFL"
     },
     {
       "id": "imposto",
@@ -126,7 +126,7 @@
       "category": "duvidas",
       "summary": "Fundos de investimento têm tributação própria — e um mecanismo chamado come-cotas que muita gente desconhece.",
       "order": 3,
-      "author": "Isadora Lara"
+      "author": "IFL"
     }
   ]
 }
