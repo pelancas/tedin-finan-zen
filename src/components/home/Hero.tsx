@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
-import calculadoraImg from '@/assets/Calculadora.png'; 
+import calculadoraImg from '@/assets/Calculadora.png';
+import { LatestPosts } from "@/components/home/LatestPosts";
+import { Calculadoras } from "@/components/home/Calculadoras";
 
 export function Hero() {
   return <section className="relative overflow-hidden">
@@ -86,6 +88,7 @@ export function Hero() {
       </div>
     </div>
   </section>
+  <LatestPosts />
   {/* Planejamento Section - Lightened (Light Background) */}
   <section
     className="py-20 bg-background-light text-surface-dark"
@@ -144,6 +147,7 @@ export function Hero() {
       </div>
     </div>
   </section>
+  <Calculadoras />
 </>
 
     </section>;

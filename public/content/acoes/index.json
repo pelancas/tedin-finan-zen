@@ -1,0 +1,28 @@
+{
+  "description": "Ações representam pequenas partes de uma empresa. Ao comprá-las, você se torna sócio desse negócio — e participa tanto dos lucros quanto dos riscos. Entenda o básico antes de dar o primeiro passo na renda variável.",
+  "categoryOrder": ["cuidados", "guias"],
+  "categoryLabels": {
+    "cuidados": "Cuidados iniciais",
+    "guias": "Guias"
+  },
+  "posts": [
+    {
+      "id": "o-que-sao-acoes",
+      "file": "o-que-sao-acoes.md",
+      "title": "O que seria uma ação?",
+      "category": "cuidados",
+      "summary": "Entenda o que é uma ação e como funciona ser sócio de uma empresa.",
+      "order": 1,
+      "author": "Isadora Lara"
+    },
+    {
+      "id": "cursos-acoes",
+      "file": "cursos-acoes.md",
+      "title": "Cursos gratuitos para aprender mais",
+      "category": "guias",
+      "summary": "Curso gratuito da Anbima para entender mais sobre renda variável.",
+      "order": 1,
+      "author": "Isadora Lara"
+    }
+  ]
+}

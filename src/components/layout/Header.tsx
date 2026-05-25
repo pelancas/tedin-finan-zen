@@ -19,10 +19,10 @@ const investimentosAtivos = [
   { name: "Ações", href: "/investimentos/acoes" },
   { name: "FII", href: "/investimentos/fii" },
   { name: "Fundos", href: "/investimentos/fundos" },
+  { name: "Renda Fixa", href: "/investimentos/renda-fixa" },
 ];
 
-const rendaFixaItems = [
-  { name: "Renda Fixa", href: "/investimentos/renda-fixa" },
+const investimentosCalculadoras = [
   { name: "Comparador de renda fixa", href: "/investimentos/renda-fixa/comparador" },
 ];
 
@@ -32,7 +32,6 @@ export function Header() {
   const [investimentosOpen, setInvestimentosOpen] = useState(false);
   const [mobilePlanejamentoOpen, setMobilePlanejamentoOpen] = useState(false);
   const [mobileInvestimentosOpen, setMobileInvestimentosOpen] = useState(false);
-  const [mobileRendaFixaOpen, setMobileRendaFixaOpen] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const lastScrollY = useRef(0);
   const planejamentoRef = useRef<HTMLDivElement>(null);
@@ -209,9 +208,9 @@ export function Header() {
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">Renda Fixa</h3>
+                      <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">Calculadoras</h3>
                       <div className="flex flex-col gap-1">
-                        {rendaFixaItems.map((item) => (
+                        {investimentosCalculadoras.map((item) => (
                           <Link
                             key={item.href}
                             to={item.href}
@@ -348,37 +347,22 @@ export function Header() {
                     {item.name}
                   </Link>
                 ))}
-                <button
-                  onClick={() => setMobileRendaFixaOpen(!mobileRendaFixaOpen)}
-                  className={cn(
-                    "flex items-center justify-between px-4 py-2.5 rounded-lg text-sm transition-colors w-full",
-                    location.pathname.startsWith("/investimentos/renda-fixa")
-                      ? "bg-accent text-accent-foreground"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                  )}
-                >
-                  Renda Fixa
-                  <ChevronDown className={cn("h-3 w-3 transition-transform", mobileRendaFixaOpen && "rotate-180")} />
-                </button>
-                {mobileRendaFixaOpen && (
-                  <div className="ml-4 flex flex-col gap-1 border-l border-border pl-2">
-                    {rendaFixaItems.map((item) => (
-                      <Link
-                        key={item.href}
-                        to={item.href}
-                        onClick={closeMobile}
-                        className={cn(
-                          "px-4 py-2 rounded-lg text-sm transition-colors",
-                          location.pathname === item.href
-                            ? "bg-accent text-accent-foreground"
-                            : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                        )}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
+                <p className="px-4 pt-2 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">Calculadoras</p>
+                {investimentosCalculadoras.map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={closeMobile}
+                    className={cn(
+                      "px-4 py-2.5 rounded-lg text-sm transition-colors",
+                      location.pathname === item.href
+                        ? "bg-accent text-accent-foreground"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
               </div>
             )}
 

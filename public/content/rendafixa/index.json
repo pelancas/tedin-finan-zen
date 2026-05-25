@@ -1,0 +1,37 @@
+{
+  "description": "Renda fixa é a categoria de investimentos em que as regras de rendimento são definidas no momento da aplicação. É considerada mais conservadora e previsível — mas isso não significa que não há riscos. Entenda o que está por trás dessa classe antes de investir.",
+  "categoryOrder": ["cuidados", "guias"],
+  "categoryLabels": {
+    "cuidados": "Cuidados iniciais",
+    "guias": "Guias"
+  },
+  "posts": [
+    {
+      "id": "o-que-e-rendafixa",
+      "file": "o-que-e-rendafixa.md",
+      "title": "O que é a tal da renda fixa",
+      "category": "cuidados",
+      "summary": "Entenda mais o que é renda fixa e como ela funciona.",
+      "order": 1,
+      "author": "Isadora Lara"
+    },
+    {
+      "id": "tipos-rendafixa",
+      "file": "tipos-rendafixa.md",
+      "title": "Os tipos de renda fixa",
+      "category": "cuidados",
+      "summary": "Descubra quais são os tipos de renda fixa e o que eles significam.",
+      "order": 2,
+      "author": "Isadora Lara"
+    },
+    {
+      "id": "cursos-rendafixa",
+      "file": "cursos-rendafixa.md",
+      "title": "Cursos gratuitos para aprender mais",
+      "category": "guias",
+      "summary": "Curso gratuito da Anbima para entender mais sobre renda fixa.",
+      "order": 1,
+      "author": "Isadora Lara"
+    }
+  ]
+}

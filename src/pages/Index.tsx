@@ -51,10 +51,8 @@ const services = [
 
 const Index = () => {
   return (
-    <Layout>     
+    <Layout>
       <Hero />
-      
-
     </Layout>
   );
 };

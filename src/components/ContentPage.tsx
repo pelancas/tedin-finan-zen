@@ -1,12 +1,11 @@
+import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
-import { useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { loadContent } from "@/lib/content-loader";
-import type { ContentItem } from "@/lib/content-parser";
-import type { LucideIcon } from "lucide-react";
-import { ShieldAlert, BookOpen, Play, Wrench, HelpCircle } from "lucide-react";
+import { useContentFolder } from "@/lib/useContentFolder";
+import type { PostMeta } from "@/lib/useContentFolder";
+import { ShieldAlert, BookOpen, Play, Wrench, HelpCircle, ChevronRight } from "lucide-react";
 
-const defaultIconMap: Record<string, LucideIcon> = {
+const categoryIcons: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   cuidados: ShieldAlert,
   guias: BookOpen,
   videos: Play,
@@ -14,382 +13,270 @@ const defaultIconMap: Record<string, LucideIcon> = {
   duvidas: HelpCircle,
 };
 
-const defaultLabelMap: Record<string, string> = {
-  cuidados: "Cuidados iniciais",
-  guias: "Guias",
-  videos: "Vídeos",
-  ferramentas: "Ferramentas",
-  duvidas: "Dúvidas comuns",
-};
-
-export interface CategoryConfig {
-  id: string;
-  label: string;
-  icon: LucideIcon;
-  order: number;
-}
-
 interface ContentPageProps {
   folder: string;
   badgeLabel: string;
   pageTitle: string;
-  categories?: CategoryConfig[];
 }
 
-export default function ContentPage({ folder, badgeLabel, pageTitle, categories: customCategories }: ContentPageProps) {
-  const contentItems = useMemo<ContentItem[]>(() => loadContent(folder), [folder]);
+export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPageProps) {
+  const { loading, error, index, sortedPosts, selectedPost, loadingPost, selectPost } =
+    useContentFolder(folder);
 
-  const categories = useMemo(() => {
-    if (customCategories) return customCategories;
-    const seen = new Map<string, number>();
-    for (const item of contentItems) {
-      const cat = item.meta.category;
-      if (!seen.has(cat)) seen.set(cat, seen.size);
-    }
-    return Array.from(seen.keys()).map((catId, i) => ({
-      id: catId,
-      label: defaultLabelMap[catId] || catId,
-      icon: defaultIconMap[catId] || BookOpen,
-      order: i,
-    }));
-  }, [contentItems, customCategories]);
-
-  const sortedCategories = useMemo(
-    () => [...categories].sort((a, b) => a.order - b.order),
-    [categories]
-  );
-
-  const contentByCategory = useMemo(() => {
-    const map = new Map<string, ContentItem[]>();
-    for (const item of contentItems) {
-      const cat = item.meta.category;
-      if (!map.has(cat)) map.set(cat, []);
-      map.get(cat)!.push(item);
-    }
-    return map;
-  }, [contentItems]);
-
-  const firstItemId = contentItems[0]?.meta.id || "";
-  const [selectedContent, setSelectedContent] = useState<string>(firstItemId);
-
-  const currentContent = contentItems.find((c) => c.meta.id === selectedContent);
-  const currentCategory = sortedCategories.find((cat) =>
-    contentByCategory.get(cat.id)?.some((item) => item.meta.id === selectedContent)
-  );
-
-  // Other topics: grouped by category in sortedCategories order, items sorted by order within each category
-  const otherTopicsGrouped = useMemo(() => {
-    const others = contentItems.filter((c) => c.meta.id !== selectedContent);
-    const groups: { category: CategoryConfig; items: ContentItem[] }[] = [];
-    for (const cat of sortedCategories) {
-      const items = others.filter((c) => c.meta.category === cat.id);
-      if (items.length > 0) {
-        groups.push({ category: cat, items });
+  const groupedPosts: { categoryId: string; label: string; posts: PostMeta[] }[] = [];
+  if (index) {
+    for (const catId of index.categoryOrder) {
+      const posts = sortedPosts.filter((p) => p.category === catId);
+      if (posts.length > 0) {
+        groupedPosts.push({ categoryId: catId, label: index.categoryLabels[catId] || catId, posts });
       }
     }
-    return groups;
-  }, [contentItems, selectedContent, sortedCategories]);
+    const uncategorized = sortedPosts.filter((p) => !index.categoryOrder.includes(p.category));
+    if (uncategorized.length > 0) {
+      groupedPosts.push({ categoryId: "outros", label: "Outros", posts: uncategorized });
+    }
+  }
+
+  const selectedId = selectedPost?.meta.id ?? null;
 
   return (
     <Layout>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&display=swap');
 
-        .cp-root {
-          font-family: 'Work Sans', sans-serif;
-          --cp-dark: #1daf66;
-          --cp-darker: #1A2E35;
-          --cp-light: #FFFDF5;
-        }
+        .cp-root { font-family: 'Work Sans', sans-serif; }
+        .cp-root * { box-sizing: border-box; }
 
-        /* Hero */
         .cp-hero {
-          background: var(--cp-darker);
-          padding: 3rem 1.5rem 3.5rem;
-          position: relative;
-          overflow: hidden;
+          background: #1A2E35; padding: 3rem 1.5rem 3.5rem;
+          position: relative; overflow: hidden;
         }
-        @media (min-width: 768px) {
-          .cp-hero { padding: 4rem 5rem 4.5rem; }
-        }
+        @media (min-width: 768px) { .cp-hero { padding: 4rem 5rem 4.5rem; } }
         .cp-hero-inner { max-width: 72rem; margin: 0 auto; position: relative; z-index: 1; }
         .cp-breadcrumb { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; }
         .cp-breadcrumb span { font-size: 0.8rem; font-weight: 500; color: #8aab96; }
-        .cp-breadcrumb .cp-bc-active { color: #d9d4c4; }
-        .cp-hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; color: #fff; margin-bottom: 1rem; }
-        .cp-hero-summary { color: #a3b8ac; font-size: 1.1rem; font-weight: 300; max-width: 36rem; margin-bottom: 0.75rem; }
-        .cp-hero-author { color: #6b9a7a; font-size: 0.85rem; font-weight: 500; }
-        .cp-hero-blob { position: absolute; right: -4rem; top: -4rem; width: 28rem; height: 28rem; opacity: 0.06; pointer-events: none; }
-
-        /* Layout */
-        .cp-main { max-width: 80rem; margin: 0 auto; padding: 3rem 1.5rem; display: grid; gap: 3rem; }
-        @media (min-width: 768px) { .cp-main { padding: 3rem 5rem; } }
-        @media (min-width: 1024px) { .cp-main { grid-template-columns: 1fr 340px; } }
-
-        /* Sidebar */
-        .cp-aside { display: flex; flex-direction: column; gap: 1.5rem; }
-        .cp-card { background: #fff; border-radius: 1rem; border: 1px solid #e2e8e2; padding: 1.5rem; box-shadow: 0 1px 3px rgba(26,69,55,0.06); }
-
-        .cp-sidebar-title { font-size: 1.05rem; font-weight: 800; color: var(--cp-darker); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
-        .cp-sidebar-title svg { color: var(--cp-dark); }
-
-        .cp-topic-btn {
-          display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.85rem 0;
-          background: none; border: none; cursor: pointer; text-align: left;
-          color: #4a6450; transition: color 0.2s; width: 100%; font-family: 'Work Sans', sans-serif;
+        .cp-breadcrumb .active { color: #d9d4c4; }
+        .cp-hero h1 {
+          font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+          line-height: 1.1; letter-spacing: -0.02em; color: #fff; margin: 0 0 1rem;
         }
-        .cp-topic-btn:hover { color: var(--cp-dark); }
-        .cp-topic-btn:hover .cp-topic-icon { color: var(--cp-dark); }
-        .cp-topic-active { color: var(--cp-dark); font-weight: 700; }
-        .cp-topic-icon { color: #9ab8a0; flex-shrink: 0; margin-top: 2px; transition: color 0.2s; }
-        .cp-topic-title { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.15rem; }
-        .cp-topic-cat { font-size: 0.7rem; color: #8aab96; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
-        .cp-divider { border: none; border-top: 1px solid #e8ede9; margin: 0; }
+        .cp-hero-desc { color: #a3b8ac; font-size: 1.05rem; font-weight: 300; max-width: 42rem; margin: 0; }
+        .cp-hero-blob {
+          position: absolute; right: -4rem; top: -4rem;
+          width: 28rem; height: 28rem; opacity: 0.06; pointer-events: none;
+        }
 
-        /* Mobile topics toggle */
-        .cp-mobile-toggle {
+        .cp-body {
+          max-width: 80rem; margin: 0 auto; padding: 2.5rem 1.5rem;
+          display: grid; gap: 2rem; grid-template-columns: 1fr;
+        }
+        @media (min-width: 768px) { .cp-body { padding: 3rem 5rem; } }
+        @media (min-width: 1024px) { .cp-body { grid-template-columns: 1fr 300px; } }
+
+        .cp-article { min-width: 0; }
+        .cp-placeholder {
+          padding: 2.5rem; background: #f8faf8;
+          border: 1px dashed #ccddd0; border-radius: 1rem;
+          color: #607060; font-size: 0.95rem; line-height: 1.6;
+        }
+
+        .cp-shimmer {
+          background: linear-gradient(90deg, #f0f4f0 25%, #e4ece4 50%, #f0f4f0 75%);
+          background-size: 200% 100%; animation: cp-sh 1.4s infinite;
+          border-radius: 0.5rem; height: 1.25rem; margin-bottom: 0.75rem;
+        }
+        @keyframes cp-sh { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        .cp-video-wrap {
+          aspect-ratio: 16/9; border-radius: 1rem; overflow: hidden; margin-bottom: 2rem;
+        }
+        .cp-video-wrap iframe { width: 100%; height: 100%; border: none; }
+
+        .cp-sidebar-wrap {
+          display: flex; flex-direction: column;
+        }
+        @media (min-width: 1024px) {
+          .cp-sidebar-wrap {
+            position: sticky; top: 1.5rem;
+            max-height: calc(100vh - 3rem); overflow-y: auto;
+          }
+        }
+
+        .cp-card {
+          background: #fff; border: 1px solid #e2e8e2;
+          border-radius: 1rem; overflow: hidden;
+          box-shadow: 0 1px 4px rgba(26,69,55,0.07);
+        }
+        .cp-card-header {
+          padding: 1rem 1.25rem 0.75rem; border-bottom: 1px solid #eef1ee;
+        }
+        .cp-card-header h2 {
+          margin: 0; font-size: 0.8rem; font-weight: 700;
+          text-transform: uppercase; letter-spacing: 0.07em; color: #607060;
+        }
+        .cp-cat-group { padding: 0.75rem 0 0.5rem; border-bottom: 1px solid #eef1ee; }
+        .cp-cat-group:last-child { border-bottom: none; }
+        .cp-cat-label {
+          display: flex; align-items: center; gap: 0.4rem;
+          padding: 0 1.25rem 0.4rem;
+          font-size: 0.7rem; font-weight: 700;
+          text-transform: uppercase; letter-spacing: 0.06em; color: #1daf66;
+        }
+        .cp-post-btn {
           display: flex; align-items: center; justify-content: space-between;
-          width: 100%; padding: 0.75rem 1rem; border: 1px solid #e2e8e2;
-          border-radius: 0.5rem; background: #fff; font-family: 'Work Sans', sans-serif;
-          font-size: 0.9rem; font-weight: 600; color: var(--cp-darker);
-          cursor: pointer; margin-bottom: 1rem;
+          width: 100%; padding: 0.6rem 1.25rem; gap: 0.5rem;
+          background: none; border: none; cursor: pointer;
+          text-align: left; font-family: 'Work Sans', sans-serif;
+          color: #3d5c47; transition: background 0.15s;
         }
-        @media (min-width: 1024px) { .cp-mobile-toggle { display: none; } }
+        .cp-post-btn:hover { background: #f3f8f3; color: #1daf66; }
+        .cp-post-btn.sel { background: #edfaf2; color: #178a50; }
+        .cp-post-btn.sel .cp-arrow { opacity: 1; }
+        .cp-post-title { font-size: 0.845rem; font-weight: 600; line-height: 1.35; }
+        .cp-arrow { opacity: 0; color: #1daf66; flex-shrink: 0; transition: opacity 0.15s; }
+
+        .cp-mobile-only { display: block; }
+        @media (min-width: 1024px) { .cp-mobile-only { display: none; } }
+        .cp-desktop-only { display: none; }
+        @media (min-width: 1024px) { .cp-desktop-only { display: block; } }
+
+        .cp-toggle {
+          display: flex; align-items: center; justify-content: space-between;
+          width: 100%; padding: 0.75rem 1rem; margin-bottom: 1rem;
+          border: 1px solid #e2e8e2; border-radius: 0.75rem; background: #fff;
+          cursor: pointer; font-family: 'Work Sans', sans-serif;
+          font-size: 0.9rem; font-weight: 600; color: #1A2E35;
+        }
+        .cp-toggle svg { transition: transform 0.2s; }
+        .cp-toggle.open svg { transform: rotate(180deg); }
       `}</style>
 
       <div className="cp-root">
-        {/* Hero */}
         <section className="cp-hero">
           <div className="cp-hero-inner">
             <nav className="cp-breadcrumb">
-              <span>Home</span>
-              <span>/</span>
-              <span>{badgeLabel}</span>
-              <span>/</span>
-              <span className="cp-bc-active">{pageTitle}</span>
-              {currentCategory && (
-                <>
-                  <span>/</span>
-                  <span className="cp-bc-active">{currentCategory.label}</span>
-                </>
-              )}
+              <span>Home</span><span>/</span>
+              <span>{badgeLabel}</span><span>/</span>
+              <span className="active">{pageTitle}</span>
             </nav>
-            <h1>{currentContent?.meta.title || pageTitle}</h1>
-            {currentContent?.meta.summary && (
-              <p className="cp-hero-summary">{currentContent.meta.summary}</p>
-            )}
-            {currentContent?.meta.author && (
-              <p className="cp-hero-author">Por {currentContent.meta.author}</p>
-            )}
+            <h1>{pageTitle}</h1>
+            {index?.description && <p className="cp-hero-desc">{index.description}</p>}
           </div>
           <svg className="cp-hero-blob" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M44.7,-76.4C58.3,-69.2,70.1,-57.4,77.6,-43.3C85.2,-29.2,88.5,-12.8,87.3,3.3C86.1,19.4,80.4,35.2,70.9,48.2C61.3,61.2,47.9,71.4,33.1,77.4C18.3,83.4,2.2,85.1,-13.7,81.9C-29.5,78.7,-45.1,70.5,-57.8,59.3C-70.5,48.1,-80.4,33.9,-84.6,18.5C-88.7,3,-87.1,-13.7,-80.3,-28.4C-73.6,-43.1,-61.7,-55.8,-48.2,-63C-34.7,-70.2,-19.5,-71.9,-2.4,-67.7C14.7,-63.5,29.3,-53.4,44.7,-76.4Z"
-              fill="#abccb5"
-              transform="translate(100 100)"
-            />
+            <path d="M44.7,-76.4C58.3,-69.2,70.1,-57.4,77.6,-43.3C85.2,-29.2,88.5,-12.8,87.3,3.3C86.1,19.4,80.4,35.2,70.9,48.2C61.3,61.2,47.9,71.4,33.1,77.4C18.3,83.4,2.2,85.1,-13.7,81.9C-29.5,78.7,-45.1,70.5,-57.8,59.3C-70.5,48.1,-80.4,33.9,-84.6,18.5C-88.7,3,-87.1,-13.7,-80.3,-28.4C-73.6,-43.1,-61.7,-55.8,-48.2,-63C-34.7,-70.2,-19.5,-71.9,-2.4,-67.7C14.7,-63.5,29.3,-53.4,44.7,-76.4Z" fill="#abccb5" transform="translate(100 100)" />
           </svg>
         </section>
 
-        {/* Main content */}
-        <main className="cp-main">
-          {/* Left: article content */}
-          <div>
-            {currentContent ? (
+        <div className="cp-body">
+          {/* Article */}
+          <div className="cp-article">
+            {(loading || loadingPost) && (
+              <div>
+                {[100, 80, 90, 65, 95].map((w, i) => (
+                  <div key={i} className="cp-shimmer" style={{ width: `${w}%` }} />
+                ))}
+              </div>
+            )}
+            {error && <p className="cp-placeholder" style={{ color: "#c0392b" }}>Erro: {error}</p>}
+            {!loading && !error && !selectedPost && !loadingPost && (
+              <p className="cp-placeholder">Selecione um tema na lista ao lado para começar a leitura.</p>
+            )}
+            {!loading && !error && !loadingPost && selectedPost && (
               <>
-                {currentContent.meta.video && (
-                  <div style={{ aspectRatio: "16/9", borderRadius: "1rem", overflow: "hidden", marginBottom: "2rem" }}>
-                    <iframe
-                      src={currentContent.meta.video}
-                      title={currentContent.meta.title}
+                {selectedPost.meta.video && (
+                  <div className="cp-video-wrap">
+                    <iframe src={selectedPost.meta.video} title={selectedPost.meta.title}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      style={{ width: "100%", height: "100%", border: "none" }}
-                    />
+                      allowFullScreen />
                   </div>
                 )}
-
                 <article className="prose prose-lg max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground">
-                  <ReactMarkdown
-                    components={{
-                      a: ({ href, children }) => (
-                        <a href={href} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
-                          {children}
-                        </a>
-                      ),
-                      blockquote: ({ children }) => (
-                        <div className="p-4 bg-muted rounded-lg my-4">{children}</div>
-                      ),
-                      table: ({ children }) => (
-                        <div className="overflow-x-auto">
-                          <table className="w-full border-collapse text-sm">{children}</table>
-                        </div>
-                      ),
-                      th: ({ children }) => (
-                        <th className="text-left py-2 pr-4 font-semibold border-b">{children}</th>
-                      ),
-                      td: ({ children }) => (
-                        <td className="py-2 pr-4 border-b">{children}</td>
-                      ),
-                    }}
-                  >
-                    {currentContent.body}
+                  <ReactMarkdown components={{
+                    a: ({ href, children }) => (
+                      <a href={href} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">{children}</a>
+                    ),
+                    blockquote: ({ children }) => (
+                      <div className="p-4 bg-muted rounded-lg my-4">{children}</div>
+                    ),
+                    table: ({ children }) => (
+                      <div className="overflow-x-auto"><table className="w-full border-collapse text-sm">{children}</table></div>
+                    ),
+                    th: ({ children }) => <th className="text-left py-2 pr-4 font-semibold border-b">{children}</th>,
+                    td: ({ children }) => <td className="py-2 pr-4 border-b">{children}</td>,
+                  }}>
+                    {selectedPost.body}
                   </ReactMarkdown>
                 </article>
               </>
-            ) : (
-              <p style={{ color: "#607060" }}>Selecione um conteúdo no menu ao lado.</p>
             )}
           </div>
 
-          {/* Right: sidebar with other topics */}
-          <aside className="cp-aside">
-            <MobileTopicsToggle
-              groups={otherTopicsGrouped}
-              selectedContent={selectedContent}
-              onSelect={setSelectedContent}
-              defaultLabelMap={defaultLabelMap}
-            />
-
-            <div className="cp-card" style={{ display: "none" }} id="cp-desktop-sidebar" />
-
-            <DesktopSidebar
-              groups={otherTopicsGrouped}
-              selectedContent={selectedContent}
-              onSelect={setSelectedContent}
-              defaultLabelMap={defaultLabelMap}
-            />
-          </aside>
-        </main>
+          {/* Sidebar */}
+          {!loading && !error && groupedPosts.length > 0 && (
+            <div className="cp-sidebar-wrap">
+              <div className="cp-mobile-only">
+                <MobileSidebar groups={groupedPosts} selectedId={selectedId} onSelect={selectPost} />
+              </div>
+              <div className="cp-desktop-only">
+                <PostList groups={groupedPosts} selectedId={selectedId} onSelect={selectPost} />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </Layout>
   );
 }
 
-function MobileTopicsToggle({
-  groups,
-  selectedContent,
-  onSelect,
-  defaultLabelMap,
-}: {
-  groups: { category: CategoryConfig; items: ContentItem[] }[];
-  selectedContent: string;
-  onSelect: (id: string) => void;
-  defaultLabelMap: Record<string, string>;
-}) {
-  const [open, setOpen] = useState(false);
+type Groups = { categoryId: string; label: string; posts: PostMeta[] }[];
 
-  return (
-    <div style={{ display: "block" }} className="lg:hidden">
-      <button className="cp-mobile-toggle" onClick={() => setOpen(!open)}>
-        <span>Outros temas</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-          style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>
-          <polyline points="6 9 12 15 18 9" />
-        </svg>
-      </button>
-      {open && (
-        <div className="cp-card" style={{ marginBottom: "1rem" }}>
-          <TopicList
-            groups={groups}
-            selectedContent={selectedContent}
-            onSelect={(id) => { onSelect(id); setOpen(false); }}
-            defaultLabelMap={defaultLabelMap}
-          />
-        </div>
-      )}
-    </div>
-  );
-}
-
-function DesktopSidebar({
-  groups,
-  selectedContent,
-  onSelect,
-  defaultLabelMap,
-}: {
-  groups: { category: CategoryConfig; items: ContentItem[] }[];
-  selectedContent: string;
-  onSelect: (id: string) => void;
-  defaultLabelMap: Record<string, string>;
+function PostList({ groups, selectedId, onSelect }: {
+  groups: Groups; selectedId: string | null; onSelect: (id: string) => void;
 }) {
   return (
-    <div className="cp-card hidden lg:block">
-      <h3 className="cp-sidebar-title">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-        </svg>
-        Outros Temas
-      </h3>
-      <TopicList
-        groups={groups}
-        selectedContent={selectedContent}
-        onSelect={onSelect}
-        defaultLabelMap={defaultLabelMap}
-      />
-    </div>
-  );
-}
-
-function TopicList({
-  groups,
-  selectedContent,
-  onSelect,
-  defaultLabelMap,
-}: {
-  groups: { category: CategoryConfig; items: ContentItem[] }[];
-  selectedContent: string;
-  onSelect: (id: string) => void;
-  defaultLabelMap: Record<string, string>;
-}) {
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-      {groups.map((group, gi) => {
-        const CatIcon = defaultIconMap[group.category.id] || BookOpen;
+    <div className="cp-card">
+      <div className="cp-card-header"><h2>Tópicos</h2></div>
+      {groups.map((group) => {
+        const Icon = categoryIcons[group.categoryId] || BookOpen;
         return (
-          <div key={group.category.id}>
-            {gi > 0 && <hr className="cp-divider" style={{ margin: "0.75rem 0" }} />}
-            <p style={{
-              fontSize: "0.75rem",
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "0.06em",
-              color: "#1daf66",
-              marginBottom: "0.25rem",
-              marginTop: gi > 0 ? "0.25rem" : 0,
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem",
-            }}>
-              <CatIcon size={14} />
-              {defaultLabelMap[group.category.id] || group.category.id}
-            </p>
+          <div key={group.categoryId} className="cp-cat-group">
+            <p className="cp-cat-label"><Icon size={12} />{group.label}</p>
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-              {group.items.map((item, i) => (
-                <li key={item.meta.id}>
-                  <button
-                    className={`cp-topic-btn ${selectedContent === item.meta.id ? "cp-topic-active" : ""}`}
-                    onClick={() => onSelect(item.meta.id)}
-                  >
-                    <svg className="cp-topic-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                      <polyline points="14 2 14 8 20 8" />
-                      <line x1="16" y1="13" x2="8" y2="13" />
-                      <line x1="16" y1="17" x2="8" y2="17" />
-                      <polyline points="10 9 9 9 8 9" />
-                    </svg>
-                    <div>
-                      <p className="cp-topic-title">{item.meta.title}</p>
-                    </div>
+              {group.posts.map((post) => (
+                <li key={post.id}>
+                  <button className={`cp-post-btn${selectedId === post.id ? " sel" : ""}`} onClick={() => onSelect(post.id)}>
+                    <span className="cp-post-title">{post.title}</span>
+                    <ChevronRight size={14} className="cp-arrow" />
                   </button>
-                  {i < group.items.length - 1 && <hr className="cp-divider" />}
                 </li>
               ))}
             </ul>
           </div>
         );
       })}
+    </div>
+  );
+}
+
+function MobileSidebar({ groups, selectedId, onSelect }: {
+  groups: Groups; selectedId: string | null; onSelect: (id: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const selectedTitle = groups.flatMap((g) => g.posts).find((p) => p.id === selectedId)?.title ?? "Tópicos";
+
+  return (
+    <div>
+      <button className={`cp-toggle${open ? " open" : ""}`} onClick={() => setOpen(!open)}>
+        <span>{selectedTitle}</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+      {open && (
+        <div style={{ marginBottom: "1rem" }}>
+          <PostList groups={groups} selectedId={selectedId} onSelect={(id) => { onSelect(id); setOpen(false); }} />
+        </div>
+      )}
     </div>
   );
 }

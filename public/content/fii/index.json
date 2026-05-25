@@ -1,0 +1,28 @@
+{
+  "description": "Fundos de Investimento Imobiliário (FIIs) permitem investir no mercado imobiliário sem precisar comprar um imóvel. Você adquire cotas de um fundo que investe em imóveis físicos ou títulos imobiliários — e pode receber rendimentos mensais. Entenda como funcionam antes de investir.",
+  "categoryOrder": ["cuidados", "guias"],
+  "categoryLabels": {
+    "cuidados": "Cuidados iniciais",
+    "guias": "Guias"
+  },
+  "posts": [
+    {
+      "id": "o-que-sao-fii",
+      "file": "o-que-sao-fii.md",
+      "title": "O que seria um fundo imobiliário?",
+      "category": "cuidados",
+      "summary": "Entenda o que são FIIs e como eles funcionam.",
+      "order": 1,
+      "author": "Isadora Lara"
+    },
+    {
+      "id": "cursos-fii",
+      "file": "cursos-fii.md",
+      "title": "Cursos gratuitos para aprender mais",
+      "category": "guias",
+      "summary": "Curso gratuito da Anbima para entender mais sobre fundos imobiliários.",
+      "order": 1,
+      "author": "Isadora Lara"
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "description": "Fundos de investimento são uma forma coletiva e profissional de investir. Você não precisa escolher cada ativo — um gestor faz isso por você. Mas antes de entrar nesse mundo, é importante entender como funcionam, quais cuidados ter e como avaliar se um fundo realmente vale a pena.",
+  "categoryOrder": ["cuidados", "guias", "videos", "ferramentas", "duvidas"],
+  "categoryLabels": {
+    "cuidados": "Cuidados iniciais",
+    "guias": "Guias",
+    "videos": "Vídeos",
+    "ferramentas": "Ferramentas",
+    "duvidas": "Dúvidas comuns"
+  },
+  "posts": [
+    {
+      "id": "o-que-sao",
+      "file": "o-que-sao.md",
+      "title": "Mas o que raios são fundos",
+      "category": "cuidados",
+      "summary": "Se você já ouviu falar de fundos de investimento e ficou confuso, calma. Vamos descomplicar.",
+      "order": 1,
+      "author": "Isadora Lara"
+    },
+    {
+      "id": "porque-investir",
+      "file": "porque-investir.md",
+      "title": "Porque querem que eu invista em um",
+      "category": "cuidados",
+      "summary": "Todo mundo parece empurrar fundos pra você. Seu gerente, influenciadores, até o app do banco. Mas por quê?",
+      "order": 2,
+      "author": "Isadora Lara"
+    },
+    {
+      "id": "multimercado",
+      "file": "multimercado.md",
+      "title": "Multimercado: linguiça ou bilhete premiado?",
+      "category": "cuidados",
+      "summary": "Fundos multimercado são os mais livres do mercado. Isso pode ser ótimo — ou péssimo.",
+      "order": 3,
+      "author": "Isadora Lara"
+    },
+    {
+      "id": "como-enganam",
+      "file": "como-enganam.md",
+      "title": "Como te enganam - não são todos",
+      "category": "cuidados",
+      "summary": "Existem fundos excelentes. Mas existem armadilhas disfarçadas de investimento. Saiba identificar.",
+      "order": 4,
+      "author": "Isadora Lara"
+    },
+    {
+      "id": "taxa-e-bom",
+      "file": "taxa-e-bom.md",
+      "title": "Ter taxa é bom?",
+      "category": "cuidados",
+      "summary": "Parece contraditório, mas sim — em alguns casos, pagar taxa faz sentido.",
+      "order": 5,
+      "author": "Isadora Lara"
+    },
+    {
+      "id": "guia-iniciante",
+      "file": "guia-iniciante.md",
+      "title": "Guia para iniciantes",
+      "category": "guias",
+      "summary": "Um guia completo sobre fundos de investimento para quem está começando.",
+      "order": 1,
+      "author": "Isadora Lara"
+    },
+    {
+      "id": "guia-comparacao",
+      "file": "guia-comparacao.md",
+      "title": "Como comparar fundos",
+      "category": "guias",
+      "summary": "Antes de investir em qualquer fundo, saiba o que comparar para tomar a melhor decisão.",
+      "order": 2,
+      "author": "Isadora Lara"
+    },
+    {
+      "id": "video-intro",
+      "file": "video-intro.md",
+      "title": "O que são Fundos de Investimento?",
+      "category": "videos",
+      "summary": "Entenda de forma simples como funcionam os fundos de investimento, seus tipos e como escolher o melhor para o seu perfil.",
+      "order": 1,
+      "author": "Isadora Lara",
+      "video": "https://www.youtube.com/embed/8QnAr1sF4Sg"
+    },
+    {
+      "id": "video-pratica",
+      "file": "video-pratica.md",
+      "title": "Fundos de Investimento na Prática",
+      "category": "videos",
+      "summary": "Aprenda na prática como investir em fundos, analisar taxas e comparar rentabilidades.",
+      "order": 2,
+      "author": "Isadora Lara",
+      "video": "https://www.youtube.com/embed/YHnaVTXMI_I"
+    },
+    {
+      "id": "comparador",
+      "file": "comparador.md",
+      "title": "Comparador de Fundos",
+      "category": "ferramentas",
+      "summary": "Ferramentas essenciais para analisar e comparar fundos de investimento antes de tomar uma decisão.",
+      "order": 1,
+      "author": "Isadora Lara"
+    },
+    {
+      "id": "risco",
+      "file": "risco.md",
+      "title": "Qual o risco de investir em fundos?",
+      "category": "duvidas",
+      "summary": "Todo investimento tem risco. Em fundos, o risco depende do tipo e da estratégia.",
+      "order": 1,
+      "author": "Isadora Lara"
+    },
+    {
+      "id": "resgatar",
+      "file": "resgatar.md",
+      "title": "Posso resgatar a qualquer hora?",
+      "category": "duvidas",
+      "summary": "Depende do fundo. Alguns permitem resgate no mesmo dia, outros levam semanas.",
+      "order": 2,
+      "author": "Isadora Lara"
+    },
+    {
+      "id": "imposto",
+      "file": "imposto.md",
+      "title": "Como funciona o imposto?",
+      "category": "duvidas",
+      "summary": "Fundos de investimento têm tributação própria — e um mecanismo chamado come-cotas que muita gente desconhece.",
+      "order": 3,
+      "author": "Isadora Lara"
+    }
+  ]
+}
