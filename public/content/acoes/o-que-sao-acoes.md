@@ -6,25 +6,25 @@ summary:
 order: 1
 author: IFL
 ---
-## O que é uma Ação
+# O que são ações?
 
-Uma ação é um **pequeno pedaço de uma empresa**. Quando uma empresa abre seu capital na bolsa de valores, ela divide sua propriedade em várias partes chamadas ações, que podem ser compradas por investidores.
+Ações são o que chamamos de investimento de *Renda Variável*, o que acho um nome ruim, porque na verdade trata-se de uma parte da sociedade de uma empresa — a parte capitalista dela, que representa o sócio que aporta capital. Quando você compra uma ação, compra uma parte pequena daquela empresa e, dessa forma, adquire diversos direitos, como votar em assembleias relevantes, eleger pessoas e receber *dividendos* (parte do lucro da empresa), proporcionalmente à quantidade de ações que você tem. A Petrobras, por exemplo, tem 12.888.732.761 ações, nem todas à venda, e uma ação corresponde a 0,000000007758% da empresa. ([Composição Acionária, Petrobras](https://www.investidorpetrobras.com.br/visao-geral/composicao-acionaria/))
 
-Ao comprar uma ação, o investidor se torna **sócio da empresa**, participando dos seus resultados. Isso significa que ele pode ganhar dinheiro de duas formas principais:
+Ao contrário de outros tipos de sociedade, quando você compra uma ação não está sujeito a pagar nada além do valor investido à companhia em caso de falência, porque não tem responsabilidade sobre as operações da companhia como em outros tipos de participação — o que é uma vantagem enorme, pois reduz amplamente os riscos.
 
-- **Valorização da ação**: quando o preço da ação aumenta ao longo do tempo.
-- **Dividendos**: parte do lucro da empresa distribuída aos acionistas.
+## Tipos comuns de ação
+Existem dois tipos principais de ações: a *ordinária* e a *preferencial*. Cada uma tem uma característica mais forte — das ordinárias, o direito a voto; das preferenciais, a preferência por dividendos.
 
-As ações são negociadas na **bolsa de valores**, o que permite comprar e vender esses ativos diariamente durante o horário de negociação.
+## Links para consulta de informações sobre ações
+Um site que sempre gostei de usar para consultar informações sobre as ações que tinha ou queria entender mais é o https://fundamentus.com.br/, acho que a forma simples de entregar informação é insuperável. Contudo, temos também:
 
-### Tipos comuns de ações
+https://investidor10.com.br/acoes/
 
-- **Ações ordinárias (ON)**  
-  Dão direito a **voto nas decisões da empresa**, como eleição do conselho de administração.
+https://statusinvest.com.br/acoes
 
-- **Ações preferenciais (PN)**  
-  Normalmente dão **prioridade no recebimento de dividendos**, mas geralmente não possuem direito a voto.
+https://br.investing.com/equities
 
-### Risco e retorno
+Caso queira se aprofundar mais em pesquisas de empresas, existem casas de *research*, que fazem documentos de análises de ações e empresas, como a Suno e a Nord.
 
-Diferente da renda fixa, o retorno das ações **não é garantido**, pois depende do desempenho da empresa e das condições do mercado. Por isso, ações costumam apresentar **maior risco**, mas também **maior potencial de retorno no longo prazo**.
+## Como se compra uma ação
+Bom, agora que entendeu o básico sobre esse produto, como comprar uma ação? Bancos e corretoras intermediam esse processo. Você precisa saber o *ticker* da ação (é o nome dela na bolsa, como PETR4) e quanto vai comprar. Tipicamente os lotes de ações vêm em 100 unidades, mas se você quiser comprar menos, basta comprar um lote fracionário — como PETR4F, em que o **F** ao final do ticker indica que é fracionário.

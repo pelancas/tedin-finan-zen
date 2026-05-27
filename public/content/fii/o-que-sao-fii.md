@@ -6,36 +6,23 @@ summary:
 order: 1
 author: IFL
 ---
-## O que são Fundos Imobiliários (FIIs)
+# O que são Fundos Imobiliários (FII)?
+Os FII também entram no grande balde mal nomeado de *Renda Variável* (sério, temos que mudar esse nome) e se tratam basicamente de cotas de prédios, edifícios ou crédito imobiliário. Um fundo clássico, chamado de "fundo de tijolo" (nome melhor, por deixar bem óbvio que se trata de construções), divide empreendimentos imobiliários em várias frações para que cada investidor tenha acesso a um pedaço daquele ativo.
 
-Fundos imobiliários são investimentos coletivos que permitem ao investidor **aplicar em empreendimentos do setor imobiliário sem precisar comprar um imóvel diretamente**. Na prática, o investidor compra **cotas de um fundo**, que reúne recursos de várias pessoas para investir em imóveis ou ativos ligados ao mercado imobiliário.
+De forma mais prática: se um fundo de tijolo tem um prédio e você compra uma cota desse fundo, tem direito aos aluguéis proporcionalmente à sua cota — valores que chegam na forma de dividendos.
 
-Os fundos são administrados por uma **gestora profissional**, responsável por selecionar os investimentos, administrar os imóveis ou ativos e distribuir os resultados aos cotistas.
+Se o fundo for um "fundo de papel" (novamente, um excelente nome), trata-se de um fundo que detém dívidas e, em vez do aluguel, você recebe os juros desse produto.
 
-Grande parte dos fundos imobiliários distribui **rendimentos periódicos**, geralmente mensais, provenientes de aluguéis, financiamentos imobiliários ou outros ativos do setor.
+Fundos imobiliários em geral são mais fáceis de precificar — afinal, o preço de aluguel em determinado lugar é mais fácil de estimar do que a expectativa de geração de caixa futura de uma empresa.
 
-### Principais tipos de Fundos Imobiliários
+## Como comprar FII?
+Da mesma forma que ações, você pode encontrar os FII à venda por meio de corretoras e bancos — basta saber o ticker do fundo.
 
-- **Fundos de tijolo**  
-  Investem diretamente em imóveis físicos, como:
-  - shoppings
-  - galpões logísticos
-  - prédios comerciais
-  - hospitais  
-  A renda vem principalmente do **aluguel pago pelos inquilinos**.
+## Material sobre FII
+Alguns sites interessantes:
 
-- **Fundos de papel**  
-  Investem em **títulos de dívida do setor imobiliário**, como:
-  - CRI (Certificado de Recebíveis Imobiliários)
-  - LCIs
-  - outros créditos imobiliários  
-  Os rendimentos vêm principalmente **dos juros desses títulos**.
+https://www.clubefii.com.br/
 
-- **Fundos híbridos**  
-  Combinam investimentos em **imóveis físicos e títulos imobiliários**, buscando diversificação dentro do setor.
+https://fiis.com.br/
 
-### Como funciona o investimento
-
-As cotas dos fundos imobiliários são negociadas na **bolsa de valores**, funcionando de forma semelhante às ações. Isso permite que o investidor compre ou venda suas cotas com facilidade durante o horário de negociação.
-
-Em muitos casos, os rendimentos distribuídos pelos fundos imobiliários são **isentos de imposto de renda para pessoas físicas**, desde que cumpram determinados requisitos da legislação.
+https://www.fundsexplorer.com.br/funds
