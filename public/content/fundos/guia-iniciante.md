@@ -8,32 +8,24 @@ author: IFL
 ---
 ## A ideia por trás
 
-Imagine que você e mais algumas pessoas juntam dinheiro e contratam alguém experiente para investir por vocês. Esse "alguém" é o **gestor do fundo**. Ele decide onde aplicar o dinheiro — pode ser em ações, títulos do governo, moedas estrangeiras, imóveis e muito mais.
-
-Quando você investe em um fundo, na verdade está comprando **cotas**. Cada cota representa uma fração do patrimônio total do fundo. Se o fundo vai bem, suas cotas valorizam. Se vai mal… já sabe.
+Basicamente, você, sem ter muito dinheiro, nem tempo, contrata uma pessoa especializada para cuidar do seu dinheiro, e identificar as melhores oportunidades, então para conseguir pagar esse profissional, chama seus amigos para colocar dinheiro também. Na forma mais formal do mercado, esse tipo de contrato forma um *Fundo de investimento*. Você vira um *cotista* do fundo, e quem faz os investimentos do fundo se chama *Gestor*. 
 
 ## Tipos principais
 
-- **Renda Fixa:** Investem majoritariamente em títulos de renda fixa. Mais conservadores.
-- **Multimercado:** Misturam vários tipos de ativos. Mais flexíveis, mais risco.
-- **Ações:** Pelo menos 67% em ações. Para quem aguenta volatilidade.
-- **Cambial:** Atrelados a moedas estrangeiras, como dólar e euro.
-
-## Resumo rápido
-
-Fundos são uma forma **coletiva** e **profissional** de investir. Você não precisa escolher cada ativo — o gestor faz isso por você. Em troca, paga taxas. Simples assim.
+Os fundos são geralmente classificados de acordo com o tipo de ativo que investem, e os mais clássicos são: 
+- **Renda Fixa:** Investem majoritariamente em títulos de renda fixa.
+- **Ações:** Pelo menos 67% em ações.
+- **Multimercado:** Massaroca de vários tipos de ativos.
 
 ## Prazos importantes
 
-- **D+0:** Resgate no mesmo dia. Comum em fundos de renda fixa simples e fundos DI.
-- **D+1 a D+5:** Resgate em poucos dias úteis. Fundos multimercado mais líquidos.
-- **D+30 ou mais:** Fundos com estratégias mais complexas. Podem levar 30, 60 ou até 90 dias para devolver seu dinheiro.
+Quando você tem alguma dúvida de quando consegue de volta o dinheiro que aportou em um fundo, saiba que existe uma forma de identificar, geralmente indicado na lâmina do fundo, em "D + x " que "x" seria o número de dias úteis entre a data que você solicitou o resgate, e o dia que ele cai efetivamente.
+- **D+0:** Resgate no mesmo dia. Comum em fundos de renda fixa DI.
+- **D+1 a D+5:** Resgate em poucos 1 a 5 úteis.
+- **D+30 ou mais:** Fundos com estratégias mais complexas.
 
-## Cotização vs Liquidação
+**Cotização** é quando calculam o valor das suas cotas. **Liquidação** é quando o dinheiro cai na sua conta. Se o fundo tem um prazo de cotização de D+2 e de liquidação D+1, significa que só depois de 3 dias você recebe seu dinheiro de volta.
 
-**Cotização** é quando calculam o valor das suas cotas. **Liquidação** é quando o dinheiro cai na sua conta. São datas diferentes!
-
-> **Dica:** Se você pode precisar do dinheiro com urgência, prefira fundos com resgate em D+0 ou D+1.
 
 ## Guia Completo – InfoMoney
 
@@ -50,8 +42,5 @@ O InfoMoney oferece um guia detalhado sobre fundos de investimento, cobrindo des
 
 ## Curso ANBIMA
 
-A ANBIMA oferece um curso gratuito sobre fundos de investimento, ideal para quem quer conteúdo de qualidade com certificação reconhecida pelo mercado.
-
-🏷️ **Gratuito** — Curso completo sobre fundos com certificação.
-
+A ANBIMA oferece um curso gratuito sobre fundos de investimentos.
 [Acessar curso →](https://www.anbima.com.br/email/Paginas/carreiras/curso-fundos/)

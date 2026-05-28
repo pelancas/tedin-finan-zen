@@ -10,15 +10,7 @@
   },
   "posts": [
 
-    {
-      "id": "multimercado",
-      "file": "multimercado.md",
-      "title": "Multimercado: linguiça ou bilhete premiado?",
-      "category": "cuidados",
-      "summary": "Fundos multimercado são os mais livres do mercado. Isso pode ser ótimo — ou péssimo.",
-      "order": 3,
-      "author": "IFL"
-    },
+
     {
       "id": "como-enganam",
       "file": "como-enganam.md",
@@ -26,15 +18,6 @@
       "category": "cuidados",
       "summary": "Existem fundos excelentes. Mas existem armadilhas disfarçadas de investimento. Saiba identificar.",
       "order": 4,
-      "author": "IFL"
-    },
-    {
-      "id": "taxa-e-bom",
-      "file": "taxa-e-bom.md",
-      "title": "Ter taxa é bom?",
-      "category": "cuidados",
-      "summary": "Parece contraditório, mas sim — em alguns casos, pagar taxa faz sentido.",
-      "order": 5,
       "author": "IFL"
     },
     {
@@ -73,15 +56,6 @@
       "category": "ferramentas",
       "summary": "Ferramentas essenciais para analisar e comparar fundos de investimento antes de tomar uma decisão.",
       "order": 1,
-      "author": "IFL"
-    },
-    {
-      "id": "imposto",
-      "file": "imposto.md",
-      "title": "Como funciona o imposto?",
-      "category": "duvidas",
-      "summary": "Fundos de investimento têm tributação própria — e um mecanismo chamado come-cotas que muita gente desconhece.",
-      "order": 3,
       "author": "IFL"
     }
   ]
