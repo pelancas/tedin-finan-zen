@@ -4,7 +4,7 @@ title: Como funciona o imposto?
 category: duvidas
 summary: Fundos de investimento têm tributação própria — e um mecanismo chamado come-cotas que muita gente desconhece.
 order: 3
-author: IFL
+author: I.L.
 ---
 
 ## Tabela regressiva de IR

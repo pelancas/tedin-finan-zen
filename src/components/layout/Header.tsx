@@ -26,15 +26,26 @@ const investimentosCalculadoras = [
   { name: "Comparador de renda fixa", href: "/investimentos/renda-fixa/comparador" },
 ];
 
+const segurosFerramentas = [
+  { name: "Calculadora de seguros", href: "/seguros" },
+];
+
+const segurosArtigos = [
+  { name: "Artigos", href: "/seguros/conteudos" },
+];
+
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [planejamentoOpen, setPlanejamentoOpen] = useState(false);
+  const [segurosOpen, setSegurosOpen] = useState(false);
   const [investimentosOpen, setInvestimentosOpen] = useState(false);
   const [mobilePlanejamentoOpen, setMobilePlanejamentoOpen] = useState(false);
+  const [mobileSegurosOpen, setMobileSegurosOpen] = useState(false);
   const [mobileInvestimentosOpen, setMobileInvestimentosOpen] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const lastScrollY = useRef(0);
   const planejamentoRef = useRef<HTMLDivElement>(null);
+  const segurosRef = useRef<HTMLDivElement>(null);
   const investimentosRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
@@ -47,6 +58,7 @@ export function Header() {
       } else if (delta > 5) {
         setHeaderVisible(false);
         setPlanejamentoOpen(false);
+        setSegurosOpen(false);
         setInvestimentosOpen(false);
       } else if (delta < -5) {
         setHeaderVisible(true);
@@ -61,6 +73,9 @@ export function Header() {
     const handleClickOutside = (e: MouseEvent) => {
       if (planejamentoRef.current && !planejamentoRef.current.contains(e.target as Node)) {
         setPlanejamentoOpen(false);
+      }
+      if (segurosRef.current && !segurosRef.current.contains(e.target as Node)) {
+        setSegurosOpen(false);
       }
       if (investimentosRef.current && !investimentosRef.current.contains(e.target as Node)) {
         setInvestimentosOpen(false);
@@ -93,7 +108,7 @@ export function Header() {
           {/* Planejamento */}
           <div ref={planejamentoRef}>
             <button
-              onClick={() => { setPlanejamentoOpen(!planejamentoOpen); setInvestimentosOpen(false); }}
+              onClick={() => { setPlanejamentoOpen(!planejamentoOpen); setSegurosOpen(false); setInvestimentosOpen(false); }}
               className={cn(
                 "flex items-center gap-2 px-5 h-20 text-sm font-medium transition-colors border-b-2",
                 isPlanejamentoActive
@@ -156,22 +171,74 @@ export function Header() {
           </div>
 
           {/* Seguros */}
-          <Link
-            to="/seguros"
-            className={cn(
-              "flex items-center gap-2 px-5 h-20 text-sm font-medium transition-colors border-b-2",
-              isSegurosActive
-                ? "border-primary text-foreground"
-                : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
+          <div ref={segurosRef}>
+            <button
+              onClick={() => { setSegurosOpen(!segurosOpen); setPlanejamentoOpen(false); setInvestimentosOpen(false); }}
+              className={cn(
+                "flex items-center gap-2 px-5 h-20 text-sm font-medium transition-colors border-b-2",
+                isSegurosActive
+                  ? "border-primary text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              )}
+            >
+              Seguros
+              <ChevronDown className={cn("h-3 w-3 transition-transform", segurosOpen && "rotate-180")} />
+            </button>
+
+            {segurosOpen && (
+              <div className="absolute left-0 right-0 top-full border-b bg-white shadow-lg z-40">
+                <div className="container py-6">
+                  <div className="grid grid-cols-2 gap-12">
+                    <div>
+                      <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">Ferramentas</h3>
+                      <div className="flex flex-col gap-1">
+                        {segurosFerramentas.map((item) => (
+                          <Link
+                            key={item.href}
+                            to={item.href}
+                            onClick={() => setSegurosOpen(false)}
+                            className={cn(
+                              "text-sm py-1.5 transition-colors hover:text-primary",
+                              location.pathname === item.href
+                                ? "text-primary font-medium"
+                                : "text-muted-foreground"
+                            )}
+                          >
+                            {item.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">Artigos</h3>
+                      <div className="flex flex-col gap-1">
+                        {segurosArtigos.map((item) => (
+                          <Link
+                            key={item.href}
+                            to={item.href}
+                            onClick={() => setSegurosOpen(false)}
+                            className={cn(
+                              "text-sm py-1.5 transition-colors hover:text-primary",
+                              location.pathname === item.href
+                                ? "text-primary font-medium"
+                                : "text-muted-foreground"
+                            )}
+                          >
+                            {item.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             )}
-          >
-            Seguros
-          </Link>
+          </div>
 
           {/* Investimentos */}
           <div ref={investimentosRef}>
             <button
-              onClick={() => { setInvestimentosOpen(!investimentosOpen); setPlanejamentoOpen(false); }}
+              onClick={() => { setInvestimentosOpen(!investimentosOpen); setPlanejamentoOpen(false); setSegurosOpen(false); }}
               className={cn(
                 "flex items-center gap-2 px-5 h-20 text-sm font-medium transition-colors border-b-2",
                 isInvestimentosActive
@@ -302,11 +369,10 @@ export function Header() {
             )}
 
             {/* Mobile Seguros */}
-            <Link
-              to="/seguros"
-              onClick={closeMobile}
+            <button
+              onClick={() => setMobileSegurosOpen(!mobileSegurosOpen)}
               className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
+                "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors w-full",
                 isSegurosActive
                   ? "bg-accent text-accent-foreground"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -314,7 +380,44 @@ export function Header() {
             >
               <Shield className="h-5 w-5" />
               Seguros
-            </Link>
+              <ChevronDown className={cn("h-3 w-3 ml-auto transition-transform", mobileSegurosOpen && "rotate-180")} />
+            </button>
+            {mobileSegurosOpen && (
+              <div className="ml-8 flex flex-col gap-1">
+                <p className="px-4 pt-2 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">Ferramentas</p>
+                {segurosFerramentas.map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={closeMobile}
+                    className={cn(
+                      "px-4 py-2.5 rounded-lg text-sm transition-colors",
+                      location.pathname === item.href
+                        ? "bg-accent text-accent-foreground"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+                <p className="px-4 pt-2 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">Artigos</p>
+                {segurosArtigos.map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={closeMobile}
+                    className={cn(
+                      "px-4 py-2.5 rounded-lg text-sm transition-colors",
+                      location.pathname === item.href
+                        ? "bg-accent text-accent-foreground"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            )}
 
             {/* Mobile Investimentos */}
             <button

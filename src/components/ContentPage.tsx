@@ -162,6 +162,24 @@ export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPa
         }
         .cp-toggle svg { transition: transform 0.2s; }
         .cp-toggle.open svg { transform: rotate(180deg); }
+
+        .cp-callout {
+          display: flex; align-items: center; gap: 1rem;
+          padding: 1rem 1.25rem;
+          background: linear-gradient(135deg, #edfaf2 0%, #f0fdf4 100%);
+          border: 1.5px solid #1daf66; border-radius: 0.875rem;
+          margin: 1.75rem 0;
+        }
+        .cp-callout-icon {
+          font-size: 1.75rem; line-height: 1; flex-shrink: 0;
+        }
+        .cp-callout-body { flex: 1; min-width: 0; }
+        .cp-callout-body p { margin: 0; font-size: 0.95rem; color: #1A2E35; }
+        .cp-callout-body a {
+          color: #178a50 !important; font-weight: 700 !important;
+          text-decoration: underline; text-underline-offset: 3px;
+        }
+        .cp-callout-body a:hover { color: #1daf66 !important; }
       `}</style>
 
       <div className="cp-root">
@@ -205,9 +223,21 @@ export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPa
                     a: ({ href, children }) => (
                       <a href={href} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">{children}</a>
                     ),
-                    blockquote: ({ children }) => (
-                      <div className="p-4 bg-muted rounded-lg my-4">{children}</div>
-                    ),
+                    blockquote: ({ children, node }) => {
+                      const raw = node?.children
+                        ?.map((c: any) => c.children?.map((cc: any) => cc.value ?? "").join("") ?? "")
+                        .join("") ?? "";
+                      const isPdf = raw.startsWith("[PDF]");
+                      if (isPdf) {
+                        return (
+                          <div className="cp-callout">
+                            <span className="cp-callout-icon">📄</span>
+                            <div className="cp-callout-body">{children}</div>
+                          </div>
+                        );
+                      }
+                      return <div className="p-4 bg-muted rounded-lg my-4">{children}</div>;
+                    },
                     table: ({ children }) => (
                       <div className="overflow-x-auto"><table className="w-full border-collapse text-sm">{children}</table></div>
                     ),

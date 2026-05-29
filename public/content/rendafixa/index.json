@@ -13,7 +13,7 @@
       "category": "cuidados",
       "summary": "Entenda mais o que é renda fixa e como ela funciona.",
       "order": 1,
-      "author": "IFL"
+      "author": "I.L."
     },
     {
       "id": "tipos-rendafixa",
@@ -22,7 +22,7 @@
       "category": "cuidados",
       "summary": "Descubra quais são os tipos de renda fixa e o que eles significam.",
       "order": 2,
-      "author": "IFL"
+      "author": "I.L."
     },
     {
       "id": "cursos-rendafixa",
@@ -31,7 +31,7 @@
       "category": "guias",
       "summary": "Curso gratuito da Anbima para entender mais sobre renda fixa.",
       "order": 1,
-      "author": "IFL"
+      "author": "I.L."
     }
   ]
 }
