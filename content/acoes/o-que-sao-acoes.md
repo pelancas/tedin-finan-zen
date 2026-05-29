@@ -4,7 +4,7 @@ title: O que seria uma ação?
 category: cuidados
 summary:
 order: 1
-author: IFL
+author: I.L.
 ---
 # O que são ações?
 

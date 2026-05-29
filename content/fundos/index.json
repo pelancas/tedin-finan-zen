@@ -1,5 +1,5 @@
 {
-  "description": "Fundos de investimento são uma forma coletiva e profissional de investir. Você não precisa escolher cada ativo — um gestor faz isso por você. Mas antes de entrar nesse mundo, é importante entender como funcionam, quais cuidados ter e como avaliar se um fundo realmente vale a pena.",
+  "description": "Fundos de investimento são investimentos feitos no formato de 'condomínio'. São várias pessoas entregando dinheiro nas mãos de um gestor para que ele invista da melhor forma possível. São diversos os tipos de fundos, e dentro de cada categoria, existem várias estratégias de investimento. ",
   "categoryOrder": ["cuidados", "guias", "videos", "ferramentas", "duvidas"],
   "categoryLabels": {
     "cuidados": "Cuidados iniciais",
@@ -18,7 +18,7 @@
       "category": "cuidados",
       "summary": "Existem fundos excelentes. Mas existem armadilhas disfarçadas de investimento. Saiba identificar.",
       "order": 4,
-      "author": "IFL"
+      "author": "I.L."
     },
     {
       "id": "guia-iniciante",
@@ -27,7 +27,7 @@
       "category": "guias",
       "summary": "Um guia completo sobre fundos de investimento para quem está começando.",
       "order": 1,
-      "author": "IFL"
+      "author": "I.L."
     },
     {
       "id": "video-intro",
@@ -36,7 +36,7 @@
       "category": "videos",
       "summary": "Entenda de forma simples como funcionam os fundos de investimento, seus tipos e como escolher o melhor para o seu perfil.",
       "order": 1,
-      "author": "IFL",
+      "author": "I.L.",
       "video": "https://www.youtube.com/embed/8QnAr1sF4Sg"
     },
     {
@@ -46,7 +46,7 @@
       "category": "videos",
       "summary": "Aprenda na prática como investir em fundos, analisar taxas e comparar rentabilidades.",
       "order": 2,
-      "author": "IFL",
+      "author": "I.L.",
       "video": "https://www.youtube.com/embed/YHnaVTXMI_I"
     },
     {
@@ -56,7 +56,7 @@
       "category": "ferramentas",
       "summary": "Ferramentas essenciais para analisar e comparar fundos de investimento antes de tomar uma decisão.",
       "order": 1,
-      "author": "IFL"
+      "author": "I.L."
     }
   ]
 }

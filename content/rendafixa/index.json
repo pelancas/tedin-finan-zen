@@ -1,5 +1,5 @@
 {
-  "description": "Renda fixa é a categoria de investimentos em que as regras de rendimento são definidas no momento da aplicação. É considerada mais conservadora e previsível — mas isso não significa que não há riscos. Entenda o que está por trás dessa classe antes de investir.",
+  "description": "Renda fixa são contratos de dívida, quando você compra um título, está emprestando seu dinheiro para alguém (para o emissor desse título). Geralmente são produtos mais seguros, contudo cada tipo de produto tem seu risco.",
   "categoryOrder": ["cuidados", "guias"],
   "categoryLabels": {
     "cuidados": "Cuidados iniciais",
@@ -13,7 +13,7 @@
       "category": "cuidados",
       "summary": "Entenda mais o que é renda fixa e como ela funciona.",
       "order": 1,
-      "author": "IFL"
+      "author": "I.L."
     },
     {
       "id": "tipos-rendafixa",
@@ -22,7 +22,7 @@
       "category": "cuidados",
       "summary": "Descubra quais são os tipos de renda fixa e o que eles significam.",
       "order": 2,
-      "author": "IFL"
+      "author": "I.L."
     },
     {
       "id": "cursos-rendafixa",
@@ -31,7 +31,7 @@
       "category": "guias",
       "summary": "Curso gratuito da Anbima para entender mais sobre renda fixa.",
       "order": 1,
-      "author": "IFL"
+      "author": "I.L."
     }
   ]
 }

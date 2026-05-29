@@ -1,0 +1,29 @@
+{
+  "description": "Seguros são contratos em que uma pessoa passa o risco de um evento para outra, como o seguro de um carro, que você paga para não correr sozinho o risco de no caso de um acidente, perder dinheiro.",
+  "categoryOrder": ["cuidados", "guias","artigo"],
+  "categoryLabels": {
+    "cuidados": "Cuidados iniciais",
+    "guias": "Guias",
+    "artigo": "Artigos"
+  },
+  "posts": [
+    {
+      "id": "o-que-e-seguro",
+      "file": "o-que-e-seguro.md",
+      "title": "O que é um seguro?",
+      "category": "cuidados",
+      "summary": "Entenda o que é um seguro e como ele funciona.",
+      "order": 1,
+      "author": "I.L."
+    },
+    {
+      "id": "a-venda-casada-de-seguros",
+      "file": "a-venda-casada-de-seguros.md",
+      "title": "A Venda Casada de Seguros de Vida",
+      "category": "artigo",
+      "summary": "Mas enfim, você precisa desse seguro ou o corretor precisa da comissão?",
+      "order": 1,
+      "author": "I.L."
+    }
+  ]
+}

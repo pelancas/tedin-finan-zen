@@ -4,14 +4,14 @@ title: O que é a tal da renda fixa
 category: cuidados
 summary: Entenda mais o que é
 order: 1
-author: IFL
+author: I.L.
 ---
 
 ## O que é Renda Fixa
 
-Renda fixa é uma categoria de investimentos em que o investidor **empresta dinheiro para uma instituição** e recebe uma remuneração por isso ao longo do tempo. Na prática, esses investimentos são **títulos de dívida**: quem investe está financiando o emissor do título.
+A renda fixa, ela é um tipo de investimento muito conhecido, um dos favoritos dos brasileiros, mas existem muitas inverdades relacionadas a esse tipo de investimento. Para começar que a renda fixa, esse nome, ele não existe, o investimento não entrega uma renda fixa. Ela nada mais é do que um título de dívida. É um contrato em que uma pessoa está devendo a outra. Uma boa parte desses contratos, são contratos padrão, por isso eles têm nomes padronizados, como, por exemplo, um CDB, que é um certificado, ele é um contrato padrão de dívida, assim como uma LCAA, um LCI, um CRA. São contratos padrões de dívida, mas nada mais são do que uma dívida que uma pessoa tem com a outra, que uma instituição tem com a outra. 
 
-O emissor pode ser o **governo, um banco ou uma empresa**, que utiliza esse dinheiro para financiar suas atividades, pagar dívidas ou investir em projetos. Em troca, ele se compromete a devolver o valor investido acrescido de juros em uma data futura ou ao longo do tempo.
+Quando a gente fala de dívidas bancárias, estamos falando de CDB, LCA, LCI, que são as mais comuns do mercado. Quanto às dívidas de crédito privado, que são dívidas de empresas, alguns nomes são CRA, CRI, debênture, entre outros. E os títulos públicos são as dívidas que o governo contrai e tem como credor bancos, pessoas e empresas.
 
 A rentabilidade da renda fixa segue **regras definidas no momento da aplicação**, podendo ser:
 
@@ -19,4 +19,4 @@ A rentabilidade da renda fixa segue **regras definidas no momento da aplicação
 - **Pós-fixada** – o rendimento acompanha um indicador, como o CDI ou a taxa Selic  
 - **Atrelada à inflação** – paga juros mais a variação de um índice de preços, como o IPCA  
 
-Por ter regras de remuneração conhecidas e previsíveis, a renda fixa costuma ser utilizada para **preservação de patrimônio, geração de renda e planejamento financeiro de médio e longo prazo**.
+Por ter regras de remuneração conhecidas e previsíveis, a renda fixa costuma ser utilizada para **preservação de patrimônio e geração de renda**.
