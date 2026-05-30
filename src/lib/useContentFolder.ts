@@ -10,6 +10,7 @@ export interface PostMeta {
   summary: string;
   order: number;
   author?: string;
+  date?: string;
   video?: string;
 }
 
@@ -34,7 +35,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : import.meta.env.BASE_URL + "/";
 
-export function useContentFolder(folder: string): UseContentFolderResult {
+export function useContentFolder(folder: string, initialId?: string | null): UseContentFolderResult {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [index, setIndex] = useState<FolderIndex | null>(null);
@@ -44,6 +45,8 @@ export function useContentFolder(folder: string): UseContentFolderResult {
 
   // Cache so each .md is fetched at most once per session
   const cache = useRef<Map<string, ContentItem>>(new Map());
+  // Capture initialId once at mount so it doesn't re-trigger effects on URL changes
+  const initialIdRef = useRef(initialId);
 
   useEffect(() => {
     setLoading(true);
@@ -61,13 +64,19 @@ export function useContentFolder(folder: string): UseContentFolderResult {
         setIndex(data);
         setLoading(false);
         if (data.posts.length > 0) {
-          const first = [...data.posts].sort((a, b) => {
-            const catA = data.categoryOrder.indexOf(a.category);
-            const catB = data.categoryOrder.indexOf(b.category);
-            if (catA !== catB) return catA - catB;
-            return a.order - b.order;
-          })[0];
-          setSelectedId(first.id);
+          const requestedId = initialIdRef.current;
+          const validInitial = requestedId && data.posts.find((p) => p.id === requestedId);
+          if (validInitial) {
+            setSelectedId(requestedId!);
+          } else {
+            const first = [...data.posts].sort((a, b) => {
+              const catA = data.categoryOrder.indexOf(a.category);
+              const catB = data.categoryOrder.indexOf(b.category);
+              if (catA !== catB) return catA - catB;
+              return a.order - b.order;
+            })[0];
+            setSelectedId(first.id);
+          }
         }
       })
       .catch((err: Error) => {

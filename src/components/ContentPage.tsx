@@ -1,10 +1,18 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import { useContentFolder } from "@/lib/useContentFolder";
 import type { PostMeta } from "@/lib/useContentFolder";
 import { ShieldAlert, BookOpen, Play, Wrench, HelpCircle, ChevronRight } from "lucide-react";
+
+function formatDate(dateStr: string): string {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  return new Date(year, month - 1, day).toLocaleDateString("pt-BR", {
+    day: "numeric", month: "long", year: "numeric",
+  });
+}
 
 function isSafeVideoUrl(url: string): boolean {
   try {
@@ -33,8 +41,15 @@ interface ContentPageProps {
 }
 
 export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPageProps) {
-  const { loading, error, index, sortedPosts, selectedPost, loadingPost, selectPost } =
-    useContentFolder(folder);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const { loading, error, index, sortedPosts, selectedPost, loadingPost, selectPost: hookSelectPost } =
+    useContentFolder(folder, searchParams.get("post"));
+
+  const selectPost = (id: string) => {
+    setSearchParams({ post: id }, { replace: true });
+    hookSelectPost(id);
+  };
 
   const groupedPosts: { categoryId: string; label: string; posts: PostMeta[] }[] = [];
   if (index) {
@@ -51,6 +66,7 @@ export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPa
   }
 
   const selectedId = selectedPost?.meta.id ?? null;
+  const selectedMeta = sortedPosts.find((p) => p.id === selectedId);
 
   return (
     <Layout>
@@ -163,6 +179,12 @@ export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPa
         .cp-toggle svg { transition: transform 0.2s; }
         .cp-toggle.open svg { transform: rotate(180deg); }
 
+        .cp-post-header { margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid #eef1ee; }
+        .cp-post-header h2 { font-size: 1.45rem; font-weight: 800; color: #1A2E35; margin: 0 0 0.6rem; line-height: 1.3; }
+        .cp-post-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; align-items: center; }
+        .cp-post-meta span { font-size: 0.8rem; font-weight: 500; color: #607060; display: flex; align-items: center; gap: 0.3rem; }
+        .cp-post-meta span::before { content: ''; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: #1daf66; }
+
         .cp-callout {
           display: flex; align-items: center; gap: 1rem;
           padding: 1rem 1.25rem;
@@ -211,6 +233,17 @@ export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPa
             )}
             {!loading && !error && !loadingPost && selectedPost && (
               <>
+                <div className="cp-post-header">
+                  <h2>{selectedMeta?.title || selectedPost.meta.title}</h2>
+                  <div className="cp-post-meta">
+                    {(selectedMeta?.author || selectedPost.meta.author) && (
+                      <span>por {selectedMeta?.author || selectedPost.meta.author}</span>
+                    )}
+                    {selectedMeta?.date && (
+                      <span>{formatDate(selectedMeta.date)}</span>
+                    )}
+                  </div>
+                </div>
                 {selectedPost.meta.video && isSafeVideoUrl(selectedPost.meta.video) && (
                   <div className="cp-video-wrap">
                     <iframe src={selectedPost.meta.video} title={selectedPost.meta.title}

@@ -14,7 +14,8 @@
       "category": "cuidados",
       "summary": "Entenda o que é um seguro e como ele funciona.",
       "order": 1,
-      "author": "I.L."
+      "author": "I.L.",
+      "date": "2026-05-30"
     },
     {
       "id": "a-venda-casada-de-seguros",
@@ -23,7 +24,8 @@
       "category": "artigo",
       "summary": "Mas enfim, você precisa desse seguro ou o corretor precisa da comissão?",
       "order": 1,
-      "author": "I.L."
+      "author": "I.L.",
+      "date": "2026-05-30"
     }
   ]
 }
