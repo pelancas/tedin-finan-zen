@@ -2,7 +2,7 @@
 
 const LOGO_SRC = "/favicon.png";
 
-const TAXA_ANUAL = 0.055;
+const TAXA_ANUAL = 0.05;
 const TAXA_MENSAL = Math.pow(1 + TAXA_ANUAL, 1 / 12) - 1;
 
 function fmt(v) {
@@ -344,7 +344,7 @@ export default function CalculadoraFinanceira() {
                 <div className="clbl">Rentabilidade Real</div>
                 <div className="crrow">
                   <span className="crla"><IconTrend/>Taxa de Juros Real</span>
-                  <span className="crva">5,5% ao ano</span>
+                  <span className="crva">5,0% ao ano</span>
                 </div>
               </div>
 
