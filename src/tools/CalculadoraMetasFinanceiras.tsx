@@ -60,7 +60,7 @@ export default function CalculadoraMetasFinanceiras() {
   const [initial, setInitial] = useState("");
   const [period, setPeriod] = useState("");
   const [unit, setUnit] = useState<"Anos" | "Meses">("Anos");
-  const [rate, setRate] = useState("");
+  const [rate, setRate] = useState("14");
   const [results, setResults] = useState<Results | null>(null);
   const [resultsVisible, setResultsVisible] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
@@ -160,9 +160,84 @@ export default function CalculadoraMetasFinanceiras() {
         /* Card */
         .vt-card { background: #fff; border-radius: 1rem; border: 1px solid #e2e8e2; padding: 2rem; box-shadow: 0 1px 3px rgba(26,69,55,0.06); }
 
+        /* Meta de Economia highlight */
+        .vt-field-highlight {
+          background: linear-gradient(135deg, #f0faf5 0%, #e8f5ee 100%);
+          border: 2px solid var(--vt-dark);
+          border-radius: 0.75rem;
+          padding: 1rem 1rem calc(1rem + 5px);
+          position: relative;
+        }
+        .vt-field-badge {
+          display: inline-flex; align-items: center; gap: 0.3rem;
+          background: var(--vt-dark); color: #fff;
+          font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+          padding: 0.2rem 0.6rem; border-radius: 999px;
+          margin-bottom: 0.5rem;
+        }
+        .vt-field-badge svg { width: 10px; height: 10px; }
+        .vt-field-highlight .vt-label { color: #0e6b3a; font-size: 0.85rem; }
+        .vt-field-highlight .vt-input {
+          background: #fff;
+          border-color: #85c9a1;
+          font-size: 1.05rem;
+          font-weight: 700;
+        }
+        .vt-field-highlight .vt-input:focus {
+          border-color: var(--vt-dark);
+          box-shadow: 0 0 0 3px rgba(29,175,102,0.18);
+        }
+
         /* Form grid */
         .vt-form-grid { display: grid; gap: 1.25rem; }
         @media (min-width: 640px) { .vt-form-grid { grid-template-columns: 1fr 1fr; } }
+
+        /* Two-col layout: meta (left) + 3 fields (right) */
+        .vt-form-two-col { display: flex; flex-direction: column; gap: 1rem; }
+        @media (min-width: 640px) {
+          .vt-form-two-col { flex-direction: row; align-items: stretch; gap: 1.25rem; }
+          .vt-form-two-col > .vt-field-highlight--full { flex: 1; }
+          .vt-fields-col { flex: 1; }
+        }
+
+        /* Right column: 3 stacked fields */
+        .vt-fields-col { display: flex; flex-direction: column; gap: 0.6rem; }
+
+        /* Compact field */
+        .vt-field-sm { gap: 0.3rem; }
+        .vt-input-sm { padding-top: 0.45rem !important; padding-bottom: 0.45rem !important; font-size: 0.88rem !important; }
+        .vt-input-sm.has-prefix { padding-left: 2.8rem !important; }
+        .vt-input-sm.has-suffix { padding-right: 2.5rem !important; }
+        .vt-select-sm { padding: 0.45rem 0.6rem !important; font-size: 0.85rem !important; }
+
+        /* Meta highlight full-height */
+        .vt-field-highlight--full { display: flex; flex-direction: column; justify-content: center; }
+        .vt-field-hint { font-size: 0.75rem; color: #4a8a5e; margin-top: 0.4rem; font-weight: 400; }
+
+        /* Tooltip */
+        .vt-tooltip-wrap { position: relative; display: inline-flex; align-items: center; gap: 0.3rem; }
+        .vt-tooltip-icon {
+          display: inline-flex; align-items: center; justify-content: center;
+          width: 14px; height: 14px; border-radius: 50%;
+          background: #8aab96; color: #fff;
+          font-size: 0.65rem; font-weight: 800; cursor: default;
+          flex-shrink: 0;
+        }
+        .vt-tooltip-box {
+          display: none;
+          position: absolute; bottom: calc(100% + 6px); left: 0;
+          background: #1A2E35; color: #e8f0ea;
+          font-size: 0.72rem; font-weight: 400; line-height: 1.45;
+          padding: 0.55rem 0.75rem; border-radius: 0.45rem;
+          width: 220px; z-index: 10;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+          pointer-events: none;
+        }
+        .vt-tooltip-box::after {
+          content: ''; position: absolute; top: 100%; left: 1rem;
+          border: 5px solid transparent; border-top-color: #1A2E35;
+        }
+        .vt-tooltip-wrap:hover .vt-tooltip-box { display: block; }
 
         .vt-field { display: flex; flex-direction: column; gap: 0.45rem; }
         .vt-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--vt-dark); }
@@ -268,9 +343,16 @@ export default function CalculadoraMetasFinanceiras() {
             </div>
 
             <div className="vt-card">
-              <div className="vt-form-grid">
-                {/* Goal */}
-                <div className="vt-field">
+              <div className="vt-form-two-col">
+                {/* Goal — destaque (coluna esquerda, altura total) */}
+                <div className="vt-field vt-field-highlight vt-field-highlight--full">
+                  <span className="vt-field-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                      <polyline points="17 6 23 6 23 12"/>
+                    </svg>
+                    Objetivo principal
+                  </span>
                   <label className="vt-label">Meta de Economia (R$)</label>
                   <div className="vt-input-wrap">
                     <span className="vt-prefix">R$</span>
@@ -281,57 +363,69 @@ export default function CalculadoraMetasFinanceiras() {
                       onChange={(e) => setGoal(maskBRL(e.target.value))}
                     />
                   </div>
+                  <p className="vt-field-hint">Quanto você quer acumular no total?</p>
                 </div>
 
-                {/* Initial balance */}
-                <div className="vt-field">
-                  <label className="vt-label">Saldo Inicial (R$)</label>
-                  <div className="vt-input-wrap">
-                    <span className="vt-prefix">R$</span>
-                    <input
-                      className="vt-input has-prefix"
-                      placeholder="Ex: 5.000,00"
-                      value={initial}
-                      onChange={(e) => setInitial(maskBRL(e.target.value))}
-                    />
+                {/* Coluna direita: 3 campos compactos */}
+                <div className="vt-fields-col">
+                  {/* Initial balance */}
+                  <div className="vt-field vt-field-sm">
+                    <label className="vt-label">Saldo Inicial (R$)</label>
+                    <div className="vt-input-wrap">
+                      <span className="vt-prefix">R$</span>
+                      <input
+                        className="vt-input vt-input-sm has-prefix"
+                        placeholder="Ex: 5.000,00"
+                        value={initial}
+                        onChange={(e) => setInitial(maskBRL(e.target.value))}
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* Period */}
-                <div className="vt-field">
-                  <label className="vt-label">Prazo para Crescer</label>
-                  <div className="vt-period-row">
-                    <input
-                      className="vt-input"
-                      style={{ flex: 1 }}
-                      placeholder="Valor"
-                      type="number"
-                      min={1}
-                      value={period}
-                      onChange={(e) => setPeriod(e.target.value)}
-                    />
-                    <select
-                      className="vt-select"
-                      value={unit}
-                      onChange={(e) => setUnit(e.target.value as "Anos" | "Meses")}
-                    >
-                      <option>Anos</option>
-                      <option>Meses</option>
-                    </select>
+                  {/* Period */}
+                  <div className="vt-field vt-field-sm">
+                    <label className="vt-label">Prazo para Crescer</label>
+                    <div className="vt-period-row">
+                      <input
+                        className="vt-input vt-input-sm"
+                        style={{ flex: 1 }}
+                        placeholder="Valor"
+                        type="number"
+                        min={1}
+                        value={period}
+                        onChange={(e) => setPeriod(e.target.value)}
+                      />
+                      <select
+                        className="vt-select vt-select-sm"
+                        value={unit}
+                        onChange={(e) => setUnit(e.target.value as "Anos" | "Meses")}
+                      >
+                        <option>Anos</option>
+                        <option>Meses</option>
+                      </select>
+                    </div>
                   </div>
-                </div>
 
-                {/* Rate */}
-                <div className="vt-field">
-                  <label className="vt-label">Taxa de Juros (% ao ano)</label>
-                  <div className="vt-input-wrap">
-                    <input
-                      className="vt-input has-suffix"
-                      placeholder="Ex: 10,5"
-                      value={rate}
-                      onChange={(e) => setRate(e.target.value)}
-                    />
-                    <span className="vt-suffix">%</span>
+                  {/* Rate */}
+                  <div className="vt-field vt-field-sm">
+                    <label className="vt-label">
+                      <span className="vt-tooltip-wrap">
+                        Taxa de Juros (% ao ano)
+                        <span className="vt-tooltip-icon">?</span>
+                        <span className="vt-tooltip-box">
+                          Taxa de juros nominal, possível de obter hoje, isento de imposto — a sugestão é 14% ao ano.
+                        </span>
+                      </span>
+                    </label>
+                    <div className="vt-input-wrap">
+                      <input
+                        className="vt-input vt-input-sm has-suffix"
+                        placeholder="Ex: 10,5"
+                        value={rate}
+                        onChange={(e) => setRate(e.target.value)}
+                      />
+                      <span className="vt-suffix">%</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -378,9 +472,9 @@ export default function CalculadoraMetasFinanceiras() {
               image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBiIAZZ1_Gx_i7qJnBZuqdTW1gDH3BRnNYO_BEfyALedW6hdQWTMrCxvimHAEd8ExDNnqlKeuvR-2F8QjxPY9Dqa6TRS04rbJ4IHfWuEKjtYGv7TfDybTd72owjQcX4oPr4yCEaVGqfCSdYjZuiJMMUjzND-N92XHg60Wl0AW6pVWYbkVseir6LsmR7lMTIUZUghLYar5-r4fWxk-6_SdT0ZodH-4-NK0c10UUt2AWOvWW4ONhyInd5nJ0-mswYeBWEQUOaxjfpSaAH",
               imageAlt: "Moedas empilhadas com planta crescendo",
               badge: "Destaque",
-              title: "Guia de Investimentos 2024",
-              description: "Descubra as melhores taxas para seu perfil.",
-              href: "#/investimentos/fundos",
+              title: "Cuidado com seu seguro",
+              description: "Descubra como evitar erros comuns.",
+              href: "#/seguros/conteudos?post=a-venda-casada-de-seguros",
             }}
             resources={[
               { icon: "article", title: "As Melhores Formas de Economizar", desc: "Pequenas mudanças, grandes resultados.", href: "#/planejamento/despesas" },

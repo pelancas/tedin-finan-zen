@@ -28,15 +28,19 @@ interface Results {
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const INVESTMENT_TYPES = [
+  "POUPANÇA",
   "CDB", "LCI", "LCA", "LC", "LIG",
   "CRI", "CRA", "DEBÊNTURE", "DEBÊNTURE INCENTIVADA", "TESOURO DIRETO",
 ];
 
 const TAX_EXEMPT: Record<string, boolean> = {
+  POUPANÇA: true,
   LCI: true, LCA: true, LC: false, LIG: true,
   CRI: true, CRA: true, DEBÊNTURE: false,
   "DEBÊNTURE INCENTIVADA": true, CDB: false, "TESOURO DIRETO": false,
 };
+
+const POUPANCA_RATE = 8.26;
 
 const RATE_TYPES: { value: RateType; label: string }[] = [
   { value: "prefixado", label: "Pré-fixado" },
@@ -101,6 +105,15 @@ function InvestmentCard({
   onChange,
 }: InvestmentCardProps) {
   const isExempt = TAX_EXEMPT[investment.type];
+  const isPoupanca = investment.type === "POUPANÇA";
+
+  function handleTypeChange(type: string) {
+    if (type === "POUPANÇA") {
+      onChange({ type, rateType: "prefixado", rateValue: POUPANCA_RATE });
+    } else {
+      onChange({ ...investment, type });
+    }
+  }
 
   return (
     <Card className={`border-border border-t-4 ${accentClass}`}>
@@ -130,7 +143,7 @@ function InvestmentCard({
           <div className="relative">
             <select
               value={investment.type}
-              onChange={(e) => onChange({ ...investment, type: e.target.value })}
+              onChange={(e) => handleTypeChange(e.target.value)}
               className="w-full appearance-none bg-accent/40 border-0 rounded-lg px-3 py-2.5 pr-8 text-sm font-semibold text-foreground outline-none cursor-pointer focus:bg-accent"
             >
               {INVESTMENT_TYPES.map((t) => (
@@ -146,23 +159,29 @@ function InvestmentCard({
           <label className="text-xs font-semibold text-muted-foreground tracking-wide">
             Tipo de rentabilidade
           </label>
-          <div className="flex flex-wrap gap-2">
-            {RATE_TYPES.map(({ value, label: rLabel }) => (
-              <button
-                key={value}
-                onClick={() =>
-                  onChange({ ...investment, rateType: value, rateValue: RATE_DEFAULTS[value] })
-                }
-                className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all cursor-pointer
-                  ${investment.rateType === value
-                    ? `${activeClass} text-white border-transparent`
-                    : "border-border text-muted-foreground bg-transparent hover:border-primary/40"
-                  }`}
-              >
-                {rLabel}
-              </button>
-            ))}
-          </div>
+          {isPoupanca ? (
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-accent/60 text-muted-foreground border border-border">
+              Pré-fixado (fixo)
+            </span>
+          ) : (
+            <div className="flex flex-wrap gap-2">
+              {RATE_TYPES.map(({ value, label: rLabel }) => (
+                <button
+                  key={value}
+                  onClick={() =>
+                    onChange({ ...investment, rateType: value, rateValue: RATE_DEFAULTS[value] })
+                  }
+                  className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all cursor-pointer
+                    ${investment.rateType === value
+                      ? `${activeClass} text-white border-transparent`
+                      : "border-border text-muted-foreground bg-transparent hover:border-primary/40"
+                    }`}
+                >
+                  {rLabel}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Valor da rentabilidade */}
@@ -170,8 +189,8 @@ function InvestmentCard({
           <label className="text-xs font-semibold text-muted-foreground tracking-wide">
             Rentabilidade <span className="font-normal">(taxa anual bruta)</span>
           </label>
-          <div className="flex items-center gap-2 bg-accent/40 rounded-lg px-3 py-2 focus-within:bg-accent transition-colors">
-            {RATE_PREFIX[investment.rateType] && (
+          <div className={`flex items-center gap-2 rounded-lg px-3 py-2 transition-colors ${isPoupanca ? "bg-accent/20 opacity-70" : "bg-accent/40 focus-within:bg-accent"}`}>
+            {!isPoupanca && RATE_PREFIX[investment.rateType] && (
               <span className="text-xs text-muted-foreground font-medium whitespace-nowrap">
                 {RATE_PREFIX[investment.rateType]}
               </span>
@@ -181,13 +200,14 @@ function InvestmentCard({
               value={investment.rateValue}
               step={investment.rateType === "cdi" ? 1 : 0.1}
               min={0}
+              readOnly={isPoupanca}
               onChange={(e) =>
-                onChange({ ...investment, rateValue: parseFloat(e.target.value) || 0 })
+                !isPoupanca && onChange({ ...investment, rateValue: parseFloat(e.target.value) || 0 })
               }
               className="flex-1 bg-transparent outline-none text-2xl font-bold text-foreground w-0 min-w-0"
             />
             <span className="text-sm font-semibold text-muted-foreground whitespace-nowrap">
-              {RATE_SUFFIX[investment.rateType]}
+              {isPoupanca ? "% a.a. (fixo)" : RATE_SUFFIX[investment.rateType]}
             </span>
           </div>
         </div>

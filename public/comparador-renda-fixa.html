@@ -561,7 +561,8 @@
       <div class="field-group">
         <div class="field-label">Tipo de investimento <span class="info-icon" data-tip="Escolha o título de renda fixa">i</span></div>
         <div class="custom-select">
-          <select id="type-a" onchange="updateTaxBadge('a')">
+          <select id="type-a" onchange="handleTypeChange('a')">
+            <option>POUPANÇA</option>
             <option>CDB</option>
             <option>LCI</option>
             <option selected>LCA</option>
@@ -608,7 +609,8 @@
       <div class="field-group">
         <div class="field-label">Tipo de investimento <span class="info-icon" data-tip="Escolha o título de renda fixa">i</span></div>
         <div class="custom-select">
-          <select id="type-b" onchange="updateTaxBadge('b')">
+          <select id="type-b" onchange="handleTypeChange('b')">
+            <option>POUPANÇA</option>
             <option selected>CDB</option>
             <option>LCI</option>
             <option>LCA</option>
@@ -686,10 +688,44 @@
   let timeUnit = 'months';
 
   const taxExempt = {
+    'POUPANÇA': true,
     'LCI': true, 'LCA': true, 'LC': false, 'LIG': true,
     'CRI': true, 'CRA': true, 'DEBÊNTURE': false,
     'DEBÊNTURE INCENTIVADA': true, 'CDB': false, 'TESOURO DIRETO': false
   };
+
+  const POUPANCA_RATE = 8.26;
+
+  function handleTypeChange(side) {
+    const type = document.getElementById(`type-${side}`).value;
+    updateTaxBadge(side);
+    if (type === 'POUPANÇA') {
+      // Força pré-fixado e trava em 8,26%
+      setRateType(side, 'prefixado');
+      const rateInput = document.getElementById(`rate-${side}`);
+      rateInput.value = POUPANCA_RATE;
+      rateInput.readOnly = true;
+      rateInput.style.opacity = '0.6';
+      rateInput.style.cursor = 'not-allowed';
+      const toggle = document.getElementById(`toggle-${side}`);
+      toggle.querySelectorAll('button').forEach(btn => {
+        btn.disabled = true;
+        btn.style.opacity = '0.4';
+        btn.style.cursor = 'not-allowed';
+      });
+    } else {
+      const rateInput = document.getElementById(`rate-${side}`);
+      rateInput.readOnly = false;
+      rateInput.style.opacity = '';
+      rateInput.style.cursor = '';
+      const toggle = document.getElementById(`toggle-${side}`);
+      toggle.querySelectorAll('button').forEach(btn => {
+        btn.disabled = false;
+        btn.style.opacity = '';
+        btn.style.cursor = '';
+      });
+    }
+  }
 
   // IR tabela regressiva
   function irRate(months) {
@@ -821,9 +857,10 @@
     const netAnnualA = (Math.pow(1 + netGainA, 12/months) - 1) * 100;
     const netAnnualB = (Math.pow(1 + netGainB, 12/months) - 1) * 100;
 
-    // Winner
-    const winA = netAnnualA >= netAnnualB;
-    const winB = netAnnualB > netAnnualA;
+    // Winner / empate (tolerância de 0,01 p.p.)
+    const isTie = Math.abs(netAnnualA - netAnnualB) < 0.01;
+    const winA = !isTie && netAnnualA > netAnnualB;
+    const winB = !isTie && netAnnualB > netAnnualA;
 
     document.getElementById('res-type-a').textContent = typeA;
     document.getElementById('res-type-b').textContent = typeB;
@@ -836,17 +873,18 @@
     document.getElementById('res-sub-a').textContent = `Bruto: ${(rateA*100).toFixed(2).replace('.',',')}% · ${ir_label_a}`;
     document.getElementById('res-sub-b').textContent = `Bruto: ${(rateB*100).toFixed(2).replace('.',',')}% · ${ir_label_b}`;
 
-    document.getElementById('winner-a').style.display = winA ? 'inline-flex' : 'none';
-    document.getElementById('winner-b').style.display = winB ? 'inline-flex' : 'none';
+    document.getElementById('winner-a').style.display = isTie ? 'inline-flex' : (winA ? 'inline-flex' : 'none');
+    document.getElementById('winner-b').style.display = isTie ? 'inline-flex' : (winB ? 'inline-flex' : 'none');
+    document.getElementById('winner-a').textContent = isTie ? '🤝 Empate' : '🏆 Melhor opção';
+    document.getElementById('winner-b').textContent = isTie ? '🤝 Empate' : '🏆 Melhor opção';
 
     const timeLabel = months === 1 ? '1 mês' : `${months} meses`;
     const diff = Math.abs(netAnnualA - netAnnualB).toFixed(2).replace('.',',');
     const winner = winA ? typeA : typeB;
     const loser = winA ? typeB : typeA;
-    const winRate = winA ? netAnnualA : netAnnualB;
 
     const verdictCard = document.getElementById('verdict-card');
-    verdictCard.className = 'verdict-card' + (winA ? '' : ' orange-verdict');
+    verdictCard.className = 'verdict-card' + (winB ? ' orange-verdict' : '');
 
     const fmt = (n) => n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const principal = 1000;
@@ -855,8 +893,12 @@
     const yieldA = finalA - principal;
     const yieldB = finalB - principal;
 
+    const verdictIntro = isTie
+      ? `Os investimentos <strong>${typeA}</strong> e <strong>${typeB}</strong> apresentam rentabilidade líquida equivalente de <strong>${netAnnualA.toFixed(2).replace('.',',')}% a.a.</strong>, considerando um período de <strong>${timeLabel}</strong>. É um empate — nessas condições, qualquer um dos dois entrega o mesmo resultado.`
+      : `O investimento <strong>${typeA}</strong> renderá <strong>${netAnnualA.toFixed(2).replace('.',',')}% a.a. líquido</strong>, enquanto o <strong>${typeB}</strong> renderá <strong>${netAnnualB.toFixed(2).replace('.',',')}% a.a. líquido</strong>, considerando um período de <strong>${timeLabel}</strong>. Nessas condições, o <strong>${winner}</strong> é <strong>${diff}% mais rentável</strong> que o <strong>${loser}</strong> ao ano.`;
+
     document.getElementById('verdict-text').innerHTML =
-      `O investimento <strong>${typeA}</strong> renderá <strong>${netAnnualA.toFixed(2).replace('.',',')}% a.a. líquido</strong>, enquanto o <strong>${typeB}</strong> renderá <strong>${netAnnualB.toFixed(2).replace('.',',')}% a.a. líquido</strong>, considerando um período de <strong>${timeLabel}</strong>. Nessas condições, o <strong>${winner}</strong> é <strong>${diff}% mais rentável</strong> que o <strong>${loser}</strong> ao ano. ${exemptA || exemptB ? 'A isenção de IR foi considerada no cálculo.' : ''} Lembrando que essas condições são sazonais e podem mudar.
+      `${verdictIntro} ${exemptA || exemptB ? 'A isenção de IR foi considerada no cálculo.' : ''} Lembrando que essas condições são sazonais e podem mudar.
       <br><br>
       <strong>Se você investir R$ 1.000,00:</strong><br>
       📗 <strong>${typeA}</strong> → valor final <strong>R$ ${fmt(finalA)}</strong> <span style="color:var(--green-dark);font-weight:600;">(+ R$ ${fmt(yieldA)})</span><br>
