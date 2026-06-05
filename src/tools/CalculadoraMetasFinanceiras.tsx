@@ -492,32 +492,14 @@ export default function CalculadoraMetasFinanceiras() {
                    <h2 className="text-3xl font-bold text-foreground mb-6">Por que poupar dinheiro?</h2>
            
                    <p>
-                     Poupar dinheiro é um dos hábitos financeiros mais importantes para construir segurança e alcançar objetivos ao longo da vida. Ao reservar parte da renda regularmente, você cria uma proteção contra imprevistos — como despesas médicas, perda de renda ou reparos inesperados — e também forma recursos para projetos futuros, como comprar um imóvel, fazer uma viagem ou se aposentar com tranquilidade.
+                     Apesar de você já ter muitas metas claras do que você quer, seja um carro, uma casa ou a sua aposentadoria, é necessário que você se planeje para identificar o que precisa para chegar onde quer. E uma das melhores formas de fazer isso é planejando uma poupança mensal, planejando os seus gastos de forma com que eles se alinhem com o seu futuro.
                    </p>
            
-                   <p>
-                     Além da segurança, poupar permite aproveitar um dos conceitos mais poderosos das finanças: <strong>os juros compostos</strong>. Eles fazem com que o dinheiro guardado não cresça apenas pelas novas economias que você adiciona, mas também pelos rendimentos gerados ao longo do tempo. Em outras palavras, o dinheiro começa a trabalhar para você.
-                   </p>
+           
+                   <h3 className="text-2xl font-bold text-foreground mt-10 mb-4">Como funciona a cálculadora</h3>
            
                    <p>
-                     Quanto mais cedo você começa a poupar e investir, maior tende a ser o crescimento do patrimônio, justamente porque os juros terão mais tempo para se acumular.
-                   </p>
-           
-                   <h3 className="text-2xl font-bold text-foreground mt-10 mb-4">Como funciona o cálculo de crescimento da poupança</h3>
-           
-                   <p>
-                     Quando você guarda dinheiro em uma aplicação que rende juros, o valor acumulado cresce ao longo do tempo. Esse crescimento depende principalmente de três fatores:
-                   </p>
-           
-                   <ul>
-                     <li>Valor inicial guardado</li>
-                     <li>Valor das contribuições periódicas</li>
-                     <li>Taxa de juros</li>
-                     <li>Tempo que o dinheiro permanece aplicado</li>
-                   </ul>
-           
-                   <p>
-                     O tipo mais comum de rendimento financeiro utiliza <strong>juros compostos</strong>, que significam que os juros de cada período são incorporados ao saldo e passam a gerar novos juros no futuro.
+                     O que você vai preencher nessa calculadora é a sua meta, em quanto você quer chegar, o quanto você tem de dinheiro hoje no saldo inicial, o prazo que tem pra chegar nessa meta e a taxa de juros atual de algum investimento. Geralmente, vocêpode colocar a taxa SELIC ou o CDI.
                    </p>
            
                    <h3 className="text-2xl font-bold text-foreground mt-10 mb-4">Exemplo simples</h3>
@@ -532,54 +514,10 @@ export default function CalculadoraMetasFinanceiras() {
            
                    <p>
                      No primeiro mês, os juros incidem sobre o saldo inicial. Nos meses seguintes, os juros incidem sobre todo o valor acumulado, incluindo os rendimentos anteriores.
-                   </p>
+                   </p>        
+
            
-                   <p>
-                     Com o passar do tempo, o crescimento deixa de ser linear e passa a ser <strong>exponencial</strong>, pois os juros passam a incidir sobre um valor cada vez maior.
-                   </p>
-           
-                   <h3 className="text-2xl font-bold text-foreground mt-10 mb-4">Fórmula básica dos juros compostos</h3>
-           
-                   <p>
-                     Quando existe apenas um valor inicial investido, o cálculo pode ser representado pela fórmula:
-                   </p>
-           
-                   <div className="bg-muted/50 border border-border rounded-lg p-6 my-6 text-center">
-                     <p className="text-lg font-semibold text-foreground mb-0">
-                       Valor futuro = Valor inicial × (1 + taxa de juros)<sup>t</sup>
-                     </p>
-                   </div>
-           
-                   <p>Onde:</p>
-                   <ul>
-                     <li><strong>Valor inicial:</strong> quantia aplicada no começo</li>
-                     <li><strong>Taxa de juros:</strong> rendimento por período (mês ou ano)</li>
-                     <li><strong>t:</strong> número de períodos</li>
-                   </ul>
-           
-                   <p>
-                     Quando existem depósitos mensais, o cálculo inclui também as contribuições periódicas, que passam a gerar juros ao longo do tempo.
-                   </p>
-           
-                   <h3 className="text-2xl font-bold text-foreground mt-10 mb-4">O impacto do tempo</h3>
-           
-                   <p>
-                     Um fator fundamental no crescimento da poupança é o <strong>tempo</strong>. Mesmo pequenas quantias podem se transformar em valores significativos quando investidas regularmente por muitos anos.
-                   </p>
-           
-                   <p>Por exemplo:</p>
-                   <ul>
-                     <li>Quem começa a poupar cedo pode contribuir menos e ainda assim acumular mais.</li>
-                     <li>Quem começa mais tarde precisa guardar valores maiores para alcançar o mesmo resultado.</li>
-                   </ul>
-           
-                   <p>
-                     Isso acontece porque os juros compostos precisam de tempo para exercer seu efeito completo.
-                   </p>
-           
-                   <h3 className="text-2xl font-bold text-foreground mt-10 mb-4">Criando o hábito de poupar</h3>
-           
-                   <p>Para transformar a poupança em um hábito, algumas estratégias simples podem ajudar:</p>
+                    <h3 className="text-2xl font-bold text-foreground mt-10 mb-4">Dicas para poupar de forma eficaz</h3>
            
                    <ul>
                      <li>Definir um percentual da renda para guardar todos os meses</li>
