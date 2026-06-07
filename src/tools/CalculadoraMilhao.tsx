@@ -294,13 +294,11 @@ export default function CalculadoraMetasFinanceiras() {
               <span style={{ color: "#d9d4c4" }}>Calculadora</span>
             </nav>
             <h1>
-              Calculadora de{" "}
-              <span>Metas Financeiras</span>
+              Calculadora do{" "}
+              <span>Primeiro Milhão</span>
             </h1>
             <p>
-              Planeje seu futuro com precisão. Defina seus objetivos e descubra
-              o caminho exato para a sua liberdade financeira através de
-              cálculos baseados em rendimentos reais.
+              Sem aposta, sem ganhar na loteria, de verdade, quanto tempo até você chegar no seu primeiro milhão? 💰💰💰
             </p>
           </div>
           {/* Decorative blob */}
@@ -467,48 +465,23 @@ export default function CalculadoraMetasFinanceiras() {
           <h2 className="text-3xl font-bold text-foreground mb-6">O que é o primeiro milhão?</h2>
 
           <p>
-            Chegar ao primeiro milhão é um marco financeiro que representa muito mais do que um número. É a prova de que a disciplina, a consistência e o tempo trabalham a seu favor. Para a maioria das pessoas, esse objetivo parece distante, mas com planejamento e os juros compostos do seu lado, ele é totalmente alcançável.
+            Existem alguns marcos financeiros bem relevantes, o primeiro deles são 100 mil reais. Dizem que é mais difícil chegar nos 100 mil reais do que o primeiro milhão, mas o marco mais glamuroso é especificamente um dos marcos mais buscados pelos brasileiros, que é o milhão. Ou seja, quanto tempo falta até você se tornar um milionário?
           </p>
 
           <p>
-            A chave está em começar cedo e manter aportes regulares. Mesmo quantias modestas, investidas mensalmente por muitos anos, podem se transformar em um patrimônio significativo graças ao efeito dos <strong>juros compostos</strong>.
-          </p>
-
-          <h3 className="text-2xl font-bold text-foreground mt-10 mb-4">Como os juros compostos aceleram o caminho</h3>
-
-          <p>
-            Nos juros compostos, os rendimentos de cada período são incorporados ao saldo e passam a gerar novos rendimentos. Isso cria um efeito exponencial: quanto mais tempo o dinheiro fica investido, mais rápido ele cresce.
-          </p>
-
-          <ul>
-            <li>No início, o crescimento parece lento.</li>
-            <li>Com o tempo, os juros sobre juros ganham força.</li>
-            <li>Nas fases finais, o patrimônio cresce mais pelos rendimentos do que pelos seus aportes.</li>
-          </ul>
-
-          <h3 className="text-2xl font-bold text-foreground mt-10 mb-4">O papel do tempo e da consistência</h3>
-
-          <p>
-            Dois investidores que aplicam o mesmo valor total podem chegar a resultados completamente diferentes dependendo de <strong>quando começaram</strong>. Quem começa aos 25 anos acumula muito mais do que quem começa aos 35, mesmo contribuindo o mesmo montante total.
+           Para essa meta como várias outras o relevante é portar mensalmente e recorrentemente até chegar na meta desejada. O relevante mesmo é aportar com uma constânci, por tempo suficiente para que os juros compostos façam o seu trabalho.
           </p>
 
           <p>
-            Por isso, o melhor momento para começar é agora. O segundo melhor momento também é agora.
+            Lembrando que você não precisa se tornar milionário para ser independente financeiramente. A gente tem outras calculadoras, como a calculadora de aposentadoria e a calculadora para outras metas. Se você quiser dar uma olhada, é só acessar no site.
           </p>
 
-          <h3 className="text-2xl font-bold text-foreground mt-10 mb-4">Estratégias para chegar ao primeiro milhão</h3>
+          <h3 className="text-2xl font-bold text-foreground mt-10 mb-4">Acesse nossas outras calculadoras</h3>
 
-          <ul>
-            <li>Defina um valor de aporte mensal e automatize a transferência.</li>
-            <li>Escolha investimentos com boas taxas e adequados ao seu perfil.</li>
-            <li>Reinvista os rendimentos em vez de sacá-los.</li>
-            <li>Aumente os aportes sempre que sua renda crescer.</li>
-            <li>Evite resgatar o investimento antes do prazo planejado.</li>
-          </ul>
 
           <div className="bg-primary/10 border border-primary/30 rounded-lg p-6 mt-8">
             <p className="text-foreground font-semibold mb-0">
-              ✅ Em resumo: o primeiro milhão é resultado de tempo, consistência e juros compostos. Use a calculadora acima para descobrir quanto você precisa poupar por mês para alcançar esse objetivo.
+              <strong>Em resumo:</strong> o primeiro milhão é resultado de tempo, consistência e juros compostos. Use a calculadora acima para descobrir quanto você precisa poupar por mês.
             </p>
           </div>
         </CalculadoraTextBlock>

@@ -4,7 +4,7 @@ title: Mas o que é um seguro
 category: cuidados
 summary: Vou mostrar o que é um seguro
 order: 1
-author: I.L.
+author: I. 🏋️‍♂️
 ---
 
 # O que são Seguros

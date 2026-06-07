@@ -310,9 +310,7 @@ export default function CalculadoraMetasFinanceiras() {
               <span>Metas Financeiras</span>
             </h1>
             <p>
-              Planeje seu futuro com precisão. Defina seus objetivos e descubra
-              o caminho exato para a sua liberdade financeira através de
-              cálculos baseados em rendimentos reais.
+              Quer comprar um carro? Uma Casa? Use a calculadora para ver quanto precisa economizar para chegar onde quer.
             </p>
           </div>
           {/* Decorative blob */}
@@ -499,7 +497,7 @@ export default function CalculadoraMetasFinanceiras() {
                    <h3 className="text-2xl font-bold text-foreground mt-10 mb-4">Como funciona a cálculadora</h3>
            
                    <p>
-                     O que você vai preencher nessa calculadora é a sua meta, em quanto você quer chegar, o quanto você tem de dinheiro hoje no saldo inicial, o prazo que tem pra chegar nessa meta e a taxa de juros atual de algum investimento. Geralmente, vocêpode colocar a taxa SELIC ou o CDI.
+                     O que você vai preencher nessa calculadora é a sua meta, em quanto você quer chegar, o quanto você tem de dinheiro hoje no saldo inicial, o prazo que tem pra chegar nessa meta e a taxa de juros atual de algum investimento. Geralmente, você pode colocar a taxa SELIC ou o CDI.
                    </p>
            
                    <h3 className="text-2xl font-bold text-foreground mt-10 mb-4">Exemplo simples</h3>

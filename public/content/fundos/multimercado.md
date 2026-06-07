@@ -4,7 +4,7 @@ title: "Multimercado: linguiça ou bilhete premiado?"
 category: cuidados
 summary: Fundos multimercado são os mais "livres" do mercado. Isso pode ser ótimo — ou péssimo.
 order: 3
-author: I.L.
+author: I. 🏋️‍♂️
 ---
 
 ## O que são
