@@ -25,3 +25,6 @@ dist-ssr
 
 # Scripts locais
 deploy.bat
+
+# Notas locais (não subir)
+MELHORIAS-SEO.md
