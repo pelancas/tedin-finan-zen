@@ -4,7 +4,7 @@ title: Cursos gratuitos para aprender mais sobre esse investimento
 category: guias
 summary: Curso da GRATUITO da Anbima para entender mais sobre esse produto
 order: 1
-author: I.L.
+author: I. 🏋️‍♂️
 ---
 
 https://cursos.anbima.com.br/detalhes-item/fii-fundos-de-investimento-imobiliarios

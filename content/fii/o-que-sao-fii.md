@@ -4,7 +4,7 @@ title: O que seria um fundo imobiliário?
 category: cuidados
 summary:
 order: 1
-author: I.L.
+author: I. 🏋️‍♂️
 ---
 # O que são Fundos Imobiliários (FII)?
 Os FII também entram no grande balde mal nomeado de *Renda Variável* (sério, temos que mudar esse nome) e se tratam basicamente de cotas de prédios, edifícios ou crédito imobiliário. Um fundo clássico, chamado de "fundo de tijolo" (nome melhor, por deixar bem óbvio que se trata de construções), divide empreendimentos imobiliários em várias frações para que cada investidor tenha acesso a um pedaço daquele ativo.

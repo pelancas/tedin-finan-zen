@@ -4,7 +4,7 @@ title: A Venda Casada de Seguros de Vida
 category: artigo
 summary: Mas enfim, você precisa desse seguro ou o corretor precisa da comissão?
 order: 2
-author: I.L.
+author: I. 🏋️‍♂️
 ---
 
 > [PDF] **[Artigo: A Venda Casada de Seguros de Vida](/pdfs/Seguros_A_venda_casada_dos_Seguros_de_Vida.pdf)**

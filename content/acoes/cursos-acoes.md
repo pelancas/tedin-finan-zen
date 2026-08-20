@@ -4,7 +4,7 @@ title: Cursos gratuitos para aprender mais sobre esse investimento e livros
 category: guias
 summary: Curso da GRATUITO da Anbima para entender mais sobre esse produto e livros
 order: 1
-author: I.L.
+author: I. 🏋️‍♂️
 ---
 
 Para quem quer investir em ações, recomendo sempre os materiais em análise fundamentalista. Isso porque, quando falamos de análise *técnica*, apesar de parecer a coisa mais linda do mundo, são simplesmente metodologias que existem há muito tempo (a análise gráfica com Fibonacci tem relatos desde 1930) e parecem muito óbvias quando você as descobre. Você pensa: "Nossa, ninguém nunca me falou disso! Olhando os gráficos, é claro que faz sentido." Na realidade, todo gráfico e toda "tendência" é feito com base no passado e, entendendo como o mercado funciona, eles nem fazem sentido — porque os grandes investidores compram e vendem sem olhar **ombro-cabeça-ombro**, e sim olhando *o fluxo de caixa da empresa e quem manda nela*.

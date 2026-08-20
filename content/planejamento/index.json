@@ -1,0 +1,19 @@
+{
+  "description": "Planejamento financeiro é o caminho para você conquistar seus objetivos de vida com mais segurança, entendendo desde já o que esperar (ou não esperar) da Previdência Social.",
+  "categoryOrder": ["artigo"],
+  "categoryLabels": {
+    "artigo": "Artigos"
+  },
+  "posts": [
+    {
+      "id": "previdencia-social-e-o-cafe-com-leite",
+      "file": "previdencia-social-e-o-cafe-com-leite.md",
+      "title": "O que a Previdência Social tem a ver com o meu café com leite?",
+      "category": "artigo",
+      "summary": "Entenda por que a Previdência Social brasileira está sob pressão crescente e o que isso significa para o seu planejamento de aposentadoria.",
+      "order": 1,
+      "author": "J. Maciel",
+      "date": "2026-08-19"
+    }
+  ]
+}
