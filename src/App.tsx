@@ -20,6 +20,9 @@ import FII from "./pages/investimentos/FII";
 import Acoes from "./pages/investimentos/Acoes";
 import Seguros from "./pages/seguros/Seguros";
 import SegurosConteudo from "./pages/seguros/SegurosConteudo";
+import PlanejamentoConteudo from "./pages/planejamento/PlanejamentoConteudo";
+import RelatorioAvaliacaoRiscos from "./pages/relatorio-riscos/RelatorioAvaliacaoRiscos";
+import RelatorioAvaliacaoRiscosResultado from "./pages/relatorio-riscos/RelatorioAvaliacaoRiscosResultado";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +40,7 @@ const App = () => (
           <Route path="/planejamento/calculadoras/aposentadoria" element={<Aposentadoria />} />
           <Route path="/planejamento/calculadoras/metas" element={<Metas />} />
           <Route path="/planejamento/calculadoras/milhao" element={<Milhao />} />
+          <Route path="/planejamento/conteudos" element={<PlanejamentoConteudo />} />
           <Route path="/impostos" element={<Imposto />} />
           <Route path="/orientaplus" element={<OrientaPlus />} />
           <Route path="/orientaplus/analisecarteira" element={<AnaliseCarteira />} />
@@ -48,6 +52,11 @@ const App = () => (
           <Route path="/investimentos/renda-fixa/comparador" element={<ComparadorRendaFixa />} />
           <Route path="/seguros" element={<Seguros />} />
           <Route path="/seguros/conteudos" element={<SegurosConteudo />} />
+          <Route path="/relatorio-avaliacao-riscos" element={<RelatorioAvaliacaoRiscos />} />
+          <Route
+            path="/relatorio-avaliacao-riscos/resultado"
+            element={<RelatorioAvaliacaoRiscosResultado />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </HashRouter>

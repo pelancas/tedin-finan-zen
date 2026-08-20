@@ -15,24 +15,24 @@ const calculadoras = [
     label: "Metas financeiras",
     description: "Planeje quanto tempo leva para atingir qualquer objetivo financeiro.",
     href: "/planejamento/calculadoras/metas",
-    color: "#3b82f6",
-    bg: "rgba(59,130,246,0.1)",
+    color: "#178a50",
+    bg: "rgba(23,138,80,0.1)",
   },
   {
     icon: Trophy,
     label: "Calculadora do milhão",
     description: "Veja em quanto tempo seu dinheiro chega a R$1.000.000.",
     href: "/planejamento/calculadoras/milhao",
-    color: "#f59e0b",
-    bg: "rgba(245,158,11,0.1)",
+    color: "#34d399",
+    bg: "rgba(52,211,153,0.12)",
   },
   {
     icon: BarChart2,
     label: "Comparador de renda fixa",
     description: "Compare CDB, LCI, LCA, Tesouro e outros produtos lado a lado.",
     href: "/investimentos/renda-fixa/comparador",
-    color: "#8b5cf6",
-    bg: "rgba(139,92,246,0.1)",
+    color: "#0d9488",
+    bg: "rgba(13,148,136,0.1)",
   },
 ];
 
@@ -49,18 +49,12 @@ export function Calculadoras() {
 
         {/* Header */}
         <div style={{ marginBottom: "3rem" }}>
-          <p style={{
-            fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase",
-            letterSpacing: "0.1em", color: "#1daf66", marginBottom: "0.6rem",
-          }}>
-            Ferramentas
-          </p>
           <h2 style={{
             fontSize: "clamp(1.75rem, 4vw, 2.75rem)", fontWeight: 900,
             color: "#1A2E35", lineHeight: 1.1, margin: "0 0 0.75rem",
             letterSpacing: "-0.02em",
           }}>
-            Calculadoras
+            Mais clicados
           </h2>
           <p style={{ color: "#607060", fontSize: "1rem", margin: 0, maxWidth: "36rem" }}>
             Simule, compare e planeje com ferramentas práticas — sem precisar de uma planilha.

@@ -80,11 +80,21 @@ export default {
   				to: {
   					height: '0'
   				}
+  			},
+  			'spin-cw': {
+  				from: { transform: 'rotate(0deg)' },
+  				to: { transform: 'rotate(360deg)' }
+  			},
+  			'spin-ccw': {
+  				from: { transform: 'rotate(0deg)' },
+  				to: { transform: 'rotate(-360deg)' }
   			}
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
+  			'accordion-up': 'accordion-up 0.2s ease-out',
+  			'spin-cw': 'spin-cw 40s linear infinite',
+  			'spin-ccw': 'spin-ccw 40s linear infinite'
   		},
   		fontFamily: {
   			sans: [

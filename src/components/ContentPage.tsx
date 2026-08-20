@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import rehypeSanitize from "rehype-sanitize";
 import { useContentFolder } from "@/lib/useContentFolder";
 import type { PostMeta } from "@/lib/useContentFolder";
@@ -252,7 +253,7 @@ export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPa
                   </div>
                 )}
                 <article className="prose prose-lg max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground">
-                  <ReactMarkdown rehypePlugins={[rehypeSanitize]} components={{
+                  <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]} components={{
                     a: ({ href, children }) => (
                       <a href={href} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">{children}</a>
                     ),
