@@ -1,6 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { LucideIcon } from "lucide-react";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 import {
   CloudUpload,
   BarChart2,
@@ -76,6 +77,11 @@ const included: IncludedItem[] = [
 ];
 
 const ConsultoriaLanding = () => {
+  useDocumentMeta(
+    "Planejamento Financeiro Personalizado | Orienta+",
+    "Monte um plano financeiro sob medida com a Orienta+: metas claras, acompanhamento e consultoria humana para você organizar sua vida financeira.",
+  );
+
   return (
     <Layout>
       {/* ─── HERO — fundo #1A2E35 ──────────────────────────────────── */}

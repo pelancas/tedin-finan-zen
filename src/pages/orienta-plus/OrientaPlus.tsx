@@ -15,6 +15,7 @@ import {
   Users,
   Laptop,
 } from "lucide-react";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 
 interface ServiceCard {
   icon: LucideIcon;
@@ -115,6 +116,11 @@ const gridItems: { icon: LucideIcon; bg: string; iconColor: string; offset: stri
 ];
 
 const Home: React.FC = () => {
+  useDocumentMeta(
+    "Orienta+ | Consultoria Financeira Especializada",
+    "Análise de carteira e planejamento financeiro personalizado com consultoria humana da Orienta+, para quem quer ir além das calculadoras gratuitas.",
+  );
+
   return (
     <Layout>
       {/* ─── HERO — fundo #1A2E35 ──────────────────────────────────── */}

@@ -1,5 +1,6 @@
 import { Layout } from "@/components/layout/Layout";
 import { Hero } from "@/components/home/Hero";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 import iconDespesas from "@/assets/icon-despesas.png";
 import iconLeao from "@/assets/icon-leao.png";
 import iconConsultoria from "@/assets/icon-consultoria.png";
@@ -50,6 +51,11 @@ const services = [
 ];
 
 const Index = () => {
+  useDocumentMeta(
+    "Orienta | Calculadoras e Educação Financeira Grátis",
+    "Calculadoras gratuitas de aposentadoria, seguros e investimentos, guias práticos e artigos para você planejar sua vida financeira com mais segurança.",
+  );
+
   return (
     <Layout>
       <Hero />

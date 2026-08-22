@@ -26,21 +26,6 @@ export function Hero() {
   return <section className="relative overflow-hidden">
       {/* Background image */}
       <>
-
-      
-  <meta charSet="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Orienta+ | Consultoria Financeira Especializada</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet"
-  />
-  <style
-    dangerouslySetInnerHTML={{
-      __html:
-        "\n        body {\n            font-family: 'Work Sans', sans-serif;\n        }\n    "
-    }}
-  />
   <style
     dangerouslySetInnerHTML={{
       __html:

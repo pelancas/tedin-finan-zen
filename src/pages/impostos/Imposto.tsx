@@ -1,5 +1,5 @@
-import { useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 import IRPF1 from '@/assets/IRPF1.png';
 import IRPF2 from '@/assets/IRPF2.png';
 import {
@@ -74,16 +74,10 @@ const inner = { maxWidth: 1160, margin: "0 auto" };
    COMPONENT
    ═══════════════════════════════════════════════════════ */
 const Imposto = () => {
-  useEffect(() => {
-    const id = "work-sans-font";
-    if (!document.getElementById(id)) {
-      const lnk = document.createElement("link");
-      lnk.id   = id;
-      lnk.rel  = "stylesheet";
-      lnk.href = "https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&display=swap";
-      document.head.appendChild(lnk);
-    }
-  }, []);
+  useDocumentMeta(
+    "Guia de Imposto de Renda Passo a Passo | Orienta",
+    "Entenda quais investimentos declarar, prazos e como organizar sua declaração de Imposto de Renda sem dor de cabeça, com o guia gratuito da Orienta.",
+  );
 
   return (
     <Layout>

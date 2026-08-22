@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import rehypeSanitize from "rehype-sanitize";
 import { useContentFolder } from "@/lib/useContentFolder";
 import type { PostMeta } from "@/lib/useContentFolder";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 import { ShieldAlert, BookOpen, Play, Wrench, HelpCircle, ChevronRight } from "lucide-react";
 
 function formatDate(dateStr: string): string {
@@ -69,11 +70,14 @@ export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPa
   const selectedId = selectedPost?.meta.id ?? null;
   const selectedMeta = sortedPosts.find((p) => p.id === selectedId);
 
+  useDocumentMeta(
+    selectedMeta ? `${selectedMeta.title} | Orienta` : `${pageTitle} | Orienta`,
+    selectedMeta?.summary || index?.description || `${pageTitle}: calculadoras, guias e artigos gratuitos da Orienta para você cuidar da sua vida financeira.`,
+  );
+
   return (
     <Layout>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&display=swap');
-
         .cp-root { font-family: 'Work Sans', sans-serif; }
         .cp-root * { box-sizing: border-box; }
 

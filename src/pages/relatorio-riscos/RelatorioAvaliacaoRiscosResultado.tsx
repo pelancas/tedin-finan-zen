@@ -9,6 +9,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useInView } from "@/hooks/use-in-view";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 import { cn } from "@/lib/utils";
 import {
   ShieldCheck,
@@ -102,6 +103,25 @@ export default function RelatorioAvaliacaoRiscosResultado() {
   useEffect(() => {
     const timer = setTimeout(() => setRevealed(true), 100);
     return () => clearTimeout(timer);
+  }, []);
+
+  useDocumentMeta(
+    state?.nomeComprador
+      ? `Prévia da consulta: ${state.nomeComprador} | Orienta`
+      : "Prévia da consulta | Orienta",
+    "Prévia da consulta de avaliação de riscos. Solicite o relatório completo para ver certidões, processos e empresas relacionadas ao vendedor.",
+  );
+
+  // Página gerada a partir de dados de formulário — não é um destino de busca útil.
+  useEffect(() => {
+    let tag = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
+    if (!tag) {
+      tag = document.createElement("meta");
+      tag.setAttribute("name", "robots");
+      document.head.appendChild(tag);
+    }
+    tag.setAttribute("content", "noindex");
+    return () => tag?.removeAttribute("content");
   }, []);
 
   if (!state?.nomeComprador || !state?.nomeSolicitante || !state?.emailSolicitante) {

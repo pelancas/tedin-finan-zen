@@ -2,6 +2,7 @@ import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 import {
   Accordion,
   AccordionContent,
@@ -123,6 +124,11 @@ export const faq = [
 ];
 
 export default function RelatorioAvaliacaoRiscos() {
+  useDocumentMeta(
+    "Relatório de Avaliação de Riscos na Compra de Imóvel | Orienta",
+    "Consulte certidões, processos judiciais e empresas relacionadas ao vendedor antes de fechar negócio, com o Relatório de Avaliação de Riscos da Orienta.",
+  );
+
   const navigate = useNavigate();
   const [nomeComprador, setNomeComprador] = useState("");
   const [nomeSolicitante, setNomeSolicitante] = useState("");

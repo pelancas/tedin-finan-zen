@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Shield, Info, ChevronDown, ChevronUp } from "lucide-react";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -315,6 +316,11 @@ function FaqItem({ pergunta, resposta }: { pergunta: string; resposta: string })
 
 export default function Seguros() {
   const [activeTab, setActiveTab] = useState<"vida" | "acidentes">("vida");
+
+  useDocumentMeta(
+    "Calculadora de Seguro de Vida e Acidentes | Orienta",
+    "Calcule gratuitamente quanto de seguro de vida ou acidentes pessoais você realmente precisa, sem depender de corretor, com a calculadora da Orienta.",
+  );
 
   return (
     <Layout>

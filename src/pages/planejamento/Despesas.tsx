@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import planilhaImg from "@/assets/planilha-planejamento.png";
 import planilhaAcompanhamentoImg from "@/assets/planilha-acompanhamento.png";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 
 const features = [
   {
@@ -56,6 +57,11 @@ const etapa1Inclui = [
 ];
 
 const Despesas = () => {
+  useDocumentMeta(
+    "Controle de Despesas Grátis | Planilha e Ferramentas | Orienta",
+    "Organize suas despesas com planilhas prontas e ferramentas práticas da Orienta para saber exatamente para onde vai o seu dinheiro todo mês.",
+  );
+
   return (
     <Layout>
       {/* Seção 1 — Hero */}

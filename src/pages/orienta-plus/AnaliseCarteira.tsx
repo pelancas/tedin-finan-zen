@@ -1,6 +1,12 @@
 import { Layout } from "@/components/layout/Layout";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 
 const AnaliseCarteira = () => {
+  useDocumentMeta(
+    "Análise de Carteira de Investimentos | Orienta+",
+    "Receba uma análise técnica e imparcial da sua carteira de investimentos com a consultoria da Orienta+, sem viés de venda de produtos financeiros.",
+  );
+
   return (
     <Layout>
       {/* Hero */}

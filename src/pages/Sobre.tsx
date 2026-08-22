@@ -1,6 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Target, Heart, Zap } from "lucide-react";
+import { useDocumentMeta } from "@/hooks/use-document-meta";
 
 const values = [
   {
@@ -21,6 +22,11 @@ const values = [
 ];
 
 const Sobre = () => {
+  useDocumentMeta(
+    "Sobre a Orienta | Educação Financeira Sem Complicação",
+    "Conheça a história da Orienta e por que acreditamos que cuidar do dinheiro deveria ser simples, acessível e transparente para qualquer pessoa.",
+  );
+
   return (
     <Layout>
       <section className="py-16 md:py-24">
