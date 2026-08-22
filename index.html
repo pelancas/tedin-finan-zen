@@ -10,14 +10,44 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      As folhas de estilo do Google Fonts são carregadas via preload + troca
+      de "media" no onload (técnica loadCSS), pra não bloquear a
+      renderização inicial da página. O <noscript> garante que continuem
+      funcionando com JS desabilitado.
+    -->
     <link
-      rel="stylesheet"
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&display=swap"
     />
     <link
       rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&display=swap"
+      media="print"
+      onload="this.media='all'; this.onload=null;"
+    />
+    <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=block"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=block"
+      media="print"
+      onload="this.media='all'; this.onload=null;"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&display=swap"
+      />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=block"
+      />
+    </noscript>
 
     <meta property="og:title" content="Orienta" />
     <meta property="og:description" content="Orienta: Dê rumo à sua vida financeira." />
@@ -52,7 +82,7 @@
         ]
       }
     </script>
-    <script type="module" crossorigin src="/assets/index-DPn-xY8E.js"></script>
+    <script type="module" crossorigin src="/assets/index-C5J98sBV.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-DzmPJq50.css">
   </head>
 
