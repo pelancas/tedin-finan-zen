@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
+import { Turnstile } from "@/components/Turnstile";
 import {
   Accordion,
   AccordionContent,
@@ -134,10 +135,18 @@ export default function RelatorioAvaliacaoRiscos() {
   const [nomeSolicitante, setNomeSolicitante] = useState("");
   const [emailSolicitante, setEmailSolicitante] = useState("");
   const [verificando, setVerificando] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const handleVerificar = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!nomeComprador.trim() || !nomeSolicitante.trim() || !emailSolicitante.trim() || verificando) return;
+    if (
+      !nomeComprador.trim() ||
+      !nomeSolicitante.trim() ||
+      !emailSolicitante.trim() ||
+      !captchaToken ||
+      verificando
+    )
+      return;
     setVerificando(true);
     setTimeout(() => {
       navigate("/relatorio-avaliacao-riscos/resultado", {
@@ -227,9 +236,14 @@ export default function RelatorioAvaliacaoRiscos() {
                       className="h-14 w-full rounded-lg border border-[#1daf66]/40 bg-white/5 pl-11 pr-4 font-semibold text-white placeholder:text-white/50 outline-none transition-colors focus:border-[#1daf66] focus:bg-white/10"
                     />
                   </div>
+                  <Turnstile
+                    className="flex justify-center"
+                    onVerify={setCaptchaToken}
+                    onExpire={() => setCaptchaToken(null)}
+                  />
                   <Button
                     type="submit"
-                    disabled={verificando}
+                    disabled={verificando || !captchaToken}
                     className="flex h-14 items-center justify-center gap-2 rounded-xl bg-[#1daf66] px-8 text-lg font-bold text-white shadow-xl shadow-[#1daf66]/30 transition-all hover:-translate-y-1 hover:bg-[#1daf66]/90 disabled:opacity-70 disabled:hover:translate-y-0"
                   >
                     {verificando ? "Verificando..." : "Consultar"}
