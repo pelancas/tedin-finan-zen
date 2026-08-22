@@ -3,7 +3,7 @@ import { Menu, X, ChevronDown, Star, Wrench, FileText, Instagram, Building2, Shi
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Logo from "@/assets/logo-no-bg-sm.png";
+import Logo from "@/assets/logo-no-bg-sm.webp";
 
 export const SOBRE_URL = "https://www.instagram.com/orienta.financas/";
 

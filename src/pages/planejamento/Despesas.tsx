@@ -6,8 +6,9 @@ import {
   Quote, Shield, Eye, Route, Calculator, BadgeCheck, Circle, Copy,
   Layers, PiggyBank, BookCheck, Mail, ListCheck
 } from "lucide-react";
-import planilhaImg from "@/assets/planilha-planejamento.png";
-import planilhaAcompanhamentoImg from "@/assets/planilha-acompanhamento.png";
+import planilhaImg from "@/assets/planilha-planejamento.webp";
+import planilhaAcompanhamentoImg from "@/assets/planilha-acompanhamento.webp";
+import processImg from "@/assets/process.webp";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
 
 const features = [
@@ -226,7 +227,12 @@ const Despesas = () => {
                 Um ciclo contínuo de 5 etapas para manter sua saúde financeira em dia.
               </p>
               <div className="hidden md:block">
-                <img alt="Financial planning" className="rounded-3xl w-full aspect-video object-cover opacity-50 grayscale hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9xYNQCHro-SyOcfP_vHRWyY3uyZpolx2iehpOF5-RFeMmQm1Y8JqQ4u-HbWkfeBxap1RJZrvcpN7DZT-kpjff01rJ6c2_x2dN1IfaWIUujFkrdl0No4Jz_Vyo7b4CDP71IC5XhX-0y5ye6Tqr1n5yG34kIo5rD61S0o0oIAJh2oizgWTF_tfnvAJt26wCQicFvw3-GoalNh5RRz6k4g6S8kIYhvdxQWCrqodNdP1l-gRruDV5EJ5uM0oLwUsZp0YRlDrGNf-bXS8" />
+                <img
+                  alt="Fluxo de planejamento financeiro Orienta"
+                  className="rounded-3xl w-full aspect-video object-cover opacity-50 grayscale hover:grayscale-0 transition-all duration-500"
+                  src={processImg}
+                  loading="lazy"
+                />
               </div>
             </div>
             <div className="flex-1">

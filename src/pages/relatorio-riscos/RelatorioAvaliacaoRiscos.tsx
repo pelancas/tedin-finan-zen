@@ -10,9 +10,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { LucideIcon } from "lucide-react";
-import casaRiscoImg from "@/assets/casa-risco.png";
-import noticiaHerancaDividaImg from "@/assets/noticia-heranca-divida.png";
-import noticiaLeilaoImovelImg from "@/assets/noticia-leilao-imovel.png";
+import casaRiscoImg from "@/assets/casa-risco.webp";
+import noticiaHerancaDividaImg from "@/assets/noticia-heranca-divida.webp";
+import noticiaLeilaoImovelImg from "@/assets/noticia-leilao-imovel.webp";
 import {
   ShieldCheck,
   Search,

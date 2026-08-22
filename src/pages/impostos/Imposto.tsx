@@ -1,7 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
-import IRPF1 from '@/assets/IRPF1.png';
-import IRPF2 from '@/assets/IRPF2.png';
+import IRPF1 from '@/assets/IRPF1.webp';
+import IRPF2 from '@/assets/IRPF2.webp';
 import {
   CalendarDays, CheckCircle, Clock, Ban, Info,
   ShieldCheck, Zap, Play, Download, ArrowRight,
