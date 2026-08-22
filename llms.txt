@@ -1,0 +1,33 @@
+# Orienta
+
+> Plataforma brasileira de educação financeira gratuita, com calculadoras, guias e
+> artigos sobre planejamento financeiro, investimentos, seguros e imposto de renda.
+
+A Orienta ajuda pessoas comuns (não especialistas) a organizar suas finanças pessoais
+através de ferramentas práticas e conteúdo educativo em português. O site é um app de
+página única (SPA) com rotas via hash (`/#/caminho`).
+
+## Ferramentas e calculadoras
+
+- [Calculadora de aposentadoria](https://orientafinancas.com.br/#/planejamento/calculadoras/aposentadoria): simula quanto guardar por mês para se aposentar com tranquilidade.
+- [Calculadora de metas financeiras](https://orientafinancas.com.br/#/planejamento/calculadoras/metas): calcula quanto tempo leva para atingir qualquer objetivo financeiro.
+- [Calculadora do milhão](https://orientafinancas.com.br/#/planejamento/calculadoras/milhao): mostra em quanto tempo um valor investido chega a R$ 1.000.000.
+- [Controle de despesas](https://orientafinancas.com.br/#/planejamento/despesas): planilhas e ferramentas para organizar gastos mensais.
+- [Comparador de renda fixa](https://orientafinancas.com.br/#/investimentos/renda-fixa/comparador): compara CDB, LCI, LCA, Tesouro Direto e outros produtos lado a lado.
+- [Calculadora de seguro de vida e acidentes](https://orientafinancas.com.br/#/seguros): estima quanto de cobertura de seguro uma pessoa realmente precisa.
+- [Guia de Imposto de Renda](https://orientafinancas.com.br/#/impostos): passo a passo para declarar o IR sem complicação.
+- [Relatório de Avaliação de Riscos](https://orientafinancas.com.br/#/relatorio-avaliacao-riscos): consulta de certidões, processos judiciais e empresas relacionadas a um vendedor de imóvel, antes da compra.
+
+## Conteúdo e artigos
+
+- [Artigos sobre Planejamento](https://orientafinancas.com.br/#/planejamento/conteudos): textos sobre previdência social, aposentadoria e planejamento financeiro.
+- [Artigos sobre Seguros](https://orientafinancas.com.br/#/seguros/conteudos): textos sobre seguros de vida, invalidez e o mercado de corretagem.
+- [Investimentos — Ações](https://orientafinancas.com.br/#/investimentos/acoes): conteúdo introdutório sobre investir em ações.
+- [Investimentos — Fundos Imobiliários (FII)](https://orientafinancas.com.br/#/investimentos/fii): conteúdo introdutório sobre fundos imobiliários.
+- [Investimentos — Fundos de Investimento](https://orientafinancas.com.br/#/investimentos/fundos): conteúdo introdutório sobre fundos de investimento.
+- [Investimentos — Renda Fixa](https://orientafinancas.com.br/#/investimentos/renda-fixa): conteúdo introdutório sobre renda fixa.
+
+## Sobre
+
+- [Sobre a Orienta](https://orientafinancas.com.br/#/sobre): história e valores da empresa.
+- [Orienta+](https://orientafinancas.com.br/#/orientaplus): consultoria financeira personalizada, análise de carteira e planejamento financeiro sob medida.
