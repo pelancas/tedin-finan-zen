@@ -7,7 +7,11 @@ import rehypeSanitize from "rehype-sanitize";
 import { useContentFolder } from "@/lib/useContentFolder";
 import type { PostMeta } from "@/lib/useContentFolder";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
-import { ShieldAlert, BookOpen, Play, Wrench, HelpCircle, ChevronRight } from "lucide-react";
+import { toast } from "sonner";
+import {
+  ShieldAlert, BookOpen, Play, Wrench, HelpCircle, ChevronRight,
+  MessageCircle, Facebook, Twitter, Instagram, Mail, Link2,
+} from "lucide-react";
 
 function formatDate(dateStr: string): string {
   const [year, month, day] = dateStr.split("-").map(Number);
@@ -26,6 +30,76 @@ function isSafeVideoUrl(url: string): boolean {
   } catch {
     return false;
   }
+}
+
+async function copyToClipboard(text: string) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function openShareWindow(url: string) {
+  window.open(url, "_blank", "noopener,noreferrer,width=600,height=520");
+}
+
+function ShareRow({ title }: { title: string }) {
+  const shareUrl = () => window.location.href;
+
+  const handleWhatsApp = () => {
+    openShareWindow(`https://wa.me/?text=${encodeURIComponent(`${title} — ${shareUrl()}`)}`);
+  };
+  const handleFacebook = () => {
+    openShareWindow(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl())}`);
+  };
+  const handleTwitter = () => {
+    openShareWindow(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(shareUrl())}`,
+    );
+  };
+  const handleEmail = () => {
+    window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(shareUrl())}`;
+  };
+  const handleCopyLink = async () => {
+    const ok = await copyToClipboard(shareUrl());
+    toast(ok ? "Link copiado!" : "Não foi possível copiar o link.");
+  };
+  const handleInstagram = async () => {
+    // O Instagram não tem um link de compartilhamento direto pra web —
+    // copiamos o link pro usuário colar manualmente (story, bio ou DM).
+    const ok = await copyToClipboard(shareUrl());
+    toast(
+      ok
+        ? "Link copiado! O Instagram não permite compartilhar links direto — cole no seu story, bio ou mensagem."
+        : "Não foi possível copiar o link.",
+    );
+  };
+
+  return (
+    <div className="cp-share">
+      <span className="cp-share-label">Compartilhar</span>
+      <button type="button" className="cp-share-btn" onClick={handleWhatsApp} aria-label="Compartilhar no WhatsApp" title="WhatsApp">
+        <MessageCircle size={16} />
+      </button>
+      <button type="button" className="cp-share-btn" onClick={handleFacebook} aria-label="Compartilhar no Facebook" title="Facebook">
+        <Facebook size={16} />
+      </button>
+      <button type="button" className="cp-share-btn" onClick={handleTwitter} aria-label="Compartilhar no X (Twitter)" title="X (Twitter)">
+        <Twitter size={16} />
+      </button>
+      <button type="button" className="cp-share-btn" onClick={handleInstagram} aria-label="Compartilhar no Instagram" title="Instagram">
+        <Instagram size={16} />
+      </button>
+      <button type="button" className="cp-share-btn" onClick={handleEmail} aria-label="Compartilhar por email" title="Email">
+        <Mail size={16} />
+      </button>
+      <button type="button" className="cp-share-btn" onClick={handleCopyLink} aria-label="Copiar link" title="Copiar link">
+        <Link2 size={16} />
+      </button>
+    </div>
+  );
 }
 
 const categoryIcons: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
@@ -190,6 +264,16 @@ export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPa
         .cp-post-meta span { font-size: 0.8rem; font-weight: 500; color: #607060; display: flex; align-items: center; gap: 0.3rem; }
         .cp-post-meta span::before { content: ''; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: #1daf66; }
 
+        .cp-share { display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+        .cp-share-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #8aab96; margin-right: 0.25rem; }
+        .cp-share-btn {
+          display: flex; align-items: center; justify-content: center;
+          width: 2.1rem; height: 2.1rem; border-radius: 9999px;
+          border: 1px solid #e2e8e2; background: #fff; color: #607060;
+          cursor: pointer; transition: background 0.15s, color 0.15s, border-color 0.15s;
+        }
+        .cp-share-btn:hover { background: #edfaf2; color: #178a50; border-color: #1daf66; }
+
         .cp-callout {
           display: flex; align-items: center; gap: 1rem;
           padding: 1rem 1.25rem;
@@ -248,6 +332,7 @@ export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPa
                       <span>{formatDate(selectedMeta.date)}</span>
                     )}
                   </div>
+                  <ShareRow title={selectedMeta?.title || selectedPost.meta.title} />
                 </div>
                 {selectedPost.meta.video && isSafeVideoUrl(selectedPost.meta.video) && (
                   <div className="cp-video-wrap">
