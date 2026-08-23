@@ -274,6 +274,11 @@ export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPa
         }
         .cp-share-btn:hover { background: #edfaf2; color: #178a50; border-color: #1daf66; }
 
+        .cp-share-footer { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #eef1ee; }
+        .cp-share-footer-label { font-size: 0.9rem; font-weight: 700; color: #1A2E35; margin: 0 0 0.6rem; }
+        .cp-share-footer .cp-share { margin-top: 0; }
+        .cp-share-footer .cp-share-label { display: none; }
+
         .cp-callout {
           display: flex; align-items: center; gap: 1rem;
           padding: 1rem 1.25rem;
@@ -370,6 +375,10 @@ export default function ContentPage({ folder, badgeLabel, pageTitle }: ContentPa
                     {selectedPost.body}
                   </ReactMarkdown>
                 </article>
+                <div className="cp-share-footer">
+                  <p className="cp-share-footer-label">Gostou? Compartilhe este artigo</p>
+                  <ShareRow title={selectedMeta?.title || selectedPost.meta.title} />
+                </div>
               </>
             )}
           </div>
