@@ -2,6 +2,15 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useLocation, Navigate, Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Accordion,
   AccordionContent,
@@ -24,13 +33,12 @@ import {
   User,
 } from "lucide-react";
 import {
-  incluso,
   noticias,
   passos,
   faq,
-  waLink,
   verificacaoWaLink,
-  CTA_MESSAGE,
+  toTitleCase,
+  type DadosRelatorio,
 } from "./RelatorioAvaliacaoRiscos";
 
 interface ResultadoState {
@@ -46,6 +54,52 @@ const certidoes = [
   "Justiça do Trabalho",
   "Justiça Federal",
 ];
+
+const ESTADOS = [
+  { sigla: "AC", nome: "Acre" },
+  { sigla: "AL", nome: "Alagoas" },
+  { sigla: "AP", nome: "Amapá" },
+  { sigla: "AM", nome: "Amazonas" },
+  { sigla: "BA", nome: "Bahia" },
+  { sigla: "CE", nome: "Ceará" },
+  { sigla: "DF", nome: "Distrito Federal" },
+  { sigla: "ES", nome: "Espírito Santo" },
+  { sigla: "GO", nome: "Goiás" },
+  { sigla: "MA", nome: "Maranhão" },
+  { sigla: "MT", nome: "Mato Grosso" },
+  { sigla: "MS", nome: "Mato Grosso do Sul" },
+  { sigla: "MG", nome: "Minas Gerais" },
+  { sigla: "PA", nome: "Pará" },
+  { sigla: "PB", nome: "Paraíba" },
+  { sigla: "PR", nome: "Paraná" },
+  { sigla: "PE", nome: "Pernambuco" },
+  { sigla: "PI", nome: "Piauí" },
+  { sigla: "RJ", nome: "Rio de Janeiro" },
+  { sigla: "RN", nome: "Rio Grande do Norte" },
+  { sigla: "RS", nome: "Rio Grande do Sul" },
+  { sigla: "RO", nome: "Rondônia" },
+  { sigla: "RR", nome: "Roraima" },
+  { sigla: "SC", nome: "Santa Catarina" },
+  { sigla: "SP", nome: "São Paulo" },
+  { sigla: "SE", nome: "Sergipe" },
+  { sigla: "TO", nome: "Tocantins" },
+];
+
+function maskCPF(raw: string) {
+  return raw
+    .replace(/\D/g, "")
+    .slice(0, 11)
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+}
+
+function maskCEP(raw: string) {
+  return raw
+    .replace(/\D/g, "")
+    .slice(0, 8)
+    .replace(/(\d{5})(\d)/, "$1-$2");
+}
 
 function hashString(str: string) {
   let hash = 0;
@@ -105,6 +159,17 @@ export default function RelatorioAvaliacaoRiscosResultado() {
     return () => clearTimeout(timer);
   }, []);
 
+  const [nomeVendedor, setNomeVendedor] = useState(toTitleCase(state?.nomeComprador ?? ""));
+  const [cpfVendedor, setCpfVendedor] = useState("");
+  const [rua, setRua] = useState("");
+  const [numero, setNumero] = useState("");
+  const [bairro, setBairro] = useState("");
+  const [cidade, setCidade] = useState("");
+  const [estado, setEstado] = useState("");
+  const [cep, setCep] = useState("");
+  const [indiceCadastral, setIndiceCadastral] = useState("");
+  const [temIndiceCadastral, setTemIndiceCadastral] = useState<boolean | null>(null);
+
   useDocumentMeta(
     state?.nomeComprador
       ? `Prévia da consulta: ${state.nomeComprador} | Orienta`
@@ -128,7 +193,21 @@ export default function RelatorioAvaliacaoRiscosResultado() {
     return <Navigate to="/relatorio-avaliacao-riscos" replace />;
   }
 
-  const { nomeComprador, nomeSolicitante, emailSolicitante } = state;
+  const { nomeSolicitante, emailSolicitante } = state;
+  const nomeComprador = toTitleCase(state.nomeComprador);
+
+  const dadosRelatorio: DadosRelatorio = {
+    nomeVendedor,
+    cpfVendedor,
+    rua,
+    numero,
+    bairro,
+    cidade,
+    estado,
+    cep,
+    indiceCadastral,
+    temIndiceCadastral,
+  };
 
   const CERT_STEP_MS = 90;
   const empresasDelayMs = certidoes.length * CERT_STEP_MS + 150;
@@ -325,38 +404,169 @@ export default function RelatorioAvaliacaoRiscosResultado() {
             </div>
 
             {/* Direita — o que é o relatório completo */}
-            <div className="lg:col-span-2">
-              <div className="sticky top-24 rounded-2xl border border-slate-200 bg-white p-6 shadow-xl">
+            <div className="lg:col-span-2" id="dados-relatorio">
+              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xl">
                 <div className="mb-4 flex items-center gap-3">
                   <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#1daf66]/10 text-[#1daf66]">
                     <ShieldCheck size={22} />
                   </div>
                   <RevealTitle className="text-lg font-bold text-slate-900">
-                    O que é o Relatório de Avaliação de Riscos?
+                    Dados para o Relatório de Avaliação de Riscos
                   </RevealTitle>
                 </div>
                 <p className="mb-5 text-sm text-slate-600">
-                  É um parecer completo sobre o vendedor e o imóvel, montado a partir de fontes
-                  públicas e oficiais, para você saber exatamente o risco que está correndo antes
-                  de assinar qualquer papel.
+                  Confirme os dados do vendedor e do imóvel para elaborarmos o parecer completo.
                 </p>
 
-                <ul className="mb-6 flex flex-col gap-3">
-                  {incluso.map((f) => (
-                    <li key={f.title} className="flex items-start gap-2.5 text-sm text-slate-700">
-                      <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-[#1daf66]" />
-                      <span>
-                        <strong className="font-semibold text-slate-900">{f.title}.</strong>{" "}
-                        {f.description}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="mb-6 flex flex-col gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="nomeVendedor">Nome completo do vendedor</Label>
+                    <Input
+                      id="nomeVendedor"
+                      value={nomeVendedor}
+                      onChange={(e) => setNomeVendedor(toTitleCase(e.target.value))}
+                      placeholder="Nome completo do vendedor"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="cpfVendedor">CPF do vendedor</Label>
+                    <Input
+                      id="cpfVendedor"
+                      inputMode="numeric"
+                      value={cpfVendedor}
+                      onChange={(e) => setCpfVendedor(maskCPF(e.target.value))}
+                      placeholder="000.000.000-00"
+                    />
+                  </div>
+
+                  <p className="mt-1 text-xs font-bold uppercase tracking-wide text-slate-400">
+                    Endereço do imóvel
+                  </p>
+
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="col-span-2 flex flex-col gap-1.5">
+                      <Input
+                        id="rua"
+                        value={rua}
+                        onChange={(e) => setRua(e.target.value)}
+                        placeholder="Rua / Avenida"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <Input
+                        id="numero"
+                        value={numero}
+                        onChange={(e) => setNumero(e.target.value)}
+                        placeholder="Nº"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1.5">
+                      <Input
+                        id="bairro"
+                        value={bairro}
+                        onChange={(e) => setBairro(e.target.value)}
+                        placeholder="Bairro"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <Input
+                        id="cidade"
+                        value={cidade}
+                        onChange={(e) => setCidade(e.target.value)}
+                        placeholder="Cidade"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1.5">
+                      <Select value={estado} onValueChange={setEstado}>
+                        <SelectTrigger id="estado">
+                          <SelectValue placeholder="UF" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {ESTADOS.map((uf) => (
+                            <SelectItem key={uf.sigla} value={uf.sigla}>
+                              {uf.sigla} — {uf.nome}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <Input
+                        id="cep"
+                        inputMode="numeric"
+                        value={cep}
+                        onChange={(e) => setCep(maskCEP(e.target.value))}
+                        placeholder="00000-000"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label>Você tem o índice cadastral do imóvel?</Label>
+                    <div className="flex gap-2">
+                      <Button
+                        type="button"
+                        variant={temIndiceCadastral === true ? "default" : "outline"}
+                        onClick={() => setTemIndiceCadastral(true)}
+                        className={cn(
+                          "h-10 flex-1",
+                          temIndiceCadastral === true && "bg-[#1daf66] hover:bg-[#1daf66]/90",
+                        )}
+                      >
+                        Sim
+                      </Button>
+                      <Button
+                        type="button"
+                        variant={temIndiceCadastral === false ? "default" : "outline"}
+                        onClick={() => {
+                          setTemIndiceCadastral(false);
+                          setIndiceCadastral("");
+                        }}
+                        className={cn(
+                          "h-10 flex-1",
+                          temIndiceCadastral === false && "bg-[#1daf66] hover:bg-[#1daf66]/90",
+                        )}
+                      >
+                        Não
+                      </Button>
+                    </div>
+
+                    {temIndiceCadastral === true && (
+                      <Input
+                        id="indiceCadastral"
+                        value={indiceCadastral}
+                        onChange={(e) => setIndiceCadastral(e.target.value)}
+                        placeholder="Número do índice cadastral"
+                        className="mt-1"
+                        autoFocus
+                      />
+                    )}
+
+                    {temIndiceCadastral === false && (
+                      <p className="mt-1 text-xs text-slate-500">
+                        Não se preocupe, o índice cadastral é para a pesquisa ser o mais completa possível,
+                        mas você pode informá-lo depois.
+                      </p>
+                    )}
+                  </div>
+                </div>
 
                 <Button
                   onClick={() =>
                     window.open(
-                      verificacaoWaLink(nomeComprador, nomeSolicitante, emailSolicitante),
+                      verificacaoWaLink(
+                        nomeComprador,
+                        nomeSolicitante,
+                        emailSolicitante,
+                        dadosRelatorio,
+                      ),
                       "_blank",
                     )
                   }
@@ -365,38 +575,12 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                   Liberar relatório completo
                   <ArrowRight size={18} />
                 </Button>
-                <p className="mt-3 text-center text-xs text-slate-400">
-                  Entrega em PDF em até 24h úteis · atendimento via WhatsApp
-                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── CTA BANNER — fundo #1daf66 ──────────────────────────── */}
-      <section className="py-20">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-3xl bg-[#1daf66] p-8 text-center text-white shadow-2xl shadow-[#1daf66]/20 md:p-16">
-            <div className="pointer-events-none absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_white,_transparent_70%)]" />
-            <h2 className="relative z-10 mb-6 text-3xl font-black md:text-5xl">
-              Não assine nada sem checar antes.
-            </h2>
-            <p className="relative z-10 mx-auto mb-10 max-w-2xl text-lg text-white/90">
-              Em até 24h você recebe o parecer completo e negocia com muito mais segurança.
-            </p>
-            <div className="relative z-10 flex flex-col justify-center gap-4 sm:flex-row">
-              <Button
-                onClick={() => window.open(waLink(CTA_MESSAGE), "_blank")}
-                className="rounded-xl px-10 py-6 text-lg font-bold shadow-xl transition-all hover:-translate-y-1"
-                style={{ background: "#1A2E35", color: "#ffffff" }}
-              >
-                Quero meu relatório
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ─── RISCOS — fundo branco ─────────────────────────────────── */}
       <section className="bg-white py-24">
@@ -423,6 +607,34 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                 />
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CTA BANNER — fundo #1daf66 ──────────────────────────── */}
+      <section className="py-20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-3xl bg-[#1daf66] p-8 text-center text-white shadow-2xl shadow-[#1daf66]/20 md:p-16">
+            <div className="pointer-events-none absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_white,_transparent_70%)]" />
+            <h2 className="relative z-10 mb-6 text-3xl font-black md:text-5xl">
+              Não assine nada sem checar antes.
+            </h2>
+            <p className="relative z-10 mx-auto mb-10 max-w-2xl text-lg text-white/90">
+              Em até 24h você recebe o parecer completo e negocia com muito mais segurança.
+            </p>
+            <div className="relative z-10 flex flex-col justify-center gap-4 sm:flex-row">
+              <Button
+                onClick={() =>
+                  document
+                    .getElementById("dados-relatorio")
+                    ?.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
+                className="rounded-xl px-10 py-6 text-lg font-bold shadow-xl transition-all hover:-translate-y-1"
+                style={{ background: "#1A2E35", color: "#ffffff" }}
+              >
+                Quero meu relatório
+              </Button>
+            </div>
           </div>
         </div>
       </section>
@@ -493,10 +705,9 @@ export default function RelatorioAvaliacaoRiscosResultado() {
 
             <Button
               onClick={() =>
-                window.open(
-                  verificacaoWaLink(nomeComprador, nomeSolicitante, emailSolicitante),
-                  "_blank",
-                )
+                document
+                  .getElementById("dados-relatorio")
+                  ?.scrollIntoView({ behavior: "smooth", block: "start" })
               }
               className="flex w-full items-center justify-center gap-2 rounded-xl py-6 text-base font-bold text-white transition-all hover:opacity-90"
               style={{ background: "#1A2E35" }}
@@ -506,7 +717,7 @@ export default function RelatorioAvaliacaoRiscosResultado() {
             </Button>
 
             <p className="mt-4 text-center text-xs text-slate-400">
-              Atendimento via WhatsApp · resposta rápida
+              
             </p>
           </RevealBox>
         </div>

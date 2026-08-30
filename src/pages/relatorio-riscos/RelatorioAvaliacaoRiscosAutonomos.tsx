@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
-import { Turnstile } from "@/components/Turnstile";
 import {
   Accordion,
   AccordionContent,
@@ -17,10 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { LucideIcon } from "lucide-react";
 import casaRiscoImg from "@/assets/casa-risco.webp";
-import noticiaHerancaDividaImg from "@/assets/noticia-heranca-divida.webp";
-import noticiaLeilaoImovelImg from "@/assets/noticia-leilao-imovel.webp";
 import {
   ShieldCheck,
   Search,
@@ -31,89 +27,12 @@ import {
   Clock,
   Lock,
   FileCheck2,
-  BadgeCheck,
   FileSearch,
+  Wallet,
 } from "lucide-react";
+import { noticias, ConsultaForm, type FeatureItem } from "./RelatorioAvaliacaoRiscos";
 
-export function toTitleCase(value: string) {
-  return value
-    .toLowerCase()
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
-
-export const WHATSAPP_NUMBER = "5531971778537";
-
-export function waLink(message: string) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-}
-
-export const CTA_MESSAGE =
-  "Olá, vim pelo site e gostaria de solicitar o Relatório de Avaliação de Riscos";
-
-export interface DadosRelatorio {
-  nomeVendedor: string;
-  cpfVendedor: string;
-  rua: string;
-  numero: string;
-  bairro: string;
-  cidade: string;
-  estado: string;
-  cep: string;
-  indiceCadastral: string;
-  temIndiceCadastral: boolean | null;
-}
-
-export function verificacaoWaLink(
-  nomeComprador: string,
-  nomeSolicitante: string,
-  emailSolicitante: string,
-  dados?: DadosRelatorio,
-) {
-  let mensagem = `Olá, meu nome é ${nomeSolicitante} (${emailSolicitante}) e gostaria de solicitar o Relatório de Avaliação de Riscos para verificar "${nomeComprador}" antes de fechar negócio.`;
-
-  if (dados) {
-    const endereco = [
-      [dados.rua, dados.numero].filter(Boolean).join(", "),
-      dados.bairro,
-      [dados.cidade, dados.estado].filter(Boolean).join(" - "),
-      dados.cep,
-    ]
-      .filter(Boolean)
-      .join(", ");
-
-    const indiceCadastralTexto =
-      dados.temIndiceCadastral === true
-        ? dados.indiceCadastral || "não informado"
-        : dados.temIndiceCadastral === false
-          ? "não possui — será informado depois"
-          : "não informado";
-
-    mensagem += `\n\nDados para o relatório:\n- Nome completo do vendedor: ${dados.nomeVendedor || "não informado"}\n- CPF do vendedor: ${dados.cpfVendedor || "não informado"}\n- Endereço do imóvel: ${endereco || "não informado"}\n- Índice cadastral do imóvel: ${indiceCadastralTexto}`;
-  }
-
-  return waLink(mensagem);
-}
-
-export const noticias = [
-  {
-    image: noticiaHerancaDividaImg,
-    alt: "Manchete: Comprador herda débitos acumulados em aluguéis após aquisição de imóvel",
-  },
-  {
-    image: noticiaLeilaoImovelImg,
-    alt: "Manchete: Ele comprou apartamento à vista, mas imóvel vai a leilão",
-  },
-];
-
-export interface FeatureItem {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-}
-
-export const incluso: FeatureItem[] = [
+const incluso: FeatureItem[] = [
   {
     icon: FileCheck2,
     title: "Certidões negativas de débito",
@@ -122,20 +41,21 @@ export const incluso: FeatureItem[] = [
   {
     icon: Gavel,
     title: "Processos judiciais relevantes",
-    description: "Levantamento de ações vinculadas ao CPF ou CNPJ do proprietário.",
+    description:
+      "Ações vinculadas ao CPF ou CNPJ do proprietário que podem travar o imóvel por meses.",
   },
   {
     icon: Building2,
     title: "Empresas relacionadas",
-    description: "Sociedades, CNPJs e vínculos societários ligados ao vendedor.",
+    description: "Sociedades e CNPJs que podem indicar dívidas ocultas do proprietário.",
   },
 ];
 
-export const passos = [
+const passos = [
   {
     icon: Search,
-    title: "Você envia os dados",
-    description: "Nome, CPF do proprietário e, dados do imóvel.",
+    title: "Você envia os dados, no seu ritmo",
+    description: "Nome, CPF do proprietário e dados do imóvel, pelo formulário.",
   },
   {
     icon: FileSearch,
@@ -144,12 +64,17 @@ export const passos = [
   },
   {
     icon: ShieldCheck,
-    title: "Você recebe o relatório",
-    description: "Classificação clara de risco, um PDF em até 24h úteis.",
+    title: "Você decide com segurança",
+    description: "Parecer claro de risco, em PDF, em até 24h úteis.",
   },
 ];
 
-export const faq = [
+const faq = [
+  {
+    question: "Funciona mesmo sendo autônomo ou MEI, sem comprovante de renda fixa?",
+    answer:
+      "Sim. O relatório avalia o vendedor e o imóvel, não a sua renda — não é uma análise de crédito. Funciona da mesma forma para autônomos, CLT ou qualquer comprador.",
+  },
   {
     question: "É legal solicitar esse tipo de consulta?",
     answer:
@@ -158,7 +83,7 @@ export const faq = [
   {
     question: "Quanto tempo leva para ficar pronto?",
     answer:
-      "Em até 24h úteis após o envio dos dados do proprietário e, quando disponível, da matrícula do imóvel.",
+      "Em até 24h úteis após o envio dos dados do proprietário e, quando disponível, do índice cadastral do imóvel.",
   },
   {
     question: "A consulta é sigilosa?",
@@ -166,94 +91,16 @@ export const faq = [
       "Sim. O relatório é enviado somente para você, em PDF, e nenhum dado é compartilhado com o proprietário ou terceiros.",
   },
   {
-    question: "Funciona para qualquer imóvel ou estado?",
-    answer:
-      "Sim, consultamos fontes federais e, sempre que disponíveis, estaduais e municipais do local do imóvel ou do domicílio do proprietário.",
-  },
-  {
     question: "E se o relatório encontrar um problema grave?",
     answer:
-      "Você recebe o parecer com a explicação do risco encontrado e pode usá-lo para renegociar, pedir garantias adicionais ou desistir do negócio com segurança.",
+      "Você recebe o parecer com a explicação do risco encontrado e pode usá-lo para renegociar, pedir garantias adicionais ou desistir do negócio sem comprometer sua reserva.",
   },
 ];
 
-interface ConsultaFormProps {
-  nomeComprador: string;
-  setNomeComprador: (v: string) => void;
-  nomeSolicitante: string;
-  setNomeSolicitante: (v: string) => void;
-  emailSolicitante: string;
-  setEmailSolicitante: (v: string) => void;
-  verificando: boolean;
-  captchaToken: string | null;
-  setCaptchaToken: (token: string | null) => void;
-  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
-}
-
-export function ConsultaForm({
-  nomeComprador,
-  setNomeComprador,
-  nomeSolicitante,
-  setNomeSolicitante,
-  emailSolicitante,
-  setEmailSolicitante,
-  verificando,
-  captchaToken,
-  setCaptchaToken,
-  onSubmit,
-}: ConsultaFormProps) {
-  return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-3">
-      <input
-        type="text"
-        required
-        value={nomeSolicitante}
-        onChange={(e) => setNomeSolicitante(e.target.value)}
-        placeholder="Seu nome"
-        className="h-14 w-full rounded-xl border border-white/15 bg-white/5 px-4 text-white placeholder:text-white/40 outline-none transition-colors focus:border-[#1daf66] focus:bg-white/10"
-      />
-      <input
-        type="email"
-        required
-        value={emailSolicitante}
-        onChange={(e) => setEmailSolicitante(e.target.value)}
-        placeholder="Seu email"
-        className="h-14 w-full rounded-xl border border-white/15 bg-white/5 px-4 text-white placeholder:text-white/40 outline-none transition-colors focus:border-[#1daf66] focus:bg-white/10"
-      />
-      <div className="flex flex-col gap-1.5 text-left">
-        <label className="text-sm font-medium text-white/70">
-          Nome completo do proprietário para consulta:
-        </label>
-        <input
-          type="text"
-          required
-          value={nomeComprador}
-          onChange={(e) => setNomeComprador(toTitleCase(e.target.value))}
-          placeholder="Nome completo do proprietário"
-          className="h-14 w-full rounded-xl border border-white/15 bg-white/5 px-4 text-white placeholder:text-white/40 outline-none transition-colors focus:border-[#1daf66] focus:bg-white/10"
-        />
-      </div>
-      <Turnstile
-        className="flex justify-center"
-        onVerify={setCaptchaToken}
-        onExpire={() => setCaptchaToken(null)}
-      />
-      <Button
-        type="submit"
-        disabled={verificando || !captchaToken}
-        className="flex h-14 items-center justify-center gap-2 rounded-xl bg-[#1daf66] px-8 text-lg font-bold text-white shadow-xl shadow-[#1daf66]/30 transition-all hover:-translate-y-1 hover:bg-[#1daf66]/90 disabled:opacity-70 disabled:hover:translate-y-0"
-      >
-        {verificando ? "Verificando..." : "Consultar"}
-        {!verificando && <ArrowRight size={18} />}
-      </Button>
-    </form>
-  );
-}
-
-export default function RelatorioAvaliacaoRiscos() {
+export default function RelatorioAvaliacaoRiscosAutonomos() {
   useDocumentMeta(
-    "Relatório de Avaliação de Riscos na Compra de Imóvel | Orienta",
-    "Consulte certidões, processos judiciais e empresas relacionadas ao vendedor antes de fechar negócio, com o Relatório de Avaliação de Riscos da Orienta.",
+    "Relatório de Avaliação de Riscos para Autônomos | Orienta",
+    "Autônomo ou MEI, sem renda fixa? Não arrisque sua reserva num imóvel com pendências. Consulte certidões, processos e empresas do vendedor antes de fechar negócio.",
   );
 
   const navigate = useNavigate();
@@ -298,16 +145,17 @@ export default function RelatorioAvaliacaoRiscos() {
             {/* Left */}
             <div className="flex flex-col gap-6 text-center lg:text-left">
               <h1 className="text-4xl font-black leading-tight tracking-tight text-white md:text-5xl lg:text-6xl">
-                Não perca seu sonho{" "}
+                Um imóvel problemático pode custar{" "}
                 <span className="bg-gradient-to-r from-[#1daf66] to-emerald-400 bg-clip-text text-transparent">
-                  para perigos ocultos.
+                  anos do seu trabalho.
                 </span>
               </h1>
 
               <p className="mx-auto max-w-xl text-lg text-white/55 lg:mx-0">
-                Dívidas, penhoras e processos, tudo isso pode fazer com que você perca sua residência.
-                Cruzamos dados do <strong className="font-bold text-white">proprietário</strong> em fontes oficiais e entregamos um relatório
-                completo sobre ele e o imóvel, para você não ter surpresas.
+                Como autônomo, cada real da sua reserva veio do seu próprio esforço, não deixe dívidas de outros tomarem seu imóvel. Cruzamos dados do{" "}
+                <strong className="font-bold text-white">proprietário</strong> em fontes oficiais
+                e entregamos um relatório completo sobre ele e o imóvel, para você não colocar
+                anos de trabalho em risco.
               </p>
 
               <div className="flex flex-col items-center gap-3 text-sm text-white/40 sm:flex-row sm:justify-center lg:justify-start">
@@ -358,7 +206,7 @@ export default function RelatorioAvaliacaoRiscos() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-16 space-y-4 text-center">
             <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
-              Sem checar, o que pode dar errado
+              Sem checar, sua reserva pode ir por água abaixo
             </h2>
             <p className="mx-auto max-w-2xl text-slate-600">
               Não é exagero — casos assim viram notícia toda semana.
@@ -390,10 +238,10 @@ export default function RelatorioAvaliacaoRiscos() {
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-16 space-y-4 text-center">
             <h2 className="text-3xl font-bold text-white md:text-4xl">
-              Um relatório, uma consulta completa
+              Consultamos as todas as fontes relevantes, para você decidir com segurança
             </h2>
             <p className="mx-auto max-w-2xl text-white/70">
-              Tudo o que verificamos nas fontes originais, antes do parecer final de risco.
+              Verificamos as fontes públicas, oficiais, pertinentes, para você decidir com segurança - e damos nossa opinião.
             </p>
           </div>
 
@@ -461,16 +309,9 @@ export default function RelatorioAvaliacaoRiscos() {
               Relatório de Avaliação de Riscos
             </h3>
             <p className="mb-6 text-slate-600">
-              Um parecer completo sobre o vendedor e o imóvel antes de você assinar qualquer
-              papel.
+              O mesmo cuidado de quem tem advogado de confiança, cabendo no orçamento de quem
+              não tem salário fixo todo mês.
             </p>
-
-           
-           {/*<div className="mb-8 flex items-baseline gap-1">
-              <span className="text-sm font-bold uppercase text-[#1daf66]">R$</span>
-              <span className="text-4xl font-black text-slate-900">149</span>
-              <span className="ml-1 text-sm text-slate-500">/por consulta</span>
-            </div>*/}
 
             <ul className="mb-10 flex flex-col gap-4">
               {[
@@ -498,6 +339,7 @@ export default function RelatorioAvaliacaoRiscos() {
             </Button>
 
             <p className="mt-4 text-center text-xs text-slate-400">
+              
             </p>
           </div>
         </div>
@@ -529,10 +371,11 @@ export default function RelatorioAvaliacaoRiscos() {
           <div className="relative overflow-hidden rounded-3xl bg-[#1daf66] p-8 text-center text-white shadow-2xl shadow-[#1daf66]/20 md:p-16">
             <div className="pointer-events-none absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_white,_transparent_70%)]" />
             <h2 className="relative z-10 mb-6 text-3xl font-black md:text-5xl">
-              Não assine nada sem checar antes.
+              Não deixe anos de trabalho virarem prejuízo.
             </h2>
             <p className="relative z-10 mx-auto mb-10 max-w-2xl text-lg text-white/90">
-              Em até 24h você recebe o parecer completo e negocia com muito mais segurança.
+              Em até 24h você recebe o parecer completo e decide com muito mais segurança — sem
+              comprometer sua reserva.
             </p>
             <div className="relative z-10 flex flex-col justify-center gap-4 sm:flex-row">
               <Button
@@ -540,7 +383,7 @@ export default function RelatorioAvaliacaoRiscos() {
                 className="rounded-xl px-10 py-6 text-lg font-bold shadow-xl transition-all hover:-translate-y-1"
                 style={{ background: "#1A2E35", color: "#ffffff" }}
               >
-                Quero meu relatório
+                Quero proteger meu sonho
               </Button>
             </div>
           </div>

@@ -6,7 +6,48 @@
     <title>Orienta - Orientação financeira</title>
     <meta name="description" content="Orienta: Dê rumo à sua vida financeira." />
     <meta name="author" content="Orienta" />
+    <link rel="canonical" href="https://orientafinancas.com.br/" />
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      As folhas de estilo do Google Fonts são carregadas via preload + troca
+      de "media" no onload (técnica loadCSS), pra não bloquear a
+      renderização inicial da página. O <noscript> garante que continuem
+      funcionando com JS desabilitado.
+    -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&display=swap"
+      media="print"
+      onload="this.media='all'; this.onload=null;"
+    />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=block"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=block"
+      media="print"
+      onload="this.media='all'; this.onload=null;"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&display=swap"
+      />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=block"
+      />
+    </noscript>
 
     <meta property="og:title" content="Orienta" />
     <meta property="og:description" content="Orienta: Dê rumo à sua vida financeira." />
@@ -14,10 +55,38 @@
     <meta property="og:image" content="https://orientafinancas.com.br/Calculadora.png" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Lovable" />
     <meta name="twitter:image" content="https://orientafinancas.com.br/Calculadora.png" />
-    <script type="module" crossorigin src="/assets/index-CA5Ttaus.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CQj2Zkxg.css">
+
+    <!-- Cloudflare Turnstile (captcha do formulário de Relatório de Riscos) -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P0P6GF9G8V"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      // send_page_view desligado: o site é uma SPA com HashRouter, então a
+      // página vista de cada rota é disparada manualmente pelo componente
+      // <Analytics /> (src/components/Analytics.tsx) a cada troca de rota.
+      gtag('config', 'G-P0P6GF9G8V', { send_page_view: false });
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Orienta",
+        "url": "https://orientafinancas.com.br",
+        "logo": "https://orientafinancas.com.br/logo.png",
+        "sameAs": [
+          "https://www.instagram.com/orienta.financas/",
+          "https://www.youtube.com/@OrientaFinan%C3%A7as"
+        ]
+      }
+    </script>
+    <script type="module" crossorigin src="/assets/index-BHj9zONV.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-B3vFhBxq.css">
   </head>
 
   <body>

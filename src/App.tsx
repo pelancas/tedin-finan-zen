@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { Analytics } from "@/components/Analytics";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import Sobre from "./pages/Sobre";
 import Despesas from "./pages/planejamento/Despesas";
@@ -23,6 +24,7 @@ import Seguros from "./pages/seguros/Seguros";
 import SegurosConteudo from "./pages/seguros/SegurosConteudo";
 import PlanejamentoConteudo from "./pages/planejamento/PlanejamentoConteudo";
 import RelatorioAvaliacaoRiscos from "./pages/relatorio-riscos/RelatorioAvaliacaoRiscos";
+import RelatorioAvaliacaoRiscosAutonomos from "./pages/relatorio-riscos/RelatorioAvaliacaoRiscosAutonomos";
 import RelatorioAvaliacaoRiscosResultado from "./pages/relatorio-riscos/RelatorioAvaliacaoRiscosResultado";
 import NotFound from "./pages/NotFound";
 
@@ -34,6 +36,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <HashRouter future={{ v7_relativeSplatPath: true }}>
+        <ScrollToTop />
         <Analytics />
         <Routes>
           <Route path="/" element={<Index />} />
@@ -55,6 +58,10 @@ const App = () => (
           <Route path="/seguros" element={<Seguros />} />
           <Route path="/seguros/conteudos" element={<SegurosConteudo />} />
           <Route path="/relatorio-avaliacao-riscos" element={<RelatorioAvaliacaoRiscos />} />
+          <Route
+            path="/relatorio-avaliacao-riscos-autonomos"
+            element={<RelatorioAvaliacaoRiscosAutonomos />}
+          />
           <Route
             path="/relatorio-avaliacao-riscos/resultado"
             element={<RelatorioAvaliacaoRiscosResultado />}

@@ -36,12 +36,7 @@ export function Hero() {
   <section className="relative overflow-hidden pt-16 pb-20 lg:pt-24 lg:pb-32 bg-background-dark">
     <div className="max-w-7xl mx-auto px-4 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
       <div className="flex flex-col gap-8 z-10">
-        <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider w-fit">
-          <span className="material-symbols-outlined text-sm">
-            verified_user
-          </span>
-          Sua segurança financeira em primeiro lugar
-        </div>
+
         <h1 className="text-4xl md:text-6xl font-black text-white leading-[1.1] tracking-tight">
           Oriente{" "}
           <span className="text-primary">seu futuro.</span>
@@ -127,9 +122,7 @@ export function Hero() {
             style={{ transform: "rotate(-45deg) translateY(-15%)" }}
             className="text-center text-[1.125rem] md:text-[1.6875rem] font-black uppercase leading-tight tracking-wide text-white"
           >
-            Seus
-            <br />
-            Primeiros
+            Comece
           </span>
         </div>
       </div>
