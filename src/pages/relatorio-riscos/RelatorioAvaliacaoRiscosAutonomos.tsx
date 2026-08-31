@@ -106,6 +106,7 @@ export default function RelatorioAvaliacaoRiscosAutonomos() {
   const navigate = useNavigate();
   const [nomeComprador, setNomeComprador] = useState("");
   const [nomeSolicitante, setNomeSolicitante] = useState("");
+  const [cpfSolicitante, setCpfSolicitante] = useState("");
   const [emailSolicitante, setEmailSolicitante] = useState("");
   const [verificando, setVerificando] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
@@ -116,6 +117,7 @@ export default function RelatorioAvaliacaoRiscosAutonomos() {
     if (
       !nomeComprador.trim() ||
       !nomeSolicitante.trim() ||
+      !cpfSolicitante.trim() ||
       !emailSolicitante.trim() ||
       !captchaToken ||
       verificando
@@ -127,6 +129,7 @@ export default function RelatorioAvaliacaoRiscosAutonomos() {
         state: {
           nomeComprador: nomeComprador.trim(),
           nomeSolicitante: nomeSolicitante.trim(),
+          cpfSolicitante: cpfSolicitante.trim(),
           emailSolicitante: emailSolicitante.trim(),
         },
       });
@@ -188,6 +191,8 @@ export default function RelatorioAvaliacaoRiscosAutonomos() {
                   setNomeComprador={setNomeComprador}
                   nomeSolicitante={nomeSolicitante}
                   setNomeSolicitante={setNomeSolicitante}
+                  cpfSolicitante={cpfSolicitante}
+                  setCpfSolicitante={setCpfSolicitante}
                   emailSolicitante={emailSolicitante}
                   setEmailSolicitante={setEmailSolicitante}
                   verificando={verificando}
@@ -406,6 +411,8 @@ export default function RelatorioAvaliacaoRiscosAutonomos() {
             setNomeComprador={setNomeComprador}
             nomeSolicitante={nomeSolicitante}
             setNomeSolicitante={setNomeSolicitante}
+            cpfSolicitante={cpfSolicitante}
+            setCpfSolicitante={setCpfSolicitante}
             emailSolicitante={emailSolicitante}
             setEmailSolicitante={setEmailSolicitante}
             verificando={verificando}

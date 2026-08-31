@@ -4,6 +4,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
 import { Turnstile } from "@/components/Turnstile";
+import { maskCPF } from "@/lib/masks";
 import {
   Accordion,
   AccordionContent,
@@ -65,6 +66,25 @@ export interface DadosRelatorio {
   temIndiceCadastral: boolean | null;
 }
 
+export function formatEndereco(dados: DadosRelatorio) {
+  return [
+    [dados.rua, dados.numero].filter(Boolean).join(", "),
+    dados.bairro,
+    [dados.cidade, dados.estado].filter(Boolean).join(" - "),
+    dados.cep,
+  ]
+    .filter(Boolean)
+    .join(", ");
+}
+
+export function formatIndiceCadastral(dados: DadosRelatorio) {
+  return dados.temIndiceCadastral === true
+    ? dados.indiceCadastral || "não informado"
+    : dados.temIndiceCadastral === false
+      ? "não possui — será informado depois"
+      : "não informado";
+}
+
 export function verificacaoWaLink(
   nomeComprador: string,
   nomeSolicitante: string,
@@ -74,21 +94,8 @@ export function verificacaoWaLink(
   let mensagem = `Olá, meu nome é ${nomeSolicitante} (${emailSolicitante}) e gostaria de solicitar o Relatório de Avaliação de Riscos para verificar "${nomeComprador}" antes de fechar negócio.`;
 
   if (dados) {
-    const endereco = [
-      [dados.rua, dados.numero].filter(Boolean).join(", "),
-      dados.bairro,
-      [dados.cidade, dados.estado].filter(Boolean).join(" - "),
-      dados.cep,
-    ]
-      .filter(Boolean)
-      .join(", ");
-
-    const indiceCadastralTexto =
-      dados.temIndiceCadastral === true
-        ? dados.indiceCadastral || "não informado"
-        : dados.temIndiceCadastral === false
-          ? "não possui — será informado depois"
-          : "não informado";
+    const endereco = formatEndereco(dados);
+    const indiceCadastralTexto = formatIndiceCadastral(dados);
 
     mensagem += `\n\nDados para o relatório:\n- Nome completo do vendedor: ${dados.nomeVendedor || "não informado"}\n- CPF do vendedor: ${dados.cpfVendedor || "não informado"}\n- Endereço do imóvel: ${endereco || "não informado"}\n- Índice cadastral do imóvel: ${indiceCadastralTexto}`;
   }
@@ -182,6 +189,8 @@ interface ConsultaFormProps {
   setNomeComprador: (v: string) => void;
   nomeSolicitante: string;
   setNomeSolicitante: (v: string) => void;
+  cpfSolicitante: string;
+  setCpfSolicitante: (v: string) => void;
   emailSolicitante: string;
   setEmailSolicitante: (v: string) => void;
   verificando: boolean;
@@ -195,6 +204,8 @@ export function ConsultaForm({
   setNomeComprador,
   nomeSolicitante,
   setNomeSolicitante,
+  cpfSolicitante,
+  setCpfSolicitante,
   emailSolicitante,
   setEmailSolicitante,
   verificando,
@@ -210,6 +221,15 @@ export function ConsultaForm({
         value={nomeSolicitante}
         onChange={(e) => setNomeSolicitante(e.target.value)}
         placeholder="Seu nome"
+        className="h-14 w-full rounded-xl border border-white/15 bg-white/5 px-4 text-white placeholder:text-white/40 outline-none transition-colors focus:border-[#1daf66] focus:bg-white/10"
+      />
+      <input
+        type="text"
+        required
+        inputMode="numeric"
+        value={cpfSolicitante}
+        onChange={(e) => setCpfSolicitante(maskCPF(e.target.value))}
+        placeholder="Seu CPF"
         className="h-14 w-full rounded-xl border border-white/15 bg-white/5 px-4 text-white placeholder:text-white/40 outline-none transition-colors focus:border-[#1daf66] focus:bg-white/10"
       />
       <input
@@ -259,6 +279,7 @@ export default function RelatorioAvaliacaoRiscos() {
   const navigate = useNavigate();
   const [nomeComprador, setNomeComprador] = useState("");
   const [nomeSolicitante, setNomeSolicitante] = useState("");
+  const [cpfSolicitante, setCpfSolicitante] = useState("");
   const [emailSolicitante, setEmailSolicitante] = useState("");
   const [verificando, setVerificando] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
@@ -269,6 +290,7 @@ export default function RelatorioAvaliacaoRiscos() {
     if (
       !nomeComprador.trim() ||
       !nomeSolicitante.trim() ||
+      !cpfSolicitante.trim() ||
       !emailSolicitante.trim() ||
       !captchaToken ||
       verificando
@@ -280,6 +302,7 @@ export default function RelatorioAvaliacaoRiscos() {
         state: {
           nomeComprador: nomeComprador.trim(),
           nomeSolicitante: nomeSolicitante.trim(),
+          cpfSolicitante: cpfSolicitante.trim(),
           emailSolicitante: emailSolicitante.trim(),
         },
       });
@@ -340,6 +363,8 @@ export default function RelatorioAvaliacaoRiscos() {
                   setNomeComprador={setNomeComprador}
                   nomeSolicitante={nomeSolicitante}
                   setNomeSolicitante={setNomeSolicitante}
+                  cpfSolicitante={cpfSolicitante}
+                  setCpfSolicitante={setCpfSolicitante}
                   emailSolicitante={emailSolicitante}
                   setEmailSolicitante={setEmailSolicitante}
                   verificando={verificando}
@@ -563,6 +588,8 @@ export default function RelatorioAvaliacaoRiscos() {
             setNomeComprador={setNomeComprador}
             nomeSolicitante={nomeSolicitante}
             setNomeSolicitante={setNomeSolicitante}
+            cpfSolicitante={cpfSolicitante}
+            setCpfSolicitante={setCpfSolicitante}
             emailSolicitante={emailSolicitante}
             setEmailSolicitante={setEmailSolicitante}
             verificando={verificando}

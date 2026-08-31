@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { useLocation, Navigate, Link } from "react-router-dom";
+import { useLocation, useNavigate, Navigate, Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +20,7 @@ import {
 import { useInView } from "@/hooks/use-in-view";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
 import { cn } from "@/lib/utils";
+import { maskCPF, maskCEP } from "@/lib/masks";
 import {
   ShieldCheck,
   FileCheck2,
@@ -36,7 +37,6 @@ import {
   noticias,
   passos,
   faq,
-  verificacaoWaLink,
   toTitleCase,
   type DadosRelatorio,
 } from "./RelatorioAvaliacaoRiscos";
@@ -44,6 +44,7 @@ import {
 interface ResultadoState {
   nomeComprador: string;
   nomeSolicitante: string;
+  cpfSolicitante: string;
   emailSolicitante: string;
 }
 
@@ -84,22 +85,6 @@ const ESTADOS = [
   { sigla: "SE", nome: "Sergipe" },
   { sigla: "TO", nome: "Tocantins" },
 ];
-
-function maskCPF(raw: string) {
-  return raw
-    .replace(/\D/g, "")
-    .slice(0, 11)
-    .replace(/(\d{3})(\d)/, "$1.$2")
-    .replace(/(\d{3})(\d)/, "$1.$2")
-    .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-}
-
-function maskCEP(raw: string) {
-  return raw
-    .replace(/\D/g, "")
-    .slice(0, 8)
-    .replace(/(\d{5})(\d)/, "$1-$2");
-}
 
 function hashString(str: string) {
   let hash = 0;
@@ -151,6 +136,7 @@ function RevealBox({ className, children }: { className?: string; children: Reac
 
 export default function RelatorioAvaliacaoRiscosResultado() {
   const location = useLocation();
+  const navigate = useNavigate();
   const state = location.state as ResultadoState | null;
 
   const [revealed, setRevealed] = useState(false);
@@ -193,7 +179,7 @@ export default function RelatorioAvaliacaoRiscosResultado() {
     return <Navigate to="/relatorio-avaliacao-riscos" replace />;
   }
 
-  const { nomeSolicitante, emailSolicitante } = state;
+  const { nomeSolicitante, cpfSolicitante, emailSolicitante } = state;
   const nomeComprador = toTitleCase(state.nomeComprador);
 
   const dadosRelatorio: DadosRelatorio = {
@@ -560,15 +546,15 @@ export default function RelatorioAvaliacaoRiscosResultado() {
 
                 <Button
                   onClick={() =>
-                    window.open(
-                      verificacaoWaLink(
+                    navigate("/relatorio-avaliacao-riscos/processando", {
+                      state: {
                         nomeComprador,
                         nomeSolicitante,
+                        cpfSolicitante,
                         emailSolicitante,
                         dadosRelatorio,
-                      ),
-                      "_blank",
-                    )
+                      },
+                    })
                   }
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1daf66] py-6 text-base font-bold text-white shadow-lg shadow-[#1daf66]/30 transition-all hover:-translate-y-0.5 hover:bg-[#1daf66]/90"
                 >

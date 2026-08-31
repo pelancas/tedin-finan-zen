@@ -26,6 +26,7 @@ import PlanejamentoConteudo from "./pages/planejamento/PlanejamentoConteudo";
 import RelatorioAvaliacaoRiscos from "./pages/relatorio-riscos/RelatorioAvaliacaoRiscos";
 import RelatorioAvaliacaoRiscosAutonomos from "./pages/relatorio-riscos/RelatorioAvaliacaoRiscosAutonomos";
 import RelatorioAvaliacaoRiscosResultado from "./pages/relatorio-riscos/RelatorioAvaliacaoRiscosResultado";
+import RelatorioAvaliacaoRiscosProcessando from "./pages/relatorio-riscos/RelatorioAvaliacaoRiscosProcessando";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -65,6 +66,10 @@ const App = () => (
           <Route
             path="/relatorio-avaliacao-riscos/resultado"
             element={<RelatorioAvaliacaoRiscosResultado />}
+          />
+          <Route
+            path="/relatorio-avaliacao-riscos/processando"
+            element={<RelatorioAvaliacaoRiscosProcessando />}
           />
           <Route path="*" element={<NotFound />} />
         </Routes>
