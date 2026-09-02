@@ -5,13 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -54,36 +47,6 @@ const certidoes = [
   "Receita Municipal",
   "Justiça do Trabalho",
   "Justiça Federal",
-];
-
-const ESTADOS = [
-  { sigla: "AC", nome: "Acre" },
-  { sigla: "AL", nome: "Alagoas" },
-  { sigla: "AP", nome: "Amapá" },
-  { sigla: "AM", nome: "Amazonas" },
-  { sigla: "BA", nome: "Bahia" },
-  { sigla: "CE", nome: "Ceará" },
-  { sigla: "DF", nome: "Distrito Federal" },
-  { sigla: "ES", nome: "Espírito Santo" },
-  { sigla: "GO", nome: "Goiás" },
-  { sigla: "MA", nome: "Maranhão" },
-  { sigla: "MT", nome: "Mato Grosso" },
-  { sigla: "MS", nome: "Mato Grosso do Sul" },
-  { sigla: "MG", nome: "Minas Gerais" },
-  { sigla: "PA", nome: "Pará" },
-  { sigla: "PB", nome: "Paraíba" },
-  { sigla: "PR", nome: "Paraná" },
-  { sigla: "PE", nome: "Pernambuco" },
-  { sigla: "PI", nome: "Piauí" },
-  { sigla: "RJ", nome: "Rio de Janeiro" },
-  { sigla: "RN", nome: "Rio Grande do Norte" },
-  { sigla: "RS", nome: "Rio Grande do Sul" },
-  { sigla: "RO", nome: "Rondônia" },
-  { sigla: "RR", nome: "Roraima" },
-  { sigla: "SC", nome: "Santa Catarina" },
-  { sigla: "SP", nome: "São Paulo" },
-  { sigla: "SE", nome: "Sergipe" },
-  { sigla: "TO", nome: "Tocantins" },
 ];
 
 function hashString(str: string) {
@@ -147,11 +110,18 @@ export default function RelatorioAvaliacaoRiscosResultado() {
 
   const [nomeVendedor, setNomeVendedor] = useState(toTitleCase(state?.nomeComprador ?? ""));
   const [cpfVendedor, setCpfVendedor] = useState("");
+  const [nomeSolicitanteInput, setNomeSolicitanteInput] = useState(
+    toTitleCase(state?.nomeSolicitante ?? ""),
+  );
+  const [cpfSolicitanteInput, setCpfSolicitanteInput] = useState(state?.cpfSolicitante ?? "");
+  const [emailSolicitanteInput, setEmailSolicitanteInput] = useState(
+    state?.emailSolicitante ?? "",
+  );
   const [rua, setRua] = useState("");
   const [numero, setNumero] = useState("");
   const [bairro, setBairro] = useState("");
-  const [cidade, setCidade] = useState("");
-  const [estado, setEstado] = useState("");
+  const cidade = "Belo Horizonte";
+  const estado = "MG";
   const [cep, setCep] = useState("");
   const [indiceCadastral, setIndiceCadastral] = useState("");
   const [temIndiceCadastral, setTemIndiceCadastral] = useState<boolean | null>(null);
@@ -179,7 +149,6 @@ export default function RelatorioAvaliacaoRiscosResultado() {
     return <Navigate to="/relatorio-avaliacao-riscos" replace />;
   }
 
-  const { nomeSolicitante, cpfSolicitante, emailSolicitante } = state;
   const nomeComprador = toTitleCase(state.nomeComprador);
 
   const dadosRelatorio: DadosRelatorio = {
@@ -401,22 +370,60 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                   </RevealTitle>
                 </div>
                 <p className="mb-5 text-sm text-slate-600">
-                  Confirme os dados do vendedor e do imóvel para elaborarmos o parecer completo.
+                  Confirme os dados do proprietário e do imóvel para elaborarmos o parecer completo.
                 </p>
 
                 <div className="mb-6 flex flex-col gap-4">
+                  <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+                    Seus dados
+                  </p>
+
                   <div className="flex flex-col gap-1.5">
-                    <Label htmlFor="nomeVendedor">Nome completo do vendedor</Label>
+                    <Input
+                      id="nomeSolicitanteInput"
+                      value={nomeSolicitanteInput}
+                      onChange={(e) => setNomeSolicitanteInput(toTitleCase(e.target.value))}
+                      placeholder="Seu nome completo"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1.5">
+                      <Input
+                        id="cpfSolicitanteInput"
+                        inputMode="numeric"
+                        value={cpfSolicitanteInput}
+                        onChange={(e) => setCpfSolicitanteInput(maskCPF(e.target.value))}
+                        placeholder="000.000.000-00"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <Input
+                        id="emailSolicitanteInput"
+                        type="email"
+                        value={emailSolicitanteInput}
+                        onChange={(e) => setEmailSolicitanteInput(e.target.value)}
+                        placeholder="seuemail@exemplo.com"
+                      />
+                    </div>
+                  </div>
+
+                  <p className="mt-1 text-xs font-bold uppercase tracking-wide text-slate-400">
+                    Dados do proprietário
+                  </p>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="nomeVendedor">Nome completo do proprietário</Label>
                     <Input
                       id="nomeVendedor"
                       value={nomeVendedor}
                       onChange={(e) => setNomeVendedor(toTitleCase(e.target.value))}
-                      placeholder="Nome completo do vendedor"
+                      placeholder="Nome completo do proprietário"
                     />
                   </div>
 
                   <div className="flex flex-col gap-1.5">
-                    <Label htmlFor="cpfVendedor">CPF do vendedor</Label>
+                    <Label htmlFor="cpfVendedor">CPF do proprietário</Label>
                     <Input
                       id="cpfVendedor"
                       inputMode="numeric"
@@ -462,26 +469,20 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                       <Input
                         id="cidade"
                         value={cidade}
-                        onChange={(e) => setCidade(e.target.value)}
+                        readOnly
+                        disabled
                         placeholder="Cidade"
                       />
                     </div>
                   </div>
 
+                  <p className="-mt-2 text-xs text-slate-500">
+                    No momento, atendemos apenas imóveis em Belo Horizonte — MG.
+                  </p>
+
                   <div className="grid grid-cols-2 gap-3">
                     <div className="flex flex-col gap-1.5">
-                      <Select value={estado} onValueChange={setEstado}>
-                        <SelectTrigger id="estado">
-                          <SelectValue placeholder="UF" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {ESTADOS.map((uf) => (
-                            <SelectItem key={uf.sigla} value={uf.sigla}>
-                              {uf.sigla} — {uf.nome}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <Input id="estado" value={`${estado} — Minas Gerais`} readOnly disabled />
                     </div>
                     <div className="flex flex-col gap-1.5">
                       <Input
@@ -549,9 +550,9 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                     navigate("/relatorio-avaliacao-riscos/processando", {
                       state: {
                         nomeComprador,
-                        nomeSolicitante,
-                        cpfSolicitante,
-                        emailSolicitante,
+                        nomeSolicitante: nomeSolicitanteInput,
+                        cpfSolicitante: cpfSolicitanteInput,
+                        emailSolicitante: emailSolicitanteInput,
                         dadosRelatorio,
                       },
                     })

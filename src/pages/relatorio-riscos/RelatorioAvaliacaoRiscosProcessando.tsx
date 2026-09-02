@@ -2,6 +2,14 @@ import { useEffect, useState } from "react";
 import { useLocation, Navigate, Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
 import { cn } from "@/lib/utils";
 import { downloadBlankPdf } from "@/lib/blank-pdf";
@@ -14,6 +22,7 @@ import {
   Circle,
   Download,
   PartyPopper,
+  Star,
 } from "lucide-react";
 import {
   toTitleCase,
@@ -171,6 +180,10 @@ export default function RelatorioAvaliacaoRiscosProcessando() {
   const [elapsedMs, setElapsedMs] = useState(0);
   const [jobPronto, setJobPronto] = useState(false);
   const [reportId] = useState(() => generateReportId());
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [feedbackTexto, setFeedbackTexto] = useState("");
+  const [feedbackNota, setFeedbackNota] = useState(0);
+  const [feedbackNotaHover, setFeedbackNotaHover] = useState(0);
 
   useDocumentMeta(
     "Gerando seu Relatório de Avaliação de Riscos | Orienta",
@@ -354,7 +367,7 @@ export default function RelatorioAvaliacaoRiscosProcessando() {
                   Seu Relatório de Avaliação de Riscos está pronto para download.
                 </p>
                 <Button
-                  onClick={() => downloadBlankPdf(PDF_FILENAME)}
+                  onClick={() => setFeedbackOpen(true)}
                   className="flex items-center justify-center gap-2 rounded-xl bg-[#1daf66] px-8 py-6 text-base font-bold text-white shadow-lg shadow-[#1daf66]/30 transition-all hover:-translate-y-0.5 hover:bg-[#1daf66]/90"
                 >
                   <Download size={18} />
@@ -365,6 +378,73 @@ export default function RelatorioAvaliacaoRiscosProcessando() {
           </div>
         </div>
       </section>
+
+      <Dialog open={feedbackOpen} onOpenChange={setFeedbackOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>O que você achou da ferramenta?</DialogTitle>
+            <DialogDescription>
+              Sua opinião nos ajuda a melhorar. As perguntas abaixo são opcionais.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="feedback-nota" className="text-sm font-medium text-slate-700">
+                Avalie a ferramenta
+              </label>
+              <div id="feedback-nota" className="flex items-center gap-1">
+                {[1, 2, 3, 4, 5].map((valor) => {
+                  const preenchida = valor <= (feedbackNotaHover || feedbackNota);
+                  return (
+                    <button
+                      key={valor}
+                      type="button"
+                      onClick={() => setFeedbackNota((atual) => (atual === valor ? 0 : valor))}
+                      onMouseEnter={() => setFeedbackNotaHover(valor)}
+                      onMouseLeave={() => setFeedbackNotaHover(0)}
+                      className="p-0.5 transition-transform hover:scale-110"
+                      aria-label={`${valor} de 5 estrelas`}
+                    >
+                      <Star
+                        size={26}
+                        className={cn(
+                          "transition-colors",
+                          preenchida ? "fill-[#1daf66] text-[#1daf66]" : "fill-transparent text-slate-300",
+                        )}
+                      />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="feedback-texto" className="text-sm font-medium text-slate-700">
+                O que está achando da ferramenta?
+              </label>
+              <Textarea
+                id="feedback-texto"
+                value={feedbackTexto}
+                onChange={(e) => setFeedbackTexto(e.target.value)}
+                placeholder="Conte pra gente sua experiência (opcional)"
+                rows={3}
+              />
+            </div>
+
+            <Button
+              onClick={() => {
+                downloadBlankPdf(PDF_FILENAME);
+                setFeedbackOpen(false);
+              }}
+              className="flex items-center justify-center gap-2 rounded-xl bg-[#1daf66] py-6 text-base font-bold text-white shadow-lg shadow-[#1daf66]/30 transition-all hover:-translate-y-0.5 hover:bg-[#1daf66]/90"
+            >
+              <Download size={18} />
+              Baixar PDF
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 }
