@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, Navigate, Link } from "react-router-dom";
+import { toast } from "sonner";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,7 +13,12 @@ import {
 } from "@/components/ui/dialog";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
 import { cn } from "@/lib/utils";
-import { downloadBlankPdf } from "@/lib/blank-pdf";
+import {
+  baixarPdf,
+  consultarJob,
+  fontesRelatorioCompleto,
+  type JobResponse,
+} from "@/lib/orienta-dd";
 import {
   ShieldCheck,
   ArrowLeft,
@@ -20,6 +26,7 @@ import {
   MinusCircle,
   Loader2,
   Circle,
+  AlertTriangle,
   Download,
   PartyPopper,
   Star,
@@ -37,84 +44,41 @@ interface ProcessandoState {
   cpfSolicitante: string;
   emailSolicitante: string;
   dadosRelatorio: DadosRelatorio;
+  jobId: string;
 }
 
 type StepStatus = "pendente" | "em_andamento" | "ok" | "sem_resultado";
 
-interface StepConfig {
-  key: string;
-  label: string;
-  startAtMs: number;
-  doneAtMs: number;
-  finalStatus: "ok" | "sem_resultado";
-  resultText: string;
-}
-
-interface FinalStepConfig {
-  key: string;
-  label: string;
-  startAtMs: number;
-  doneAtMs: number;
-}
-
-const STEPS: StepConfig[] = [
-  {
-    key: "cpf",
-    label: "Situação Cadastral do CPF (Receita Federal)",
-    startAtMs: 0,
-    doneAtMs: 1600,
-    finalStatus: "ok",
-    resultText: "ok (2s)",
-  },
-  {
-    key: "iptu",
-    label: "CND IPTU (PBH)",
-    startAtMs: 100,
-    doneAtMs: 400,
-    finalStatus: "sem_resultado",
-    resultText: "sem resultado (0s)",
-  },
-  {
-    key: "trabalhista",
-    label: "CND Trabalhista (TST)",
-    startAtMs: 200,
-    doneAtMs: 11000,
-    finalStatus: "sem_resultado",
-    resultText: "sem resultado (99s)",
-  },
-  {
-    key: "cnpjs",
-    label: "CNPJs ligados",
-    startAtMs: 300,
-    doneAtMs: 2200,
-    finalStatus: "ok",
-    resultText: "ok (1s)",
-  },
-  {
-    key: "processos",
-    label: "Processos judiciais",
-    startAtMs: 400,
-    doneAtMs: 6200,
-    finalStatus: "ok",
-    resultText: "ok (42s)",
-  },
+// Rótulos batem com FONTE de cada coletor em orienta_dd/coletores/*.py — é o
+// que aparece nas linhas de orienta_dd/fila.py:_anotar (job.progresso).
+const STEP_DEFS: { chave: string; label: string }[] = [
+  { chave: "cpf_situacao", label: "Situação Cadastral do CPF (Receita Federal)" },
+  { chave: "cnd_iptu", label: "CND IPTU (PBH)" },
+  { chave: "cndt", label: "CND Trabalhista (TST)" },
+  { chave: "empresas", label: "CNPJs ligados" },
+  { chave: "empresas_cpf", label: "Empresas ligadas (CPF.CNPJ)" },
+  { chave: "processos", label: "Processos judiciais" },
 ];
 
-const FINAL_STEPS: FinalStepConfig[] = [
-  { key: "pdf", label: "Gerando o PDF", startAtMs: 11200, doneAtMs: 13800 },
-];
+function statusDoPasso(progresso: string[], label: string): StepStatus {
+  const linhaFinal = progresso.find((l) => l.includes(`${label}: `));
+  if (linhaFinal) {
+    return linhaFinal.includes(": ok") ? "ok" : "sem_resultado";
+  }
+  if (progresso.some((l) => l.includes(`consultando ${label}`))) return "em_andamento";
+  return "pendente";
+}
 
-const PDF_PRONTO_MS = 13800;
-const JOB_PRONTO_MS = 14200;
-const PDF_FILENAME = "relatorio_due_diligence.pdf";
+function resultTextDoPasso(progresso: string[], label: string): string | undefined {
+  const linha = progresso.find((l) => l.includes(`${label}: `));
+  if (!linha) return undefined;
+  return linha.slice(linha.indexOf(`${label}: `) + label.length + 2);
+}
 
-const REPORT_ID_ALPHABET =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-function generateReportId(length = 21) {
-  const bytes = new Uint8Array(length);
-  crypto.getRandomValues(bytes);
-  return Array.from(bytes, (b) => REPORT_ID_ALPHABET[b % REPORT_ID_ALPHABET.length]).join("");
+function statusPdf(progresso: string[], jobStatus: JobResponse["status"] | undefined): StepStatus {
+  if (jobStatus === "pronto") return "ok";
+  if (progresso.some((l) => l.includes("gerando o PDF"))) return "em_andamento";
+  return "pendente";
 }
 
 function StepRow({
@@ -166,7 +130,7 @@ function StepRow({
           {resultText}
         </span>
       )}
-      {status === "em_andamento" && (
+      {status === "em_andamento" && !resultText && (
         <span className="text-xs font-semibold text-[#1daf66]">consultando...</span>
       )}
     </div>
@@ -177,9 +141,10 @@ export default function RelatorioAvaliacaoRiscosProcessando() {
   const location = useLocation();
   const state = location.state as ProcessandoState | null;
 
+  const [job, setJob] = useState<JobResponse | null>(null);
+  const [erroConsulta, setErroConsulta] = useState<string | null>(null);
   const [elapsedMs, setElapsedMs] = useState(0);
-  const [jobPronto, setJobPronto] = useState(false);
-  const [reportId] = useState(() => generateReportId());
+  const [baixando, setBaixando] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [feedbackTexto, setFeedbackTexto] = useState("");
   const [feedbackNota, setFeedbackNota] = useState(0);
@@ -201,19 +166,45 @@ export default function RelatorioAvaliacaoRiscosProcessando() {
     return () => tag?.removeAttribute("content");
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => setElapsedMs((ms) => ms + 200), 200);
-    const timeout = setTimeout(() => {
-      setJobPronto(true);
-      clearInterval(interval);
-    }, JOB_PRONTO_MS);
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeout);
-    };
-  }, []);
+  const jobId = state?.jobId;
 
-  if (!state?.nomeComprador || !state?.dadosRelatorio) {
+  // Polling do job real — para sozinho quando ele termina (pronto ou erro).
+  useEffect(() => {
+    if (!jobId) return;
+    let cancelado = false;
+    let timer: ReturnType<typeof setTimeout>;
+
+    async function poll() {
+      try {
+        const atual = await consultarJob(jobId as string);
+        if (cancelado) return;
+        setJob(atual);
+        setErroConsulta(null);
+        if (atual.status === "pronto" || atual.status === "erro") return;
+      } catch (err) {
+        if (cancelado) return;
+        setErroConsulta(
+          err instanceof Error ? err.message : "Não foi possível consultar o andamento.",
+        );
+      }
+      timer = setTimeout(poll, 3000);
+    }
+    poll();
+
+    return () => {
+      cancelado = true;
+      clearTimeout(timer);
+    };
+  }, [jobId]);
+
+  // Cronômetro local — só decorativo, para o usuário ver que algo está acontecendo.
+  useEffect(() => {
+    if (job?.status === "pronto" || job?.status === "erro") return;
+    const interval = setInterval(() => setElapsedMs((ms) => ms + 500), 500);
+    return () => clearInterval(interval);
+  }, [job?.status]);
+
+  if (!state?.nomeComprador || !state?.dadosRelatorio || !state?.jobId) {
     return <Navigate to="/relatorio-avaliacao-riscos" replace />;
   }
 
@@ -221,14 +212,29 @@ export default function RelatorioAvaliacaoRiscosProcessando() {
   const nomeVendedor = toTitleCase(dadosRelatorio.nomeVendedor || state.nomeComprador);
   const endereco = formatEndereco(dadosRelatorio);
   const indiceCadastralTexto = formatIndiceCadastral(dadosRelatorio);
+  const pdfFilename = `relatorio_${nomeVendedor.replace(/\s+/g, "_").toLowerCase()}_${jobId}.pdf`;
 
-  function statusFor(startAtMs: number, doneAtMs: number): "pendente" | "em_andamento" | "concluido" {
-    if (elapsedMs >= doneAtMs) return "concluido";
-    if (elapsedMs >= startAtMs) return "em_andamento";
-    return "pendente";
+  const progresso = job?.progresso ?? [];
+  const passos = fontesRelatorioCompleto(dadosRelatorio.temIndiceCadastral)
+    .map((chave) => STEP_DEFS.find((d) => d.chave === chave))
+    .filter((d): d is { chave: string; label: string } => Boolean(d));
+
+  const jobPronto = job?.status === "pronto";
+  const jobComErro = job?.status === "erro";
+  const pdfStatus = statusPdf(progresso, job?.status);
+
+  async function handleBaixarPdf() {
+    if (baixando || !jobId) return;
+    setBaixando(true);
+    try {
+      await baixarPdf(jobId, pdfFilename);
+      setFeedbackOpen(false);
+    } catch (err) {
+      toast(err instanceof Error ? err.message : "Não foi possível baixar o PDF agora.");
+    } finally {
+      setBaixando(false);
+    }
   }
-
-  const pdfProntoDone = elapsedMs >= PDF_PRONTO_MS;
 
   return (
     <Layout>
@@ -252,7 +258,7 @@ export default function RelatorioAvaliacaoRiscosProcessando() {
             Consulta referente a <strong className="text-white/80">{nomeVendedor}</strong>
           </p>
           <p className="mt-1 text-xs text-white/40">
-            ID do relatório: <span className="font-mono text-white/70">{reportId}</span>
+            ID do relatório: <span className="font-mono text-white/70">{jobId}</span>
           </p>
         </div>
       </section>
@@ -314,51 +320,76 @@ export default function RelatorioAvaliacaoRiscosProcessando() {
                 <dd className="text-sm font-semibold text-slate-800">{indiceCadastralTexto}</dd>
               </div>
             </dl>
+            {dadosRelatorio.temIndiceCadastral !== true && (
+              <p className="mt-4 border-t border-slate-100 pt-4 text-xs text-slate-500">
+                Sem índice cadastral, a CND de IPTU (PBH) não é consultada — as demais fontes
+                seguem normalmente.
+              </p>
+            )}
           </div>
 
           {/* Progresso da consulta */}
           <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xl">
             <div className="mb-5 flex items-center gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#1daf66]/10 text-[#1daf66]">
-                {jobPronto ? <ShieldCheck size={22} /> : <Loader2 size={22} className="animate-spin" />}
+                {jobPronto ? (
+                  <ShieldCheck size={22} />
+                ) : jobComErro ? (
+                  <AlertTriangle size={22} className="text-orange-500" />
+                ) : (
+                  <Loader2 size={22} className="animate-spin" />
+                )}
               </div>
               <div>
                 <h2 className="text-lg font-bold text-slate-900">
-                  {jobPronto ? "Relatório pronto!" : "Consultando fontes oficiais..."}
+                  {jobPronto
+                    ? "Relatório pronto!"
+                    : jobComErro
+                      ? "Não foi possível concluir o relatório"
+                      : "Consultando fontes oficiais..."}
                 </h2>
                 <p className="text-xs text-slate-500">
-                  Tempo decorrido: {(elapsedMs / 1000).toFixed(1)}s
+                  Tempo decorrido: {(elapsedMs / 1000).toFixed(0)}s
                 </p>
               </div>
             </div>
 
             <div className="flex flex-col gap-1.5">
-              {STEPS.map((step) => {
-                const st = statusFor(step.startAtMs, step.doneAtMs);
-                const status: StepStatus =
-                  st === "concluido" ? step.finalStatus : st === "em_andamento" ? "em_andamento" : "pendente";
-                return (
-                  <StepRow
-                    key={step.key}
-                    label={step.label}
-                    status={status}
-                    resultText={status === "ok" || status === "sem_resultado" ? step.resultText : undefined}
-                  />
-                );
-              })}
+              {passos.map((passo) => (
+                <StepRow
+                  key={passo.chave}
+                  label={passo.label}
+                  status={statusDoPasso(progresso, passo.label)}
+                  resultText={resultTextDoPasso(progresso, passo.label)}
+                />
+              ))}
             </div>
 
             <div className="mt-1.5 flex flex-col gap-1.5 border-t border-slate-100 pt-1.5">
-              {FINAL_STEPS.map((step) => {
-                const st = statusFor(step.startAtMs, step.doneAtMs);
-                const status: StepStatus = st === "concluido" ? "ok" : st === "em_andamento" ? "em_andamento" : "pendente";
-                return <StepRow key={step.key} label={step.label} status={status} />;
-              })}
-              <StepRow
-                label={`PDF pronto: ${PDF_FILENAME}`}
-                status={pdfProntoDone ? "ok" : "pendente"}
-              />
+              <StepRow label="Gerando o PDF" status={pdfStatus} />
             </div>
+
+            {erroConsulta && (
+              <p className="mt-4 text-xs text-slate-400">
+                {erroConsulta} — tentando de novo automaticamente.
+              </p>
+            )}
+
+            {jobComErro && (
+              <div className="mt-6 flex flex-col items-center gap-3 rounded-2xl border-2 border-orange-300 bg-orange-50 p-6 text-center">
+                <AlertTriangle size={28} className="text-orange-500" />
+                <p className="text-sm font-semibold text-slate-800">
+                  Algumas fontes não puderam ser consultadas agora.
+                </p>
+                {job?.erro && <p className="text-xs text-slate-500">{job.erro}</p>}
+                <Link
+                  to="/relatorio-avaliacao-riscos"
+                  className="text-sm font-semibold text-[#1daf66] underline underline-offset-2"
+                >
+                  Iniciar uma nova consulta
+                </Link>
+              </div>
+            )}
 
             {jobPronto && (
               <div className="mt-6 flex flex-col items-center gap-3 rounded-2xl border-2 border-[#1daf66] bg-[#1daf66]/5 p-6 text-center">
@@ -433,14 +464,12 @@ export default function RelatorioAvaliacaoRiscosProcessando() {
             </div>
 
             <Button
-              onClick={() => {
-                downloadBlankPdf(PDF_FILENAME);
-                setFeedbackOpen(false);
-              }}
-              className="flex items-center justify-center gap-2 rounded-xl bg-[#1daf66] py-6 text-base font-bold text-white shadow-lg shadow-[#1daf66]/30 transition-all hover:-translate-y-0.5 hover:bg-[#1daf66]/90"
+              onClick={handleBaixarPdf}
+              disabled={baixando}
+              className="flex items-center justify-center gap-2 rounded-xl bg-[#1daf66] py-6 text-base font-bold text-white shadow-lg shadow-[#1daf66]/30 transition-all hover:-translate-y-0.5 hover:bg-[#1daf66]/90 disabled:opacity-70"
             >
               <Download size={18} />
-              Baixar PDF
+              {baixando ? "Baixando..." : "Baixar PDF"}
             </Button>
           </div>
         </DialogContent>

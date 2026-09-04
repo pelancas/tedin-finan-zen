@@ -1,10 +1,11 @@
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
 import { Turnstile } from "@/components/Turnstile";
-import { maskCPF } from "@/lib/masks";
+import { criarJobProcessos } from "@/lib/orienta-dd";
 import {
   Accordion,
   AccordionContent,
@@ -187,12 +188,6 @@ export const faq = [
 interface ConsultaFormProps {
   nomeComprador: string;
   setNomeComprador: (v: string) => void;
-  nomeSolicitante: string;
-  setNomeSolicitante: (v: string) => void;
-  cpfSolicitante: string;
-  setCpfSolicitante: (v: string) => void;
-  emailSolicitante: string;
-  setEmailSolicitante: (v: string) => void;
   verificando: boolean;
   captchaToken: string | null;
   setCaptchaToken: (token: string | null) => void;
@@ -202,12 +197,6 @@ interface ConsultaFormProps {
 export function ConsultaForm({
   nomeComprador,
   setNomeComprador,
-  nomeSolicitante,
-  setNomeSolicitante,
-  cpfSolicitante,
-  setCpfSolicitante,
-  emailSolicitante,
-  setEmailSolicitante,
   verificando,
   captchaToken,
   setCaptchaToken,
@@ -215,35 +204,7 @@ export function ConsultaForm({
 }: ConsultaFormProps) {
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-3">
-      <input
-        type="text"
-        required
-        value={nomeSolicitante}
-        onChange={(e) => setNomeSolicitante(e.target.value)}
-        placeholder="Seu nome"
-        className="h-14 w-full rounded-xl border border-white/15 bg-white/5 px-4 text-white placeholder:text-white/40 outline-none transition-colors focus:border-[#1daf66] focus:bg-white/10"
-      />
-      <input
-        type="text"
-        required
-        inputMode="numeric"
-        value={cpfSolicitante}
-        onChange={(e) => setCpfSolicitante(maskCPF(e.target.value))}
-        placeholder="Seu CPF"
-        className="h-14 w-full rounded-xl border border-white/15 bg-white/5 px-4 text-white placeholder:text-white/40 outline-none transition-colors focus:border-[#1daf66] focus:bg-white/10"
-      />
-      <input
-        type="email"
-        required
-        value={emailSolicitante}
-        onChange={(e) => setEmailSolicitante(e.target.value)}
-        placeholder="Seu email"
-        className="h-14 w-full rounded-xl border border-white/15 bg-white/5 px-4 text-white placeholder:text-white/40 outline-none transition-colors focus:border-[#1daf66] focus:bg-white/10"
-      />
       <div className="flex flex-col gap-1.5 text-left">
-        <label className="text-sm font-medium text-white/70">
-          Nome completo do proprietário para consulta:
-        </label>
         <input
           type="text"
           required
@@ -278,35 +239,32 @@ export default function RelatorioAvaliacaoRiscos() {
 
   const navigate = useNavigate();
   const [nomeComprador, setNomeComprador] = useState("");
-  const [nomeSolicitante, setNomeSolicitante] = useState("");
-  const [cpfSolicitante, setCpfSolicitante] = useState("");
-  const [emailSolicitante, setEmailSolicitante] = useState("");
   const [verificando, setVerificando] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleVerificar = (e: FormEvent<HTMLFormElement>) => {
+  const handleVerificar = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (
-      !nomeComprador.trim() ||
-      !nomeSolicitante.trim() ||
-      !cpfSolicitante.trim() ||
-      !emailSolicitante.trim() ||
-      !captchaToken ||
-      verificando
-    )
-      return;
+    if (!nomeComprador.trim() || !captchaToken || verificando) return;
     setVerificando(true);
-    setTimeout(() => {
+    try {
+      // Dispara a busca de processos judiciais já aqui, para a página de
+      // resultado só precisar aguardar o job em vez de criar um novo.
+      const processosJobId = await criarJobProcessos(nomeComprador.trim());
       navigate("/relatorio-avaliacao-riscos/resultado", {
         state: {
           nomeComprador: nomeComprador.trim(),
-          nomeSolicitante: nomeSolicitante.trim(),
-          cpfSolicitante: cpfSolicitante.trim(),
-          emailSolicitante: emailSolicitante.trim(),
+          processosJobId,
         },
       });
-    }, 1400);
+    } catch (err) {
+      toast(
+        err instanceof Error
+          ? err.message
+          : "Não foi possível iniciar a consulta. Tente novamente em instantes.",
+      );
+      setVerificando(false);
+    }
   };
 
   return (
@@ -361,12 +319,6 @@ export default function RelatorioAvaliacaoRiscos() {
                 <ConsultaForm
                   nomeComprador={nomeComprador}
                   setNomeComprador={setNomeComprador}
-                  nomeSolicitante={nomeSolicitante}
-                  setNomeSolicitante={setNomeSolicitante}
-                  cpfSolicitante={cpfSolicitante}
-                  setCpfSolicitante={setCpfSolicitante}
-                  emailSolicitante={emailSolicitante}
-                  setEmailSolicitante={setEmailSolicitante}
                   verificando={verificando}
                   captchaToken={captchaToken}
                   setCaptchaToken={setCaptchaToken}
@@ -586,12 +538,6 @@ export default function RelatorioAvaliacaoRiscos() {
           <ConsultaForm
             nomeComprador={nomeComprador}
             setNomeComprador={setNomeComprador}
-            nomeSolicitante={nomeSolicitante}
-            setNomeSolicitante={setNomeSolicitante}
-            cpfSolicitante={cpfSolicitante}
-            setCpfSolicitante={setCpfSolicitante}
-            emailSolicitante={emailSolicitante}
-            setEmailSolicitante={setEmailSolicitante}
             verificando={verificando}
             captchaToken={captchaToken}
             setCaptchaToken={setCaptchaToken}

@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useLocation, useNavigate, Navigate, Link } from "react-router-dom";
+import { toast } from "sonner";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,13 @@ import { useInView } from "@/hooks/use-in-view";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
 import { cn } from "@/lib/utils";
 import { maskCPF, maskCEP } from "@/lib/masks";
+import { Progress } from "@/components/ui/progress";
+import {
+  aguardarProcessos,
+  criarJobCompleto,
+  fontesRelatorioCompleto,
+  type ProcessoItem,
+} from "@/lib/orienta-dd";
 import {
   ShieldCheck,
   FileCheck2,
@@ -31,31 +39,21 @@ import {
   passos,
   faq,
   toTitleCase,
+  formatEndereco,
   type DadosRelatorio,
 } from "./RelatorioAvaliacaoRiscos";
 
 interface ResultadoState {
   nomeComprador: string;
-  nomeSolicitante: string;
-  cpfSolicitante: string;
-  emailSolicitante: string;
+  processosJobId?: string;
 }
 
 const certidoes = [
   "Receita Federal",
-  "Receita Estadual",
   "Receita Municipal",
   "Justiça do Trabalho",
   "Justiça Federal",
 ];
-
-function hashString(str: string) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
-  }
-  return hash;
-}
 
 function RevealTitle({
   as: Tag = "h2",
@@ -110,13 +108,9 @@ export default function RelatorioAvaliacaoRiscosResultado() {
 
   const [nomeVendedor, setNomeVendedor] = useState(toTitleCase(state?.nomeComprador ?? ""));
   const [cpfVendedor, setCpfVendedor] = useState("");
-  const [nomeSolicitanteInput, setNomeSolicitanteInput] = useState(
-    toTitleCase(state?.nomeSolicitante ?? ""),
-  );
-  const [cpfSolicitanteInput, setCpfSolicitanteInput] = useState(state?.cpfSolicitante ?? "");
-  const [emailSolicitanteInput, setEmailSolicitanteInput] = useState(
-    state?.emailSolicitante ?? "",
-  );
+  const [nomeSolicitanteInput, setNomeSolicitanteInput] = useState("");
+  const [cpfSolicitanteInput, setCpfSolicitanteInput] = useState("");
+  const [emailSolicitanteInput, setEmailSolicitanteInput] = useState("");
   const [rua, setRua] = useState("");
   const [numero, setNumero] = useState("");
   const [bairro, setBairro] = useState("");
@@ -125,6 +119,54 @@ export default function RelatorioAvaliacaoRiscosResultado() {
   const [cep, setCep] = useState("");
   const [indiceCadastral, setIndiceCadastral] = useState("");
   const [temIndiceCadastral, setTemIndiceCadastral] = useState<boolean | null>(null);
+  const [liberando, setLiberando] = useState(false);
+
+  const [processosCarregando, setProcessosCarregando] = useState(true);
+  const [processosItens, setProcessosItens] = useState<ProcessoItem[]>([]);
+  const [processosErro, setProcessosErro] = useState<string | null>(null);
+
+  const processosJobId = state?.processosJobId;
+  useEffect(() => {
+    if (!processosJobId) {
+      setProcessosCarregando(false);
+      setProcessosErro("A consulta de processos não foi iniciada.");
+      return;
+    }
+    let cancelado = false;
+    setProcessosCarregando(true);
+    setProcessosErro(null);
+    aguardarProcessos(processosJobId)
+      .then((resultado) => {
+        if (cancelado) return;
+        setProcessosItens(resultado.itens);
+        setProcessosErro(resultado.erro ?? null);
+      })
+      .catch((err) => {
+        if (cancelado) return;
+        setProcessosErro(
+          err instanceof Error ? err.message : "Não foi possível consultar os processos.",
+        );
+      })
+      .finally(() => {
+        if (!cancelado) setProcessosCarregando(false);
+      });
+    return () => {
+      cancelado = true;
+    };
+  }, [processosJobId]);
+
+  // Espelha o timeout de aguardarProcessos (60 tentativas x 2s = 2min) para a barra.
+  const PROCESSOS_TIMEOUT_MS = 120_000;
+  const [processosElapsedMs, setProcessosElapsedMs] = useState(0);
+  useEffect(() => {
+    if (!processosCarregando) return;
+    setProcessosElapsedMs(0);
+    const inicio = Date.now();
+    const interval = setInterval(() => {
+      setProcessosElapsedMs(Math.min(Date.now() - inicio, PROCESSOS_TIMEOUT_MS));
+    }, 300);
+    return () => clearInterval(interval);
+  }, [processosCarregando, processosJobId]);
 
   useDocumentMeta(
     state?.nomeComprador
@@ -145,7 +187,7 @@ export default function RelatorioAvaliacaoRiscosResultado() {
     return () => tag?.removeAttribute("content");
   }, []);
 
-  if (!state?.nomeComprador || !state?.nomeSolicitante || !state?.emailSolicitante) {
+  if (!state?.nomeComprador) {
     return <Navigate to="/relatorio-avaliacao-riscos" replace />;
   }
 
@@ -168,12 +210,15 @@ export default function RelatorioAvaliacaoRiscosResultado() {
   const empresasDelayMs = certidoes.length * CERT_STEP_MS + 150;
   const processosDelayMs = empresasDelayMs + 200;
 
-  const processosEncontrados = hashString(nomeComprador.toLowerCase()) % 6;
+  const processosEncontrados = processosItens.length;
   const temProcessos = processosEncontrados > 0;
-  const processosPreview = Array.from(
-    { length: Math.min(processosEncontrados, 4) },
-    (_, i) => i + 1,
-  );
+  const processosPreview = processosItens.slice(0, 4);
+
+  // Nunca chega a 100% sozinha — só "fecha" quando o resultado realmente chega.
+  const processosProgressoPct = Math.min((processosElapsedMs / PROCESSOS_TIMEOUT_MS) * 100, 97);
+  const processosElapsedLabel = `${Math.floor(processosElapsedMs / 60000)}:${String(
+    Math.floor((processosElapsedMs % 60000) / 1000),
+  ).padStart(2, "0")}`;
 
   const consultas = [
     {
@@ -283,15 +328,23 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                 );
               })}
 
-              {/* Processos judiciais — destaque verde/laranja */}
+              {/* Processos judiciais — destaque verde/laranja, dados reais da API */}
               <div
                 className={cn(
                   "rounded-2xl border p-5 transition-all duration-500 ease-out",
                   revealed ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
                 )}
                 style={{
-                  borderColor: temProcessos ? "rgba(249,115,22,0.35)" : "rgba(29,175,102,0.35)",
-                  background: temProcessos ? "rgba(249,115,22,0.06)" : "rgba(29,175,102,0.06)",
+                  borderColor: processosCarregando
+                    ? "rgba(100,116,139,0.25)"
+                    : temProcessos
+                      ? "rgba(249,115,22,0.35)"
+                      : "rgba(29,175,102,0.35)",
+                  background: processosCarregando
+                    ? "rgba(100,116,139,0.05)"
+                    : temProcessos
+                      ? "rgba(249,115,22,0.06)"
+                      : "rgba(29,175,102,0.06)",
                   transitionDelay: `${processosDelayMs}ms`,
                 }}
               >
@@ -299,8 +352,12 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                   <div
                     className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
                     style={{
-                      background: temProcessos ? "rgba(249,115,22,0.15)" : "rgba(29,175,102,0.15)",
-                      color: temProcessos ? "#c2410c" : "#15803d",
+                      background: processosCarregando
+                        ? "rgba(100,116,139,0.12)"
+                        : temProcessos
+                          ? "rgba(249,115,22,0.15)"
+                          : "rgba(29,175,102,0.15)",
+                      color: processosCarregando ? "#475569" : temProcessos ? "#c2410c" : "#15803d",
                     }}
                   >
                     <Gavel size={20} />
@@ -313,29 +370,49 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                       Levantamento de ações vinculadas ao CPF ou CNPJ do proprietário.
                     </p>
                   </div>
-                  <div
-                    className="flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold"
-                    style={{
-                      background: temProcessos ? "#f97316" : "#1daf66",
-                      color: "#ffffff",
-                    }}
-                  >
-                    {temProcessos ? <AlertTriangle size={12} /> : <CheckCircle2 size={12} />}
-                    {temProcessos
-                      ? `${processosEncontrados} encontrado${processosEncontrados > 1 ? "s" : ""}`
-                      : "Nenhum encontrado"}
-                  </div>
+                  {!processosCarregando && (
+                    <div
+                      className="flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold"
+                      style={{
+                        background: temProcessos ? "#f97316" : "#1daf66",
+                        color: "#ffffff",
+                      }}
+                    >
+                      {temProcessos ? <AlertTriangle size={12} /> : <CheckCircle2 size={12} />}
+                      {temProcessos
+                        ? `${processosEncontrados} encontrado${processosEncontrados > 1 ? "s" : ""}`
+                        : "Nenhum encontrado"}
+                    </div>
+                  )}
                 </div>
 
-                {temProcessos && (
+                {processosCarregando && (
+                  <div className="mt-4 border-t border-slate-200/60 pt-4">
+                    <Progress value={processosProgressoPct} className="bg-slate-200/70" />
+                    <div className="mt-2 flex items-center justify-between text-xs text-slate-500">
+                      <span>Consultando tribunais...</span>
+                      <span className="font-mono">{processosElapsedLabel} </span>
+                    </div>
+                  </div>
+                )}
+
+                {!processosCarregando && processosErro && (
+                  <p className="mt-4 border-t border-slate-200/60 pt-4 text-xs text-slate-500">
+                    Não foi possível concluir essa consulta agora. Ela será refeita na elaboração
+                    do relatório completo.
+                  </p>
+                )}
+
+                {!processosCarregando && !processosErro && temProcessos && (
                   <div className="mt-4 flex flex-col gap-2 border-t border-orange-200/60 pt-4">
-                    {processosPreview.map((n) => (
+                    {processosPreview.map((item, i) => (
                       <div
-                        key={n}
+                        key={item.numero || i}
                         className="flex items-center justify-between rounded-lg bg-white/70 px-3 py-2.5"
                       >
                         <span className="text-sm font-medium text-slate-700">
-                          Processo {n} — <span className="blur-sm select-none">detalhes ocultos</span>
+                          {item.numero || `Processo ${i + 1}`} —{" "}
+                          <span className="blur-sm select-none">detalhes ocultos</span>
                         </span>
                         <span className="flex items-center gap-1 text-xs font-semibold text-orange-700">
                           <Lock size={11} />
@@ -350,8 +427,8 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                       </p>
                     )}
                     <p className="pt-1 text-xs text-slate-500">
-                      Prévia ilustrativa — a confirmação e o detalhamento de cada processo são
-                      feitos na elaboração do relatório completo.
+                      Número do processo identificado — a confirmação e o detalhamento de cada um
+                      são feitos na elaboração do relatório completo.
                     </p>
                   </div>
                 )}
@@ -546,21 +623,46 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                 </div>
 
                 <Button
-                  onClick={() =>
-                    navigate("/relatorio-avaliacao-riscos/processando", {
-                      state: {
-                        nomeComprador,
-                        nomeSolicitante: nomeSolicitanteInput,
-                        cpfSolicitante: cpfSolicitanteInput,
-                        emailSolicitante: emailSolicitanteInput,
-                        dadosRelatorio,
-                      },
-                    })
-                  }
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1daf66] py-6 text-base font-bold text-white shadow-lg shadow-[#1daf66]/30 transition-all hover:-translate-y-0.5 hover:bg-[#1daf66]/90"
+                  disabled={liberando}
+                  onClick={async () => {
+                    if (liberando) return;
+                    setLiberando(true);
+                    try {
+                      const jobId = await criarJobCompleto(
+                        {
+                          nome: nomeVendedor,
+                          doc: cpfVendedor,
+                          indice_iptu: temIndiceCadastral === true ? indiceCadastral : "",
+                          endereco: formatEndereco(dadosRelatorio),
+                          comprador_nome: nomeSolicitanteInput,
+                          comprador_cpf: cpfSolicitanteInput,
+                          email: emailSolicitanteInput,
+                        },
+                        fontesRelatorioCompleto(temIndiceCadastral),
+                      );
+                      navigate("/relatorio-avaliacao-riscos/processando", {
+                        state: {
+                          nomeComprador,
+                          nomeSolicitante: nomeSolicitanteInput,
+                          cpfSolicitante: cpfSolicitanteInput,
+                          emailSolicitante: emailSolicitanteInput,
+                          dadosRelatorio,
+                          jobId,
+                        },
+                      });
+                    } catch (err) {
+                      toast(
+                        err instanceof Error
+                          ? err.message
+                          : "Não foi possível liberar o relatório agora. Tente novamente em instantes.",
+                      );
+                      setLiberando(false);
+                    }
+                  }}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1daf66] py-6 text-base font-bold text-white shadow-lg shadow-[#1daf66]/30 transition-all hover:-translate-y-0.5 hover:bg-[#1daf66]/90 disabled:opacity-70"
                 >
-                  Liberar relatório completo
-                  <ArrowRight size={18} />
+                  {liberando ? "Liberando..." : "Liberar relatório completo"}
+                  {!liberando && <ArrowRight size={18} />}
                 </Button>
               </div>
             </div>

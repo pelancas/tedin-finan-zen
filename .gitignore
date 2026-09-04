@@ -26,5 +26,10 @@ dist-ssr
 # Scripts locais
 deploy.bat
 
+# Segredos locais — contém o token da API do orienta-dd
+.env
+.env.*
+!.env.example
+
 # Notas locais (não subir)
 MELHORIAS-SEO.md

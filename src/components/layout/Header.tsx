@@ -21,6 +21,7 @@ export const primeirosInvestimentos = [
 
 export const primeirosPlanejamento = [
   { name: "Calculadora de aposentadoria", href: "/planejamento/calculadoras/aposentadoria" },
+  { name: "Controle de Despesas", href: "/planejamento/despesas" },
   { name: "Artigos", href: "/planejamento/conteudos" },
 ];
 
@@ -30,6 +31,7 @@ export const ferramentasItems = [
   { name: "Calculadora de metas", href: "/planejamento/calculadoras/metas" },
   { name: "Calculadora do milhão", href: "/planejamento/calculadoras/milhao" },
   { name: "Comparador de renda fixa", href: "/investimentos/renda-fixa/comparador" },
+  { name: "Posso comprar este imóvel?", href: "/imoveis/calculadoras/posso-comprar" },
 ];
 
 export const artigosItems = [
@@ -116,7 +118,8 @@ export function Header() {
     location.pathname === "/planejamento/calculadoras/aposentadoria";
   const isFerramentasActive =
     location.pathname.startsWith("/planejamento") ||
-    location.pathname === "/investimentos/renda-fixa/comparador";
+    location.pathname === "/investimentos/renda-fixa/comparador" ||
+    location.pathname.startsWith("/imoveis");
   const isArtigosActive =
     location.pathname.startsWith("/seguros/conteudos") ||
     location.pathname.startsWith("/planejamento/conteudos");

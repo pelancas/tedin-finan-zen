@@ -23,10 +23,11 @@ import Acoes from "./pages/investimentos/Acoes";
 import Seguros from "./pages/seguros/Seguros";
 import SegurosConteudo from "./pages/seguros/SegurosConteudo";
 import PlanejamentoConteudo from "./pages/planejamento/PlanejamentoConteudo";
-import RelatorioAvaliacaoRiscos from "./pages/relatorio-riscos/RelatorioAvaliacaoRiscos";
-import RelatorioAvaliacaoRiscosAutonomos from "./pages/relatorio-riscos/RelatorioAvaliacaoRiscosAutonomos";
-import RelatorioAvaliacaoRiscosResultado from "./pages/relatorio-riscos/RelatorioAvaliacaoRiscosResultado";
-import RelatorioAvaliacaoRiscosProcessando from "./pages/relatorio-riscos/RelatorioAvaliacaoRiscosProcessando";
+import PossoComprar from "./pages/imoveis/PossoComprar";
+import RelatorioAvaliacaoRiscos from "./pages/imoveis/RelatorioAvaliacaoRiscos";
+import RelatorioAvaliacaoRiscosAutonomos from "./pages/imoveis/RelatorioAvaliacaoRiscosAutonomos";
+import RelatorioAvaliacaoRiscosResultado from "./pages/imoveis/RelatorioAvaliacaoRiscosResultado";
+import RelatorioAvaliacaoRiscosProcessando from "./pages/imoveis/RelatorioAvaliacaoRiscosProcessando";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -58,6 +59,7 @@ const App = () => (
           <Route path="/investimentos/renda-fixa/comparador" element={<ComparadorRendaFixa />} />
           <Route path="/seguros" element={<Seguros />} />
           <Route path="/seguros/conteudos" element={<SegurosConteudo />} />
+          <Route path="/imoveis/calculadoras/posso-comprar" element={<PossoComprar />} />
           <Route path="/relatorio-avaliacao-riscos" element={<RelatorioAvaliacaoRiscos />} />
           <Route
             path="/relatorio-avaliacao-riscos-autonomos"
