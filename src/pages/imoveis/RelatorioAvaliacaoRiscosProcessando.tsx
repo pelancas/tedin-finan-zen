@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import {
   baixarPdf,
   consultarJob,
+  enviarFeedback,
   fontesRelatorioCompleto,
   type JobResponse,
 } from "@/lib/orienta-dd";
@@ -227,6 +228,10 @@ export default function RelatorioAvaliacaoRiscosProcessando() {
     if (baixando || !jobId) return;
     setBaixando(true);
     try {
+      if (feedbackNota > 0) {
+        // Não bloqueia nem cancela o download se o envio do feedback falhar.
+        enviarFeedback(jobId, feedbackNota, feedbackTexto).catch(() => {});
+      }
       await baixarPdf(jobId, pdfFilename);
       setFeedbackOpen(false);
     } catch (err) {

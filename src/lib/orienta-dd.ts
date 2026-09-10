@@ -42,6 +42,8 @@ export interface AlvoPayload {
   indice_iptu?: string;
   endereco?: string;
   endereco2?: string;
+  cidade?: string;
+  estado?: string;
   comprador_nome?: string;
   comprador_cpf?: string;
   email?: string;
@@ -57,8 +59,15 @@ export interface ProcessoItem {
   atualizacao: string;
 }
 
-interface EstadoRelatorio {
-  processos: ProcessoItem[];
+export interface ConsultaProcessosResponse {
+  consulta_id: string;
+  ok: boolean;
+  diagnostico: string;
+  total: number;
+  relevantes: number;
+  itens: ProcessoItem[];
+  avisos: string[];
+  erro: string | null;
 }
 
 function apiConfigurada(): boolean {
@@ -86,26 +95,55 @@ async function chamar<T>(caminho: string, init?: RequestInit): Promise<T> {
   return resposta.json() as Promise<T>;
 }
 
-/** Cria um job pedindo só a fonte "processos" — usado na prévia, ao enviar o nome. */
-export async function criarJobProcessos(nome: string, doc?: string): Promise<string> {
-  const corpo = await chamar<{ id: string }>("/jobs", {
+/** Remove a linha em branco que o backend usa como placeholder de "sem processos". */
+function itensValidos(itens: ProcessoItem[]): ProcessoItem[] {
+  return itens.filter((i) => i.numero || i.nome || i.descricao);
+}
+
+/** Busca só os processos, na hora (sem job/polling) — usado na prévia, ao enviar o nome.
+ * O consulta_id devolvido pode ser passado a criarJobCompleto para o relatório completo
+ * herdar nome/doc e não refazer essa consulta. */
+export async function consultarProcessos(
+  nome: string,
+  doc?: string,
+): Promise<ConsultaProcessosResponse> {
+  // Ainda não coletamos o CPF/CNPJ do proprietário nesta etapa — "0" é o
+  // placeholder combinado com o backend enquanto isso não muda.
+  const resposta = await chamar<ConsultaProcessosResponse>("/processos", {
     method: "POST",
-    body: JSON.stringify({ nome, doc: doc || "", fontes: ["processos"] }),
+    body: JSON.stringify({ nome, doc: doc || "0" }),
   });
-  return corpo.id;
+  return { ...resposta, itens: itensValidos(resposta.itens) };
 }
 
 /** Cria o job do relatório completo (certidões, empresas, processos, PDF final). */
-export async function criarJobCompleto(alvo: AlvoPayload, fontes: string[]): Promise<string> {
+export async function criarJobCompleto(
+  alvo: AlvoPayload,
+  fontes: string[],
+  consultaId?: string,
+): Promise<string> {
   const corpo = await chamar<{ id: string }>("/jobs", {
     method: "POST",
-    body: JSON.stringify({ ...alvo, fontes }),
+    body: JSON.stringify({ ...alvo, fontes, consulta_id: consultaId || undefined }),
   });
   return corpo.id;
 }
 
 export async function consultarJob(jobId: string): Promise<JobResponse> {
   return chamar<JobResponse>(`/jobs/${jobId}`);
+}
+
+/** Envia a nota/observação sobre um job — usado no modal de feedback antes do download. */
+export async function enviarFeedback(
+  jobId: string,
+  nota: number,
+  observacao?: string,
+): Promise<string> {
+  const corpo = await chamar<{ id: string; id_job: string }>(`/jobs/${jobId}/feedback`, {
+    method: "POST",
+    body: JSON.stringify({ nota, observacao: observacao || "" }),
+  });
+  return corpo.id;
 }
 
 /** Baixa o PDF pronto de um job e dispara o download no navegador. */
@@ -129,51 +167,6 @@ export async function baixarPdf(jobId: string, nomeArquivo: string): Promise<voi
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
-}
-
-async function buscarEstado(jobId: string): Promise<EstadoRelatorio> {
-  return chamar<EstadoRelatorio>(`/jobs/${jobId}/estado`);
-}
-
-/** Remove a linha em branco que o backend usa como placeholder de "sem processos". */
-function itensValidos(itens: ProcessoItem[]): ProcessoItem[] {
-  return itens.filter((i) => i.numero || i.nome || i.descricao);
-}
-
-interface ResultadoProcessos {
-  itens: ProcessoItem[];
-  erro?: string;
-}
-
-/** Faz o polling de um job já criado até ele terminar, e devolve os processos achados. */
-export async function aguardarProcessos(
-  jobId: string,
-  opcoes: { intervaloMs?: number; tentativasMax?: number } = {},
-): Promise<ResultadoProcessos> {
-  const intervaloMs = opcoes.intervaloMs ?? 4000;
-  const tentativasMax = opcoes.tentativasMax ?? 30; // ~2min
-
-  for (let tentativa = 0; tentativa < tentativasMax; tentativa++) {
-    const job = await consultarJob(jobId);
-    if (job.status === "pronto") {
-      const estado = await buscarEstado(jobId);
-      return { itens: itensValidos(estado.processos || []) };
-    }
-    if (job.status === "erro") {
-      return { itens: [], erro: job.erro || "Não foi possível concluir a consulta." };
-    }
-    await new Promise((r) => setTimeout(r, intervaloMs));
-  }
-  return { itens: [], erro: "A consulta demorou mais que o esperado." };
-}
-
-/** Cria o job de "processos" para o nome informado e aguarda o resultado (poll). */
-export async function buscarProcessos(
-  nome: string,
-  opcoes: { intervaloMs?: number; tentativasMax?: number } = {},
-): Promise<ResultadoProcessos> {
-  const jobId = await criarJobProcessos(nome);
-  return aguardarProcessos(jobId, opcoes);
 }
 
 export function apiOrientaDdConfigurada(): boolean {

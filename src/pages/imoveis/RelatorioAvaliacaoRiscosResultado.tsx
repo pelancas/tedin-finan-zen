@@ -15,9 +15,7 @@ import { useInView } from "@/hooks/use-in-view";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
 import { cn } from "@/lib/utils";
 import { maskCPF, maskCEP } from "@/lib/masks";
-import { Progress } from "@/components/ui/progress";
 import {
-  aguardarProcessos,
   criarJobCompleto,
   fontesRelatorioCompleto,
   type ProcessoItem,
@@ -45,7 +43,9 @@ import {
 
 interface ResultadoState {
   nomeComprador: string;
-  processosJobId?: string;
+  processosItens?: ProcessoItem[];
+  processosErro?: string | null;
+  consultaId?: string;
 }
 
 const certidoes = [
@@ -121,52 +121,9 @@ export default function RelatorioAvaliacaoRiscosResultado() {
   const [temIndiceCadastral, setTemIndiceCadastral] = useState<boolean | null>(null);
   const [liberando, setLiberando] = useState(false);
 
-  const [processosCarregando, setProcessosCarregando] = useState(true);
-  const [processosItens, setProcessosItens] = useState<ProcessoItem[]>([]);
-  const [processosErro, setProcessosErro] = useState<string | null>(null);
-
-  const processosJobId = state?.processosJobId;
-  useEffect(() => {
-    if (!processosJobId) {
-      setProcessosCarregando(false);
-      setProcessosErro("A consulta de processos não foi iniciada.");
-      return;
-    }
-    let cancelado = false;
-    setProcessosCarregando(true);
-    setProcessosErro(null);
-    aguardarProcessos(processosJobId)
-      .then((resultado) => {
-        if (cancelado) return;
-        setProcessosItens(resultado.itens);
-        setProcessosErro(resultado.erro ?? null);
-      })
-      .catch((err) => {
-        if (cancelado) return;
-        setProcessosErro(
-          err instanceof Error ? err.message : "Não foi possível consultar os processos.",
-        );
-      })
-      .finally(() => {
-        if (!cancelado) setProcessosCarregando(false);
-      });
-    return () => {
-      cancelado = true;
-    };
-  }, [processosJobId]);
-
-  // Espelha o timeout de aguardarProcessos (60 tentativas x 2s = 2min) para a barra.
-  const PROCESSOS_TIMEOUT_MS = 120_000;
-  const [processosElapsedMs, setProcessosElapsedMs] = useState(0);
-  useEffect(() => {
-    if (!processosCarregando) return;
-    setProcessosElapsedMs(0);
-    const inicio = Date.now();
-    const interval = setInterval(() => {
-      setProcessosElapsedMs(Math.min(Date.now() - inicio, PROCESSOS_TIMEOUT_MS));
-    }, 300);
-    return () => clearInterval(interval);
-  }, [processosCarregando, processosJobId]);
+  const processosItens = state?.processosItens ?? [];
+  const processosErro = state?.processosErro ?? null;
+  const consultaId = state?.consultaId;
 
   useDocumentMeta(
     state?.nomeComprador
@@ -215,11 +172,6 @@ export default function RelatorioAvaliacaoRiscosResultado() {
   const processosPreview = processosItens.slice(0, 4);
 
   // Nunca chega a 100% sozinha — só "fecha" quando o resultado realmente chega.
-  const processosProgressoPct = Math.min((processosElapsedMs / PROCESSOS_TIMEOUT_MS) * 100, 97);
-  const processosElapsedLabel = `${Math.floor(processosElapsedMs / 60000)}:${String(
-    Math.floor((processosElapsedMs % 60000) / 1000),
-  ).padStart(2, "0")}`;
-
   const consultas = [
     {
       icon: Building2,
@@ -335,16 +287,12 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                   revealed ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
                 )}
                 style={{
-                  borderColor: processosCarregando
-                    ? "rgba(100,116,139,0.25)"
-                    : temProcessos
-                      ? "rgba(249,115,22,0.35)"
-                      : "rgba(29,175,102,0.35)",
-                  background: processosCarregando
-                    ? "rgba(100,116,139,0.05)"
-                    : temProcessos
-                      ? "rgba(249,115,22,0.06)"
-                      : "rgba(29,175,102,0.06)",
+                  borderColor: temProcessos
+                    ? "rgba(249,115,22,0.35)"
+                    : "rgba(29,175,102,0.35)",
+                  background: temProcessos
+                    ? "rgba(249,115,22,0.06)"
+                    : "rgba(29,175,102,0.06)",
                   transitionDelay: `${processosDelayMs}ms`,
                 }}
               >
@@ -352,12 +300,8 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                   <div
                     className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
                     style={{
-                      background: processosCarregando
-                        ? "rgba(100,116,139,0.12)"
-                        : temProcessos
-                          ? "rgba(249,115,22,0.15)"
-                          : "rgba(29,175,102,0.15)",
-                      color: processosCarregando ? "#475569" : temProcessos ? "#c2410c" : "#15803d",
+                      background: temProcessos ? "rgba(249,115,22,0.15)" : "rgba(29,175,102,0.15)",
+                      color: temProcessos ? "#c2410c" : "#15803d",
                     }}
                   >
                     <Gavel size={20} />
@@ -370,40 +314,28 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                       Levantamento de ações vinculadas ao CPF ou CNPJ do proprietário.
                     </p>
                   </div>
-                  {!processosCarregando && (
-                    <div
-                      className="flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold"
-                      style={{
-                        background: temProcessos ? "#f97316" : "#1daf66",
-                        color: "#ffffff",
-                      }}
-                    >
-                      {temProcessos ? <AlertTriangle size={12} /> : <CheckCircle2 size={12} />}
-                      {temProcessos
-                        ? `${processosEncontrados} encontrado${processosEncontrados > 1 ? "s" : ""}`
-                        : "Nenhum encontrado"}
-                    </div>
-                  )}
+                  <div
+                    className="flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold"
+                    style={{
+                      background: temProcessos ? "#f97316" : "#1daf66",
+                      color: "#ffffff",
+                    }}
+                  >
+                    {temProcessos ? <AlertTriangle size={12} /> : <CheckCircle2 size={12} />}
+                    {temProcessos
+                      ? `${processosEncontrados} encontrado${processosEncontrados > 1 ? "s" : ""}`
+                      : "Nenhum encontrado"}
+                  </div>
                 </div>
 
-                {processosCarregando && (
-                  <div className="mt-4 border-t border-slate-200/60 pt-4">
-                    <Progress value={processosProgressoPct} className="bg-slate-200/70" />
-                    <div className="mt-2 flex items-center justify-between text-xs text-slate-500">
-                      <span>Consultando tribunais...</span>
-                      <span className="font-mono">{processosElapsedLabel} </span>
-                    </div>
-                  </div>
-                )}
-
-                {!processosCarregando && processosErro && (
+                {processosErro && (
                   <p className="mt-4 border-t border-slate-200/60 pt-4 text-xs text-slate-500">
                     Não foi possível concluir essa consulta agora. Ela será refeita na elaboração
                     do relatório completo.
                   </p>
                 )}
 
-                {!processosCarregando && !processosErro && temProcessos && (
+                {!processosErro && temProcessos && (
                   <div className="mt-4 flex flex-col gap-2 border-t border-orange-200/60 pt-4">
                     {processosPreview.map((item, i) => (
                       <div
@@ -634,11 +566,14 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                           doc: cpfVendedor,
                           indice_iptu: temIndiceCadastral === true ? indiceCadastral : "",
                           endereco: formatEndereco(dadosRelatorio),
+                          cidade: "Belo Horizonte",
+                          estado: "Minas Gerais",
                           comprador_nome: nomeSolicitanteInput,
                           comprador_cpf: cpfSolicitanteInput,
                           email: emailSolicitanteInput,
                         },
                         fontesRelatorioCompleto(temIndiceCadastral),
+                        consultaId,
                       );
                       navigate("/relatorio-avaliacao-riscos/processando", {
                         state: {

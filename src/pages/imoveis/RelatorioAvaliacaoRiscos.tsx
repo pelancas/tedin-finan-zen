@@ -5,7 +5,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
 import { Turnstile } from "@/components/Turnstile";
-import { criarJobProcessos } from "@/lib/orienta-dd";
+import { consultarProcessos } from "@/lib/orienta-dd";
 import {
   Accordion,
   AccordionContent,
@@ -35,6 +35,7 @@ import {
   FileCheck2,
   BadgeCheck,
   FileSearch,
+  Loader2,
 } from "lucide-react";
 
 export function toTitleCase(value: string) {
@@ -224,9 +225,15 @@ export function ConsultaForm({
         disabled={verificando || !captchaToken}
         className="flex h-14 items-center justify-center gap-2 rounded-xl bg-[#1daf66] px-8 text-lg font-bold text-white shadow-xl shadow-[#1daf66]/30 transition-all hover:-translate-y-1 hover:bg-[#1daf66]/90 disabled:opacity-70 disabled:hover:translate-y-0"
       >
-        {verificando ? "Verificando..." : "Consultar"}
+        {verificando && <Loader2 size={18} className="animate-spin" />}
+        {verificando ? "Consultando processos..." : "Consultar"}
         {!verificando && <ArrowRight size={18} />}
       </Button>
+      {verificando && (
+        <p className="text-center text-xs text-white/40">
+          Isso pode levar até 1 minuto — não feche esta página.
+        </p>
+      )}
     </form>
   );
 }
@@ -248,13 +255,15 @@ export default function RelatorioAvaliacaoRiscos() {
     if (!nomeComprador.trim() || !captchaToken || verificando) return;
     setVerificando(true);
     try {
-      // Dispara a busca de processos judiciais já aqui, para a página de
-      // resultado só precisar aguardar o job em vez de criar um novo.
-      const processosJobId = await criarJobProcessos(nomeComprador.trim());
+      // Já busca os processos judiciais aqui, para a página de resultado
+      // exibi-los prontos em vez de precisar aguardar.
+      const resultado = await consultarProcessos(nomeComprador.trim());
       navigate("/relatorio-avaliacao-riscos/resultado", {
         state: {
           nomeComprador: nomeComprador.trim(),
-          processosJobId,
+          processosItens: resultado.itens,
+          processosErro: resultado.erro,
+          consultaId: resultado.consulta_id,
         },
       });
     } catch (err) {

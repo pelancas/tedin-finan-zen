@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
-import { criarJobProcessos } from "@/lib/orienta-dd";
+import { consultarProcessos } from "@/lib/orienta-dd";
 import {
   Accordion,
   AccordionContent,
@@ -116,13 +116,15 @@ export default function RelatorioAvaliacaoRiscosAutonomos() {
     if (!nomeComprador.trim() || !captchaToken || verificando) return;
     setVerificando(true);
     try {
-      // Dispara a busca de processos judiciais já aqui, para a página de
-      // resultado só precisar aguardar o job em vez de criar um novo.
-      const processosJobId = await criarJobProcessos(nomeComprador.trim());
+      // Já busca os processos judiciais aqui, para a página de resultado
+      // exibi-los prontos em vez de precisar aguardar.
+      const resultado = await consultarProcessos(nomeComprador.trim());
       navigate("/relatorio-avaliacao-riscos/resultado", {
         state: {
           nomeComprador: nomeComprador.trim(),
-          processosJobId,
+          processosItens: resultado.itens,
+          processosErro: resultado.erro,
+          consultaId: resultado.consulta_id,
         },
       });
     } catch (err) {
