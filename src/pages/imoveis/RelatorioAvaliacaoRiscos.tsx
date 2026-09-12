@@ -1,11 +1,9 @@
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
 import { Turnstile } from "@/components/Turnstile";
-import { consultarProcessos } from "@/lib/orienta-dd";
 import {
   Accordion,
   AccordionContent,
@@ -250,30 +248,15 @@ export default function RelatorioAvaliacaoRiscos() {
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleVerificar = async (e: FormEvent<HTMLFormElement>) => {
+  const handleVerificar = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!nomeComprador.trim() || !captchaToken || verificando) return;
     setVerificando(true);
-    try {
-      // Já busca os processos judiciais aqui, para a página de resultado
-      // exibi-los prontos em vez de precisar aguardar.
-      const resultado = await consultarProcessos(nomeComprador.trim());
-      navigate("/relatorio-avaliacao-riscos/resultado", {
-        state: {
-          nomeComprador: nomeComprador.trim(),
-          processosItens: resultado.itens,
-          processosErro: resultado.erro,
-          consultaId: resultado.consulta_id,
-        },
-      });
-    } catch (err) {
-      toast(
-        err instanceof Error
-          ? err.message
-          : "Não foi possível iniciar a consulta. Tente novamente em instantes.",
-      );
-      setVerificando(false);
-    }
+    // A consulta de processos é feita na própria página de resultado, para o
+    // usuário já ser levado para lá em vez de esperar aqui.
+    navigate("/relatorio-avaliacao-riscos/resultado", {
+      state: { nomeComprador: nomeComprador.trim() },
+    });
   };
 
   return (

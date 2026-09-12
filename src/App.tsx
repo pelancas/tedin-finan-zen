@@ -25,7 +25,6 @@ import SegurosConteudo from "./pages/seguros/SegurosConteudo";
 import PlanejamentoConteudo from "./pages/planejamento/PlanejamentoConteudo";
 import PossoComprar from "./pages/imoveis/PossoComprar";
 import RelatorioAvaliacaoRiscos from "./pages/imoveis/RelatorioAvaliacaoRiscos";
-import RelatorioAvaliacaoRiscosAutonomos from "./pages/imoveis/RelatorioAvaliacaoRiscosAutonomos";
 import RelatorioAvaliacaoRiscosResultado from "./pages/imoveis/RelatorioAvaliacaoRiscosResultado";
 import RelatorioAvaliacaoRiscosProcessando from "./pages/imoveis/RelatorioAvaliacaoRiscosProcessando";
 import NotFound from "./pages/NotFound";
@@ -61,10 +60,6 @@ const App = () => (
           <Route path="/seguros/conteudos" element={<SegurosConteudo />} />
           <Route path="/imoveis/calculadoras/posso-comprar" element={<PossoComprar />} />
           <Route path="/relatorio-avaliacao-riscos" element={<RelatorioAvaliacaoRiscos />} />
-          <Route
-            path="/relatorio-avaliacao-riscos-autonomos"
-            element={<RelatorioAvaliacaoRiscosAutonomos />}
-          />
           <Route
             path="/relatorio-avaliacao-riscos/resultado"
             element={<RelatorioAvaliacaoRiscosResultado />}

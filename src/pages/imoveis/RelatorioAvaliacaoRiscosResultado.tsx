@@ -16,6 +16,7 @@ import { useDocumentMeta } from "@/hooks/use-document-meta";
 import { cn } from "@/lib/utils";
 import { maskCPF, maskCEP } from "@/lib/masks";
 import {
+  consultarProcessos,
   criarJobCompleto,
   fontesRelatorioCompleto,
   type ProcessoItem,
@@ -30,6 +31,7 @@ import {
   ArrowLeft,
   CheckCircle2,
   AlertTriangle,
+  Loader2,
   User,
 } from "lucide-react";
 import {
@@ -43,9 +45,6 @@ import {
 
 interface ResultadoState {
   nomeComprador: string;
-  processosItens?: ProcessoItem[];
-  processosErro?: string | null;
-  consultaId?: string;
 }
 
 const certidoes = [
@@ -121,9 +120,40 @@ export default function RelatorioAvaliacaoRiscosResultado() {
   const [temIndiceCadastral, setTemIndiceCadastral] = useState<boolean | null>(null);
   const [liberando, setLiberando] = useState(false);
 
-  const processosItens = state?.processosItens ?? [];
-  const processosErro = state?.processosErro ?? null;
-  const consultaId = state?.consultaId;
+  const [carregandoProcessos, setCarregandoProcessos] = useState(true);
+  const [processosItens, setProcessosItens] = useState<ProcessoItem[]>([]);
+  const [processosErro, setProcessosErro] = useState<string | null>(null);
+  const [consultaId, setConsultaId] = useState<string | undefined>(undefined);
+
+  // Consulta os processos aqui, ao chegar na página, em vez de fazer o
+  // usuário esperar na página anterior antes de navegar.
+  useEffect(() => {
+    const nome = state?.nomeComprador?.trim();
+    if (!nome) return;
+    let cancelado = false;
+    setCarregandoProcessos(true);
+    consultarProcessos(nome)
+      .then((resultado) => {
+        if (cancelado) return;
+        setProcessosItens(resultado.itens);
+        setProcessosErro(resultado.erro);
+        setConsultaId(resultado.consulta_id);
+      })
+      .catch((err) => {
+        if (cancelado) return;
+        setProcessosErro(
+          err instanceof Error
+            ? err.message
+            : "Não foi possível concluir essa consulta agora.",
+        );
+      })
+      .finally(() => {
+        if (!cancelado) setCarregandoProcessos(false);
+      });
+    return () => {
+      cancelado = true;
+    };
+  }, [state?.nomeComprador]);
 
   useDocumentMeta(
     state?.nomeComprador
@@ -164,8 +194,8 @@ export default function RelatorioAvaliacaoRiscosResultado() {
   };
 
   const CERT_STEP_MS = 90;
-  const empresasDelayMs = certidoes.length * CERT_STEP_MS + 150;
-  const processosDelayMs = empresasDelayMs + 200;
+  const CERT_BASE_DELAY_MS = 200;
+  const empresasDelayMs = CERT_BASE_DELAY_MS + certidoes.length * CERT_STEP_MS + 150;
 
   const processosEncontrados = processosItens.length;
   const temProcessos = processosEncontrados > 0;
@@ -218,6 +248,100 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                 </div>
               </div>
 
+              {/* Processos judiciais — destaque verde/laranja, dados reais da API */}
+              <div
+                className="rounded-2xl border p-5 transition-all duration-500 ease-out"
+                style={{
+                  borderColor:
+                    carregandoProcessos || temProcessos
+                      ? "rgba(249,115,22,0.35)"
+                      : "rgba(29,175,102,0.35)",
+                  background:
+                    carregandoProcessos || temProcessos
+                      ? "rgba(249,115,22,0.06)"
+                      : "rgba(29,175,102,0.06)",
+                }}
+              >
+                <div className="flex items-start gap-4">
+                  <div
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
+                    style={{
+                      background:
+                        carregandoProcessos || temProcessos
+                          ? "rgba(249,115,22,0.15)"
+                          : "rgba(29,175,102,0.15)",
+                      color: carregandoProcessos || temProcessos ? "#c2410c" : "#15803d",
+                    }}
+                  >
+                    <Gavel size={20} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-base font-bold text-slate-900">
+                      Processos judiciais relevantes
+                    </h3>
+                    <p className="text-sm text-slate-600">
+                      Levantamento de ações vinculadas ao CPF ou CNPJ do proprietário.
+                    </p>
+                  </div>
+                  {carregandoProcessos ? (
+                    <div className="flex shrink-0 items-center gap-1.5 rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-orange-700">
+                      <Loader2 size={12} className="animate-spin" />
+                      Consultando...
+                    </div>
+                  ) : (
+                    <div
+                      className="flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold"
+                      style={{
+                        background: temProcessos ? "#f97316" : "#1daf66",
+                        color: "#ffffff",
+                      }}
+                    >
+                      {temProcessos ? <AlertTriangle size={12} /> : <CheckCircle2 size={12} />}
+                      {temProcessos
+                        ? `${processosEncontrados} encontrado${processosEncontrados > 1 ? "s" : ""}`
+                        : "Nenhum encontrado"}
+                    </div>
+                  )}
+                </div>
+
+                {!carregandoProcessos && processosErro && (
+                  <p className="mt-4 border-t border-slate-200/60 pt-4 text-xs text-slate-500">
+                    Não foi possível concluir essa consulta agora. Ela será refeita na elaboração
+                    do relatório completo.
+                  </p>
+                )}
+
+                {!carregandoProcessos && !processosErro && temProcessos && (
+                  <div className="mt-4 flex flex-col gap-2 border-t border-orange-200/60 pt-4">
+                    {processosPreview.map((item, i) => (
+                      <div
+                        key={item.numero || i}
+                        className="flex items-center justify-between rounded-lg bg-white/70 px-3 py-2.5"
+                      >
+                        <span className="text-sm font-medium text-slate-700">
+                          {item.numero || `Processo ${i + 1}`} —{" "}
+                          <span className="blur-sm select-none">detalhes ocultos</span>
+                        </span>
+                        <span className="flex items-center gap-1 text-xs font-semibold text-orange-700">
+                          <Lock size={11} />
+                          Bloqueado
+                        </span>
+                      </div>
+                    ))}
+                    {processosEncontrados > 4 && (
+                      <p className="pt-1 text-xs font-medium text-orange-700">
+                        +{processosEncontrados - 4} processo
+                        {processosEncontrados - 4 > 1 ? "s" : ""} no relatório completo
+                      </p>
+                    )}
+                    <p className="pt-1 text-xs text-slate-500">
+                      Número do processo identificado — a confirmação e o detalhamento de cada um
+                      são feitos na elaboração do relatório completo.
+                    </p>
+                  </div>
+                )}
+              </div>
+
               {/* Certidões negativas — lista vertical */}
               <div className="rounded-2xl border border-slate-200 bg-white p-5">
                 <div className="flex items-start gap-4">
@@ -238,7 +362,7 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                   {certidoes.map((c, i) => (
                     <li
                       key={c}
-                      style={{ transitionDelay: `${i * CERT_STEP_MS}ms` }}
+                      style={{ transitionDelay: `${CERT_BASE_DELAY_MS + i * CERT_STEP_MS}ms` }}
                       className={cn(
                         "flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2.5 transition-all duration-500 ease-out",
                         revealed ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
@@ -279,92 +403,6 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                   </div>
                 );
               })}
-
-              {/* Processos judiciais — destaque verde/laranja, dados reais da API */}
-              <div
-                className={cn(
-                  "rounded-2xl border p-5 transition-all duration-500 ease-out",
-                  revealed ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
-                )}
-                style={{
-                  borderColor: temProcessos
-                    ? "rgba(249,115,22,0.35)"
-                    : "rgba(29,175,102,0.35)",
-                  background: temProcessos
-                    ? "rgba(249,115,22,0.06)"
-                    : "rgba(29,175,102,0.06)",
-                  transitionDelay: `${processosDelayMs}ms`,
-                }}
-              >
-                <div className="flex items-start gap-4">
-                  <div
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
-                    style={{
-                      background: temProcessos ? "rgba(249,115,22,0.15)" : "rgba(29,175,102,0.15)",
-                      color: temProcessos ? "#c2410c" : "#15803d",
-                    }}
-                  >
-                    <Gavel size={20} />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-base font-bold text-slate-900">
-                      Processos judiciais relevantes
-                    </h3>
-                    <p className="text-sm text-slate-600">
-                      Levantamento de ações vinculadas ao CPF ou CNPJ do proprietário.
-                    </p>
-                  </div>
-                  <div
-                    className="flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold"
-                    style={{
-                      background: temProcessos ? "#f97316" : "#1daf66",
-                      color: "#ffffff",
-                    }}
-                  >
-                    {temProcessos ? <AlertTriangle size={12} /> : <CheckCircle2 size={12} />}
-                    {temProcessos
-                      ? `${processosEncontrados} encontrado${processosEncontrados > 1 ? "s" : ""}`
-                      : "Nenhum encontrado"}
-                  </div>
-                </div>
-
-                {processosErro && (
-                  <p className="mt-4 border-t border-slate-200/60 pt-4 text-xs text-slate-500">
-                    Não foi possível concluir essa consulta agora. Ela será refeita na elaboração
-                    do relatório completo.
-                  </p>
-                )}
-
-                {!processosErro && temProcessos && (
-                  <div className="mt-4 flex flex-col gap-2 border-t border-orange-200/60 pt-4">
-                    {processosPreview.map((item, i) => (
-                      <div
-                        key={item.numero || i}
-                        className="flex items-center justify-between rounded-lg bg-white/70 px-3 py-2.5"
-                      >
-                        <span className="text-sm font-medium text-slate-700">
-                          {item.numero || `Processo ${i + 1}`} —{" "}
-                          <span className="blur-sm select-none">detalhes ocultos</span>
-                        </span>
-                        <span className="flex items-center gap-1 text-xs font-semibold text-orange-700">
-                          <Lock size={11} />
-                          Bloqueado
-                        </span>
-                      </div>
-                    ))}
-                    {processosEncontrados > 4 && (
-                      <p className="pt-1 text-xs font-medium text-orange-700">
-                        +{processosEncontrados - 4} processo
-                        {processosEncontrados - 4 > 1 ? "s" : ""} no relatório completo
-                      </p>
-                    )}
-                    <p className="pt-1 text-xs text-slate-500">
-                      Número do processo identificado — a confirmação e o detalhamento de cada um
-                      são feitos na elaboração do relatório completo.
-                    </p>
-                  </div>
-                )}
-              </div>
             </div>
 
             {/* Direita — o que é o relatório completo */}
