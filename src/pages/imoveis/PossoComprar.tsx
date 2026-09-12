@@ -7,7 +7,7 @@ const CalculadoraPossoComprar = lazy(() => import("@/tools/CalculadoraPossoCompr
 export default function PossoComprar() {
   useDocumentMeta(
     "Posso Comprar Este Imóvel? | Calculadora Grátis | Orienta",
-    "Descubra se o imóvel que você quer comprar é confortável, possível ou arriscado para o seu bolso, com a calculadora gratuita da Orienta.",
+    "Descubra o valor máximo de imóvel que você pode comprar com segurança, com base na sua renda e no valor disponível para entrada, com a calculadora gratuita da Orienta.",
   );
 
   return (

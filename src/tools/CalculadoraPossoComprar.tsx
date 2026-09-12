@@ -1,28 +1,50 @@
 import { useRef, useState } from "react";
+import { HelpCircle } from "lucide-react";
 import { CalculadoraSidebar } from "@/components/layout/CalculadoraSidebar";
 import { CalculadoraTextBlock } from "@/components/layout/CalculadoraTextBlock";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-type Classificacao = "confortavel" | "possivel" | "arriscado";
+type Variacao = "pouca" | "media" | "muita";
+type Limitante = "entrada" | "renda";
 
 interface Results {
-  precoImovel: number;
-  entrada: number;
-  percentualEntrada: number;
+  precoRecomendado: number;
+  entradaEfetiva: number;
+  custosCartorarios: number;
   financiamento: number;
   parcelaEstimada: number;
-  sobraMensal: number;
-  classificacao: Classificacao;
-  limiteConfortavel: number;
-  limitePossivel: number;
-  entradaExcedeDisponivel: boolean;
+  percentualRendaComprometida: number;
+  percentualEntradaFinal: number;
+  limitante: Limitante;
 }
 
 // ─── Regras usadas no cálculo ───────────────────────────────────────────────
-// Comprometimento de renda com a parcela do imóvel — a mesma lógica que os
-// bancos usam para aprovar financiamento habitacional no Brasil.
-const PERCENTUAL_CONFORTAVEL = 0.2; // 20% da renda — cenário conservador
-const PERCENTUAL_POSSIVEL = 0.3; // 30% da renda — regra clássica dos bancos
+// Custos cartorários (ITBI, escritura, registro) estimados como % do valor do
+// imóvel — saem do valor informado para entrada + custos, não do preço à parte.
+const PCT_CUSTOS_CARTORARIOS = 0.07;
+// A entrada precisa representar pelo menos 20% do valor do imóvel — trava o
+// preço máximo que a entrada disponível sustenta.
+const PCT_MIN_ENTRADA_IMOVEL = 0.2;
+// Valores pré-preenchidos do financiamento simulado — a pessoa pode ajustá-los.
+const TAXA_ANUAL_PADRAO = "14,0";
+const PRAZO_ANOS_PADRAO = "30";
+// O prazo nunca pode passar disso, mesmo se a pessoa digitar um valor maior.
+const PRAZO_ANOS_MAXIMO = 30;
+
+// Quanto da renda pode ir para a parcela, de acordo com a variação da renda —
+// renda mais instável usa uma fatia menor, para sobrar margem de segurança.
+const PERCENTUAL_RENDA: Record<Variacao, number> = {
+  pouca: 0.25,
+  media: 0.2,
+  muita: 0.15,
+};
+
+const VARIACAO_CONFIG: Record<Variacao, { label: string; limiarPct: number; prefixo: string }> = {
+  pouca: { label: "Pouco", limiarPct: 0.1, prefixo: "até" },
+  media: { label: "Médio", limiarPct: 0.25, prefixo: "até" },
+  muita: { label: "Muito", limiarPct: 0.25, prefixo: "mais de" },
+};
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const parseBRL = (v: string) => parseFloat(v.replace(/\./g, "").replace(",", ".")) || 0;
@@ -36,6 +58,13 @@ const maskBRL = (raw: string) => {
   const num = parseInt(digits, 10) / 100;
   return num.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
 };
+
+/** Descreve a variação em reais, com base na renda informada, em vez de só em %. */
+function descricaoVariacao(variacao: Variacao, renda: number): string {
+  const cfg = VARIACAO_CONFIG[variacao];
+  const valor = renda * cfg.limiarPct;
+  return `Variação de ${cfg.prefixo} R$ ${formatBRL(valor)} entre meses`;
+}
 
 /** Parcela mensal (PMT) de um financiamento pela tabela Price. */
 function pmt(principal: number, meses: number, taxaMensal: number): number {
@@ -52,26 +81,38 @@ function maxFinanciamento(parcelaMax: number, meses: number, taxaMensal: number)
 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
+function InfoTooltip({ text }: { text: string }) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button type="button" className="vt-tooltip-btn" aria-label="Mais informações">
+          <HelpCircle size={14} />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent className="max-w-[240px] text-xs leading-snug">{text}</TooltipContent>
+    </Tooltip>
+  );
+}
+
 function StatCard({
   label,
   value,
   sub,
-  accent,
+  subAsPill = false,
   delay = 0,
   visible,
 }: {
   label: string;
   value: string;
   sub?: string;
-  accent: string;
+  subAsPill?: boolean;
   delay?: number;
   visible: boolean;
 }) {
   return (
     <div
-      className="result-card"
+      className="result-card result-card--tone-green"
       style={{
-        borderLeft: `4px solid ${accent}`,
         transitionDelay: `${delay}ms`,
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(12px)",
@@ -80,87 +121,65 @@ function StatCard({
     >
       <p className="result-label">{label}</p>
       <p className="result-value">{value}</p>
-      {sub && <p className="result-sub">{sub}</p>}
+      {sub && (subAsPill ? <span className="result-pill">{sub}</span> : <p className="result-sub">{sub}</p>)}
     </div>
   );
 }
 
-const TIER_CONFIG: Record<
-  Classificacao,
-  { titulo: string; cor: string; corFundo: string; descricao: string }
-> = {
-  confortavel: {
-    titulo: "Confortável",
-    cor: "#0e6b3a",
-    corFundo: "rgba(29,175,102,0.08)",
-    descricao: "A parcela cabe folgada na sua renda, sem apertar o orçamento.",
-  },
-  possivel: {
-    titulo: "Possível",
-    cor: "#9a6200",
-    corFundo: "rgba(232,160,32,0.1)",
-    descricao: "Dentro do limite que os bancos costumam aprovar, mas exige planejamento.",
-  },
-  arriscado: {
-    titulo: "Arriscado",
-    cor: "#b42318",
-    corFundo: "rgba(220,38,38,0.08)",
-    descricao: "Comprometeria mais renda do que o recomendado — reavalie antes de seguir.",
-  },
-};
-
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function CalculadoraPossoComprar() {
   const [renda, setRenda] = useState("");
-  const [rendaMesBaixo, setRendaMesBaixo] = useState<boolean | null>(null);
-  const [patrimonioDisponivel, setPatrimonioDisponivel] = useState("");
-  const [gastosMensais, setGastosMensais] = useState("");
-  const [precoImovel, setPrecoImovel] = useState("");
-  const [entrada, setEntrada] = useState("");
-  const [prazoAnos, setPrazoAnos] = useState("30");
-  const [taxaAnual, setTaxaAnual] = useState("11,0");
+  const [variacaoRenda, setVariacaoRenda] = useState<Variacao | null>(null);
+  const [disponivelEntrada, setDisponivelEntrada] = useState("");
+  const [prazoAnos, setPrazoAnos] = useState(PRAZO_ANOS_PADRAO);
+  const [taxaAnual, setTaxaAnual] = useState(TAXA_ANUAL_PADRAO);
 
   const [results, setResults] = useState<Results | null>(null);
   const [resultsVisible, setResultsVisible] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
 
+  const rendaPreenchida = parseBRL(renda) > 0;
+
   const calculate = () => {
     const rendaValor = parseBRL(renda);
-    const disponivel = parseBRL(patrimonioDisponivel);
-    const gastos = parseBRL(gastosMensais);
-    const preco = parseBRL(precoImovel);
-    const entradaValor = parseBRL(entrada);
-    const anos = parseInt(prazoAnos, 10) || 0;
+    const disponivel = parseBRL(disponivelEntrada);
+    const anos = Math.min(PRAZO_ANOS_MAXIMO, parseInt(prazoAnos, 10) || 0);
     const taxa = (parseFloat(taxaAnual.replace(",", ".")) || 0) / 100;
 
-    if (!preco || !anos) return;
+    if (!rendaValor || !disponivel || !variacaoRenda || !anos) return;
 
     const meses = anos * 12;
     const rm = Math.pow(1 + taxa, 1 / 12) - 1;
 
-    const financiamento = Math.max(0, preco - entradaValor);
+    // Os custos cartorários saem do valor disponível (entrada + custos) e
+    // equivalem a 7% do preço do imóvel — por isso dependem do preço que
+    // ainda estamos calculando. Isolando o preço nas duas equações abaixo:
+    //   disponivel = entrada + 7%×preço  e  entrada ≥ 20%×preço (teto da entrada)
+    //   disponivel = entrada + 7%×preço  e  financiamento = preço − entrada (teto da renda)
+    const precoPorEntrada = disponivel / (PCT_MIN_ENTRADA_IMOVEL + PCT_CUSTOS_CARTORARIOS);
+
+    const percentualRenda = PERCENTUAL_RENDA[variacaoRenda];
+    const parcelaMax = rendaValor * percentualRenda;
+    const financiamentoPorRenda = maxFinanciamento(parcelaMax, meses, rm);
+    const precoPorRenda = (financiamentoPorRenda + disponivel) / (1 + PCT_CUSTOS_CARTORARIOS);
+
+    const limitante: Limitante = precoPorEntrada <= precoPorRenda ? "entrada" : "renda";
+    const precoRecomendado = Math.min(precoPorEntrada, precoPorRenda);
+
+    const custosCartorarios = PCT_CUSTOS_CARTORARIOS * precoRecomendado;
+    const entradaEfetiva = Math.max(0, disponivel - custosCartorarios);
+    const financiamento = Math.max(0, precoRecomendado - entradaEfetiva);
     const parcelaEstimada = pmt(financiamento, meses, rm);
 
-    const capacidadeConfortavel = Math.max(0, rendaValor * PERCENTUAL_CONFORTAVEL);
-    const capacidadePossivel = Math.max(0, rendaValor * PERCENTUAL_POSSIVEL);
-
-    const limiteConfortavel = maxFinanciamento(capacidadeConfortavel, meses, rm) + disponivel;
-    const limitePossivel = maxFinanciamento(capacidadePossivel, meses, rm) + disponivel;
-
-    const classificacao: Classificacao =
-      preco <= limiteConfortavel ? "confortavel" : preco <= limitePossivel ? "possivel" : "arriscado";
-
     setResults({
-      precoImovel: preco,
-      entrada: entradaValor,
-      percentualEntrada: preco > 0 ? (entradaValor / preco) * 100 : 0,
+      precoRecomendado,
+      entradaEfetiva,
+      custosCartorarios,
       financiamento,
       parcelaEstimada,
-      sobraMensal: rendaValor - gastos - parcelaEstimada,
-      classificacao,
-      limiteConfortavel,
-      limitePossivel,
-      entradaExcedeDisponivel: disponivel > 0 && entradaValor > disponivel,
+      percentualRendaComprometida: rendaValor > 0 ? (parcelaEstimada / rendaValor) * 100 : 0,
+      percentualEntradaFinal: precoRecomendado > 0 ? (entradaEfetiva / precoRecomendado) * 100 : 0,
+      limitante,
     });
 
     setResultsVisible(false);
@@ -173,8 +192,6 @@ export default function CalculadoraPossoComprar() {
       );
     }
   };
-
-  const tier = results ? TIER_CONFIG[results.classificacao] : null;
 
   return (
     <>
@@ -215,18 +232,25 @@ export default function CalculadoraPossoComprar() {
         /* Card */
         .vt-card { background: #fff; border-radius: 1rem; border: 1px solid #e2e8e2; padding: 2rem; box-shadow: 0 1px 3px rgba(26,69,55,0.06); }
 
-        /* Two-column form layout */
-        .vt-two-col { display: flex; flex-direction: column; gap: 1.25rem; }
+        /* Two-column form layout — grid, para as linhas ficarem alinhadas entre as colunas */
+        .vt-two-col { display: grid; grid-template-columns: 1fr; gap: 1.25rem; align-items: start; }
         @media (min-width: 640px) {
-          .vt-two-col { flex-direction: row; align-items: stretch; gap: 1.5rem; }
-          .vt-col { flex: 1; }
+          .vt-two-col { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
         }
-        .vt-col { display: flex; flex-direction: column; gap: 1rem; }
-        .vt-col-heading { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #8aab96; margin: 0.5rem 0 -0.35rem; }
-        .vt-col-heading:first-child { margin-top: 0; }
-
         .vt-field { display: flex; flex-direction: column; gap: 0.45rem; }
-        .vt-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--vt-dark); }
+        .vt-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--vt-dark); line-height: 1.3; }
+        /* Reserva a mesma altura (até 2 linhas) para rótulos pareados lado a lado,
+           ancorando o texto embaixo — assim os dois inputs abaixo ficam alinhados
+           mesmo quando um rótulo é mais longo e quebra linha e o outro não. */
+        .vt-label-align { display: flex; align-items: flex-end; min-height: 2.3rem; }
+        .vt-label-row { display: flex; align-items: center; gap: 0.3rem; }
+        .vt-tooltip-btn {
+          display: inline-flex; align-items: center; justify-content: center;
+          background: none; border: none; padding: 0; margin: 0; line-height: 0;
+          color: #8aab96; cursor: help; flex-shrink: 0;
+        }
+        .vt-tooltip-btn:hover { color: var(--vt-dark); }
+        .vt-hint { font-size: 0.78rem; font-weight: 400; color: #607060; margin-top: -0.1rem; }
         .vt-input-wrap { position: relative; }
         .vt-prefix, .vt-suffix {
           position: absolute; top: 50%; transform: translateY(-50%);
@@ -243,13 +267,15 @@ export default function CalculadoraPossoComprar() {
         .vt-input:focus { border-color: var(--vt-dark); box-shadow: 0 0 0 3px rgba(26,69,55,0.12); }
         .vt-input.has-prefix { padding-left: 2.8rem; }
         .vt-input.has-suffix { padding-right: 2.5rem; }
+        /* Iguala a altura do Prazo/Taxa de juros à do seletor Pouco/Médio/Muito ao lado. */
+        .vt-input--compact { padding-top: 0.74rem; padding-bottom: 0.74rem; }
 
         .vt-inline-row { display: flex; gap: 0.75rem; }
         .vt-inline-row .vt-field { flex: 1; }
 
-        /* Toggle Fixa / Varia */
+        /* Toggle Pouca / Média / Muita */
         .vt-toggle {
-          display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem;
+          display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem;
           background: #f7f9f7; border: 1.5px solid #d0dbd2; border-radius: 0.6rem; padding: 0.3rem;
         }
         .vt-toggle-btn {
@@ -258,6 +284,7 @@ export default function CalculadoraPossoComprar() {
           cursor: pointer; transition: background 0.2s, color 0.2s, box-shadow 0.2s;
         }
         .vt-toggle-btn.active { background: var(--vt-dark); color: #fff; box-shadow: 0 2px 8px rgba(29,175,102,0.3); }
+        .vt-toggle-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
         /* CTA button */
         .vt-btn {
@@ -278,54 +305,29 @@ export default function CalculadoraPossoComprar() {
         @media (min-width: 640px) { .vt-results-grid { grid-template-columns: repeat(3, 1fr); } }
         .vt-results-grid + .vt-results-grid { margin-top: 0.75rem; }
 
-        .result-card { background: #fff; border-radius: 0.75rem; padding: 1.25rem 1.5rem; box-shadow: 0 1px 3px rgba(26,69,55,0.06); }
-        .result-card--highlight { background: linear-gradient(135deg, #1A2E35 0%, #22443a 100%); border: none; box-shadow: 0 4px 16px rgba(26,69,55,0.18); }
+        .result-card { background: #fff; border-radius: 0.9rem; padding: 1.25rem 1.5rem; box-shadow: none; }
+        .result-card--highlight { background: linear-gradient(135deg, #1A2E35 0%, #22443a 100%); border: none; box-shadow: 0 4px 16px rgba(26,69,55,0.18); border-radius: 0.9rem; }
         .result-card--highlight .result-label { color: #7ab898; }
         .result-card--highlight .result-value { color: #fff; font-size: 1.5rem; }
         .result-card--highlight .result-sub { color: #a3b8ac; }
+
+        .result-card--tone-green { background: rgba(29,175,102,0.08); }
+        .result-card--tone-green .result-label { color: #0e6b3a; }
+
         .result-label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: #7a9a82; margin-bottom: 0.35rem; }
         .result-value { font-size: 1.35rem; font-weight: 900; color: var(--vt-darker); }
         .result-sub { font-size: 0.75rem; font-weight: 500; color: #8aab96; margin-top: 0.25rem; }
-        .result-sub.negativo { color: #dc2626; font-weight: 700; }
-
-        /* Badge de classificação */
-        .vt-status-badge {
-          display: inline-flex; align-items: center; gap: 0.4rem;
-          font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
-          padding: 0.4rem 0.9rem; border-radius: 999px; margin-top: 0.75rem;
+        .result-pill {
+          display: inline-flex; align-items: center; margin-top: 0.6rem;
+          background: rgba(29,175,102,0.18); color: #0e6b3a;
+          font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 999px;
         }
 
-        /* Tiers — Confortável / Possível / Arriscado */
-        .vt-tier-grid { display: grid; gap: 0.75rem; margin-top: 0.75rem; }
-        @media (min-width: 640px) { .vt-tier-grid { grid-template-columns: repeat(3, 1fr); } }
-        .vt-tier-card {
-          border-radius: 0.75rem; padding: 1.25rem; border: 2px solid transparent;
-          background: #f7f9f7; transition: all 0.3s ease;
-          opacity: 0; transform: translateY(12px);
+        .vt-info {
+          margin-top: 0.75rem; padding: 0.9rem 1.25rem;
+          background: rgba(29,175,102,0.08); border-radius: 0.9rem;
+          font-size: 0.85rem; font-weight: 500; color: #0e6b3a;
         }
-        .vt-tier-card.visible { opacity: 1; transform: translateY(0); }
-        .vt-tier-card.active { border-color: currentColor; box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
-        .vt-tier-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem; }
-        .vt-tier-value { font-size: 1.25rem; font-weight: 900; color: var(--vt-darker); margin-bottom: 0.4rem; }
-        .vt-tier-desc { font-size: 0.78rem; color: #607060; line-height: 1.4; }
-
-        /* Alerta */
-        .vt-alert {
-          margin-top: 0.75rem; padding: 0.85rem 1.1rem;
-          background: #fff5f5; border-left: 4px solid #dc2626; border-radius: 0 0.6rem 0.6rem 0;
-          font-size: 0.85rem; font-weight: 500; color: #7f1d1d;
-        }
-
-        /* Frase de conclusao */
-        .vt-conclusion {
-          margin-top: 1.25rem; padding: 1rem 1.25rem;
-          background: #f0faf5; border-left: 4px solid var(--vt-dark); border-radius: 0 0.6rem 0.6rem 0;
-          font-size: 0.95rem; font-weight: 500; color: var(--vt-darker);
-          opacity: 0; transform: translateY(8px);
-          transition: opacity 0.45s ease 0.2s, transform 0.45s ease 0.2s;
-        }
-        .vt-conclusion.visible { opacity: 1; transform: translateY(0); }
-        .vt-conclusion strong { color: #0e6b3a; }
       `}</style>
 
       <div className="vt-root">
@@ -340,12 +342,10 @@ export default function CalculadoraPossoComprar() {
               <span style={{ color: "#d9d4c4" }}>Calculadora</span>
             </nav>
             <h1>
-              Posso comprar <span>este imóvel?</span>
+              Qual imóvel <span>você pode comprar?</span>
             </h1>
             <p>
-              Cruzamos sua renda, patrimônio e compromissos mensais com o preço do imóvel e as
-              condições do financiamento, para você saber se essa compra é confortável, possível
-              ou arriscada — antes de assinar qualquer proposta.
+              Descubra qual valor máximo de imóvel você pode comprar, financiando!
             </p>
           </div>
           <svg className="vt-hero-blob" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -354,7 +354,7 @@ export default function CalculadoraPossoComprar() {
               fill="#abccb5"
               transform="translate(100 100)"
             />
-          </svg>
+          </svg> 
         </section>
 
         {/* ── Main ── */}
@@ -367,131 +367,105 @@ export default function CalculadoraPossoComprar() {
                   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
                   <polyline points="9 22 9 12 15 12 15 22" />
                 </svg>
-                Avalie a compra do seu imóvel
+                Descubra o imóvel recomendado para você
               </h2>
-              <p>Preencha sua situação financeira e os dados do imóvel que você está avaliando.</p>
+              <p>Preencha sua renda e o quanto você tem disponível para dar entrada.</p>
             </div>
 
             <div className="vt-card">
               <div className="vt-two-col">
-                {/* Coluna esquerda: renda e patrimônio */}
-                <div className="vt-col">
-                  <p className="vt-col-heading">Sua renda mensal</p>
-                  <div className="vt-field">
-                    <label className="vt-label">Renda média últimos 6 meses</label>
-                    <div className="vt-input-wrap">
-                      <span className="vt-prefix">R$</span>
-                      <input
-                        className="vt-input has-prefix"
-                        placeholder="Ex: 8.000,00"
-                        value={renda}
-                        onChange={(e) => setRenda(maskBRL(e.target.value))}
-                      />
-                    </div>
-                  </div>
-
-                  {parseBRL(renda) > 0 && (
-                    <div className="vt-field">
-                      <label className="vt-label">
-                        Sua renda em algum desses meses foi menor que R${" "}
-                        {formatBRL(parseBRL(renda) / 3)}?
-                      </label>
-                      <div className="vt-toggle">
-                        <button
-                          type="button"
-                          className={"vt-toggle-btn" + (rendaMesBaixo === true ? " active" : "")}
-                          onClick={() => setRendaMesBaixo(true)}
-                        >
-                          Sim
-                        </button>
-                        <button
-                          type="button"
-                          className={"vt-toggle-btn" + (rendaMesBaixo === false ? " active" : "")}
-                          onClick={() => setRendaMesBaixo(false)}
-                        >
-                          Não
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="vt-field">
-                    <label className="vt-label">Patrimônio disponível para imóvel</label>
-                    <div className="vt-input-wrap">
-                      <span className="vt-prefix">R$</span>
-                      <input
-                        className="vt-input has-prefix"
-                        placeholder="Ex: 250.000,00"
-                        value={patrimonioDisponivel}
-                        onChange={(e) => setPatrimonioDisponivel(maskBRL(e.target.value))}
-                      />
-                    </div>
-                  </div>
-                  <div className="vt-field">
-                    <label className="vt-label">Gastos mensais</label>
-                    <div className="vt-input-wrap">
-                      <span className="vt-prefix">R$</span>
-                      <input
-                        className="vt-input has-prefix"
-                        placeholder="Ex: 3.500,00"
-                        value={gastosMensais}
-                        onChange={(e) => setGastosMensais(maskBRL(e.target.value))}
-                      />
-                    </div>
+                <div className="vt-field">
+                  <label className="vt-label vt-label-align">Renda média últimos 6 meses</label>
+                  <div className="vt-input-wrap">
+                    <span className="vt-prefix">R$</span>
+                    <input
+                      className="vt-input has-prefix"
+                      placeholder="Ex: 8.000,00"
+                      value={renda}
+                      onChange={(e) => {
+                        const v = maskBRL(e.target.value);
+                        setRenda(v);
+                        if (!parseBRL(v)) setVariacaoRenda(null);
+                      }}
+                    />
                   </div>
                 </div>
 
-                {/* Coluna direita: o imóvel e o financiamento */}
-                <div className="vt-col">
-                  <p className="vt-col-heading">O imóvel</p>
-                  <div className="vt-field">
-                    <label className="vt-label">Preço do imóvel</label>
-                    <div className="vt-input-wrap">
-                      <span className="vt-prefix">R$</span>
-                      <input
-                        className="vt-input has-prefix"
-                        placeholder="Ex: 900.000,00"
-                        value={precoImovel}
-                        onChange={(e) => setPrecoImovel(maskBRL(e.target.value))}
-                      />
-                    </div>
+                <div className="vt-field">
+                  <label className="vt-label vt-label-align">
+                    Valor disponível para entrada, custos cartorários e impostos
+                  </label>
+                  <div className="vt-input-wrap">
+                    <span className="vt-prefix">R$</span>
+                    <input
+                      className="vt-input has-prefix"
+                      placeholder="Ex: 150.000,00"
+                      value={disponivelEntrada}
+                      onChange={(e) => setDisponivelEntrada(maskBRL(e.target.value))}
+                    />
                   </div>
-                  <div className="vt-field">
-                    <label className="vt-label">Entrada que pretende dar</label>
-                    <div className="vt-input-wrap">
-                      <span className="vt-prefix">R$</span>
-                      <input
-                        className="vt-input has-prefix"
-                        placeholder="Ex: 250.000,00"
-                        value={entrada}
-                        onChange={(e) => setEntrada(maskBRL(e.target.value))}
-                      />
-                    </div>
-                  </div>
+                </div>
 
-                  <p className="vt-col-heading">Condições do financiamento</p>
+                <div className="vt-field">
+                  <label className="vt-label">Quanto sua renda varia mês a mês?</label>
+                  <div className="vt-toggle">
+                    {(["pouca", "media", "muita"] as Variacao[]).map((v) => (
+                      <button
+                        key={v}
+                        type="button"
+                        disabled={!rendaPreenchida}
+                        className={"vt-toggle-btn" + (variacaoRenda === v ? " active" : "")}
+                        onClick={() => setVariacaoRenda(v)}
+                      >
+                        {VARIACAO_CONFIG[v].label}
+                      </button>
+                    ))}
+                  </div>
+                  {!rendaPreenchida && (
+                    <p className="vt-hint">Informe sua renda para escolher a variação.</p>
+                  )}
+                  {rendaPreenchida && variacaoRenda && (
+                    <p className="vt-hint">
+                      {descricaoVariacao(variacaoRenda, parseBRL(renda))} — usaremos{" "}
+                      {(PERCENTUAL_RENDA[variacaoRenda] * 100).toFixed(0)}% da sua renda na
+                      parcela.
+                    </p>
+                  )}
+                </div>
+
+                <div className="vt-field">
                   <div className="vt-inline-row">
                     <div className="vt-field">
-                      <label className="vt-label">Prazo</label>
+                      <div className="vt-label-row">
+                        <label className="vt-label">Prazo</label>
+                        <InfoTooltip text="É o prazo total do financiamento, em anos. O prazo máximo considerado aqui é de 30 anos." />
+                      </div>
                       <div className="vt-input-wrap">
                         <input
-                          className="vt-input has-suffix"
+                          className="vt-input has-suffix vt-input--compact"
                           type="number"
                           min={1}
-                          max={35}
-                          placeholder="30"
+                          max={PRAZO_ANOS_MAXIMO}
+                          placeholder={PRAZO_ANOS_PADRAO}
                           value={prazoAnos}
-                          onChange={(e) => setPrazoAnos(e.target.value)}
+                          onChange={(e) => {
+                            const v = e.target.value;
+                            const num = parseInt(v, 10);
+                            setPrazoAnos(!isNaN(num) && num > PRAZO_ANOS_MAXIMO ? String(PRAZO_ANOS_MAXIMO) : v);
+                          }}
                         />
                         <span className="vt-suffix">anos</span>
                       </div>
                     </div>
                     <div className="vt-field">
-                      <label className="vt-label">Taxa de juros</label>
+                      <div className="vt-label-row">
+                        <label className="vt-label">Juros</label>
+                        <InfoTooltip text="Consideramos 14% ao ano como padrão. Para saber a taxa real do seu financiamento, consulte o CET (Custo Efetivo Total) do banco e a TR (Taxa Referencial) vigente." />
+                      </div>
                       <div className="vt-input-wrap">
                         <input
-                          className="vt-input has-suffix"
-                          placeholder="11,0"
+                          className="vt-input has-suffix vt-input--compact"
+                          placeholder={TAXA_ANUAL_PADRAO}
                           value={taxaAnual}
                           onChange={(e) => setTaxaAnual(e.target.value)}
                         />
@@ -499,133 +473,68 @@ export default function CalculadoraPossoComprar() {
                       </div>
                     </div>
                   </div>
-
-                  <button className="vt-btn" onClick={calculate}>
-                    Avaliar imóvel
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                      <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                  </button>
                 </div>
               </div>
+
+              <button className="vt-btn" onClick={calculate}>
+                Calcular imóvel recomendado
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
             </div>
 
             {/* Results */}
             <div ref={resultsRef}>
-              {results && tier && (
+              {results && (
                 <>
-                  <div className="vt-results-grid">
-                    <StatCard
-                      label="Preço do imóvel"
-                      value={`R$ ${formatBRL(results.precoImovel)}`}
-                      accent="#abccb5"
-                      visible={resultsVisible}
-                    />
-                    <StatCard
-                      label="Entrada"
-                      value={`R$ ${formatBRL(results.entrada)}`}
-                      sub={`${results.percentualEntrada.toFixed(0)}% do preço`}
-                      accent="#e8a020"
-                      delay={60}
-                      visible={resultsVisible}
-                    />
-                    <StatCard
-                      label="Financiamento"
-                      value={`R$ ${formatBRL(results.financiamento)}`}
-                      accent="#abccb5"
-                      delay={120}
-                      visible={resultsVisible}
-                    />
-                  </div>
-
-                  <div className="vt-results-grid" style={{ gridTemplateColumns: "1fr 1fr" }}>
+                  <div className="vt-results-grid" style={{ gridTemplateColumns: "1fr" }}>
                     <div
                       className="result-card result-card--highlight"
                       style={{
-                        transitionDelay: "180ms",
+                        transitionDelay: "0ms",
                         opacity: resultsVisible ? 1 : 0,
                         transform: resultsVisible ? "translateY(0)" : "translateY(12px)",
                         transition: "opacity 0.45s ease, transform 0.45s ease",
                       }}
                     >
-                      <p className="result-label">Parcela estimada</p>
-                      <p className="result-value">R$ {formatBRL(results.parcelaEstimada)}/mês</p>
+                      <p className="result-label">Imóvel recomendado</p>
+                      <p className="result-value">até R$ {formatBRL(results.precoRecomendado)}</p>
                       <p className="result-sub">
-                        {prazoAnos} anos, {taxaAnual}% ao ano
+                        Financiamento de {prazoAnos} anos a {taxaAnual}% ao ano
                       </p>
-                      <span
-                        className="vt-status-badge"
-                        style={{ background: tier.corFundo, color: tier.cor }}
-                      >
-                        {tier.titulo}
-                      </span>
                     </div>
+                  </div>
+
+                  <div className="vt-results-grid">
                     <StatCard
-                      label="Sobra mensal estimada"
-                      value={`R$ ${formatBRL(Math.abs(results.sobraMensal))}${results.sobraMensal < 0 ? " (falta)" : ""}`}
-                      sub="renda − gastos − parcela"
-                      accent={results.sobraMensal < 0 ? "#dc2626" : "#1daf66"}
-                      delay={240}
+                      label="Entrada utilizada"
+                      value={`R$ ${formatBRL(results.entradaEfetiva)}`}
+                      sub={`${results.percentualEntradaFinal.toFixed(0)}% do imóvel`}
+                      subAsPill
+                      delay={60}
+                      visible={resultsVisible}
+                    />
+                    <StatCard
+                      label="Custos (cartórios e ITBI)"
+                      value={`R$ ${formatBRL(results.custosCartorarios)}`}
+                      delay={120}
+                      visible={resultsVisible}
+                    />
+                    <StatCard
+                      label="Financiamento"
+                      value={`R$ ${formatBRL(results.financiamento)}`}
+                      sub={`Parcela de R$ ${formatBRL(results.parcelaEstimada)}/mês`}
+                      delay={180}
                       visible={resultsVisible}
                     />
                   </div>
 
-                  {results.entradaExcedeDisponivel && (
-                    <div className="vt-alert">
-                      A entrada informada é maior do que o patrimônio disponível — reveja os
-                      valores antes de seguir em frente.
-                    </div>
-                  )}
-
-                  {rendaMesBaixo === true && (
-                    <div className="vt-alert">
-                      Sua renda variou bastante nos últimos 6 meses — priorize a faixa{" "}
-                      <strong>Confortável</strong>, para não apertar o orçamento num mês mais
-                      fraco.
-                    </div>
-                  )}
-
-                  <div className="vt-section-heading" style={{ marginTop: "2rem", marginBottom: "0" }}>
-                    <h2 style={{ fontSize: "1.3rem" }}>Sua faixa de preço</h2>
-                    <p>Com base na sua renda e no patrimônio disponível para o imóvel.</p>
-                  </div>
-                  <div className="vt-tier-grid">
-                    {(["confortavel", "possivel", "arriscado"] as Classificacao[]).map((key, i) => {
-                      const cfg = TIER_CONFIG[key];
-                      const valor =
-                        key === "confortavel"
-                          ? `até R$ ${formatBRL(results.limiteConfortavel)}`
-                          : key === "possivel"
-                            ? `até R$ ${formatBRL(results.limitePossivel)}`
-                            : `acima de R$ ${formatBRL(results.limitePossivel)}`;
-                      return (
-                        <div
-                          key={key}
-                          className={
-                            "vt-tier-card" +
-                            (resultsVisible ? " visible" : "") +
-                            (results.classificacao === key ? " active" : "")
-                          }
-                          style={{
-                            color: cfg.cor,
-                            background: cfg.corFundo,
-                            transitionDelay: `${300 + i * 80}ms`,
-                          }}
-                        >
-                          <p className="vt-tier-title">{cfg.titulo}</p>
-                          <p className="vt-tier-value">{valor}</p>
-                          <p className="vt-tier-desc">{cfg.descricao}</p>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  <div className={"vt-conclusion" + (resultsVisible ? " visible" : "")}>
-                    Este imóvel de <strong>R$ {formatBRL(results.precoImovel)}</strong> está na
-                    faixa <strong>{tier.titulo.toLowerCase()}</strong> para o seu momento
-                    financeiro — com uma parcela estimada de{" "}
-                    <strong>R$ {formatBRL(results.parcelaEstimada)} por mês</strong>.
+                  <div className="vt-info">
+                    {results.limitante === "entrada"
+                      ? "O valor foi limitado pela sua entrada disponível: sua renda sustentaria uma parcela maior, mas a entrada precisa representar pelo menos 20% do imóvel."
+                      : "O valor foi limitado pela sua capacidade de pagamento mensal, considerando a variação da sua renda."}
                   </div>
                 </>
               )}
@@ -653,46 +562,46 @@ export default function CalculadoraPossoComprar() {
 
         <CalculadoraTextBlock>
           <h2 className="text-3xl font-bold text-foreground mb-6">
-            Como saber se você pode comprar um imóvel?
+            Como calculamos o imóvel que você pode comprar?
           </h2>
 
           <p>
-            A pergunta não é só "o banco aprova o financiamento?" — é se a parcela cabe na sua
-            vida sem sufocar seu orçamento todo mês. Os bancos costumam aprovar financiamentos em
-            que a parcela compromete até 30% da renda mensal do comprador. É uma referência útil,
-            mas não é garantia de conforto: comprometer o teto que o banco permite, ano após ano,
-            deixa pouca margem para imprevistos.
+            Em vez de avaliar um preço de imóvel que você já tem em mente, esta calculadora parte
+            da sua renda e do valor que você tem disponível para entrada e custos cartoriais, e
+            devolve o valor máximo de imóvel recomendado para o seu momento financeiro.
           </p>
 
           <p>
-            Por isso esta calculadora trabalha com três faixas sobre a mesma renda informada. A
-            faixa <strong>confortável</strong> considera um comprometimento mais conservador (20%)
-            — o cenário em que a parcela cabe mesmo nos meses mais fracos. A faixa{" "}
-            <strong>possível</strong> usa o limite clássico de 30% — o que um banco típico
-            aprovaria. Acima disso, entra a faixa <strong>arriscada</strong>: tecnicamente pode
-            ser aprovado, mas comprometeria renda demais.
+            Do valor informado para entrada + custos, descontamos os{" "}
+            <strong>custos cartorários</strong> — ITBI, escritura e registro, estimados em{" "}
+            <strong>7% do valor do imóvel</strong> — e o restante vira a entrada efetiva. Essa
+            entrada precisa representar <strong>pelo menos 20% do valor do imóvel</strong> — o
+            que já define um teto de preço só com base no que você tem guardado.
           </p>
 
           <p>
-            Por isso pedimos a <strong>média dos últimos 6 meses</strong>, em vez de um valor
-            fixo — evita superestimar sua capacidade de pagamento com base num mês bom isolado.
-            E se em algum desses meses sua renda caiu abaixo de um terço da média, é sinal de que
-            ela é instável: nesse caso, vale priorizar a faixa confortável, que já assume uma
-            margem maior de segurança.
+            Do lado da renda, pedimos a <strong>média dos últimos 6 meses</strong> e o quanto ela
+            varia mês a mês, porque isso muda quanto dela pode ir com segurança para a parcela:
+            renda <strong>pouco variável</strong> (até 10%) permite comprometer até 25%; renda com{" "}
+            <strong>variação média</strong> (até 25%) usa 20%; e renda <strong>muito variável</strong>{" "}
+            (acima de 25%) usa apenas 15%, para deixar margem nos meses mais fracos. Por padrão
+            simulamos o financiamento com prazo de {PRAZO_ANOS_PADRAO} anos e taxa de{" "}
+            {TAXA_ANUAL_PADRAO}% ao ano, mas você pode ajustar os dois valores na calculadora — o
+            prazo máximo permitido é de {PRAZO_ANOS_MAXIMO} anos. A parcela é calculada pela{" "}
+            <strong>Tabela Price</strong>, com valor fixo do início ao fim do financiamento.
           </p>
 
           <p>
-            O patrimônio disponível para o imóvel também importa: quanto mais você entra à vista,
-            menor o financiamento e menor a parcela — o que empurra o preço do imóvel que você
-            "pode comprar" para cima.
+            O valor final recomendado é sempre o <strong>menor</strong> entre o teto que sua
+            entrada sustenta e o teto que sua renda sustenta — o que estiver mais apertado é quem
+            define até onde você pode ir com segurança.
           </p>
 
           <div className="bg-primary/10 border border-primary/30 rounded-lg p-6 mt-8">
             <p className="text-foreground font-semibold mb-0">
-              <strong>Em resumo:</strong> some seu patrimônio disponível ao financiamento máximo
-              que sua renda sustenta, e você tem o teto real do que pode comprar. Use a
-              calculadora acima com o preço do imóvel que você está avaliando para ver onde ele se
-              encaixa.
+              <strong>Em resumo:</strong> informe sua renda, o quanto ela varia e o valor
+              disponível para entrada e custos, e a calculadora acima mostra o preço máximo de
+              imóvel recomendado, a parcela estimada e o que limita esse valor.
             </p>
           </div>
         </CalculadoraTextBlock>

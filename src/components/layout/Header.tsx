@@ -7,6 +7,10 @@ import Logo from "@/assets/logo-no-bg-sm.webp";
 
 export const SOBRE_URL = "https://www.instagram.com/orienta.financas/";
 
+export const primeirosImoveis = [
+  { name: "Posso comprar este imóvel?", href: "/imoveis/calculadoras/posso-comprar" },
+];
+
 export const primeirosSeguros = [
   { name: "Calculadora de seguros", href: "/seguros" },
   { name: "Artigos", href: "/seguros/conteudos" },
@@ -115,6 +119,7 @@ export function Header() {
   const isPrimeirosActive =
     location.pathname.startsWith("/seguros") ||
     location.pathname.startsWith("/investimentos") ||
+    location.pathname.startsWith("/imoveis") ||
     location.pathname === "/planejamento/calculadoras/aposentadoria";
   const isFerramentasActive =
     location.pathname.startsWith("/planejamento") ||
@@ -170,7 +175,21 @@ export function Header() {
                       <Building2 className="h-3.5 w-3.5" />
                       Imóveis
                     </p>
-                    <span className="block px-4 pb-2 pl-8 text-sm text-muted-foreground/60 italic">Em breve</span>
+                    {primeirosImoveis.map((item) => (
+                      <Link
+                        key={item.href}
+                        to={item.href}
+                        onClick={closeAllDesktopDropdowns}
+                        className={cn(
+                          "block px-4 py-1.5 pl-8 text-sm transition-colors hover:text-primary hover:bg-muted/50",
+                          location.pathname === item.href
+                            ? "text-primary font-medium"
+                            : "text-muted-foreground"
+                        )}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
                   </div>
 
                   <div className="mt-1 border-t pt-2">
@@ -360,7 +379,21 @@ export function Header() {
                   <Building2 className="h-3 w-3" />
                   Imóveis
                 </p>
-                <span className="px-4 py-1 text-sm text-muted-foreground/60 italic">Em breve</span>
+                {primeirosImoveis.map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={closeMobile}
+                    className={cn(
+                      "px-4 py-2.5 rounded-lg text-sm transition-colors",
+                      location.pathname === item.href
+                        ? "bg-accent text-accent-foreground"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
 
                 <p className="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 flex items-center gap-1.5">
                   <Shield className="h-3 w-3" />

@@ -3,6 +3,7 @@ import Logo from "@/assets/logo-no-bg.png";
 import { Instagram, Youtube, Building2, Shield, TrendingUp, Calculator } from "lucide-react";
 import {
   SOBRE_URL,
+  primeirosImoveis,
   primeirosSeguros,
   primeirosInvestimentos,
   primeirosPlanejamento,
@@ -11,7 +12,7 @@ import {
 } from "@/components/layout/Header";
 
 const primeirosGroups = [
-  { key: "imoveis", label: "Imóveis", icon: Building2, comingSoon: true, links: [] as { name: string; href: string }[] },
+  { key: "imoveis", label: "Imóveis", icon: Building2, links: primeirosImoveis },
   { key: "seguros", label: "Seguros", icon: Shield, links: primeirosSeguros },
   { key: "investimentos", label: "Investimentos", icon: TrendingUp, links: primeirosInvestimentos },
   { key: "planejamento", label: "Planejamentos", icon: Calculator, links: primeirosPlanejamento },
@@ -82,22 +83,18 @@ export function Footer() {
                       <Icon className="h-3.5 w-3.5" />
                       {group.label}
                     </p>
-                    {group.comingSoon ? (
-                      <span className="block pl-5 text-sm italic text-white/30">Em breve</span>
-                    ) : (
-                      <ul className="flex flex-col gap-1.5 pl-5">
-                        {group.links.map((item) => (
-                          <li key={item.href}>
-                            <Link
-                              to={item.href}
-                              className="text-sm text-white/70 transition-colors hover:text-primary"
-                            >
-                              {item.name}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    <ul className="flex flex-col gap-1.5 pl-5">
+                      {group.links.map((item) => (
+                        <li key={item.href}>
+                          <Link
+                            to={item.href}
+                            className="text-sm text-white/70 transition-colors hover:text-primary"
+                          >
+                            {item.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 );
               })}
