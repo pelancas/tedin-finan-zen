@@ -480,6 +480,13 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                     />
                   </div>
 
+                  <div className="mt-1 flex items-start gap-2 rounded-lg border border-orange-200 bg-orange-50 px-3 py-2.5">
+                    <AlertTriangle size={14} className="mt-0.5 shrink-0 text-orange-500" />
+                    <p className="text-xs font-medium text-orange-700">
+                      Consulta válida apenas para imóveis em Belo Horizonte, MG.
+                    </p>
+                  </div>
+
                   <p className="mt-1 text-xs font-bold uppercase tracking-wide text-slate-400">
                     Endereço do imóvel
                   </p>
