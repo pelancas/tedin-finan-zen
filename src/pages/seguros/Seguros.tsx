@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Shield, Info, ChevronDown, ChevronUp } from "lucide-react";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
+import { ShareRow } from "@/components/ShareRow";
+import { OutrasFerramentas } from "@/components/OutrasFerramentas";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -215,7 +217,7 @@ function CalculadoraAcidentes() {
       }}>
         <Info size={16} style={{ color: "#d97706", marginTop: "1px", flexShrink: 0 }} />
         <p style={{ fontSize: "13px", color: "#92400e", lineHeight: "1.5" }}>
-          Este seguro cobre acidentes que te impedem de trabalhar mas não te matam.
+          Este seguro cobre acidentes que te impedem de trabalhar.
           A seguradora paga <strong>proporcional</strong> ao tipo de acidente — perda de um dedo não gera o valor total.
         </p>
       </div>
@@ -363,10 +365,10 @@ export default function Seguros() {
             fontSize: "17px", color: "#94a3b8", lineHeight: "1.7",
             maxWidth: "600px",
           }}>
-            Descubra exatamente quanto de capital segurado você precisa — sem pagar por
-            coberturas desnecessárias. Calcule o seguro de vida e o seguro de acidentes
+            Calcule o seguro de vida e o seguro de acidentes
             pessoais de forma independente.
           </p>
+          <ShareRow title="Calculadora de Seguros Pessoais" style={{ marginTop: "20px" }} />
         </div>
       </section>
 
@@ -409,7 +411,7 @@ export default function Seguros() {
             </h2>
             <p style={{ fontSize: "14px", color: "#64748b", marginBottom: "24px" }}>
               {activeTab === "vida"
-                ? "Quanto sua família precisa para manter o padrão de vida sem a sua renda. Cálculo simplificado que não considera inflação nem rendimento do capital"
+                ? "Quanto sua família precisa para manter o padrão de vida sem a sua renda."
                 : "Quanto você precisaria para viver sem trabalhar em caso de acidente incapacitante."
               }
             </p>
@@ -417,6 +419,16 @@ export default function Seguros() {
             {activeTab === "vida" ? <CalculadoraVida /> : <CalculadoraAcidentes />}
           </div>
 
+          <div style={{
+            marginTop: "24px", paddingTop: "20px",
+            borderTop: "1px solid #e2e8f0",
+          }}>
+            <p style={{ fontSize: "13px", fontWeight: 700, color: "#1A2E35", marginBottom: "8px" }}>
+              Compartilhe esta calculadora
+            </p>
+            <ShareRow title="Calculadora de Seguros Pessoais" label="" />
+          </div>
+          
         </div>
       </section>
 
@@ -427,31 +439,27 @@ export default function Seguros() {
             O que são esses seguros?
           </h2>
           <p style={{ fontSize: "15px", color: "#64748b", marginBottom: "40px" }}>
-            Entenda o que cada seguro cobre antes de contratar.
+            
           </p>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             {[
               {
                 titulo: "Seguro de Vida",
-                cor: "#1daf66",
-                descricao: "Cobre a sua morte. Quando o segurado morre, a seguradora paga o capital segurado aos beneficiários. Só faz sentido se você tem dependentes que vivem da sua renda — cônjuge, filhos, pais. Se ninguém depende de você financeiramente, não há necessidade.",
+                descricao: "Para o assunto delicado que é a morte, esse seguro é feito para cuidar daqueles que ficam para trás. Se você tem alguém que dependa de você, do seu dinheiro, o seguro de vida é essencial.",
               },
               {
                 titulo: "Seguro de Invalidez Permanente por Acidente (IPA)",
-                cor: "#FFA726",
-                descricao: "Paga se você sofrer um acidente que cause perda de mobilidade ou de algum sentido (visão, audição, etc.) de forma permanente. Atenção: a seguradora paga proporcional ao tipo de acidente — perder um dedo não gera o valor total contratado. O cálculo leva em conta se você teria renda mesmo sem trabalhar.",
+                descricao: "A sua força de trabalho está conectada à sua capacidade de levantar todos os dias e produzir. O seguro de invalidez por acidente vem para te gerar segurança financeira para qualquer acidente infeliz que tire sua capacidade de produzir.",
               },
               {
                 titulo: "Seguro de Doenças Graves",
-                cor: "#e64545",
-                descricao: "Pago ao contrair uma das doenças cobertas (alguns tipos de câncer, infarto, AVC, etc.). Importante: ele não cobre todos os cânceres nem todos os estágios. É recomendado para poucos, especialmente quem tem histórico familiar relevante. Exige análise cuidadosa das coberturas antes de contratar.",
+                descricao: "Tratamentos de saúde são caros, dessa forma, esteja protegido para caso tenha o diagnóstico de qualquer uma das doenças cobertas.",
               },
-            ].map(({ titulo, cor, descricao }) => (
+            ].map(({ titulo, descricao }) => (
               <div key={titulo} style={{
                 background: "#fff", borderRadius: "12px", padding: "24px",
-                borderLeft: `4px solid ${cor}`, border: "1px solid #e2e8f0",
-                borderLeftWidth: "4px", borderLeftColor: cor,
+                boxShadow: "inset 0 0 0 1px #e2e8f0",
               }}>
                 <h3 style={{ fontSize: "16px", fontWeight: 700, color: "#1A2E35", marginBottom: "8px" }}>
                   {titulo}
@@ -544,6 +552,8 @@ export default function Seguros() {
           </div>
         </div>
       </section>
+
+      <OutrasFerramentas exclude="/seguros" />
     </Layout>
   );
 }

@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { CalculadoraSidebar } from "@/components/layout/CalculadoraSidebar";
 import { CalculadoraTextBlock } from "@/components/layout/CalculadoraTextBlock";
+import { ShareRow } from "@/components/ShareRow";
+import { OutrasFerramentas } from "@/components/OutrasFerramentas";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface Results {
@@ -296,8 +298,9 @@ export default function CalculadoraMetasFinanceiras() {
               <span>Primeiro Milhão</span>
             </h1>
             <p>
-              Sem aposta, sem ganhar na loteria, de verdade, quanto tempo até você chegar no seu primeiro milhão? 💰💰💰
+              Sem aposta, sem ganhar na loteria, de verdade, quanto tempo até você chegar no seu primeiro milhão? 
             </p>
+            <ShareRow title="Calculadora do Primeiro Milhão | Orienta" style={{ marginTop: "20px" }} />
           </div>
           {/* Decorative blob */}
           <svg className="vt-hero-blob" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -315,15 +318,9 @@ export default function CalculadoraMetasFinanceiras() {
           <div>
             <div className="vt-section-heading">
               <h2>
-                {/* Savings icon */}
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8.5 3.3 1.5 4.2C6 18 6 19 6 19h12s0-1-.5-2.8c1-.9 1.5-2.4 1.5-4.2 0-1-.25-1.75-.5-2.5L20 8s1-5-1-3z"/>
-                  <path d="M2 9v1c0 1.1.9 2 2 2h1"/>
-                  <path d="M16 11h0"/>
-                </svg>
                 Quanto preciso poupar por mês?
               </h2>
-              <p>Diga-nos quanto você quer guardar e quando quer atingir sua meta.</p>
+              <p>Quanto você quer guardar e quando quer atingir sua meta?</p>
             </div>
 
             <div className="vt-card">
@@ -483,6 +480,8 @@ export default function CalculadoraMetasFinanceiras() {
             </p>
           </div>
         </CalculadoraTextBlock>
+
+        <OutrasFerramentas />
       </div>
     </>
   );

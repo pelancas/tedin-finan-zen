@@ -34,6 +34,7 @@ export const ferramentasItems = [
   { name: "Calculadora de aposentadoria", href: "/planejamento/calculadoras/aposentadoria" },
   { name: "Calculadora de metas", href: "/planejamento/calculadoras/metas" },
   { name: "Calculadora do milhão", href: "/planejamento/calculadoras/milhao" },
+  { name: "Calculadora de seguros", href: "/seguros" },
   { name: "Comparador de renda fixa", href: "/investimentos/renda-fixa/comparador" },
   { name: "Posso comprar este imóvel?", href: "/imoveis/calculadoras/posso-comprar" },
 ];

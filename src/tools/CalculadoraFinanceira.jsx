@@ -1,4 +1,6 @@
 ﻿import { useState, useEffect, useRef, useCallback } from "react";
+import { ShareRow } from "@/components/ShareRow";
+import { OutrasFerramentas } from "@/components/OutrasFerramentas";
 
 const LOGO_SRC = "/favicon.png";
 
@@ -274,6 +276,7 @@ export default function CalculadoraFinanceira() {
               Uma calculadora de renda mensal de aposentadoria estima quanto você poderá receber por mês no futuro com base nas contribuições, no tempo de investimento e na taxa de rendimento. Com esses dados, ela projeta o valor acumulado e transforma esse montante em uma renda mensal estimada para a aposentadoria.
 
             </p>
+            <ShareRow title="Calculadora de Aposentadoria | Orienta" style={{ marginTop: "20px" }} />
           </div>
           {/* Decorative blob */}
           <svg className="vt-hero-blob" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -412,6 +415,8 @@ export default function CalculadoraFinanceira() {
             </div>
           </div>
         </div>
+
+        <OutrasFerramentas exclude="/planejamento/calculadoras/aposentadoria" />
       </div>
     </>
   );

@@ -10,6 +10,8 @@ import planilhaImg from "@/assets/planilha-planejamento.webp";
 import planilhaAcompanhamentoImg from "@/assets/planilha-acompanhamento.webp";
 import processImg from "@/assets/process.webp";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
+import { ShareRow } from "@/components/ShareRow";
+import { OutrasFerramentas } from "@/components/OutrasFerramentas";
 
 const features = [
   {
@@ -94,6 +96,7 @@ const Despesas = () => {
               </span>
             </button>
           </div>
+          <ShareRow title="Controle de Despesas | Orienta" />
         </div>
         <div className="flex-1 w-full aspect-square md:aspect-[4/5] lg:aspect-square rounded-[2rem] bg-gradient-to-br from-primary/10 via-primary/5 to-transparent flex items-center justify-center border-2 border-primary/10 relative overflow-hidden">
           <img
@@ -454,6 +457,8 @@ const Despesas = () => {
           </div>
         </div>
       </section>
+
+      <OutrasFerramentas exclude="/planejamento/despesas" />
     </main>
     </Layout>
   );

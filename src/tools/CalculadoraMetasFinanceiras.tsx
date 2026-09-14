@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { CalculadoraSidebar } from "@/components/layout/CalculadoraSidebar";
 import { CalculadoraTextBlock } from "@/components/layout/CalculadoraTextBlock";
+import { ShareRow } from "@/components/ShareRow";
+import { OutrasFerramentas } from "@/components/OutrasFerramentas";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface Results {
@@ -310,6 +312,7 @@ export default function CalculadoraMetasFinanceiras() {
             <p>
               Quer comprar um carro? Uma Casa? Use a calculadora para ver quanto precisa economizar para chegar onde quer.
             </p>
+            <ShareRow title="Calculadora de Metas Financeiras | Orienta" style={{ marginTop: "20px" }} />
           </div>
           {/* Decorative blob */}
           <svg className="vt-hero-blob" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -530,6 +533,8 @@ export default function CalculadoraMetasFinanceiras() {
                      </p>
                    </div>
         </CalculadoraTextBlock>
+
+        <OutrasFerramentas />
       </div>
     </>
   );

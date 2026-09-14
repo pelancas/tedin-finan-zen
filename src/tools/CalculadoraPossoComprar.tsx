@@ -3,6 +3,8 @@ import { HelpCircle } from "lucide-react";
 import { CalculadoraSidebar } from "@/components/layout/CalculadoraSidebar";
 import { CalculadoraTextBlock } from "@/components/layout/CalculadoraTextBlock";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { ShareRow } from "@/components/ShareRow";
+import { OutrasFerramentas } from "@/components/OutrasFerramentas";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Variacao = "pouca" | "media" | "muita";
@@ -347,6 +349,7 @@ export default function CalculadoraPossoComprar() {
             <p>
               Descubra qual valor máximo de imóvel você pode comprar, financiando!
             </p>
+            <ShareRow title="Posso Comprar Este Imóvel? | Orienta" style={{ marginTop: "20px" }} />
           </div>
           <svg className="vt-hero-blob" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -354,7 +357,7 @@ export default function CalculadoraPossoComprar() {
               fill="#abccb5"
               transform="translate(100 100)"
             />
-          </svg> 
+          </svg>
         </section>
 
         {/* ── Main ── */}
@@ -605,6 +608,8 @@ export default function CalculadoraPossoComprar() {
             </p>
           </div>
         </CalculadoraTextBlock>
+
+        <OutrasFerramentas exclude="/imoveis/calculadoras/posso-comprar" />
       </div>
     </>
   );

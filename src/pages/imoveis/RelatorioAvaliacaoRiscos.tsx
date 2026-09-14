@@ -260,14 +260,14 @@ export default function RelatorioAvaliacaoRiscos() {
   };
 
   return (
-    <Layout>
+    <Layout hideHeader>
       {/* ─── HERO — fundo #1A2E35 ──────────────────────────────────── */}
-      <section className="relative overflow-hidden py-20 lg:py-28" style={{ background: "#1A2E35" }}>
+      <section className="relative overflow-hidden pt-10 pb-20 lg:py-28" style={{ background: "#1A2E35" }}>
         <div className="pointer-events-none absolute -left-20 top-0 h-72 w-72 rounded-full bg-[#1daf66] opacity-10 blur-[120px]" />
         <div className="pointer-events-none absolute -right-20 bottom-0 h-72 w-72 rounded-full bg-orange-400 opacity-10 blur-[120px]" />
 
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid items-center gap-12 lg:grid-cols-2">
+          <div className="grid items-center gap-6 lg:gap-12 lg:grid-cols-2">
             {/* Left */}
             <div className="flex flex-col gap-6 text-center lg:text-left">
               <h1 className="text-4xl font-black leading-tight tracking-tight text-white md:text-5xl lg:text-6xl">
@@ -278,9 +278,9 @@ export default function RelatorioAvaliacaoRiscos() {
               </h1>
 
               <p className="mx-auto max-w-xl text-lg text-white/55 lg:mx-0">
-                Dívidas, penhoras e processos, tudo isso pode fazer com que você perca sua residência.
-                Cruzamos dados do <strong className="font-bold text-white">proprietário</strong> em fontes oficiais e entregamos um relatório
-                completo sobre ele e o imóvel, para você não ter surpresas.
+                Dívidas, penhoras e processos. Não perca sua nova residência.
+                Cruzamos dados do <strong className="font-bold text-white">proprietário </strong> 
+                 e do imóvel, para você não ter surpresas.
               </p>
 
               <div className="flex flex-col items-center gap-3 text-sm text-white/40 sm:flex-row sm:justify-center lg:justify-start">
@@ -298,7 +298,7 @@ export default function RelatorioAvaliacaoRiscos() {
 
             {/* Right — imagem + formulário de consulta */}
             <div className="mx-auto flex w-full max-w-sm flex-col items-center gap-8">
-              <div className="relative w-full">
+              <div className="relative w-full order-2 lg:order-1">
                 <div className="pointer-events-none absolute inset-0 rounded-full bg-[#1daf66]/10 blur-3xl" />
                 <img
                   src={casaRiscoImg}
@@ -307,7 +307,7 @@ export default function RelatorioAvaliacaoRiscos() {
                 />
               </div>
 
-              <div className="w-full rounded-2xl border border-white/10 bg-white/5 p-6 shadow-2xl">
+              <div className="w-full rounded-2xl border border-white/10 bg-white/5 p-6 shadow-2xl order-1 lg:order-2">
                 <ConsultaForm
                   nomeComprador={nomeComprador}
                   setNomeComprador={setNomeComprador}
