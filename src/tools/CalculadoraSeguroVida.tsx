@@ -131,7 +131,7 @@ function SeletorAnos({
 }) {
   return (
     <div className="vt-field">
-      {showLabel && <label className="vt-label">Por quantos anos sua família precisaria dessa renda?</label>}
+      {showLabel && <label className="vt-label">Por quantos anos precisaria dessa renda?</label>}
       <select
         className="vt-select"
         value={String(value)}
