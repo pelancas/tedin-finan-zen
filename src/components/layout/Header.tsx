@@ -40,7 +40,6 @@ export const ferramentasItems = [
 ];
 
 export const artigosItems = [
-  { name: "A Venda Casada de Seguros", href: "/seguros/conteudos?post=a-venda-casada-de-seguros" },
   {
     name: "O que a Previdência Social tem a ver com o meu café com leite?",
     href: "/planejamento/conteudos?post=previdencia-social-e-o-cafe-com-leite",

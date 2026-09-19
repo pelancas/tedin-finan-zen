@@ -471,9 +471,9 @@ export default function CalculadoraMetasFinanceiras() {
               image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBiIAZZ1_Gx_i7qJnBZuqdTW1gDH3BRnNYO_BEfyALedW6hdQWTMrCxvimHAEd8ExDNnqlKeuvR-2F8QjxPY9Dqa6TRS04rbJ4IHfWuEKjtYGv7TfDybTd72owjQcX4oPr4yCEaVGqfCSdYjZuiJMMUjzND-N92XHg60Wl0AW6pVWYbkVseir6LsmR7lMTIUZUghLYar5-r4fWxk-6_SdT0ZodH-4-NK0c10UUt2AWOvWW4ONhyInd5nJ0-mswYeBWEQUOaxjfpSaAH",
               imageAlt: "Moedas empilhadas com planta crescendo",
               badge: "Destaque",
-              title: "Cuidado com seu seguro",
-              description: "Descubra como evitar erros comuns.",
-              href: "#/seguros/conteudos?post=a-venda-casada-de-seguros",
+              title: "Quanto de seguro de vida você precisa?",
+              description: "Descubra o capital ideal para proteger quem depende de você.",
+              href: "#/seguros",
             }}
             resources={[
               { icon: "article", title: "As Melhores Formas de Economizar", desc: "Pequenas mudanças, grandes resultados.", href: "#/planejamento/despesas" },
