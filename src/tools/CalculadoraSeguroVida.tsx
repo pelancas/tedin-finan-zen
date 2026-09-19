@@ -396,14 +396,15 @@ export function AssistenteSeguroVida() {
                   <div className="vt-renda-linha">
                     <div className="vt-renda-header">
                       <span />
-                      <span className="vt-label">Despesas com outras pessoas</span>
-                      <span className="vt-label">Por quantos anos sua família precisaria dessa renda?</span>
+                      <span className="vt-label">Despesas com a pessoa</span>
+                      <span className="vt-label">Por quantos anos precisaria dessa renda?</span>
                     </div>
 
                     {adultosRenda.map((item, i) => (
                       <div className="vt-renda-row" key={`adulto-${i}`}>
                         <p className="vt-renda-row-label">Adulto {i + 1}</p>
                         <CampoBRL
+                          label="Despesas com a pessoa"
                           value={item.despesa}
                           onChange={(v) => atualizarDependente("adultos", i, { despesa: v })}
                           placeholder="Ex: 1.500,00"
@@ -411,7 +412,6 @@ export function AssistenteSeguroVida() {
                         <SeletorAnos
                           value={item.anos}
                           onChange={(v) => atualizarDependente("adultos", i, { anos: v })}
-                          showLabel={false}
                         />
                       </div>
                     ))}
@@ -420,6 +420,7 @@ export function AssistenteSeguroVida() {
                       <div className="vt-renda-row" key={`crianca-${i}`}>
                         <p className="vt-renda-row-label">Criança {i + 1}</p>
                         <CampoBRL
+                          label="Despesas com a pessoa"
                           value={item.despesa}
                           onChange={(v) => atualizarDependente("criancas", i, { despesa: v })}
                           placeholder="Ex: 1.500,00"
@@ -427,7 +428,6 @@ export function AssistenteSeguroVida() {
                         <SeletorAnos
                           value={item.anos}
                           onChange={(v) => atualizarDependente("criancas", i, { anos: v })}
-                          showLabel={false}
                         />
                       </div>
                     ))}
@@ -784,12 +784,17 @@ export default function CalculadoraSeguroVida() {
           margin-top: 0.85rem; padding-top: 0.85rem; border-top: 1px solid #eef2ee;
         }
         .vt-renda-row-label { font-size: 0.85rem; font-weight: 800; color: var(--vt-darker); padding-top: 0.95rem; }
-        /* Colunas ficam muito estreitas para o valor/select num celular — empilha
-           e esconde o cabeçalho compartilhado, que não caberia legível ali. */
+        /* No desktop os rótulos de cada campo ficam escondidos — quem explica
+           o que é cada coluna é o cabeçalho compartilhado (.vt-renda-header). */
+        .vt-renda-row .vt-label { display: none; }
+        /* Colunas ficam muito estreitas para o valor/select num celular — empilha,
+           esconde o cabeçalho compartilhado (não caberia legível ali) e volta a
+           mostrar o rótulo de cada campo, já que o cabeçalho não aparece mais. */
         @media (max-width: 640px) {
           .vt-renda-header { display: none; }
           .vt-renda-row { grid-template-columns: 1fr; gap: 0.5rem; }
           .vt-renda-row-label { padding-top: 0; }
+          .vt-renda-row .vt-label { display: block; }
         }
 
         /* Select (prazo de reposição) */
