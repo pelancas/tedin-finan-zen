@@ -811,7 +811,14 @@ export default function CalculadoraSeguroVida() {
 
         /* Wizard navigation */
         .vt-wizard-actions { display: flex; gap: 0.75rem; margin-top: 2rem; }
-        .vt-wizard-actions .vt-btn { margin-top: 0; width: auto; }
+        .vt-wizard-actions .vt-btn { margin-top: 0; width: auto; min-width: 0; padding: 0.9rem 1.25rem; }
+        /* Duas colunas de padding generoso (2rem) não cabem lado a lado em
+           telas estreitas e empurram a página inteira para além da viewport —
+           empilha os botões nesse caso. */
+        @media (max-width: 420px) {
+          .vt-wizard-actions { flex-direction: column; }
+          .vt-wizard-actions .vt-btn-secondary { width: 100%; }
+        }
 
         /* Avaliação da ferramenta */
         .vt-stars { display: flex; gap: 0.4rem; margin-bottom: 1.25rem; }
@@ -912,8 +919,7 @@ export default function CalculadoraSeguroVida() {
           <div>
             <div className="vt-section-heading">
               <h2>
-                <Shield size={26} />
-                Assistente de necessidade de seguro de vida
+                Calculadora de necessidade de seguro de vida
               </h2>
               <p>Um passo de cada vez — leva menos de dois minutos.</p>
             </div>
