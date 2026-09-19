@@ -38,7 +38,7 @@ export function Footer() {
 
             <div className="flex items-center gap-3">
               <a
-                href="https://www.instagram.com/orienta.financas/"
+                href={SOBRE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"

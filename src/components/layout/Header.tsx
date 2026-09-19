@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Logo from "@/assets/logo-no-bg-sm.webp";
 
-export const SOBRE_URL = "https://www.instagram.com/orienta.financas/";
+export const SOBRE_URL = "https://www.instagram.com/orienta.vc/";
 
 export const primeirosImoveis = [
   { name: "Posso comprar este imóvel?", href: "/imoveis/calculadoras/posso-comprar" },
