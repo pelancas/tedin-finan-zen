@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://orientafinancas.com.br/sitemap.xml
+Sitemap: https://orienta.vc/sitemap.xml
