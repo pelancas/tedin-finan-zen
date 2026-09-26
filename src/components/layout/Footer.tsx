@@ -47,7 +47,7 @@ export function Footer() {
                 <Instagram className="h-4 w-4" />
               </a>
               <a
-                href="https://www.youtube.com/@OrientaFinan%C3%A7as"
+                href="https://www.youtube.com/@OrientaVC"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="YouTube"
