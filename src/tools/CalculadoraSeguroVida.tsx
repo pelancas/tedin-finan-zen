@@ -24,6 +24,14 @@ const maskBRL = (raw: string) => {
   return num.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
 };
 
+// Versão sem centavos — usada nos campos estreitos da tabela de dependentes,
+// onde o espaço é curto demais para o prefixo "R$" e as casas decimais.
+const maskBRLInteiro = (raw: string) => {
+  const digits = raw.replace(/\D/g, "");
+  if (!digits) return "";
+  return parseInt(digits, 10).toLocaleString("pt-BR");
+};
+
 // ─── Assistente de necessidade de seguro de vida ─────────────────────────────
 
 type Step = 1 | 2 | 3 | 4;
@@ -176,26 +184,39 @@ function CampoBRL({
   onChange,
   placeholder,
   hint,
+  compact = false,
 }: {
   label?: string;
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
   hint?: string;
+  /** Sem prefixo "R$" nem centavos — usado onde o espaço horizontal é curto. */
+  compact?: boolean;
 }) {
   return (
     <div className="vt-field">
       {label && <label className="vt-label">{label}</label>}
-      <div className="vt-input-wrap">
-        <span className="vt-prefix">R$</span>
+      {compact ? (
         <input
-          className="vt-input has-prefix"
+          className="vt-input"
           placeholder={placeholder}
           value={value}
           inputMode="numeric"
-          onChange={(e) => onChange(maskBRL(e.target.value))}
+          onChange={(e) => onChange(maskBRLInteiro(e.target.value))}
         />
-      </div>
+      ) : (
+        <div className="vt-input-wrap">
+          <span className="vt-prefix">R$</span>
+          <input
+            className="vt-input has-prefix"
+            placeholder={placeholder}
+            value={value}
+            inputMode="numeric"
+            onChange={(e) => onChange(maskBRL(e.target.value))}
+          />
+        </div>
+      )}
       {hint && <p className="vt-hint">{hint}</p>}
     </div>
   );
@@ -407,7 +428,8 @@ export function AssistenteSeguroVida() {
                           label="Despesas com a pessoa"
                           value={item.despesa}
                           onChange={(v) => atualizarDependente("adultos", i, { despesa: v })}
-                          placeholder="Ex: 1.500,00"
+                          placeholder="Ex: 1.500"
+                          compact
                         />
                         <SeletorAnos
                           value={item.anos}
@@ -423,7 +445,8 @@ export function AssistenteSeguroVida() {
                           label="Despesas com a pessoa"
                           value={item.despesa}
                           onChange={(v) => atualizarDependente("criancas", i, { despesa: v })}
-                          placeholder="Ex: 1.500,00"
+                          placeholder="Ex: 1.500"
+                          compact
                         />
                         <SeletorAnos
                           value={item.anos}
@@ -774,8 +797,8 @@ export default function CalculadoraSeguroVida() {
         /* Tabela de dependentes — rótulos das colunas aparecem uma única vez;
            as colunas encolhem/crescem conforme o espaço disponível. */
         .vt-renda-header, .vt-renda-row {
-          display: grid; grid-template-columns: minmax(64px, 100px) minmax(0, 1fr) minmax(0, 1fr);
-          gap: 0.6rem 0.85rem; align-items: start;
+          display: grid; grid-template-columns: minmax(56px, 90px) minmax(0, 1fr) minmax(0, 1fr);
+          gap: 0.6rem 0.5rem; align-items: start;
         }
         .vt-renda-header {
           padding-bottom: 0.85rem; margin-bottom: 0.85rem; border-bottom: 1px solid #e2e8e2;

@@ -22,6 +22,7 @@ import FII from "./pages/investimentos/FII";
 import Acoes from "./pages/investimentos/Acoes";
 import Seguros from "./pages/seguros/Seguros";
 import SegurosConteudo from "./pages/seguros/SegurosConteudo";
+import SeguroVidaLanding from "./pages/seguros/SeguroVidaLanding";
 import PlanejamentoConteudo from "./pages/planejamento/PlanejamentoConteudo";
 import PossoComprar from "./pages/imoveis/PossoComprar";
 import RelatorioAvaliacaoRiscos from "./pages/imoveis/RelatorioAvaliacaoRiscos";
@@ -58,6 +59,7 @@ const App = () => (
           <Route path="/investimentos/renda-fixa/comparador" element={<ComparadorRendaFixa />} />
           <Route path="/seguros" element={<Seguros />} />
           <Route path="/seguros/conteudos" element={<SegurosConteudo />} />
+          <Route path="/seguros/seguro-de-vida" element={<SeguroVidaLanding />} />
           <Route path="/imoveis/calculadoras/posso-comprar" element={<PossoComprar />} />
           <Route path="/relatorio-avaliacao-riscos" element={<RelatorioAvaliacaoRiscos />} />
           <Route
