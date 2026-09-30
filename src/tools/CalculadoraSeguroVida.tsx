@@ -17,6 +17,8 @@ const parseBRL = (v: string) =>
 const formatBRL = (n: number) =>
   n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+const formatBRLSemCentavos = (n: number) => Math.round(n).toLocaleString("pt-BR");
+
 const maskBRL = (raw: string) => {
   const digits = raw.replace(/\D/g, "");
   if (!digits) return "";
@@ -246,7 +248,7 @@ function HighlightCard({
       }}
     >
       <p className="result-label">{label}</p>
-      <p className="result-value">R$ {formatBRL(value)}</p>
+      <p className="result-value">R$ {formatBRLSemCentavos(value)}</p>
       {sub && <p className="result-sub">{sub}</p>}
     </div>
   );
@@ -464,7 +466,7 @@ export function AssistenteSeguroVida() {
                 <h3 className="vt-step-title">Dívidas ou gastos adicionais</h3>
                 <div className="vt-two-col">
                   <CampoBRL
-                    label="Dívidas pendentes a cobrir"
+                    label="Dívidas pendentes"
                     value={dividas}
                     onChange={setDividas}
                     placeholder="Ex: 60.000,00"
@@ -511,7 +513,7 @@ export function AssistenteSeguroVida() {
                 </svg>
                 Voltar
               </button>
-            ) : <span />}
+            ) : null}
 
             {step < 4 ? (
               <button
@@ -748,6 +750,9 @@ export default function CalculadoraSeguroVida() {
         .vt-two-col { display: grid; grid-template-columns: 1fr; gap: 1.25rem; align-items: start; }
         @media (min-width: 640px) {
           .vt-two-col { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+          /* Reserva altura de 2 linhas pro rótulo — se um dos dois títulos
+             quebrar linha e o outro não, as caixinhas ficam desalinhadas. */
+          .vt-two-col .vt-label { min-height: 2.1em; }
         }
         .vt-field { display: flex; flex-direction: column; gap: 0.45rem; }
         .vt-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--vt-dark); line-height: 1.3; }
