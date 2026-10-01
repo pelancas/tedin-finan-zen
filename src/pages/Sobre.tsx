@@ -3,6 +3,8 @@ import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
+import { INSTAGRAM_URL } from "@/components/layout/Header";
+import { WHATSAPP_NUMBER } from "@/pages/imoveis/RelatorioAvaliacaoRiscos";
 import {
   Stethoscope,
   Scale,
@@ -16,6 +18,10 @@ import {
   FileText,
   Compass,
   ArrowRight,
+  MessageCircle,
+  Instagram,
+  Youtube,
+  Globe,
 } from "lucide-react";
 
 const perfil = [
@@ -80,12 +86,36 @@ const ferramentas = [
     description: "Due diligence completa antes de comprar um imóvel, sem depender só da palavra do vendedor.",
     to: "/relatorio-avaliacao-riscos",
   },
+];
+
+const modeloNegocio = [
   {
-    icon: Compass,
-    title: "Orienta+",
-    description: "Consultoria e planejamento financeiro para quem quer ir além das planilhas.",
-    to: "/orientaplus",
+    title: "Conteúdo e calculadoras gratuitos",
+    description:
+      "Artigos, guias e calculadoras do site são abertos e gratuitos. Os valores digitados nas calculadoras ficam no seu navegador — não são enviados para nós.",
   },
+  {
+    title: "Relatório de Avaliação de Riscos",
+    description:
+      "Serviço próprio da Orienta para quem vai comprar um imóvel em Belo Horizonte (MG): reunimos certidões, processos judiciais e empresas ligadas ao vendedor a partir de informações públicas e entregamos um PDF com o parecer de risco.",
+  },
+];
+
+const contatos = [
+  {
+    icon: MessageCircle,
+    label: "WhatsApp",
+    value: "+55 (31) 97177-8537",
+    href: `https://wa.me/${WHATSAPP_NUMBER}`,
+  },
+  { icon: Instagram, label: "Instagram", value: "@orienta.vc", href: INSTAGRAM_URL },
+  {
+    icon: Youtube,
+    label: "YouTube",
+    value: "@orientaVC",
+    href: "https://www.youtube.com/@orientaVC",
+  },
+  { icon: Globe, label: "Site", value: "orientafinancas.com.br", href: "https://orientafinancas.com.br" },
 ];
 
 const Sobre = () => {
@@ -199,7 +229,7 @@ const Sobre = () => {
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="mx-auto grid max-w-3xl gap-6 md:grid-cols-2">
             {ferramentas.map((item) => (
               <Link key={item.title} to={item.to} className="group">
                 <Card className="h-full border-border transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
@@ -216,6 +246,96 @@ const Sobre = () => {
                   </CardContent>
                 </Card>
               </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── MODELO DE NEGÓCIO — fundo branco ──────────────────────── */}
+      <section className="py-16 md:py-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-4 text-2xl font-bold text-foreground md:text-3xl">
+            Como a Orienta funciona
+          </h2>
+          <p className="mb-8 text-muted-foreground">
+            A Orienta é uma marca própria e independente de educação e orientação financeira,
+            com sede em Belo Horizonte (MG). Hoje oferecemos:
+          </p>
+          <ul className="space-y-5">
+            {modeloNegocio.map((item) => (
+              <li key={item.title} className="rounded-lg border border-border p-5">
+                <h3 className="mb-1 font-semibold text-foreground">{item.title}</h3>
+                <p className="text-sm text-muted-foreground">{item.description}</p>
+              </li>
+            ))}
+          </ul>
+
+          <h2 className="mb-4 mt-14 text-2xl font-bold text-foreground md:text-3xl">
+            Independência e parcerias
+          </h2>
+          <div className="space-y-4 text-muted-foreground">
+            <p>
+              A Orienta <strong className="text-foreground">não é órgão público</strong> e não tem
+              vínculo, parceria ou representação com a Receita Federal, tribunais, cartórios,
+              prefeituras ou qualquer outra instituição governamental. Quando citamos esses
+              órgãos, é apenas como fonte das informações públicas que consultamos.
+            </p>
+            <p>
+              Também <strong className="text-foreground">não somos parceiros oficiais</strong> de
+              bancos, corretoras, seguradoras, imobiliárias ou veículos de imprensa. Marcas e
+              produtos de terceiros mencionados em artigos e comparadores aparecem apenas para
+              fins educativos.
+            </p>
+          </div>
+
+          <div className="mt-8 rounded-lg border border-primary/30 bg-primary/10 p-6">
+            <p className="text-sm font-medium text-foreground">
+              Nunca pedimos senhas, dados de cartão, dados bancários, códigos de verificação ou
+              acesso à sua conta gov.br. Saiba como tratamos seus dados na{" "}
+              <Link
+                to="/politica-de-privacidade"
+                className="font-semibold text-primary underline underline-offset-2"
+              >
+                Política de Privacidade
+              </Link>
+              .
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CONTATO — fundo cinza claro ───────────────────────────── */}
+      <section id="contato" className="py-16 md:py-24" style={{ background: "#f8faf8" }}>
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto mb-12 max-w-2xl text-center">
+            <h2 className="text-3xl font-bold text-foreground md:text-4xl">Fale com a gente</h2>
+            <p className="mt-3 text-muted-foreground">
+              Dúvidas sobre as ferramentas, os serviços ou seus dados? Estes são nossos únicos
+              canais oficiais.
+            </p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {contatos.map((c) => (
+              <a
+                key={c.label}
+                href={c.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group"
+              >
+                <Card className="h-full border-border transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
+                  <CardContent className="flex flex-col items-center pt-8 text-center">
+                    <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                      <c.icon className="h-6 w-6 text-primary" />
+                    </div>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                      {c.label}
+                    </p>
+                    <p className="mt-1 break-all text-sm font-semibold text-foreground">{c.value}</p>
+                  </CardContent>
+                </Card>
+              </a>
             ))}
           </div>
         </div>

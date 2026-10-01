@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
@@ -19,8 +19,6 @@ import {
 } from "@/components/ui/dialog";
 import { LucideIcon } from "lucide-react";
 import casaRiscoImg from "@/assets/casa-risco.webp";
-import noticiaHerancaDividaImg from "@/assets/noticia-heranca-divida.webp";
-import noticiaLeilaoImovelImg from "@/assets/noticia-leilao-imovel.webp";
 import {
   ShieldCheck,
   Search,
@@ -34,6 +32,7 @@ import {
   BadgeCheck,
   FileSearch,
   Loader2,
+  AlertTriangle,
 } from "lucide-react";
 
 export function toTitleCase(value: string) {
@@ -103,16 +102,60 @@ export function verificacaoWaLink(
   return waLink(mensagem);
 }
 
+// Situações reais, descritas com nossas palavras — sem reproduzir manchetes,
+// logotipos ou layout de veículos de imprensa.
 export const noticias = [
   {
-    image: noticiaHerancaDividaImg,
-    alt: "Manchete: Comprador herda débitos acumulados em aluguéis após aquisição de imóvel",
+    title: "Comprador herda dívidas do antigo dono",
+    description:
+      "Débitos ligados ao imóvel, como IPTU e condomínio, acompanham o bem e podem ser cobrados de quem compra — mesmo que tenham sido feitos antes da venda.",
   },
   {
-    image: noticiaLeilaoImovelImg,
-    alt: "Manchete: Ele comprou apartamento à vista, mas imóvel vai a leilão",
+    title: "Imóvel pago à vista vai a leilão",
+    description:
+      "Quando o vendedor ou a construtora tem dívidas e o imóvel está dado em garantia ou penhorado, o comprador pode perder o bem mesmo após quitar o pagamento.",
   },
 ];
+
+export function NoticiasRiscos() {
+  return (
+    <div className="grid gap-6 sm:grid-cols-2">
+      {noticias.map((n) => (
+        <div
+          key={n.title}
+          className="flex items-start gap-4 rounded-2xl border border-orange-100 bg-orange-50/50 p-6 shadow-sm"
+        >
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-600">
+            <AlertTriangle size={22} />
+          </div>
+          <div>
+            <h3 className="mb-1.5 text-base font-bold text-slate-900">{n.title}</h3>
+            <p className="text-sm text-slate-600">{n.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Aviso exibido junto a todo formulário que coleta dados para o relatório. */
+export function AvisoTransparencia({ className, dark = false }: { className?: string; dark?: boolean }) {
+  return (
+    <p className={`text-xs leading-relaxed ${dark ? "text-white/45" : "text-slate-500"} ${className ?? ""}`}>
+      A Orienta é um serviço independente e <strong>não é órgão público</strong> — não temos
+      vínculo com Receita Federal, tribunais, cartórios ou prefeitura. Consultamos apenas
+      informações públicas. Nunca pedimos senhas, dados de cartão ou dados bancários. Saiba
+      como tratamos seus dados na{" "}
+      <Link
+        to="/politica-de-privacidade"
+        className={`underline underline-offset-2 ${dark ? "text-white/70" : "text-[#1daf66]"}`}
+      >
+        Política de Privacidade
+      </Link>
+      .
+    </p>
+  );
+}
 
 export interface FeatureItem {
   icon: LucideIcon;
@@ -142,12 +185,12 @@ export const passos = [
   {
     icon: Search,
     title: "Você envia os dados",
-    description: "Nome, CPF do proprietário e, dados do imóvel.",
+    description: "Nome e CPF do proprietário e o endereço do imóvel.",
   },
   {
     icon: FileSearch,
-    title: "Cruzamos as fontes oficiais",
-    description: "Nossos sistemas consultam certidões, tribunais e cartórios envolvidos.",
+    title: "Consultamos fontes públicas",
+    description: "Verificamos certidões e processos disponíveis publicamente em órgãos oficiais.",
   },
   {
     icon: ShieldCheck,
@@ -158,9 +201,19 @@ export const passos = [
 
 export const faq = [
   {
+    question: "A Orienta é um órgão do governo?",
+    answer:
+      "Não. A Orienta é um serviço independente de educação e orientação financeira, sem vínculo com Receita Federal, tribunais, cartórios ou prefeituras. Nós apenas reunimos informações que esses órgãos disponibilizam publicamente.",
+  },
+  {
+    question: "Quais dados vocês pedem?",
+    answer:
+      "Seu nome, CPF e e-mail (para identificar a solicitação e enviar o relatório), o nome e CPF do proprietário e o endereço do imóvel. Nunca pedimos senhas, dados de cartão, dados bancários ou acesso à sua conta gov.br.",
+  },
+  {
     question: "É legal solicitar esse tipo de consulta?",
     answer:
-      "Sim. O relatório é montado a partir de fontes públicas e oficiais — certidões, tribunais e cartórios — o mesmo tipo de checagem que um advogado faria antes de fechar um negócio.",
+      "Sim. O relatório é montado apenas a partir de informações públicas — certidões, tribunais e cartórios — o mesmo tipo de checagem que um advogado faria antes de fechar um negócio.",
   },
   {
     question: "Quanto tempo leva para ficar pronto?",
@@ -170,7 +223,7 @@ export const faq = [
   {
     question: "A consulta é sigilosa?",
     answer:
-      "Sim. O relatório é enviado somente para você, em PDF, e nenhum dado é compartilhado com o proprietário ou terceiros.",
+      "O relatório é entregue somente para você, em PDF, e o proprietário não é avisado da consulta. Os dados são usados apenas para gerar o relatório — veja os detalhes na nossa Política de Privacidade.",
   },
   {
     question: "Funciona para qualquer imóvel ou estado?",
@@ -232,6 +285,7 @@ export function ConsultaForm({
           Isso pode levar até 1 minuto — não feche esta página.
         </p>
       )}
+      <AvisoTransparencia dark className="text-center" />
     </form>
   );
 }
@@ -260,7 +314,7 @@ export default function RelatorioAvaliacaoRiscos() {
   };
 
   return (
-    <Layout hideHeader>
+    <Layout>
       {/* ─── HERO — fundo #1A2E35 ──────────────────────────────────── */}
       <section className="relative overflow-hidden pt-10 pb-20 lg:py-28" style={{ background: "#1A2E35" }}>
         <div className="pointer-events-none absolute -left-20 top-0 h-72 w-72 rounded-full bg-[#1daf66] opacity-10 blur-[120px]" />
@@ -291,7 +345,7 @@ export default function RelatorioAvaliacaoRiscos() {
                 <span className="hidden sm:inline">·</span>
                 <span className="flex items-center gap-1.5">
                   <Lock className="h-4 w-4 text-[#1daf66]" />
-                  100% sigiloso
+                  Somente fontes públicas
                 </span>
               </div>
             </div>
@@ -334,20 +388,7 @@ export default function RelatorioAvaliacaoRiscos() {
             </p>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2">
-            {noticias.map((n) => (
-              <div
-                key={n.image}
-                className="overflow-hidden rounded-2xl border border-orange-100 bg-orange-50/50 p-3 shadow-sm"
-              >
-                <img
-                  src={n.image}
-                  alt={n.alt}
-                  className="w-full rounded-lg border border-slate-200"
-                />
-              </div>
-            ))}
-          </div>
+          <NoticiasRiscos />
         </div>
       </section>
 

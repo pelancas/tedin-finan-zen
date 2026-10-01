@@ -12,9 +12,6 @@ import Aposentadoria from "./pages/planejamento/Aposentadoria";
 import Metas from "./pages/planejamento/Metas";
 import Milhao from "./pages/planejamento/Milhao";
 import Imposto from "./pages/impostos/Imposto";
-import OrientaPlus from "./pages/orienta-plus/OrientaPlus";
-import AnaliseCarteira from "./pages/orienta-plus/AnaliseCarteira";
-import PlanejamentoFinanceiro from "./pages/orienta-plus/PlanejamentoFinanceiro";
 import Fundos from "./pages/investimentos/Fundos";
 import RendaFixa from "./pages/investimentos/RendaFixa";
 import ComparadorRendaFixa from "./pages/investimentos/ComparadorRendaFixa";
@@ -27,6 +24,7 @@ import PossoComprar from "./pages/imoveis/PossoComprar";
 import RelatorioAvaliacaoRiscos from "./pages/imoveis/RelatorioAvaliacaoRiscos";
 import RelatorioAvaliacaoRiscosResultado from "./pages/imoveis/RelatorioAvaliacaoRiscosResultado";
 import RelatorioAvaliacaoRiscosProcessando from "./pages/imoveis/RelatorioAvaliacaoRiscosProcessando";
+import PoliticaPrivacidade from "./pages/PoliticaPrivacidade";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -48,9 +46,6 @@ const App = () => (
           <Route path="/planejamento/calculadoras/milhao" element={<Milhao />} />
           <Route path="/planejamento/conteudos" element={<PlanejamentoConteudo />} />
           <Route path="/impostos" element={<Imposto />} />
-          <Route path="/orientaplus" element={<OrientaPlus />} />
-          <Route path="/orientaplus/analisecarteira" element={<AnaliseCarteira />} />
-          <Route path="/orientaplus/planejamentofinanceiro" element={<PlanejamentoFinanceiro />} />
           <Route path="/investimentos/acoes" element={<Acoes />} />
           <Route path="/investimentos/fii" element={<FII />} />
           <Route path="/investimentos/fundos" element={<Fundos />} />
@@ -68,6 +63,7 @@ const App = () => (
             path="/relatorio-avaliacao-riscos/processando"
             element={<RelatorioAvaliacaoRiscosProcessando />}
           />
+          <Route path="/politica-de-privacidade" element={<PoliticaPrivacidade />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </HashRouter>

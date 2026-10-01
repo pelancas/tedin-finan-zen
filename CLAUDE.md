@@ -1,6 +1,6 @@
 # Orienta — Guia de Design e Metodologia do Site
 
-Site institucional/educacional de finanças pessoais ("Orienta" / "Orienta+"), com calculadoras
+Site institucional/educacional de finanças pessoais ("Orienta"), com calculadoras
 financeiras, conteúdo educativo e páginas de produto (seguros, investimentos, planejamento).
 Tagline: *"Dê rumo à sua vida financeira."* Tom de voz: profissional mas acessível, direto,
 fala com o leitor na 2ª pessoa ("você"), ocasionalmente usa emojis em títulos de calculadoras
@@ -40,7 +40,7 @@ src/
     layout/    → Header, Footer, Layout, ToolPageLayout, CalculadoraSidebar, CalculadoraTextBlock
     home/      → seções específicas da home (Hero, Calculadoras, SeusPrimeiros)
   pages/       → uma pasta por área temática: planejamento/, investimentos/, seguros/,
-                 impostos/, orienta-plus/ — cada página é o componente roteado em App.tsx
+                 impostos/, imoveis/ — cada página é o componente roteado em App.tsx
   tools/       → calculadoras "standalone" mais elaboradas (ex.: CalculadoraMilhao.tsx)
   hooks/       → hooks utilitários (use-mobile, use-toast)
   lib/         → utils.ts (função cn), content-parser.ts, useContentFolder.ts
@@ -50,7 +50,7 @@ Convenção de nomes: componentes em PascalCase, um componente por arquivo, nome
 nome do componente exportado. Páginas ficam em `src/pages/<area>/<Nome>.tsx` e são registradas
 como `<Route>` em `src/App.tsx` com paths como `/planejamento/calculadoras/aposentadoria`,
 `/investimentos/renda-fixa/comparador` — sempre em português, kebab-case, agrupadas por área
-temática (`planejamento`, `investimentos`, `seguros`, `impostos`, `orienta-plus`).
+temática (`planejamento`, `investimentos`, `seguros`, `impostos`, `imoveis`).
 
 ## Sistema de design (tokens)
 

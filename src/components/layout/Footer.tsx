@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Logo from "@/assets/logo-no-bg.png";
 import { Instagram, Youtube, Building2, Shield, TrendingUp, Calculator } from "lucide-react";
 import {
-  SOBRE_URL,
+  INSTAGRAM_URL,
   primeirosImoveis,
   primeirosSeguros,
   primeirosInvestimentos,
@@ -38,7 +38,7 @@ export function Footer() {
 
             <div className="flex items-center gap-3">
               <a
-                href={SOBRE_URL}
+                href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -47,7 +47,7 @@ export function Footer() {
                 <Instagram className="h-4 w-4" />
               </a>
               <a
-                href="https://www.youtube.com/@OrientaFinan%C3%A7as"
+                href="https://www.youtube.com/@orientaVC"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="YouTube"
@@ -58,14 +58,18 @@ export function Footer() {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <a
-                href={SOBRE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/sobre"
                 className="w-fit text-sm text-white/60 transition-colors hover:text-primary"
               >
-                Sobre
-              </a>
+                Sobre a Orienta e contato
+              </Link>
+              <Link
+                to="/politica-de-privacidade"
+                className="w-fit text-sm text-white/60 transition-colors hover:text-primary"
+              >
+                Política de Privacidade
+              </Link>
             </div>
           </div>
 
@@ -144,6 +148,12 @@ export function Footer() {
         <div className="mt-12 border-t border-white/10 pt-6">
           <p className="text-center text-xs text-white/40">
             © {new Date().getFullYear()} Orienta. Dê rumo à sua vida financeira.
+          </p>
+          <p className="mt-2 text-center text-xs text-white/40">
+            <Link to="/politica-de-privacidade" className="underline underline-offset-2 hover:text-primary">
+              Política de Privacidade
+            </Link>
+            {" · "}A Orienta não é órgão público e não tem vínculo com instituições governamentais.
           </p>
         </div>
       </div>

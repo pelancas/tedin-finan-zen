@@ -1,11 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, Star, Wrench, FileText, Instagram, Building2, Shield, TrendingUp, Calculator } from "lucide-react";
+import { Menu, X, ChevronDown, Star, Wrench, FileText, Info, Building2, Shield, TrendingUp, Calculator } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Logo from "@/assets/logo-no-bg-sm.webp";
 
-export const SOBRE_URL = "https://www.instagram.com/orienta.vc/";
+export const INSTAGRAM_URL = "https://www.instagram.com/orienta.vc/";
 
 export const primeirosImoveis = [
   { name: "Posso comprar este imóvel?", href: "/imoveis/calculadoras/posso-comprar" },
@@ -334,14 +334,17 @@ export function Header() {
           </div>
 
           {/* Sobre */}
-          <a
-            href={SOBRE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-5 h-20 text-sm font-medium transition-colors border-b-2 border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
+          <Link
+            to="/sobre"
+            className={cn(
+              "flex items-center gap-2 px-5 h-20 text-sm font-medium transition-colors border-b-2",
+              location.pathname === "/sobre"
+                ? "border-primary text-foreground"
+                : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
+            )}
           >
             Sobre
-          </a>
+          </Link>
 
         </nav>
 
@@ -521,16 +524,14 @@ export function Header() {
             )}
 
             {/* Mobile Sobre */}
-            <a
-              href={SOBRE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/sobre"
               onClick={closeMobile}
               className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors w-full text-muted-foreground hover:text-foreground hover:bg-muted"
             >
-              <Instagram className="h-5 w-5" />
+              <Info className="h-5 w-5" />
               Sobre
-            </a>
+            </Link>
 
           </div>
         </nav>

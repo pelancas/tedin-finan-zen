@@ -5,6 +5,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Accordion,
   AccordionContent,
@@ -35,7 +36,8 @@ import {
   User,
 } from "lucide-react";
 import {
-  noticias,
+  NoticiasRiscos,
+  AvisoTransparencia,
   passos,
   faq,
   toTitleCase,
@@ -119,6 +121,7 @@ export default function RelatorioAvaliacaoRiscosResultado() {
   const [indiceCadastral, setIndiceCadastral] = useState("");
   const [temIndiceCadastral, setTemIndiceCadastral] = useState<boolean | null>(null);
   const [liberando, setLiberando] = useState(false);
+  const [aceiteTermos, setAceiteTermos] = useState(false);
 
   const [carregandoProcessos, setCarregandoProcessos] = useState(true);
   const [processosItens, setProcessosItens] = useState<ProcessoItem[]>([]);
@@ -424,8 +427,12 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                   <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
                     Seus dados
                   </p>
+                  <p className="-mt-2 text-xs text-slate-500">
+                    Usados só para identificar quem pediu a consulta e enviar o relatório.
+                  </p>
 
                   <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="nomeSolicitanteInput">Seu nome completo</Label>
                     <Input
                       id="nomeSolicitanteInput"
                       value={nomeSolicitanteInput}
@@ -436,6 +443,7 @@ export default function RelatorioAvaliacaoRiscosResultado() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="cpfSolicitanteInput">Seu CPF</Label>
                       <Input
                         id="cpfSolicitanteInput"
                         inputMode="numeric"
@@ -445,6 +453,7 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                       />
                     </div>
                     <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="emailSolicitanteInput">Seu e-mail</Label>
                       <Input
                         id="emailSolicitanteInput"
                         type="email"
@@ -599,10 +608,31 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                   </div>
                 </div>
 
+                <div className="mb-4 flex items-start gap-2.5">
+                  <Checkbox
+                    id="aceiteTermos"
+                    checked={aceiteTermos}
+                    onCheckedChange={(v) => setAceiteTermos(v === true)}
+                    className="mt-0.5"
+                  />
+                  <Label htmlFor="aceiteTermos" className="text-xs font-normal leading-relaxed text-slate-600">
+                    Declaro que estou negociando este imóvel com o proprietário informado e
+                    concordo com a{" "}
+                    <Link
+                      to="/politica-de-privacidade"
+                      target="_blank"
+                      className="font-semibold text-[#1daf66] underline underline-offset-2"
+                    >
+                      Política de Privacidade
+                    </Link>
+                    .
+                  </Label>
+                </div>
+
                 <Button
-                  disabled={liberando}
+                  disabled={liberando || !aceiteTermos}
                   onClick={async () => {
-                    if (liberando) return;
+                    if (liberando || !aceiteTermos) return;
                     setLiberando(true);
                     try {
                       const jobId = await criarJobCompleto(
@@ -644,6 +674,8 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                   {liberando ? "Liberando..." : "Liberar relatório completo"}
                   {!liberando && <ArrowRight size={18} />}
                 </Button>
+
+                <AvisoTransparencia className="mt-4" />
               </div>
             </div>
           </div>
@@ -663,20 +695,7 @@ export default function RelatorioAvaliacaoRiscosResultado() {
             </p>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2">
-            {noticias.map((n) => (
-              <div
-                key={n.image}
-                className="overflow-hidden rounded-2xl border border-orange-100 bg-orange-50/50 p-3 shadow-sm"
-              >
-                <img
-                  src={n.image}
-                  alt={n.alt}
-                  className="w-full rounded-lg border border-slate-200"
-                />
-              </div>
-            ))}
-          </div>
+          <NoticiasRiscos />
         </div>
       </section>
 
