@@ -29,9 +29,9 @@ function setCanonicalTag(href: string) {
  * stale meta into the next page during the transition.
  *
  * The canonical href is the current route on the primary domain
- * (orientafinancas.com.br), including the HashRouter hash — matching the
+ * (orienta.vc), including the HashRouter hash — matching the
  * hash-based URLs in sitemap.xml. Using the primary domain keeps the
- * mirror on orienta.vc from competing with it as duplicate content.
+ * secondary domain orientafinancas.com.br from competing with it as duplicate content.
  */
 export function useDocumentMeta(title: string, description: string) {
   useEffect(() => {

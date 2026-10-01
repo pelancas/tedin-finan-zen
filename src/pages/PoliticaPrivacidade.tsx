@@ -25,7 +25,7 @@ export default function PoliticaPrivacidade() {
       <section className="bg-white py-16">
         <div className="prose prose-slate mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-a:text-primary">
           <p>
-            Esta Política explica como a <strong>Orienta</strong> (orientafinancas.com.br) trata
+            Esta Política explica como a <strong>Orienta</strong> ({EMPRESA.dominios.join(" e ")}) trata
             os dados pessoais de quem usa o site, em conformidade com a Lei Geral de Proteção de
             Dados (Lei nº 13.709/2018 — LGPD). Ao usar nossas ferramentas, você declara que leu e
             entendeu este documento.

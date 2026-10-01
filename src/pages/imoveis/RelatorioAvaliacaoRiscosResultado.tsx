@@ -15,7 +15,7 @@ import {
 import { useInView } from "@/hooks/use-in-view";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
 import { cn } from "@/lib/utils";
-import { maskCPF, maskCEP } from "@/lib/masks";
+import { maskCPF, maskCEP, isValidCPF } from "@/lib/masks";
 import {
   consultarProcessos,
   criarJobCompleto,
@@ -55,6 +55,23 @@ const certidoes = [
   "Receita Municipal",
   "Justiça do Trabalho",
   "Justiça Federal",
+];
+
+const tribunaisConsulta = [
+  "TJMG — 1º grau + recursal",
+  "TJRJ — 1º grau + 2º grau",
+  "TJCE — 1º grau + 2º grau",
+  "TJMA — 1º grau + 2º grau",
+  "TJPB — 1º grau + 2º grau",
+  "TJRO — 1º grau",
+  "TRF1 — 1º grau + 2º grau",
+  "TRF3 — 1º grau + 2º grau",
+  "TRF5 — 1º grau + 2º grau",
+  "TJAL — 1º grau + 2º grau",
+  "TJAM — 1º grau + 2º grau",
+  "TJCE (via e-SAJ) — 1º grau + 2º grau",
+  "TJDFT — 1ª e 2ª instância",
+  "TJPE — 1º grau + 2º grau",
 ];
 
 function RevealTitle({
@@ -122,11 +139,33 @@ export default function RelatorioAvaliacaoRiscosResultado() {
   const [temIndiceCadastral, setTemIndiceCadastral] = useState<boolean | null>(null);
   const [liberando, setLiberando] = useState(false);
   const [aceiteTermos, setAceiteTermos] = useState(false);
+  const [cpfVendedorInvalido, setCpfVendedorInvalido] = useState(false);
 
   const [carregandoProcessos, setCarregandoProcessos] = useState(true);
   const [processosItens, setProcessosItens] = useState<ProcessoItem[]>([]);
   const [processosErro, setProcessosErro] = useState<string | null>(null);
   const [consultaId, setConsultaId] = useState<string | undefined>(undefined);
+  const [tribunalIndex, setTribunalIndex] = useState(0);
+
+  // Alterna o tribunal exibido durante a consulta, a cada 5-10s, só para dar
+  // a sensação de progresso — não reflete o tribunal realmente sendo consultado.
+  useEffect(() => {
+    if (!carregandoProcessos) return;
+    let cancelado = false;
+    let timeoutId: ReturnType<typeof setTimeout>;
+    const agendarProximo = () => {
+      timeoutId = setTimeout(() => {
+        if (cancelado) return;
+        setTribunalIndex((i) => (i + 1) % tribunaisConsulta.length);
+        agendarProximo();
+      }, 5000 + Math.random() * 5000);
+    };
+    agendarProximo();
+    return () => {
+      cancelado = true;
+      clearTimeout(timeoutId);
+    };
+  }, [carregandoProcessos]);
 
   // Consulta os processos aqui, ao chegar na página, em vez de fazer o
   // usuário esperar na página anterior antes de navegar.
@@ -147,7 +186,7 @@ export default function RelatorioAvaliacaoRiscosResultado() {
         setProcessosErro(
           err instanceof Error
             ? err.message
-            : "Não foi possível concluir essa consulta agora.",
+            : "Conclua essa consulta no relatorio.",
         );
       })
       .finally(() => {
@@ -306,6 +345,15 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                     </div>
                   )}
                 </div>
+
+                {carregandoProcessos && (
+                  <p
+                    key={tribunalIndex}
+                    className="mt-4 animate-in fade-in border-t border-orange-200/60 pt-4 text-xs font-medium text-orange-700 duration-500"
+                  >
+                    Consultando {tribunaisConsulta[tribunalIndex]}...
+                  </p>
+                )}
 
                 {!carregandoProcessos && processosErro && (
                   <p className="mt-4 border-t border-slate-200/60 pt-4 text-xs text-slate-500">
@@ -474,9 +522,16 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                       id="cpfVendedor"
                       inputMode="numeric"
                       value={cpfVendedor}
-                      onChange={(e) => setCpfVendedor(maskCPF(e.target.value))}
+                      onChange={(e) => {
+                        setCpfVendedor(maskCPF(e.target.value));
+                        setCpfVendedorInvalido(false);
+                      }}
                       placeholder="000.000.000-00"
+                      className={cn(cpfVendedorInvalido && "border-red-500 focus-visible:ring-red-500")}
                     />
+                    {cpfVendedorInvalido && (
+                      <p className="text-xs font-medium text-red-600">CPF inválido.</p>
+                    )}
                     <p className="text-xs text-slate-500">
                       O CPF é necessário para validar as informações nas bases de dados públicas
                       (Receita Federal, certidões e tribunais) e garantir que os resultados são
@@ -526,6 +581,21 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                     </div>
                     <div className="flex flex-col gap-1.5">
                       <Input
+                        id="cep"
+                        inputMode="numeric"
+                        value={cep}
+                        onChange={(e) => setCep(maskCEP(e.target.value))}
+                        placeholder="00000-000"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1.5">
+                      <Input id="estado" value={`${estado} — Minas Gerais`} readOnly disabled />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <Input
                         id="cidade"
                         value={cidade}
                         readOnly
@@ -538,21 +608,6 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                   <p className="-mt-2 text-xs text-slate-500">
                     No momento, atendemos apenas imóveis em Belo Horizonte — MG.
                   </p>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="flex flex-col gap-1.5">
-                      <Input id="estado" value={`${estado} — Minas Gerais`} readOnly disabled />
-                    </div>
-                    <div className="flex flex-col gap-1.5">
-                      <Input
-                        id="cep"
-                        inputMode="numeric"
-                        value={cep}
-                        onChange={(e) => setCep(maskCEP(e.target.value))}
-                        placeholder="00000-000"
-                      />
-                    </div>
-                  </div>
 
                   <div className="flex flex-col gap-1.5">
                     <Label>Você tem o índice cadastral do imóvel?</Label>
@@ -629,6 +684,13 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                   disabled={liberando || !aceiteTermos}
                   onClick={async () => {
                     if (liberando || !aceiteTermos) return;
+
+                    if (!isValidCPF(cpfVendedor)) {
+                      setCpfVendedorInvalido(true);
+                      toast("Confira o CPF do proprietário — ele parece inválido.");
+                      return;
+                    }
+
                     setLiberando(true);
                     try {
                       const jobId = await criarJobCompleto(

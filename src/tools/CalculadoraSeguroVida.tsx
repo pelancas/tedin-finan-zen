@@ -17,11 +17,21 @@ const parseBRL = (v: string) =>
 const formatBRL = (n: number) =>
   n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+const formatBRLSemCentavos = (n: number) => Math.round(n).toLocaleString("pt-BR");
+
 const maskBRL = (raw: string) => {
   const digits = raw.replace(/\D/g, "");
   if (!digits) return "";
   const num = parseInt(digits, 10) / 100;
   return num.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+};
+
+// Versão sem centavos — usada nos campos estreitos da tabela de dependentes,
+// onde o espaço é curto demais para o prefixo "R$" e as casas decimais.
+const maskBRLInteiro = (raw: string) => {
+  const digits = raw.replace(/\D/g, "");
+  if (!digits) return "";
+  return parseInt(digits, 10).toLocaleString("pt-BR");
 };
 
 // ─── Assistente de necessidade de seguro de vida ─────────────────────────────
@@ -176,26 +186,39 @@ function CampoBRL({
   onChange,
   placeholder,
   hint,
+  compact = false,
 }: {
   label?: string;
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
   hint?: string;
+  /** Sem prefixo "R$" nem centavos — usado onde o espaço horizontal é curto. */
+  compact?: boolean;
 }) {
   return (
     <div className="vt-field">
       {label && <label className="vt-label">{label}</label>}
-      <div className="vt-input-wrap">
-        <span className="vt-prefix">R$</span>
+      {compact ? (
         <input
-          className="vt-input has-prefix"
+          className="vt-input"
           placeholder={placeholder}
           value={value}
           inputMode="numeric"
-          onChange={(e) => onChange(maskBRL(e.target.value))}
+          onChange={(e) => onChange(maskBRLInteiro(e.target.value))}
         />
-      </div>
+      ) : (
+        <div className="vt-input-wrap">
+          <span className="vt-prefix">R$</span>
+          <input
+            className="vt-input has-prefix"
+            placeholder={placeholder}
+            value={value}
+            inputMode="numeric"
+            onChange={(e) => onChange(maskBRL(e.target.value))}
+          />
+        </div>
+      )}
       {hint && <p className="vt-hint">{hint}</p>}
     </div>
   );
@@ -225,7 +248,7 @@ function HighlightCard({
       }}
     >
       <p className="result-label">{label}</p>
-      <p className="result-value">R$ {formatBRL(value)}</p>
+      <p className="result-value">R$ {formatBRLSemCentavos(value)}</p>
       {sub && <p className="result-sub">{sub}</p>}
     </div>
   );
@@ -407,7 +430,8 @@ export function AssistenteSeguroVida() {
                           label="Despesas com a pessoa"
                           value={item.despesa}
                           onChange={(v) => atualizarDependente("adultos", i, { despesa: v })}
-                          placeholder="Ex: 1.500,00"
+                          placeholder="Ex: 1.500"
+                          compact
                         />
                         <SeletorAnos
                           value={item.anos}
@@ -423,7 +447,8 @@ export function AssistenteSeguroVida() {
                           label="Despesas com a pessoa"
                           value={item.despesa}
                           onChange={(v) => atualizarDependente("criancas", i, { despesa: v })}
-                          placeholder="Ex: 1.500,00"
+                          placeholder="Ex: 1.500"
+                          compact
                         />
                         <SeletorAnos
                           value={item.anos}
@@ -441,7 +466,7 @@ export function AssistenteSeguroVida() {
                 <h3 className="vt-step-title">Dívidas ou gastos adicionais</h3>
                 <div className="vt-two-col">
                   <CampoBRL
-                    label="Dívidas pendentes a cobrir"
+                    label="Dívidas pendentes"
                     value={dividas}
                     onChange={setDividas}
                     placeholder="Ex: 60.000,00"
@@ -488,7 +513,7 @@ export function AssistenteSeguroVida() {
                 </svg>
                 Voltar
               </button>
-            ) : <span />}
+            ) : null}
 
             {step < 4 ? (
               <button
@@ -725,6 +750,9 @@ export default function CalculadoraSeguroVida() {
         .vt-two-col { display: grid; grid-template-columns: 1fr; gap: 1.25rem; align-items: start; }
         @media (min-width: 640px) {
           .vt-two-col { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+          /* Reserva altura de 2 linhas pro rótulo — se um dos dois títulos
+             quebrar linha e o outro não, as caixinhas ficam desalinhadas. */
+          .vt-two-col .vt-label { min-height: 2.1em; }
         }
         .vt-field { display: flex; flex-direction: column; gap: 0.45rem; }
         .vt-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--vt-dark); line-height: 1.3; }
@@ -774,8 +802,8 @@ export default function CalculadoraSeguroVida() {
         /* Tabela de dependentes — rótulos das colunas aparecem uma única vez;
            as colunas encolhem/crescem conforme o espaço disponível. */
         .vt-renda-header, .vt-renda-row {
-          display: grid; grid-template-columns: minmax(64px, 100px) minmax(0, 1fr) minmax(0, 1fr);
-          gap: 0.6rem 0.85rem; align-items: start;
+          display: grid; grid-template-columns: minmax(56px, 90px) minmax(0, 1fr) minmax(0, 1fr);
+          gap: 0.6rem 0.5rem; align-items: start;
         }
         .vt-renda-header {
           padding-bottom: 0.85rem; margin-bottom: 0.85rem; border-bottom: 1px solid #e2e8e2;

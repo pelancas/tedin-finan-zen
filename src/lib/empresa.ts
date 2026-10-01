@@ -15,8 +15,8 @@ export const EMPRESA = {
   instagramUrl: "https://www.instagram.com/orienta.vc/",
   youtube: "@orientaVC",
   youtubeUrl: "https://www.youtube.com/@orientaVC",
-  dominioPrincipal: "orientafinancas.com.br",
-  dominios: ["orientafinancas.com.br", "orienta.vc"],
+  dominioPrincipal: "orienta.vc",
+  dominios: ["orienta.vc", "orientafinancas.com.br"],
 } as const;
 
 export const WHATSAPP_URL = `https://wa.me/${EMPRESA.whatsappNumero}`;

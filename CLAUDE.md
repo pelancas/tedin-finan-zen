@@ -12,7 +12,7 @@ visual e os padrões de código já estabelecidos, em vez de reinventar convenç
 ## Stack técnica
 
 - **Build**: Vite 5 + `@vitejs/plugin-react-swc`, TypeScript 5, deploy estático via `gh-pages`
-  para domínio próprio (`CNAME` → orientafinancas.com.br), hospedado no GitHub Pages.
+  para domínio próprio (`CNAME` → orienta.vc), hospedado no GitHub Pages.
 - **Roteamento**: `react-router-dom` v6 com `HashRouter` (necessário para GitHub Pages sem
   configuração de servidor). Rotas centralizadas em `src/App.tsx`.
 - **UI Kit**: shadcn/ui (`components.json`, style "default", baseColor "slate", cssVariables
