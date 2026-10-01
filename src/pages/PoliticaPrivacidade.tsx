@@ -33,10 +33,9 @@ export default function PoliticaPrivacidade() {
 
           <h2>1. Quem somos</h2>
           <p>
-            A Orienta é um serviço privado e independente de educação financeira, operado por{" "}
-            <strong>{EMPRESA.responsavel}</strong>, pessoa física inscrita no CPF sob o nº{" "}
-            {EMPRESA.cpf}, com atuação em {EMPRESA.cidade}, que é a controladora dos dados
-            pessoais tratados neste site. Nossos domínios oficiais são{" "}
+            A Orienta é um serviço privado e independente de educação financeira, com atuação
+            em {EMPRESA.cidade}, controladora dos dados pessoais tratados neste site. Nossos
+            domínios oficiais são{" "}
             {EMPRESA.dominios.join(" e ")}. <strong>Não somos órgão
             público</strong> e não temos qualquer vínculo com a Receita Federal, tribunais,
             cartórios, prefeituras ou outras instituições cujas informações públicas consultamos.
@@ -49,24 +48,6 @@ export default function PoliticaPrivacidade() {
             As calculadoras do site rodam no seu navegador. Os valores digitados nelas não são
             enviados nem armazenados por nós.
           </p>
-          <h3>Relatório de Avaliação de Riscos</h3>
-          <p>Somente se você solicitar o relatório, coletamos:</p>
-          <ul>
-            <li>
-              <strong>Seus dados</strong>: nome completo e e-mail — para identificar quem
-              solicitou a consulta e enviar o relatório.
-            </li>
-            <li>
-              <strong>Dados do proprietário/vendedor do imóvel</strong>: nome completo e CPF,
-              necessários para pesquisar certidões e processos públicos em nome dele. O CPF é
-              usado para validar as informações nas bases de dados públicas e evitar resultados
-              de pessoas com o mesmo nome.
-            </li>
-            <li>
-              <strong>Dados do imóvel</strong>: endereço, CEP e, se informado, índice cadastral
-              (IPTU).
-            </li>
-          </ul>
           <p>
             <strong>Nunca pedimos senhas, dados de cartão, dados bancários, códigos de
             verificação ou acesso a contas gov.br.</strong> Se alguém pedir essas informações em
@@ -82,10 +63,8 @@ export default function PoliticaPrivacidade() {
 
           <h2>3. Para que usamos os dados</h2>
           <ul>
-            <li>Realizar as consultas a fontes públicas e gerar o relatório solicitado;</li>
-            <li>Enviar o relatório e responder dúvidas sobre ele;</li>
-            <li>Prevenir fraudes e abusos no uso da ferramenta;</li>
-            <li>Melhorar o site, a partir de estatísticas de uso e avaliações opcionais.</li>
+            <li>Medir o uso do site e melhorá-lo a partir de estatísticas agregadas;</li>
+            <li>Prevenir fraudes e abusos no uso dos formulários;</li>
           </ul>
           <p>
             Não vendemos dados pessoais e não os usamos para publicidade de terceiros.
@@ -93,34 +72,28 @@ export default function PoliticaPrivacidade() {
 
           <h2>4. Base legal</h2>
           <p>
-            Tratamos seus dados para executar o serviço que você pediu (art. 7º, V, da LGPD). Os
-            dados do proprietário do imóvel são tratados com base no legítimo interesse do
-            comprador em verificar riscos antes de uma negociação imobiliária (art. 7º, IX) e
-            limitados a informações de acesso público. Ao solicitar o relatório, você declara que
-            está de fato negociando o imóvel com essa pessoa.
+            Tratamos os dados de navegação com base no nosso legítimo interesse em entender o
+            uso do site e em protegê-lo contra fraudes e abusos (art. 7º, IX, da LGPD).
           </p>
 
           <h2>5. Com quem compartilhamos</h2>
           <p>
-            Os dados informados são usados apenas para consultar as fontes públicas necessárias
-            (certidões, tribunais e cadastro municipal) e são processados em servidores
-            contratados pela Orienta. O relatório é entregue somente a quem o solicitou e
-            <strong> nada é informado ao proprietário consultado</strong>. Podemos compartilhar
-            dados quando exigido por lei ou ordem judicial.
+            Os dados de navegação são processados pelos prestadores de serviço que utilizamos
+            (Google Analytics e Cloudflare), conforme as políticas de privacidade deles. Podemos
+            compartilhar dados quando exigido por lei ou ordem judicial.
           </p>
 
           <h2>6. Por quanto tempo guardamos</h2>
           <p>
-            Os dados das consultas e os relatórios gerados são mantidos apenas pelo tempo
-            necessário para a entrega, suporte e cumprimento de obrigações legais, e depois são
-            excluídos.
+            Os dados de navegação são mantidos pelo período padrão de retenção das ferramentas
+            utilizadas (Google Analytics e Cloudflare), apenas pelo tempo necessário às
+            finalidades descritas nesta Política.
           </p>
 
           <h2>7. Seus direitos</h2>
           <p>
             Você pode, a qualquer momento, pedir acesso, correção, exclusão dos seus dados ou
-            informações sobre o tratamento deles. O mesmo vale para quem foi consultado em um
-            relatório.
+            informações sobre o tratamento deles.
           </p>
 
           <h2>8. Contato</h2>
@@ -141,7 +114,6 @@ export default function PoliticaPrivacidade() {
                 {EMPRESA.instagram}
               </a>
             </li>
-            <li>Horário de atendimento: {EMPRESA.horario}</li>
           </ul>
 
           <div className="not-prose mt-10 rounded-lg border border-primary/30 bg-primary/10 p-6 text-sm text-foreground">

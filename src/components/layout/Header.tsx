@@ -1,9 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, Star, Wrench, FileText, Info, Building2, Shield, TrendingUp, Calculator, Phone, Mail, Clock } from "lucide-react";
+import { Menu, X, ChevronDown, Star, Wrench, FileText, Info, Building2, Shield, TrendingUp, Calculator, Phone, Mail } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Logo from "@/assets/logo-no-bg-sm.webp";
+import Logo from "@/assets/logo-no-bg-sm.png";
 import { EMPRESA, WHATSAPP_URL, EMAIL_URL } from "@/lib/empresa";
 
 export const INSTAGRAM_URL = EMPRESA.instagramUrl;
@@ -154,10 +154,6 @@ export function Header() {
             <Mail className="h-3 w-3" />
             {EMPRESA.email}
           </a>
-          <span className="hidden items-center gap-1.5 lg:flex">
-            <Clock className="h-3 w-3" />
-            {EMPRESA.horario}
-          </span>
           <Link to="/sobre#contato" className="font-semibold text-white/80 underline-offset-2 hover:text-primary hover:underline">
             Contato
           </Link>
@@ -166,7 +162,7 @@ export function Header() {
 
       <div className="container flex h-20 items-center justify-between">
         <Link to="/" className="flex items-center">
-          <img src={Logo} alt="Logo" className="hidden md:block h-14" />
+          <img src={Logo} alt="Logo" className="hidden md:block h-[6.79rem] translate-x-[20%]" />
           <img src="/favicon.png" alt="Logo" className="md:hidden h-10" />
         </Link>
 

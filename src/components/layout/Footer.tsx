@@ -154,8 +154,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 border-t border-white/10 pt-6 text-center text-xs leading-relaxed text-white/50">
           <p>
-            <strong className="text-white/70">{EMPRESA.marca}</strong> é operada por{" "}
-            {EMPRESA.responsavel} — CPF {EMPRESA.cpf} — {EMPRESA.cidade}.
+            <strong className="text-white/70">{EMPRESA.marca}</strong> — {EMPRESA.cidade}.
           </p>
           <p className="mt-1">
             Atendimento:{" "}
@@ -166,8 +165,6 @@ export function Footer() {
             <a href={EMAIL_URL} className="underline underline-offset-2 hover:text-primary">
               {EMPRESA.email}
             </a>
-            {" · "}
-            {EMPRESA.horario}
           </p>
           <p className="mt-1">
             Domínios oficiais: {EMPRESA.dominios.join(" e ")}. A {EMPRESA.marca} é um serviço

@@ -14,7 +14,6 @@ import {
   Wallet,
   ShieldCheck,
   Calculator,
-  FileText,
   Compass,
   ArrowRight,
   MessageCircle,
@@ -45,9 +44,9 @@ const perfil = [
 ];
 
 const profissoes = [
-  { icon: Stethoscope, label: "Médicos" },
-  { icon: Scale, label: "Advogados" },
-  { icon: Briefcase, label: "Empresários" },
+  { icon: Stethoscope, label: "Engenheiros" },
+  { icon: Scale, label: "Médicos" },
+  { icon: Briefcase, label: "Advogados" },
   { icon: Compass, label: "Autônomos em geral" },
 ];
 
@@ -79,12 +78,6 @@ const ferramentas = [
     description: "Aposentadoria, metas e o caminho até o primeiro milhão, calculados na sua realidade.",
     to: "/planejamento/calculadoras/aposentadoria",
   },
-  {
-    icon: FileText,
-    title: "Relatório de Avaliação de Riscos",
-    description: "Due diligence completa antes de comprar um imóvel, sem depender só da palavra do vendedor.",
-    to: "/relatorio-avaliacao-riscos",
-  },
 ];
 
 const modeloNegocio = [
@@ -92,11 +85,6 @@ const modeloNegocio = [
     title: "Conteúdo e calculadoras gratuitos",
     description:
       "Artigos, guias e calculadoras do site são abertos e gratuitos. Os valores digitados nas calculadoras ficam no seu navegador — não são enviados para nós.",
-  },
-  {
-    title: "Relatório de Avaliação de Riscos",
-    description:
-      "Serviço próprio da Orienta para quem vai comprar um imóvel em Belo Horizonte (MG): reunimos certidões, processos judiciais e empresas ligadas ao vendedor a partir de informações públicas e entregamos um PDF com o parecer de risco.",
   },
 ];
 
@@ -172,40 +160,7 @@ const Sobre = () => {
         </div>
       </section>
 
-      {/* ─── O PROBLEMA — fundo cinza claro ────────────────────────── */}
-      <section className="py-16 md:py-24" style={{ background: "#f8faf8" }}>
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-4 text-2xl font-bold text-foreground md:text-3xl">Por que existimos</h2>
-          <div className="space-y-4 text-muted-foreground">
-            <p>
-              Quase todo conteúdo e ferramenta de finanças pessoais parte do mesmo lugar: um
-              salário fixo caindo na conta todo mês, 13º, FGTS, INSS descontado automaticamente.
-              É um bom ponto de partida — só que não é a sua realidade.
-            </p>
-            <p>
-              Quem vive de honorário, consulta, contrato ou resultado do próprio negócio precisa
-              planejar de outro jeito: reservar imposto, lidar com meses de faturamento
-              inconsistente e montar sozinho a aposentadoria e a proteção que uma empresa daria 
-              a um funcionário CLT.
-            </p>
-            <p>
-              E o momento em que isso passa a importar de verdade normalmente chega depois dos 28
-              anos — quando a carreira já rende o suficiente para sobrar dinheiro, e uma família já
-              formada ou nos planos muda o peso de cada decisão financeira. A Orienta foi criada
-              para essa fase: ferramentas que assumem renda variável desde o primeiro cálculo, não
-              como exceção.
-            </p>
-          </div>
-
-          <div className="mt-8 rounded-lg border border-primary/30 bg-primary/10 p-6">
-            <p className="text-sm font-medium text-foreground">
-              Nosso ponto de partida não é "quanto você ganha por mês" — é{" "}
-              <strong>quanto você precisa guardar, proteger e investir</strong> pra sustentar a
-              vida e a família que você está construindo, mesmo com a receita variando.
-            </p>
-          </div>
-        </div>
-      </section>
+      
 
 
       {/* ─── FERRAMENTAS — fundo cinza claro ───────────────────────── */}
@@ -218,7 +173,7 @@ const Sobre = () => {
             </p>
           </div>
 
-          <div className="mx-auto grid max-w-3xl gap-6 md:grid-cols-2">
+          <div className="mx-auto grid max-w-sm gap-6">
             {ferramentas.map((item) => (
               <Link key={item.title} to={item.to} className="group">
                 <Card className="h-full border-border transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
@@ -248,7 +203,7 @@ const Sobre = () => {
           </h2>
           <p className="mb-8 text-muted-foreground">
             A Orienta é uma marca própria e independente de educação e orientação financeira,
-            operada por {EMPRESA.responsavel} (CPF {EMPRESA.cpf}), em {EMPRESA.cidade}. Hoje
+            com atuação em {EMPRESA.cidade}. Hoje
             oferecemos:
           </p>
           <ul className="space-y-5">
@@ -333,20 +288,8 @@ const Sobre = () => {
             <h3 className="mb-3 font-semibold">Quem opera a Orienta</h3>
             <dl className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
               <div>
-                <dt className="text-xs text-muted-foreground">Responsável</dt>
-                <dd className="font-medium">{EMPRESA.responsavel}</dd>
-              </div>
-              <div>
-                <dt className="text-xs text-muted-foreground">CPF</dt>
-                <dd className="font-medium">{EMPRESA.cpf}</dd>
-              </div>
-              <div>
                 <dt className="text-xs text-muted-foreground">Localização</dt>
                 <dd className="font-medium">{EMPRESA.cidade}</dd>
-              </div>
-              <div>
-                <dt className="text-xs text-muted-foreground">Horário de atendimento</dt>
-                <dd className="font-medium">{EMPRESA.horario}</dd>
               </div>
               <div className="sm:col-span-2">
                 <dt className="text-xs text-muted-foreground">Domínios oficiais</dt>

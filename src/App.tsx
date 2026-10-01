@@ -22,9 +22,6 @@ import SegurosConteudo from "./pages/seguros/SegurosConteudo";
 import SeguroVidaLanding from "./pages/seguros/SeguroVidaLanding";
 import PlanejamentoConteudo from "./pages/planejamento/PlanejamentoConteudo";
 import PossoComprar from "./pages/imoveis/PossoComprar";
-import RelatorioAvaliacaoRiscos from "./pages/imoveis/RelatorioAvaliacaoRiscos";
-import RelatorioAvaliacaoRiscosResultado from "./pages/imoveis/RelatorioAvaliacaoRiscosResultado";
-import RelatorioAvaliacaoRiscosProcessando from "./pages/imoveis/RelatorioAvaliacaoRiscosProcessando";
 import PoliticaPrivacidade from "./pages/PoliticaPrivacidade";
 import TermosDeUso from "./pages/TermosDeUso";
 import NotFound from "./pages/NotFound";
@@ -57,15 +54,6 @@ const App = () => (
           <Route path="/seguros/conteudos" element={<SegurosConteudo />} />
           <Route path="/seguros/seguro-de-vida" element={<SeguroVidaLanding />} />
           <Route path="/imoveis/calculadoras/posso-comprar" element={<PossoComprar />} />
-          <Route path="/relatorio-avaliacao-riscos" element={<RelatorioAvaliacaoRiscos />} />
-          <Route
-            path="/relatorio-avaliacao-riscos/resultado"
-            element={<RelatorioAvaliacaoRiscosResultado />}
-          />
-          <Route
-            path="/relatorio-avaliacao-riscos/processando"
-            element={<RelatorioAvaliacaoRiscosProcessando />}
-          />
           <Route path="/politica-de-privacidade" element={<PoliticaPrivacidade />} />
           <Route path="/termos-de-uso" element={<TermosDeUso />} />
           <Route path="*" element={<NotFound />} />

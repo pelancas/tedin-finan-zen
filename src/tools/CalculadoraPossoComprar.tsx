@@ -548,11 +548,11 @@ export default function CalculadoraPossoComprar() {
           <CalculadoraSidebar
             promo={{
               image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBiIAZZ1_Gx_i7qJnBZuqdTW1gDH3BRnNYO_BEfyALedW6hdQWTMrCxvimHAEd8ExDNnqlKeuvR-2F8QjxPY9Dqa6TRS04rbJ4IHfWuEKjtYGv7TfDybTd72owjQcX4oPr4yCEaVGqfCSdYjZuiJMMUjzND-N92XHg60Wl0AW6pVWYbkVseir6LsmR7lMTIUZUghLYar5-r4fWxk-6_SdT0ZodH-4-NK0c10UUt2AWOvWW4ONhyInd5nJ0-mswYeBWEQUOaxjfpSaAH",
-              imageAlt: "Casa com selo de avaliação de risco",
-              badge: "Antes de comprar",
-              title: "Relatório de Avaliação de Riscos",
-              description: "Confira certidões e processos do vendedor antes de fechar negócio.",
-              href: "#/relatorio-avaliacao-riscos",
+              imageAlt: "Moedas empilhadas com planta crescendo",
+              badge: "Destaque",
+              title: "Quanto de seguro de vida você precisa?",
+              description: "Descubra o capital ideal para proteger quem depende de você.",
+              href: "#/seguros",
             }}
             resources={[
               { icon: "calc", title: "Calculadora do Milhão", desc: "Quanto tempo até seu primeiro milhão.", href: "#/planejamento/calculadoras/milhao" },
