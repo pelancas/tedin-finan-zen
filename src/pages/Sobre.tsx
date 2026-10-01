@@ -3,8 +3,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
-import { INSTAGRAM_URL } from "@/components/layout/Header";
-import { WHATSAPP_NUMBER } from "@/pages/imoveis/RelatorioAvaliacaoRiscos";
+import { EMPRESA, WHATSAPP_URL, EMAIL_URL } from "@/lib/empresa";
 import {
   Stethoscope,
   Scale,
@@ -21,7 +20,7 @@ import {
   MessageCircle,
   Instagram,
   Youtube,
-  Globe,
+  Mail,
 } from "lucide-react";
 
 const perfil = [
@@ -102,20 +101,10 @@ const modeloNegocio = [
 ];
 
 const contatos = [
-  {
-    icon: MessageCircle,
-    label: "WhatsApp",
-    value: "+55 (31) 97177-8537",
-    href: `https://wa.me/${WHATSAPP_NUMBER}`,
-  },
-  { icon: Instagram, label: "Instagram", value: "@orienta.vc", href: INSTAGRAM_URL },
-  {
-    icon: Youtube,
-    label: "YouTube",
-    value: "@orientaVC",
-    href: "https://www.youtube.com/@orientaVC",
-  },
-  { icon: Globe, label: "Site", value: "orientafinancas.com.br", href: "https://orientafinancas.com.br" },
+  { icon: Mail, label: "E-mail", value: EMPRESA.email, href: EMAIL_URL },
+  { icon: MessageCircle, label: "Telefone / WhatsApp", value: EMPRESA.telefone, href: WHATSAPP_URL },
+  { icon: Instagram, label: "Instagram", value: EMPRESA.instagram, href: EMPRESA.instagramUrl },
+  { icon: Youtube, label: "YouTube", value: EMPRESA.youtube, href: EMPRESA.youtubeUrl },
 ];
 
 const Sobre = () => {
@@ -259,7 +248,8 @@ const Sobre = () => {
           </h2>
           <p className="mb-8 text-muted-foreground">
             A Orienta é uma marca própria e independente de educação e orientação financeira,
-            com sede em Belo Horizonte (MG). Hoje oferecemos:
+            operada por {EMPRESA.responsavel} (CPF {EMPRESA.cpf}), em {EMPRESA.cidade}. Hoje
+            oferecemos:
           </p>
           <ul className="space-y-5">
             {modeloNegocio.map((item) => (
@@ -337,6 +327,35 @@ const Sobre = () => {
                 </Card>
               </a>
             ))}
+          </div>
+
+          <div className="mx-auto mt-10 max-w-3xl rounded-lg border border-primary/30 bg-primary/10 p-6 text-sm text-foreground">
+            <h3 className="mb-3 font-semibold">Quem opera a Orienta</h3>
+            <dl className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
+              <div>
+                <dt className="text-xs text-muted-foreground">Responsável</dt>
+                <dd className="font-medium">{EMPRESA.responsavel}</dd>
+              </div>
+              <div>
+                <dt className="text-xs text-muted-foreground">CPF</dt>
+                <dd className="font-medium">{EMPRESA.cpf}</dd>
+              </div>
+              <div>
+                <dt className="text-xs text-muted-foreground">Localização</dt>
+                <dd className="font-medium">{EMPRESA.cidade}</dd>
+              </div>
+              <div>
+                <dt className="text-xs text-muted-foreground">Horário de atendimento</dt>
+                <dd className="font-medium">{EMPRESA.horario}</dd>
+              </div>
+              <div className="sm:col-span-2">
+                <dt className="text-xs text-muted-foreground">Domínios oficiais</dt>
+                <dd className="font-medium">
+                  {EMPRESA.dominios.join(" e ")} — os dois endereços são da Orienta e exibem o
+                  mesmo site, com os mesmos dados de contato.
+                </dd>
+              </div>
+            </dl>
           </div>
         </div>
       </section>

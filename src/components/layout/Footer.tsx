@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Logo from "@/assets/logo-no-bg.png";
 import { Instagram, Youtube, Building2, Shield, TrendingUp, Calculator } from "lucide-react";
+import { EMPRESA, WHATSAPP_URL, EMAIL_URL } from "@/lib/empresa";
 import {
   INSTAGRAM_URL,
   primeirosImoveis,
@@ -47,7 +48,7 @@ export function Footer() {
                 <Instagram className="h-4 w-4" />
               </a>
               <a
-                href="https://www.youtube.com/@orientaVC"
+                href={EMPRESA.youtubeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="YouTube"
@@ -69,6 +70,12 @@ export function Footer() {
                 className="w-fit text-sm text-white/60 transition-colors hover:text-primary"
               >
                 Política de Privacidade
+              </Link>
+              <Link
+                to="/termos-de-uso"
+                className="w-fit text-sm text-white/60 transition-colors hover:text-primary"
+              >
+                Termos de Uso
               </Link>
             </div>
           </div>
@@ -145,15 +152,42 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 border-t border-white/10 pt-6">
-          <p className="text-center text-xs text-white/40">
-            © {new Date().getFullYear()} Orienta. Dê rumo à sua vida financeira.
+        <div className="mt-12 border-t border-white/10 pt-6 text-center text-xs leading-relaxed text-white/50">
+          <p>
+            <strong className="text-white/70">{EMPRESA.marca}</strong> é operada por{" "}
+            {EMPRESA.responsavel} — CPF {EMPRESA.cpf} — {EMPRESA.cidade}.
           </p>
-          <p className="mt-2 text-center text-xs text-white/40">
+          <p className="mt-1">
+            Atendimento:{" "}
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary">
+              {EMPRESA.telefone}
+            </a>
+            {" · "}
+            <a href={EMAIL_URL} className="underline underline-offset-2 hover:text-primary">
+              {EMPRESA.email}
+            </a>
+            {" · "}
+            {EMPRESA.horario}
+          </p>
+          <p className="mt-1">
+            Domínios oficiais: {EMPRESA.dominios.join(" e ")}. A {EMPRESA.marca} é um serviço
+            privado e não tem vínculo com órgãos públicos.
+          </p>
+          <p className="mt-2">
             <Link to="/politica-de-privacidade" className="underline underline-offset-2 hover:text-primary">
               Política de Privacidade
             </Link>
-            {" · "}A Orienta não é órgão público e não tem vínculo com instituições governamentais.
+            {" · "}
+            <Link to="/termos-de-uso" className="underline underline-offset-2 hover:text-primary">
+              Termos de Uso
+            </Link>
+            {" · "}
+            <Link to="/sobre#contato" className="underline underline-offset-2 hover:text-primary">
+              Contato
+            </Link>
+          </p>
+          <p className="mt-3 text-white/40">
+            © {new Date().getFullYear()} {EMPRESA.marca}. Dê rumo à sua vida financeira.
           </p>
         </div>
       </div>

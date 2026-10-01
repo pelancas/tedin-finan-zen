@@ -25,6 +25,7 @@ import RelatorioAvaliacaoRiscos from "./pages/imoveis/RelatorioAvaliacaoRiscos";
 import RelatorioAvaliacaoRiscosResultado from "./pages/imoveis/RelatorioAvaliacaoRiscosResultado";
 import RelatorioAvaliacaoRiscosProcessando from "./pages/imoveis/RelatorioAvaliacaoRiscosProcessando";
 import PoliticaPrivacidade from "./pages/PoliticaPrivacidade";
+import TermosDeUso from "./pages/TermosDeUso";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -64,6 +65,7 @@ const App = () => (
             element={<RelatorioAvaliacaoRiscosProcessando />}
           />
           <Route path="/politica-de-privacidade" element={<PoliticaPrivacidade />} />
+          <Route path="/termos-de-uso" element={<TermosDeUso />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </HashRouter>

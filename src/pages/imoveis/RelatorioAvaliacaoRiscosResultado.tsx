@@ -110,7 +110,6 @@ export default function RelatorioAvaliacaoRiscosResultado() {
   const [nomeVendedor, setNomeVendedor] = useState(toTitleCase(state?.nomeComprador ?? ""));
   const [cpfVendedor, setCpfVendedor] = useState("");
   const [nomeSolicitanteInput, setNomeSolicitanteInput] = useState("");
-  const [cpfSolicitanteInput, setCpfSolicitanteInput] = useState("");
   const [emailSolicitanteInput, setEmailSolicitanteInput] = useState("");
   const [rua, setRua] = useState("");
   const [numero, setNumero] = useState("");
@@ -423,6 +422,8 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                   Confirme os dados do proprietário e do imóvel para elaborarmos o parecer completo.
                 </p>
 
+                <AvisoTransparencia className="mb-6" />
+
                 <div className="mb-6 flex flex-col gap-4">
                   <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
                     Seus dados
@@ -441,27 +442,15 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="flex flex-col gap-1.5">
-                      <Label htmlFor="cpfSolicitanteInput">Seu CPF</Label>
-                      <Input
-                        id="cpfSolicitanteInput"
-                        inputMode="numeric"
-                        value={cpfSolicitanteInput}
-                        onChange={(e) => setCpfSolicitanteInput(maskCPF(e.target.value))}
-                        placeholder="000.000.000-00"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1.5">
-                      <Label htmlFor="emailSolicitanteInput">Seu e-mail</Label>
-                      <Input
-                        id="emailSolicitanteInput"
-                        type="email"
-                        value={emailSolicitanteInput}
-                        onChange={(e) => setEmailSolicitanteInput(e.target.value)}
-                        placeholder="seuemail@exemplo.com"
-                      />
-                    </div>
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="emailSolicitanteInput">Seu e-mail</Label>
+                    <Input
+                      id="emailSolicitanteInput"
+                      type="email"
+                      value={emailSolicitanteInput}
+                      onChange={(e) => setEmailSolicitanteInput(e.target.value)}
+                      placeholder="seuemail@exemplo.com"
+                    />
                   </div>
 
                   <p className="mt-1 text-xs font-bold uppercase tracking-wide text-slate-400">
@@ -644,7 +633,6 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                           cidade: "Belo Horizonte",
                           estado: "Minas Gerais",
                           comprador_nome: nomeSolicitanteInput,
-                          comprador_cpf: cpfSolicitanteInput,
                           email: emailSolicitanteInput,
                         },
                         fontesRelatorioCompleto(temIndiceCadastral),
@@ -654,7 +642,6 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                         state: {
                           nomeComprador,
                           nomeSolicitante: nomeSolicitanteInput,
-                          cpfSolicitante: cpfSolicitanteInput,
                           emailSolicitante: emailSolicitanteInput,
                           dadosRelatorio,
                           jobId,
@@ -674,8 +661,6 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                   {liberando ? "Liberando..." : "Liberar relatório completo"}
                   {!liberando && <ArrowRight size={18} />}
                 </Button>
-
-                <AvisoTransparencia className="mt-4" />
               </div>
             </div>
           </div>

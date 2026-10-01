@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { LucideIcon } from "lucide-react";
 import casaRiscoImg from "@/assets/casa-risco.webp";
+import { EMPRESA, WHATSAPP_URL } from "@/lib/empresa";
 import {
   ShieldCheck,
   Search,
@@ -43,10 +44,8 @@ export function toTitleCase(value: string) {
     .join(" ");
 }
 
-export const WHATSAPP_NUMBER = "5531971778537";
-
 export function waLink(message: string) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  return `${WHATSAPP_URL}?text=${encodeURIComponent(message)}`;
 }
 
 export const CTA_MESSAGE =
@@ -138,22 +137,49 @@ export function NoticiasRiscos() {
   );
 }
 
-/** Aviso exibido junto a todo formulário que coleta dados para o relatório. */
+/**
+ * Aviso exibido logo acima de todo formulário que coleta dados para o
+ * relatório: quem opera o serviço, que não é órgão público, por que os
+ * dados são pedidos e como são protegidos.
+ */
 export function AvisoTransparencia({ className, dark = false }: { className?: string; dark?: boolean }) {
   return (
-    <p className={`text-xs leading-relaxed ${dark ? "text-white/45" : "text-slate-500"} ${className ?? ""}`}>
-      A Orienta é um serviço independente e <strong>não é órgão público</strong> — não temos
-      vínculo com Receita Federal, tribunais, cartórios ou prefeitura. Consultamos apenas
-      informações públicas. Nunca pedimos senhas, dados de cartão ou dados bancários. Saiba
-      como tratamos seus dados na{" "}
-      <Link
-        to="/politica-de-privacidade"
-        className={`underline underline-offset-2 ${dark ? "text-white/70" : "text-[#1daf66]"}`}
-      >
-        Política de Privacidade
-      </Link>
-      .
-    </p>
+    <div
+      className={`rounded-xl border p-4 text-left text-xs leading-relaxed ${
+        dark
+          ? "border-orange-300/40 bg-orange-400/10 text-white/75"
+          : "border-orange-200 bg-orange-50 text-slate-700"
+      } ${className ?? ""}`}
+    >
+      <p className={`mb-1.5 flex items-center gap-1.5 text-sm font-bold ${dark ? "text-white" : "text-slate-900"}`}>
+        <ShieldCheck size={16} className="shrink-0 text-[#1daf66]" />
+        Serviço privado e independente
+      </p>
+      <p>
+        O Relatório é um serviço da {EMPRESA.marca}, operado por {EMPRESA.responsavel} (CPF{" "}
+        {EMPRESA.cpf}). <strong>Não somos órgão público</strong> e não temos vínculo com
+        Receita Federal, tribunais, cartórios ou prefeituras — apenas consultamos informações
+        que eles disponibilizam publicamente.
+      </p>
+      <p className="mt-1.5">
+        Os dados do proprietário servem só para essa pesquisa; os seus, para enviarmos o
+        relatório. Não compartilhamos com terceiros nem avisamos o proprietário. Nunca pedimos
+        senhas, cartão ou dados bancários.{" "}
+        <Link
+          to="/politica-de-privacidade"
+          className={`font-semibold underline underline-offset-2 ${dark ? "text-white" : "text-[#1daf66]"}`}
+        >
+          Política de Privacidade
+        </Link>{" "}
+        ·{" "}
+        <Link
+          to="/termos-de-uso"
+          className={`font-semibold underline underline-offset-2 ${dark ? "text-white" : "text-[#1daf66]"}`}
+        >
+          Termos de Uso
+        </Link>
+      </p>
+    </div>
   );
 }
 
@@ -208,7 +234,7 @@ export const faq = [
   {
     question: "Quais dados vocês pedem?",
     answer:
-      "Seu nome, CPF e e-mail (para identificar a solicitação e enviar o relatório), o nome e CPF do proprietário e o endereço do imóvel. Nunca pedimos senhas, dados de cartão, dados bancários ou acesso à sua conta gov.br.",
+      "Seu nome e e-mail (para identificar a solicitação e enviar o relatório), o nome e CPF do proprietário e o endereço do imóvel. Nunca pedimos senhas, dados de cartão, dados bancários ou acesso à sua conta gov.br.",
   },
   {
     question: "É legal solicitar esse tipo de consulta?",
@@ -256,6 +282,7 @@ export function ConsultaForm({
 }: ConsultaFormProps) {
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-3">
+      <AvisoTransparencia dark />
       <div className="flex flex-col gap-1.5 text-left">
         <input
           type="text"
@@ -285,7 +312,6 @@ export function ConsultaForm({
           Isso pode levar até 1 minuto — não feche esta página.
         </p>
       )}
-      <AvisoTransparencia dark className="text-center" />
     </form>
   );
 }

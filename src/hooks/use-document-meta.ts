@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { EMPRESA } from "@/lib/empresa";
 
 function setMetaTag(name: string, property: boolean, content: string) {
   const attr = property ? "property" : "name";
@@ -27,9 +28,10 @@ function setCanonicalTag(href: string) {
  * Restores the previous values on unmount so navigating away doesn't leak
  * stale meta into the next page during the transition.
  *
- * The canonical href is the current full URL (window.location.href),
- * which for this HashRouter app includes the route's hash — matching the
- * hash-based URLs already listed in sitemap.xml.
+ * The canonical href is the current route on the primary domain
+ * (orientafinancas.com.br), including the HashRouter hash — matching the
+ * hash-based URLs in sitemap.xml. Using the primary domain keeps the
+ * mirror on orienta.vc from competing with it as duplicate content.
  */
 export function useDocumentMeta(title: string, description: string) {
   useEffect(() => {
@@ -47,7 +49,7 @@ export function useDocumentMeta(title: string, description: string) {
     setMetaTag("description", false, description);
     setMetaTag("og:title", true, title);
     setMetaTag("og:description", true, description);
-    setCanonicalTag(window.location.href);
+    setCanonicalTag(`https://${EMPRESA.dominioPrincipal}/${window.location.hash}`);
 
     return () => {
       document.title = prevTitle;

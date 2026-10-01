@@ -42,7 +42,6 @@ import {
 interface ProcessandoState {
   nomeComprador: string;
   nomeSolicitante: string;
-  cpfSolicitante: string;
   emailSolicitante: string;
   dadosRelatorio: DadosRelatorio;
   jobId: string;
@@ -209,7 +208,7 @@ export default function RelatorioAvaliacaoRiscosProcessando() {
     return <Navigate to="/relatorio-avaliacao-riscos" replace />;
   }
 
-  const { dadosRelatorio, nomeSolicitante, cpfSolicitante, emailSolicitante } = state;
+  const { dadosRelatorio, nomeSolicitante, emailSolicitante } = state;
   const nomeVendedor = toTitleCase(dadosRelatorio.nomeVendedor || state.nomeComprador);
   const endereco = formatEndereco(dadosRelatorio);
   const indiceCadastralTexto = formatIndiceCadastral(dadosRelatorio);
@@ -284,12 +283,6 @@ export default function RelatorioAvaliacaoRiscosProcessando() {
                 </dd>
               </div>
               <div>
-                <dt className="text-xs text-slate-400">CPF</dt>
-                <dd className="text-sm font-semibold text-slate-800">
-                  {cpfSolicitante || "não informado"}
-                </dd>
-              </div>
-              <div className="sm:col-span-2">
                 <dt className="text-xs text-slate-400">E-mail de envio</dt>
                 <dd className="text-sm font-semibold text-slate-800">
                   {emailSolicitante || "não informado"}

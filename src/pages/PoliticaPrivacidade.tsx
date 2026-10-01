@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { useDocumentMeta } from "@/hooks/use-document-meta";
-import { INSTAGRAM_URL } from "@/components/layout/Header";
-import { WHATSAPP_NUMBER } from "@/pages/imoveis/RelatorioAvaliacaoRiscos";
+import { EMPRESA, WHATSAPP_URL, EMAIL_URL } from "@/lib/empresa";
 
 const ATUALIZADO_EM = "1º de outubro de 2026";
 
@@ -34,7 +33,11 @@ export default function PoliticaPrivacidade() {
 
           <h2>1. Quem somos</h2>
           <p>
-            A Orienta é um projeto independente de educação financeira. <strong>Não somos órgão
+            A Orienta é um serviço privado e independente de educação financeira, operado por{" "}
+            <strong>{EMPRESA.responsavel}</strong>, pessoa física inscrita no CPF sob o nº{" "}
+            {EMPRESA.cpf}, com atuação em {EMPRESA.cidade}, que é a controladora dos dados
+            pessoais tratados neste site. Nossos domínios oficiais são{" "}
+            {EMPRESA.dominios.join(" e ")}. <strong>Não somos órgão
             público</strong> e não temos qualquer vínculo com a Receita Federal, tribunais,
             cartórios, prefeituras ou outras instituições cujas informações públicas consultamos.
             Também não representamos bancos, corretoras ou imobiliárias.
@@ -50,7 +53,7 @@ export default function PoliticaPrivacidade() {
           <p>Somente se você solicitar o relatório, coletamos:</p>
           <ul>
             <li>
-              <strong>Seus dados</strong>: nome completo, CPF e e-mail — para identificar quem
+              <strong>Seus dados</strong>: nome completo e e-mail — para identificar quem
               solicitou a consulta e enviar o relatório.
             </li>
             <li>
@@ -122,17 +125,21 @@ export default function PoliticaPrivacidade() {
           <p>Para exercer seus direitos ou tirar dúvidas sobre esta Política, fale com a gente:</p>
           <ul>
             <li>
-              WhatsApp:{" "}
-              <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer">
-                +55 (31) 97177-8537
+              E-mail: <a href={EMAIL_URL}>{EMPRESA.email}</a>
+            </li>
+            <li>
+              Telefone/WhatsApp:{" "}
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+                {EMPRESA.telefone}
               </a>
             </li>
             <li>
               Instagram:{" "}
-              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
-                @orienta.vc
+              <a href={EMPRESA.instagramUrl} target="_blank" rel="noopener noreferrer">
+                {EMPRESA.instagram}
               </a>
             </li>
+            <li>Horário de atendimento: {EMPRESA.horario}</li>
           </ul>
 
           <div className="not-prose mt-10 rounded-lg border border-primary/30 bg-primary/10 p-6 text-sm text-foreground">
