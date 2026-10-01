@@ -19,8 +19,9 @@ const sections: Section[] = [
     key: "imoveis",
     label: "Imóveis",
     icon: Building2,
-    comingSoon: true,
-    links: [],
+    links: [
+      { name: "Quanto imóvel posso comprar", href: "/imoveis/calculadoras/posso-comprar" },
+    ],
   },
   {
     key: "seguros",
