@@ -30,4 +30,3 @@ página única (SPA) com rotas via hash (`/#/caminho`).
 ## Sobre
 
 - [Sobre a Orienta](https://orienta.vc/#/sobre): história e valores da empresa.
-- [Orienta+](https://orienta.vc/#/orientaplus): consultoria financeira personalizada, análise de carteira e planejamento financeiro sob medida.
