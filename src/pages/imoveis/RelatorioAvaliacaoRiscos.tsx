@@ -34,6 +34,7 @@ import {
   FileSearch,
   Loader2,
   AlertTriangle,
+  ExternalLink,
 } from "lucide-react";
 
 export function toTitleCase(value: string) {
@@ -158,8 +159,9 @@ export function AvisoTransparencia({ className, dark = false }: { className?: st
       <p>
         O Relatório é um serviço da {EMPRESA.marca}, operado por {EMPRESA.responsavel} (CPF{" "}
         {EMPRESA.cpf}). <strong>Não somos órgão público</strong> e não temos vínculo com
-        Receita Federal, tribunais, cartórios ou prefeituras — apenas consultamos informações
-        que eles disponibilizam publicamente.
+        Receita Federal, tribunais, cartórios ou prefeituras. As certidões são obtidas nos
+        sistemas públicos desses órgãos — você pode emiti-las diretamente nos sites deles; nós
+        apenas reunimos e organizamos as informações em um relatório.
       </p>
       <p className="mt-1.5">
         Os dados do proprietário servem só para essa pesquisa; os seus, para enviarmos o
@@ -180,6 +182,96 @@ export function AvisoTransparencia({ className, dark = false }: { className?: st
         </Link>
       </p>
     </div>
+  );
+}
+
+// Onde cada informação do relatório pode ser obtida diretamente pelo cidadão.
+export const fontesOficiais = [
+  {
+    nome: "Situação cadastral do CPF",
+    orgao: "Receita Federal",
+    url: "https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/consultapublica.asp",
+  },
+  {
+    nome: "Certidão de débitos federais",
+    orgao: "Receita Federal / PGFN",
+    url: "https://servicos.receitafederal.gov.br/servico/certidoes/",
+  },
+  {
+    nome: "Certidão Negativa de Débitos Trabalhistas (CNDT)",
+    orgao: "Tribunal Superior do Trabalho",
+    url: "https://cndt-certidao.tst.jus.br/inicio.faces",
+  },
+  {
+    nome: "Certidão de débitos estaduais",
+    orgao: "Secretaria de Fazenda de Minas Gerais",
+    url: "https://www.fazenda.mg.gov.br",
+  },
+  {
+    nome: "Certidão de débitos do imóvel (IPTU)",
+    orgao: "Prefeitura de Belo Horizonte",
+    url: "https://prefeitura.pbh.gov.br",
+  },
+  {
+    nome: "Processos na Justiça Federal",
+    orgao: "Tribunal Regional Federal da 6ª Região",
+    url: "https://portal.trf6.jus.br",
+  },
+  {
+    nome: "Processos na Justiça Estadual",
+    orgao: "Tribunal de Justiça de Minas Gerais",
+    url: "https://www.tjmg.jus.br",
+  },
+  {
+    nome: "Comprovante de inscrição de CNPJ",
+    orgao: "Receita Federal",
+    url: "https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/cnpjreva_solicitacao.asp",
+  },
+];
+
+/** Seção "De onde vêm as informações" — fontes públicas, com link direto para cada órgão. */
+export function FontesPublicas() {
+  return (
+    <section className="bg-white py-24">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 space-y-4 text-center">
+          <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
+            De onde vêm as informações
+          </h2>
+          <p className="mx-auto max-w-2xl text-slate-600">
+            Todas as certidões e consultas do relatório são obtidas nos sistemas públicos dos
+            próprios órgãos. A Orienta <strong>não tem nenhuma relação</strong> com essas
+            instituições e não emite documentos oficiais — você pode tirar cada certidão
+            gratuitamente, direto nos sites abaixo. O nosso trabalho é{" "}
+            <strong>reunir, organizar e explicar</strong> essas informações em um único relatório.
+          </p>
+        </div>
+
+        <ul className="grid gap-3 sm:grid-cols-2">
+          {fontesOficiais.map((f) => (
+            <li key={f.nome}>
+              <a
+                href={f.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-full items-start justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 transition-colors hover:border-[#1daf66]/50 hover:bg-[#1daf66]/5"
+              >
+                <span>
+                  <span className="block text-sm font-semibold text-slate-900">{f.nome}</span>
+                  <span className="block text-xs text-slate-500">{f.orgao}</span>
+                </span>
+                <ExternalLink size={16} className="mt-0.5 shrink-0 text-slate-400" />
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <p className="mt-6 text-center text-xs text-slate-500">
+          Links para os sites oficiais, apenas para sua conveniência. A disponibilidade e o
+          conteúdo de cada serviço são de responsabilidade do respectivo órgão.
+        </p>
+      </div>
+    </section>
   );
 }
 
@@ -240,6 +332,16 @@ export const faq = [
     question: "É legal solicitar esse tipo de consulta?",
     answer:
       "Sim. O relatório é montado apenas a partir de informações públicas — certidões, tribunais e cartórios — o mesmo tipo de checagem que um advogado faria antes de fechar um negócio.",
+  },
+  {
+    question: "Posso tirar essas certidões sozinho?",
+    answer:
+      "Sim. Todas as certidões são públicas e podem ser emitidas diretamente nos sites dos órgãos (Receita Federal, TST, Prefeitura, tribunais). A Orienta não emite documentos oficiais: apenas consulta esses sistemas públicos e compila os resultados em um único relatório, com a explicação de cada risco.",
+  },
+  {
+    question: "Por que vocês pedem o CPF do proprietário?",
+    answer:
+      "Porque as bases públicas — Receita Federal, certidões trabalhistas e de débitos, tribunais — são consultadas pelo CPF. Ele é necessário para validar que as informações encontradas são mesmo do proprietário, e não de alguém com o mesmo nome.",
   },
   {
     question: "Quanto tempo leva para ficar pronto?",
@@ -452,6 +554,8 @@ export default function RelatorioAvaliacaoRiscos() {
           </div>
         </div>
       </section>
+
+      <FontesPublicas />
 
       {/* ─── COMO FUNCIONA — fundo #1A2E35 ────────────────────────── */}
       <section className="py-24" style={{ background: "#1A2E35" }}>

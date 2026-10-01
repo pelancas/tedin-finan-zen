@@ -38,6 +38,7 @@ import {
 import {
   NoticiasRiscos,
   AvisoTransparencia,
+  FontesPublicas,
   passos,
   faq,
   toTitleCase,
@@ -476,6 +477,12 @@ export default function RelatorioAvaliacaoRiscosResultado() {
                       onChange={(e) => setCpfVendedor(maskCPF(e.target.value))}
                       placeholder="000.000.000-00"
                     />
+                    <p className="text-xs text-slate-500">
+                      O CPF é necessário para validar as informações nas bases de dados públicas
+                      (Receita Federal, certidões e tribunais) e garantir que os resultados são
+                      do proprietário, e não de alguém com o mesmo nome. Ele é usado só nesta
+                      consulta.
+                    </p>
                   </div>
 
                   <div className="mt-1 flex items-start gap-2 rounded-lg border border-orange-200 bg-orange-50 px-3 py-2.5">
@@ -795,6 +802,8 @@ export default function RelatorioAvaliacaoRiscosResultado() {
           </RevealBox>
         </div>
       </section>
+
+      <FontesPublicas />
 
       {/* ─── FAQ — fundo cinza claro ───────────────────────────────── */}
       <section className="py-24" style={{ background: "#f8faf8" }}>

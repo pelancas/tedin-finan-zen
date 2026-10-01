@@ -52,6 +52,12 @@ export default function TermosDeUso() {
             informações públicas consultadas. Também não somos parceiros oficiais de bancos,
             corretoras, seguradoras, imobiliárias ou veículos de imprensa.
           </p>
+          <p>
+            As certidões e consultas que compõem o Relatório são obtidas nos sistemas públicos
+            de cada órgão e podem ser emitidas gratuitamente por qualquer pessoa, diretamente
+            nos sites oficiais. A {EMPRESA.marca} não emite documentos oficiais: o serviço
+            consiste em reunir, organizar e explicar essas informações em um único relatório.
+          </p>
 
           <h2>3. Uso do Relatório de Avaliação de Riscos</h2>
           <ul>

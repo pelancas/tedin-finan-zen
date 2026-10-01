@@ -57,8 +57,10 @@ export default function PoliticaPrivacidade() {
               solicitou a consulta e enviar o relatório.
             </li>
             <li>
-              <strong>Dados do proprietário/vendedor do imóvel</strong>: nome completo e CPF —
-              necessários para pesquisar certidões e processos públicos em nome dele.
+              <strong>Dados do proprietário/vendedor do imóvel</strong>: nome completo e CPF,
+              necessários para pesquisar certidões e processos públicos em nome dele. O CPF é
+              usado para validar as informações nas bases de dados públicas e evitar resultados
+              de pessoas com o mesmo nome.
             </li>
             <li>
               <strong>Dados do imóvel</strong>: endereço, CEP e, se informado, índice cadastral
