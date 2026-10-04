@@ -270,13 +270,26 @@ export default function SeguroVidaLanding() {
         @media (min-width: 640px) { .vt-results-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (min-width: 640px) { .vt-results-grid--pair { grid-template-columns: 1fr 1fr; } }
 
-        .result-card { background: #fff; border-radius: 0.9rem; padding: 1.25rem 1.5rem; box-shadow: none; }
+        .result-card { background: #fff; border-radius: 0.9rem; padding: 1.25rem 1.5rem; box-shadow: none; margin-top: 0.75rem; }
         .result-card--highlight { background: linear-gradient(135deg, #1A2E35 0%, #22443a 100%); border: none; box-shadow: 0 4px 16px rgba(26,69,55,0.18); border-radius: 0.9rem; }
         .result-card--highlight .result-label { color: #7ab898; }
         .result-card--highlight .result-value { color: #fff; font-size: 1.5rem; }
         .result-card--highlight .result-sub { color: #a3b8ac; }
         .result-card--tone-green { background: rgba(29,175,102,0.08); }
         .result-card--tone-green .result-label { color: #0e6b3a; }
+
+        .result-card--tone-gold { background: rgb(255, 206, 116); border: none; }
+        .result-card--tone-gold .result-label { color: var(--vt-darker); }
+        .result-card--tone-gold .result-value { color: var(--vt-darker); }
+
+        .vt-capital-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding-top: 0.7rem; }
+        .vt-capital-row + .vt-capital-row { margin-top: 0.7rem; border-top: 1px solid rgba(255,255,255,0.14); }
+        .vt-capital-row-label { font-size: 0.9rem; font-weight: 700; color: #cfe3d6; }
+        .vt-capital-row .result-value { white-space: nowrap; }
+        @media (max-width: 480px) {
+          .vt-capital-row { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+          .vt-capital-row .result-value { font-size: 1.3rem; }
+        }
         .result-label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: #7a9a82; margin-bottom: 0.35rem; }
         .result-value { font-size: 1.35rem; font-weight: 900; color: var(--vt-darker); }
         .result-sub { font-size: 0.75rem; font-weight: 500; color: #8aab96; margin-top: 0.25rem; }

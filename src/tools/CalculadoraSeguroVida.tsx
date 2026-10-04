@@ -34,6 +34,59 @@ const maskBRLInteiro = (raw: string) => {
   return parseInt(digits, 10).toLocaleString("pt-BR");
 };
 
+// ─── Estimativa de mensalidade (idade + sexo) ─────────────────────────────────
+// Tabela de referência com cotações médias de mercado para seguro de vida
+// (mensalidade, em R$, por capital segurado de R$500 mil e R$1 milhão).
+// Serve só como estimativa — a mensalidade real varia por seguradora, saúde e hábitos.
+type Genero = "feminino" | "masculino";
+// Opção extra oferecida no formulário — não existe linha própria na tabela de
+// referência, então a estimativa usa a tabela "masculino" (valores mais altos).
+type GeneroSelecionado = Genero | "nao_informar";
+
+const generoParaTabela = (genero: GeneroSelecionado): Genero =>
+  genero === "feminino" ? "feminino" : "masculino";
+
+const TABELA_PREMIOS_SEGURO_VIDA: Record<Genero, { idade: number; c500k: number; c1m: number }[]> = {
+  feminino: [
+    { idade: 35, c500k: 36, c1m: 71 },
+    { idade: 40, c500k: 50, c1m: 100 },
+    { idade: 45, c500k: 77, c1m: 154 },
+    { idade: 50, c500k: 121, c1m: 242 },
+  ],
+  masculino: [
+    { idade: 35, c500k: 58, c1m: 117 },
+    { idade: 40, c500k: 74, c1m: 148 },
+    { idade: 45, c500k: 105, c1m: 209 },
+    { idade: 50, c500k: 163, c1m: 325 },
+  ],
+};
+
+const interpolarLinear = (x: number, pontos: { x: number; y: number }[]) => {
+  if (x <= pontos[0].x) return pontos[0].y;
+  if (x >= pontos[pontos.length - 1].x) return pontos[pontos.length - 1].y;
+  for (let i = 0; i < pontos.length - 1; i++) {
+    const a = pontos[i];
+    const b = pontos[i + 1];
+    if (x >= a.x && x <= b.x) {
+      const t = (x - a.x) / (b.x - a.x);
+      return a.y + t * (b.y - a.y);
+    }
+  }
+  return pontos[pontos.length - 1].y;
+};
+
+// Interpola a tabela por idade (dentro da faixa 35-50) e depois escala
+// linearmente pelo capital segurado, usando os pontos de R$500 mil e R$1 milhão.
+const estimarMensalidadeSeguroVida = (capital: number, idade: number, genero: GeneroSelecionado) => {
+  if (capital <= 0 || idade <= 0) return null;
+  const idadeClamp = Math.min(50, Math.max(35, idade));
+  const tabela = TABELA_PREMIOS_SEGURO_VIDA[generoParaTabela(genero)];
+  const c500k = interpolarLinear(idadeClamp, tabela.map((p) => ({ x: p.idade, y: p.c500k })));
+  const c1m = interpolarLinear(idadeClamp, tabela.map((p) => ({ x: p.idade, y: p.c1m })));
+  const porReal = (c1m - c500k) / 500_000;
+  return Math.max(0, c500k + porReal * (capital - 500_000));
+};
+
 // ─── Assistente de necessidade de seguro de vida ─────────────────────────────
 
 type Step = 1 | 2 | 3 | 4;
@@ -69,6 +122,9 @@ interface ResultadoSeguro {
   bens: number;
   capitalVida: number;
   capitalInvalidez: number;
+  idade: number;
+  genero: GeneroSelecionado;
+  estimativaMensalidade: number | null;
 }
 
 function StepIndicator({ current }: { current: Step }) {
@@ -224,41 +280,13 @@ function CampoBRL({
   );
 }
 
-function HighlightCard({
-  label,
-  value,
-  sub,
-  delay = 0,
-  visible,
-}: {
-  label: string;
-  value: number;
-  sub?: string;
-  delay?: number;
-  visible: boolean;
-}) {
-  return (
-    <div
-      className="result-card result-card--highlight"
-      style={{
-        transitionDelay: `${delay}ms`,
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(12px)",
-        transition: "opacity 0.45s ease, transform 0.45s ease",
-      }}
-    >
-      <p className="result-label">{label}</p>
-      <p className="result-value">R$ {formatBRLSemCentavos(value)}</p>
-      {sub && <p className="result-sub">{sub}</p>}
-    </div>
-  );
-}
-
 /** Assistente em 4 passos — pode ser embutido sozinho em qualquer página. */
 export function AssistenteSeguroVida() {
   const [step, setStep] = useState<Step>(1);
 
   const [suasDespesas, setSuasDespesas] = useState("");
+  const [idade, setIdade] = useState("");
+  const [genero, setGenero] = useState<GeneroSelecionado | "">("");
   const [adultosRenda, setAdultosRenda] = useState<DependenteRenda[]>([]);
   const [criancasRenda, setCriancasRenda] = useState<DependenteRenda[]>([]);
   const [dividas, setDividas] = useState("");
@@ -332,12 +360,13 @@ export function AssistenteSeguroVida() {
   const despesasDependentes = dependentesRenda.reduce((soma, d) => soma + parseBRL(d.despesa), 0);
   const despesasTotais = parseBRL(suasDespesas) + despesasDependentes;
   const podeAvancarRenda = despesasTotais > 0;
+  const podeAvancarDependentes = (parseInt(idade, 10) || 0) > 0 && genero !== "";
 
   const avancar = () => setStep((s) => (Math.min(4, s + 1) as Step));
   const voltar = () => setStep((s) => (Math.max(1, s - 1) as Step));
 
   const calcular = () => {
-    if (!podeAvancarRenda) return;
+    if (!podeAvancarRenda || genero === "") return;
 
     const dividasValor = parseBRL(dividas) + parseBRL(gastosAdicionais);
     const bensValor = parseBRL(bens);
@@ -355,6 +384,16 @@ export function AssistenteSeguroVida() {
     const capitalVida = Math.max(0, necessidadeRendaVida + dividasValor - bensValor);
     const capitalInvalidez = Math.max(0, necessidadeRendaInvalidez + dividasValor - bensValor);
 
+    const idadeNum = parseInt(idade, 10) || 0;
+    // Quando os dois seguros são recomendados, a mensalidade estimada é a soma
+    // das duas apólices — cada uma calculada pelo próprio capital segurado.
+    const estimativaVida = estimarMensalidadeSeguroVida(capitalVida, idadeNum, genero);
+    const estimativaInvalidez = estimarMensalidadeSeguroVida(capitalInvalidez, idadeNum, genero);
+    const estimativaMensalidade =
+      estimativaVida === null && estimativaInvalidez === null
+        ? null
+        : (estimativaVida ?? 0) + (estimativaInvalidez ?? 0);
+
     setResultado({
       adultos,
       criancas,
@@ -364,6 +403,9 @@ export function AssistenteSeguroVida() {
       bens: bensValor,
       capitalVida,
       capitalInvalidez,
+      idade: idadeNum,
+      genero,
+      estimativaMensalidade,
     });
 
     setResultsVisible(false);
@@ -396,6 +438,36 @@ export function AssistenteSeguroVida() {
                   <QuantityStepper label="Adultos" value={adultos} onChange={setAdultosCount} />
                   <QuantityStepper label="Crianças" value={criancas} onChange={setCriancasCount} />
                 </div>
+
+                <div className="vt-two-col" style={{ marginTop: "1.25rem" }}>
+                  <div className="vt-field">
+                    <label className="vt-label">Sua idade *</label>
+                    <input
+                      className="vt-input"
+                      placeholder="Ex: 35"
+                      inputMode="numeric"
+                      value={idade}
+                      onChange={(e) => setIdade(e.target.value.replace(/\D/g, "").slice(0, 3))}
+                    />
+                  </div>
+                  <div className="vt-field">
+                    <label className="vt-label">Seu sexo *</label>
+                    <select
+                      className="vt-select"
+                      value={genero}
+                      onChange={(e) => setGenero(e.target.value as GeneroSelecionado)}
+                      required
+                    >
+                      <option value="" disabled>Selecione</option>
+                      <option value="feminino">Feminino</option>
+                      <option value="masculino">Masculino</option>
+                      <option value="nao_informar">Não quero informar</option>
+                    </select>
+                  </div>
+                </div>
+                <p className="vt-hint" style={{ marginTop: "0.5rem" }}>
+                  Obrigatórios — usamos para estimar quanto esse seguro custaria por mês.
+                </p>
               </>
             )}
 
@@ -519,7 +591,7 @@ export function AssistenteSeguroVida() {
               <button
                 type="button"
                 className="vt-btn vt-btn-flex"
-                disabled={step === 2 && !podeAvancarRenda}
+                disabled={(step === 1 && !podeAvancarDependentes) || (step === 2 && !podeAvancarRenda)}
                 onClick={avancar}
               >
                 Avançar
@@ -573,24 +645,38 @@ export function AssistenteSeguroVida() {
           </div>
 
           <div style={{ borderTop: "1px solid #e2e8e2", marginTop: "1.75rem", paddingTop: "1.75rem" }}>
-            <div className="vt-results-grid vt-results-grid--pair">
-              <HighlightCard
-                label="Seguro de vida recomendado"
-                value={resultado.capitalVida}
-                sub={
-                  resultado.capitalVida > 0
-                    ? `Para proteger ${resultado.adultos} adulto(s) e ${resultado.criancas} criança(s)`
-                    : undefined
-                }
-                visible={resultsVisible}
-              />
-              <HighlightCard
-                label="Seguro de invalidez por acidente recomendado"
-                value={resultado.capitalInvalidez}
-                sub={resultado.capitalInvalidez > 0 ? "Cobre sua própria renda e a de quem depende de você" : undefined}
-                delay={80}
-                visible={resultsVisible}
-              />
+            {resultado.estimativaMensalidade !== null && resultado.estimativaMensalidade > 0 && (
+              <div
+                className="result-card result-card--tone-gold"
+                style={{
+                  marginBottom: "0.75rem",
+                  opacity: resultsVisible ? 1 : 0,
+                  transform: resultsVisible ? "translateY(0)" : "translateY(12px)",
+                  transition: "opacity 0.45s ease, transform 0.45s ease",
+                }}
+              >
+                <p className="result-label">Estimativa de mensalidade (vida + invalidez)</p>
+                <p className="result-value">R$ {formatBRL(resultado.estimativaMensalidade)} /mês</p>
+              </div>
+            )}
+
+            <div
+              className="result-card result-card--highlight"
+              style={{
+                transitionDelay: "80ms",
+                opacity: resultsVisible ? 1 : 0,
+                transform: resultsVisible ? "translateY(0)" : "translateY(12px)",
+                transition: "opacity 0.45s ease, transform 0.45s ease",
+              }}
+            >
+              <div className="vt-capital-row">
+                <span className="vt-capital-row-label">Seguro de vida</span>
+                <span className="result-value">R$ {formatBRLSemCentavos(resultado.capitalVida)}</span>
+              </div>
+              <div className="vt-capital-row">
+                <span className="vt-capital-row-label">Seguro de invalidez por acidente</span>
+                <span className="result-value">R$ {formatBRLSemCentavos(resultado.capitalInvalidez)}</span>
+              </div>
             </div>
 
             {semDependentes && (
@@ -891,18 +977,28 @@ export default function CalculadoraSeguroVida() {
         .vt-btn-secondary:hover svg { transform: none; }
 
         /* Result cards */
-        .vt-results-grid { display: grid; gap: 0.75rem; margin-top: 0.75rem; }
-        @media (min-width: 640px) { .vt-results-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (min-width: 640px) { .vt-results-grid--pair { grid-template-columns: 1fr 1fr; } }
-
-        .result-card { background: #fff; border-radius: 0.9rem; padding: 1.25rem 1.5rem; box-shadow: none; }
+        .result-card { background: #fff; border-radius: 0.9rem; padding: 1.25rem 1.5rem; box-shadow: none; margin-top: 0.75rem; }
         .result-card--highlight { background: linear-gradient(135deg, #1A2E35 0%, #22443a 100%); border: none; box-shadow: 0 4px 16px rgba(26,69,55,0.18); border-radius: 0.9rem; }
         .result-card--highlight .result-label { color: #7ab898; }
         .result-card--highlight .result-value { color: #fff; font-size: 1.5rem; }
         .result-card--highlight .result-sub { color: #a3b8ac; }
 
+        .vt-capital-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding-top: 0.7rem; }
+        .vt-capital-row + .vt-capital-row { margin-top: 0.7rem; border-top: 1px solid rgba(255,255,255,0.14); }
+        .vt-capital-row-label { font-size: 0.9rem; font-weight: 700; color: #cfe3d6; }
+        /* Em telas estreitas, rótulo + valor lado a lado ficam apertados e o
+           valor acaba quebrando linha de forma ilegível — empilha os dois. */
+        @media (max-width: 480px) {
+          .vt-capital-row { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+          .vt-capital-row .result-value { font-size: 1.3rem; }
+        }
+
         .result-card--tone-green { background: rgba(29,175,102,0.08); }
         .result-card--tone-green .result-label { color: #0e6b3a; }
+
+        .result-card--tone-gold { background: rgb(255, 206, 116); border: none; }
+        .result-card--tone-gold .result-label { color: var(--vt-darker); }
+        .result-card--tone-gold .result-value { color: var(--vt-darker); }
 
         .result-label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: #7a9a82; margin-bottom: 0.35rem; }
         .result-value { font-size: 1.35rem; font-weight: 900; color: var(--vt-darker); }
