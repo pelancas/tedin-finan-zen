@@ -14,6 +14,7 @@ export const primeirosImoveis = [
 
 export const primeirosSeguros = [
   { name: "Calculadora de seguros", href: "/seguros" },
+  { name: "Cotação de seguros", href: "/seguros/cotacao" },
   { name: "Artigos", href: "/seguros/conteudos" },
 ];
 
@@ -36,6 +37,7 @@ export const ferramentasItems = [
   { name: "Calculadora de metas", href: "/planejamento/calculadoras/metas" },
   { name: "Calculadora do milhão", href: "/planejamento/calculadoras/milhao" },
   { name: "Calculadora de seguros", href: "/seguros" },
+  { name: "Cotação de seguros", href: "/seguros/cotacao" },
   { name: "Comparador de renda fixa", href: "/investimentos/renda-fixa/comparador" },
   { name: "Posso comprar este imóvel?", href: "/imoveis/calculadoras/posso-comprar" },
 ];
