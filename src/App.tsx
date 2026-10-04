@@ -21,6 +21,7 @@ import Seguros from "./pages/seguros/Seguros";
 import CotacaoSeguro from "./pages/seguros/CotacaoSeguro";
 import SegurosConteudo from "./pages/seguros/SegurosConteudo";
 import SeguroVidaLanding from "./pages/seguros/SeguroVidaLanding";
+import SeguroVidaCotacaoLanding from "./pages/seguros/SeguroVidaCotacaoLanding";
 import PlanejamentoConteudo from "./pages/planejamento/PlanejamentoConteudo";
 import PossoComprar from "./pages/imoveis/PossoComprar";
 import PoliticaPrivacidade from "./pages/PoliticaPrivacidade";
@@ -55,6 +56,7 @@ const App = () => (
           <Route path="/seguros/cotacao" element={<CotacaoSeguro />} />
           <Route path="/seguros/conteudos" element={<SegurosConteudo />} />
           <Route path="/seguros/seguro-de-vida" element={<SeguroVidaLanding />} />
+          <Route path="/seguros/seguro-de-vida-cotacao" element={<SeguroVidaCotacaoLanding />} />
           <Route path="/imoveis/calculadoras/posso-comprar" element={<PossoComprar />} />
           <Route path="/politica-de-privacidade" element={<PoliticaPrivacidade />} />
           <Route path="/termos-de-uso" element={<TermosDeUso />} />

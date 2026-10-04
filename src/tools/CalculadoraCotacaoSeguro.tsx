@@ -30,7 +30,8 @@ interface Cotacao {
   mensalInvalidez: number;
 }
 
-export default function CalculadoraCotacaoSeguro() {
+/** Formulário + resultado da cotação — pode ser embutido em qualquer página. */
+export function AssistenteCotacaoSeguro() {
   const [capitalVida, setCapitalVida] = useState("");
   const [capitalInvalidez, setCapitalInvalidez] = useState("");
   const [idade, setIdade] = useState("");
@@ -81,33 +82,6 @@ export default function CalculadoraCotacaoSeguro() {
   return (
     <>
       <style>{`
-        .vt-root {
-          font-family: 'Work Sans', sans-serif;
-          --vt-dark:    #1daf66;
-          --vt-darker:  #1A2E35;
-          --vt-mid:     #FFA726;
-          --vt-light:   #FFFDF5;
-        }
-
-        .vt-hero { background: var(--vt-darker); padding: 3rem 1.5rem 3.5rem; position: relative; overflow: hidden; }
-        @media (min-width: 768px) { .vt-hero { padding: 4rem 5rem 4.5rem; } }
-        .vt-hero-inner { max-width: 72rem; margin: 0 auto; position: relative; z-index: 1; }
-        .vt-breadcrumb { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1.25rem; }
-        .vt-breadcrumb a, .vt-breadcrumb span { font-size: 0.8rem; font-weight: 500; color: #8aab96; text-decoration: none; }
-        .vt-breadcrumb a:hover { color: var(--vt-light); }
-        .vt-hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; color: #fff; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
-        .vt-hero h1 span { color: var(--vt-light); }
-        .vt-hero p { color: #a3b8ac; font-size: 1.1rem; font-weight: 300; max-width: 36rem; }
-        .vt-hero-blob { position: absolute; right: -4rem; top: -4rem; width: 28rem; height: 28rem; opacity: 0.06; pointer-events: none; }
-
-        .vt-main { max-width: 80rem; margin: 0 auto; padding: 3rem 1.5rem; display: grid; gap: 3rem; }
-        @media (min-width: 768px) { .vt-main { padding: 3rem 5rem; } }
-        @media (min-width: 1024px) { .vt-main { grid-template-columns: 1fr 340px; } }
-
-        .vt-section-heading { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
-        .vt-section-heading h2 { font-size: 1.8rem; font-weight: 800; color: var(--vt-darker); }
-        .vt-section-heading p { color: #607060; font-size: 1rem; }
-
         .vt-card { background: #fff; border-radius: 1rem; border: 1px solid #e2e8e2; padding: 2rem; box-shadow: 0 1px 3px rgba(26,69,55,0.06); }
         @media (max-width: 480px) { .vt-card { padding: 1.25rem; } }
 
@@ -116,7 +90,8 @@ export default function CalculadoraCotacaoSeguro() {
           .vt-two-col { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
           .vt-two-col .vt-label { min-height: 2.1em; }
         }
-        .vt-two-col + .vt-two-col { margin-top: 1.25rem; }
+        .vt-one-col { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+        .vt-one-col + .vt-two-col { margin-top: 1.25rem; }
         .vt-field { display: flex; flex-direction: column; gap: 0.45rem; }
         .vt-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--vt-dark); line-height: 1.3; }
         .vt-hint { font-size: 0.78rem; color: #607060; }
@@ -175,6 +150,151 @@ export default function CalculadoraCotacaoSeguro() {
         .vt-conclusion strong { color: var(--vt-darker); }
       `}</style>
 
+      <div className="vt-card">
+        <div className="vt-one-col">
+          <div className="vt-field">
+            <label className="vt-label">Valor do seguro de vida</label>
+            <div className="vt-input-wrap">
+              <span className="vt-prefix">R$</span>
+              <input
+                className="vt-input has-prefix"
+                placeholder="Ex: 500.000,00"
+                inputMode="numeric"
+                value={capitalVida}
+                onChange={(e) => setCapitalVida(maskBRL(e.target.value))}
+              />
+            </div>
+          </div>
+          <div className="vt-field">
+            <label className="vt-label">Valor do seguro de invalidez por acidente</label>
+            <div className="vt-input-wrap">
+              <span className="vt-prefix">R$</span>
+              <input
+                className="vt-input has-prefix"
+                placeholder="Ex: 500.000,00"
+                inputMode="numeric"
+                value={capitalInvalidez}
+                onChange={(e) => setCapitalInvalidez(maskBRL(e.target.value))}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="vt-two-col">
+          <div className="vt-field">
+            <label className="vt-label">Sua idade *</label>
+            <input
+              className="vt-input"
+              placeholder="Ex: 35"
+              inputMode="numeric"
+              value={idade}
+              onChange={(e) => setIdade(e.target.value.replace(/\D/g, "").slice(0, 3))}
+            />
+          </div>
+          <div className="vt-field">
+            <label className="vt-label">Seu sexo *</label>
+            <select
+              className="vt-select"
+              value={genero}
+              onChange={(e) => setGenero(e.target.value as GeneroSelecionado)}
+            >
+              <option value="" disabled>Selecione</option>
+              <option value="feminino">Feminino</option>
+              <option value="masculino">Masculino</option>
+              <option value="nao_informar">Não quero informar</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="button" className="vt-btn" disabled={!podeCalcular} onClick={calcular}>
+          Ver custo
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </button>
+
+        {cotacao && (
+          <div ref={resultsRef} style={{ borderTop: "1px solid #e2e8e2", marginTop: "1.75rem", paddingTop: "1.25rem" }}>
+            {total > 0 && (
+              <div className="result-card result-card--tone-gold" style={fadeIn(0)}>
+                <p className="result-label">Cotação de mercado (mensalidade)</p>
+                <p className="result-value">R$ {formatBRL(total)} /mês</p>
+                <p className="result-sub">
+                  Cerca de R$ {formatBRL(total * 12)} por ano. Para {cotacao.idade} anos
+                  {cotacao.genero !== "nao_informar" && `, sexo ${GENERO_LABEL[cotacao.genero]}`}.
+                </p>
+              </div>
+            )}
+
+            <div className="result-card result-card--highlight" style={fadeIn(80)}>
+              {cotacao.capitalVida > 0 && (
+                <div className="vt-capital-row">
+                  <span className="vt-capital-row-label">
+                    Seguro de vida
+                    <span className="vt-capital-row-sub">Cobertura de R$ {formatBRL(cotacao.capitalVida)}</span>
+                  </span>
+                  <span className="result-value">R$ {formatBRL(cotacao.mensalVida)} /mês</span>
+                </div>
+              )}
+              {cotacao.capitalInvalidez > 0 && (
+                <div className="vt-capital-row">
+                  <span className="vt-capital-row-label">
+                    Seguro de invalidez por acidente
+                    <span className="vt-capital-row-sub">Cobertura de R$ {formatBRL(cotacao.capitalInvalidez)}</span>
+                  </span>
+                  <span className="result-value">R$ {formatBRL(cotacao.mensalInvalidez)} /mês</span>
+                </div>
+              )}
+            </div>
+
+
+
+            <p className="vt-conclusion">
+              É apenas uma <strong>estimativa</strong> baseada em cotações médias de mercado. O
+              valor real varia por seguradora, estado de saúde e hábitos, e só é confirmado
+              numa cotação oficial.
+            </p>
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
+export default function CalculadoraCotacaoSeguro() {
+  return (
+    <>
+      <style>{`
+        .vt-root {
+          font-family: 'Work Sans', sans-serif;
+          --vt-dark:    #1daf66;
+          --vt-darker:  #1A2E35;
+          --vt-mid:     #FFA726;
+          --vt-light:   #FFFDF5;
+        }
+
+        .vt-hero { background: var(--vt-darker); padding: 3rem 1.5rem 3.5rem; position: relative; overflow: hidden; }
+        @media (min-width: 768px) { .vt-hero { padding: 4rem 5rem 4.5rem; } }
+        .vt-hero-inner { max-width: 72rem; margin: 0 auto; position: relative; z-index: 1; }
+        .vt-breadcrumb { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1.25rem; }
+        .vt-breadcrumb a, .vt-breadcrumb span { font-size: 0.8rem; font-weight: 500; color: #8aab96; text-decoration: none; }
+        .vt-breadcrumb a:hover { color: var(--vt-light); }
+        .vt-hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; color: #fff; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+        .vt-hero h1 span { color: var(--vt-light); }
+        .vt-hero p { color: #a3b8ac; font-size: 1.1rem; font-weight: 300; max-width: 36rem; }
+        .vt-hero-blob { position: absolute; right: -4rem; top: -4rem; width: 28rem; height: 28rem; opacity: 0.06; pointer-events: none; }
+
+        .vt-main { max-width: 80rem; margin: 0 auto; padding: 3rem 1.5rem; display: grid; gap: 3rem; }
+        @media (min-width: 768px) { .vt-main { padding: 3rem 5rem; } }
+        @media (min-width: 1024px) { .vt-main { grid-template-columns: 1fr 340px; } }
+
+        .vt-section-heading { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .vt-section-heading h2 { font-size: 1.8rem; font-weight: 800; color: var(--vt-darker); }
+        .vt-section-heading p { color: #607060; font-size: 1rem; }
+
+      `}</style>
+
       <div className="vt-root">
         <section className="vt-hero">
           <div className="vt-hero-inner">
@@ -211,122 +331,7 @@ export default function CalculadoraCotacaoSeguro() {
               <p>Preencha ao menos um dos valores de cobertura.</p>
             </div>
 
-            <div className="vt-card">
-              <div className="vt-two-col">
-                <div className="vt-field">
-                  <label className="vt-label">Valor do seguro de vida</label>
-                  <div className="vt-input-wrap">
-                    <span className="vt-prefix">R$</span>
-                    <input
-                      className="vt-input has-prefix"
-                      placeholder="Ex: 500.000,00"
-                      inputMode="numeric"
-                      value={capitalVida}
-                      onChange={(e) => setCapitalVida(maskBRL(e.target.value))}
-                    />
-                  </div>
-                </div>
-                <div className="vt-field">
-                  <label className="vt-label">Valor do seguro de invalidez por acidente</label>
-                  <div className="vt-input-wrap">
-                    <span className="vt-prefix">R$</span>
-                    <input
-                      className="vt-input has-prefix"
-                      placeholder="Ex: 500.000,00"
-                      inputMode="numeric"
-                      value={capitalInvalidez}
-                      onChange={(e) => setCapitalInvalidez(maskBRL(e.target.value))}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="vt-two-col">
-                <div className="vt-field">
-                  <label className="vt-label">Sua idade *</label>
-                  <input
-                    className="vt-input"
-                    placeholder="Ex: 35"
-                    inputMode="numeric"
-                    value={idade}
-                    onChange={(e) => setIdade(e.target.value.replace(/\D/g, "").slice(0, 3))}
-                  />
-                </div>
-                <div className="vt-field">
-                  <label className="vt-label">Seu sexo *</label>
-                  <select
-                    className="vt-select"
-                    value={genero}
-                    onChange={(e) => setGenero(e.target.value as GeneroSelecionado)}
-                  >
-                    <option value="" disabled>Selecione</option>
-                    <option value="feminino">Feminino</option>
-                    <option value="masculino">Masculino</option>
-                    <option value="nao_informar">Não quero informar</option>
-                  </select>
-                </div>
-              </div>
-
-              <button type="button" className="vt-btn" disabled={!podeCalcular} onClick={calcular}>
-                Ver cotação
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </button>
-
-              {cotacao && (
-                <div ref={resultsRef} style={{ borderTop: "1px solid #e2e8e2", marginTop: "1.75rem", paddingTop: "1.25rem" }}>
-                  {total > 0 && (
-                    <div className="result-card result-card--tone-gold" style={fadeIn(0)}>
-                      <p className="result-label">Cotação de mercado (mensalidade)</p>
-                      <p className="result-value">R$ {formatBRL(total)} /mês</p>
-                      <p className="result-sub">
-                        Cerca de R$ {formatBRL(total * 12)} por ano. Para {cotacao.idade} anos
-                        {cotacao.genero !== "nao_informar" && `, sexo ${GENERO_LABEL[cotacao.genero]}`}.
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="result-card result-card--highlight" style={fadeIn(80)}>
-                    {cotacao.capitalVida > 0 && (
-                      <div className="vt-capital-row">
-                        <span className="vt-capital-row-label">
-                          Seguro de vida
-                          <span className="vt-capital-row-sub">Cobertura de R$ {formatBRL(cotacao.capitalVida)}</span>
-                        </span>
-                        <span className="result-value">R$ {formatBRL(cotacao.mensalVida)} /mês</span>
-                      </div>
-                    )}
-                    {cotacao.capitalInvalidez > 0 && (
-                      <div className="vt-capital-row">
-                        <span className="vt-capital-row-label">
-                          Seguro de invalidez por acidente
-                          <span className="vt-capital-row-sub">Cobertura de R$ {formatBRL(cotacao.capitalInvalidez)}</span>
-                        </span>
-                        <span className="result-value">R$ {formatBRL(cotacao.mensalInvalidez)} /mês</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {foraDaFaixa && (
-                    <div className="vt-callout">
-                      <Info size={16} />
-                      <p>
-                        Nossa tabela de referência cobre de 35 a 50 anos. Para {cotacao.idade} anos,
-                        usamos o valor da faixa mais próxima — a cotação real pode ser bem diferente.
-                      </p>
-                    </div>
-                  )}
-
-                  <p className="vt-conclusion">
-                    É apenas uma <strong>estimativa</strong> baseada em cotações médias de mercado. O
-                    valor real varia por seguradora, estado de saúde e hábitos, e só é confirmado
-                    numa cotação oficial.
-                  </p>
-                </div>
-              )}
-            </div>
+            <AssistenteCotacaoSeguro />
 
             <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid #e2e8e2" }}>
               <p style={{ fontSize: "13px", fontWeight: 700, color: "#1A2E35", marginBottom: "8px" }}>
