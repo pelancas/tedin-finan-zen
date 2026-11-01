@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Shield, PiggyBank, Home, Wallet, ArrowRight, type LucideIcon } from "lucide-react";
+import { Shield, PiggyBank, Home, Wallet, Scale, ArrowRight, type LucideIcon } from "lucide-react";
 
 interface FerramentaItem {
   titulo: string;
@@ -26,6 +26,12 @@ const FERRAMENTAS: FerramentaItem[] = [
     descricao: "Veja se o imóvel cabe no seu orçamento antes de assinar o contrato.",
     href: "/imoveis/calculadoras/posso-comprar",
     icon: Home,
+  },
+  {
+    titulo: "CLT ou PJ: quanto cobrar?",
+    descricao: "Compare uma proposta CLT com uma PJ, com impostos e benefícios.",
+    href: "/planejamento/calculadoras/clt-pj",
+    icon: Scale,
   },
 
 ];

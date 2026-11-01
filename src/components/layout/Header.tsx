@@ -27,6 +27,7 @@ export const primeirosInvestimentos = [
 
 export const primeirosPlanejamento = [
   { name: "Calculadora de aposentadoria", href: "/planejamento/calculadoras/aposentadoria" },
+  { name: "Calculadora CLT x PJ", href: "/planejamento/calculadoras/clt-pj" },
   { name: "Controle de Despesas", href: "/planejamento/despesas" },
   { name: "Artigos", href: "/planejamento/conteudos" },
 ];
@@ -36,6 +37,7 @@ export const ferramentasItems = [
   { name: "Calculadora de aposentadoria", href: "/planejamento/calculadoras/aposentadoria" },
   { name: "Calculadora de metas", href: "/planejamento/calculadoras/metas" },
   { name: "Calculadora do milhão", href: "/planejamento/calculadoras/milhao" },
+  { name: "Calculadora CLT x PJ", href: "/planejamento/calculadoras/clt-pj" },
   { name: "Calculadora de seguros", href: "/seguros" },
   { name: "Cotação de seguros", href: "/seguros/cotacao" },
   { name: "Comparador de renda fixa", href: "/investimentos/renda-fixa/comparador" },

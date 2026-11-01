@@ -49,6 +49,7 @@ const sections: Section[] = [
     icon: Calculator,
     links: [
       { name: "Calculadora de aposentadoria", href: "/planejamento/calculadoras/aposentadoria" },
+      { name: "Calculadora CLT x PJ", href: "/planejamento/calculadoras/clt-pj" },
     ],
   },
 ];
