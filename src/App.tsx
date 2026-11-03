@@ -12,6 +12,7 @@ import Aposentadoria from "./pages/planejamento/Aposentadoria";
 import Metas from "./pages/planejamento/Metas";
 import Milhao from "./pages/planejamento/Milhao";
 import CltPj from "./pages/planejamento/CltPj";
+import ReservaDinamica from "./pages/planejamento/ReservaDinamica";
 import Imposto from "./pages/impostos/Imposto";
 import Fundos from "./pages/investimentos/Fundos";
 import RendaFixa from "./pages/investimentos/RendaFixa";
@@ -47,6 +48,7 @@ const App = () => (
           <Route path="/planejamento/calculadoras/metas" element={<Metas />} />
           <Route path="/planejamento/calculadoras/milhao" element={<Milhao />} />
           <Route path="/planejamento/calculadoras/clt-pj" element={<CltPj />} />
+          <Route path="/planejamento/calculadoras/reserva-dinamica" element={<ReservaDinamica />} />
           <Route path="/planejamento/conteudos" element={<PlanejamentoConteudo />} />
           <Route path="/impostos" element={<Imposto />} />
           <Route path="/investimentos/acoes" element={<Acoes />} />

@@ -38,6 +38,7 @@ export const ferramentasItems = [
   { name: "Calculadora de metas", href: "/planejamento/calculadoras/metas" },
   { name: "Calculadora do milhão", href: "/planejamento/calculadoras/milhao" },
   { name: "Calculadora CLT x PJ", href: "/planejamento/calculadoras/clt-pj" },
+  { name: "Calculadora de reserva dinâmica", href: "/planejamento/calculadoras/reserva-dinamica" },
   { name: "Calculadora de seguros", href: "/seguros" },
   { name: "Cotação de seguros", href: "/seguros/cotacao" },
   { name: "Comparador de renda fixa", href: "/investimentos/renda-fixa/comparador" },
