@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagnóstico Rápido orienta.vc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: uma coluna de até 560px, telas curtas com barra de progresso fixa no topo e botões fixos embaixo (polegar). */
+:root {
+  --verde: #2ECC71;
+  --verde-esc: #27AE60;
+  --esmeralda: #13A36A;
+  --laranja: #F39C12;
+  --vermelho: #E5604E;
+  --cinza: #B8C2CF;
+  --fundo: #F7F9FC;
+  --card: #FFFFFF;
+  --texto: #1A2332;
+  --apoio: #5B6B7F;
+  --linha: #E6EBF2;
+  --campo: #F0F4F9;
+  --font: "Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--fundo); color: var(--texto); font-family: var(--font);
+  font-size: 16px; line-height: 1.45; -webkit-font-smoothing: antialiased;
+}
+button, input, select { font-family: inherit; color: inherit; }
+.dx-wrap { max-width: 560px; margin: 0 auto; padding: 0 16px 8px; }
+
+/* topo */
+.dx-top { position: sticky; top: 0; z-index: 5; background: var(--fundo); padding: 12px 16px 10px; }
+.dx-top-in { max-width: 528px; margin: 0 auto; }
+.dx-top-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.dx-top-row { align-items: center !important; }
+.dx-logo-link { display: block; line-height: 0; }
+.dx-logo { height: 30px; width: auto; display: block; }
+.dx-etapa { font-size: 13px; font-weight: 500; color: var(--apoio); }
+.dx-bar { height: 6px; background: var(--linha); border-radius: 99px; margin-top: 8px; overflow: hidden; }
+.dx-bar i { display: block; height: 100%; background: var(--verde); border-radius: 99px; transition: width .3s; }
+
+h1 { font-size: 26px; line-height: 1.15; font-weight: 800; letter-spacing: -0.02em; margin: 16px 0 6px; text-wrap: balance; }
+h2 { font-size: 20px; font-weight: 800; letter-spacing: -0.01em; margin: 28px 0 10px; text-wrap: balance; }
+.dx-intro { color: var(--apoio); margin: 0 0 16px; }
+
+.dx-card { background: var(--card); border-radius: 16px; box-shadow: 0 2px 14px rgba(26,35,50,.06); padding: 18px 16px; margin-bottom: 14px; display: grid; gap: 18px; }
+.dx-ct { font-weight: 700; font-size: 17px; margin: 0; }
+.dx-hint { font-size: 13.5px; color: var(--apoio); margin: -10px 0 0; }
+.dx-card > .dx-hint:first-child, .dx-ct + .dx-hint { margin-top: -12px; }
+
+/* campos */
+.dx-f { display: grid; gap: 6px; }
+.dx-l { font-weight: 500; font-size: 15px; }
+.dx-h { font-size: 13px; color: var(--apoio); }
+.dx-in { display: flex; align-items: center; background: var(--campo); border-radius: 12px; padding: 0 14px; min-height: 56px; }
+.dx-in span { font-weight: 600; color: var(--apoio); font-size: 18px; margin-right: 6px; }
+.dx-in em { font-style: normal; color: var(--apoio); font-size: 14px; margin-left: 6px; white-space: nowrap; }
+.dx-in input, .dx-in select { flex: 1; min-width: 0; border: 0; background: transparent; outline: none; font-size: 22px; font-weight: 700; padding: 12px 0; font-variant-numeric: tabular-nums; }
+.dx-in select { font-size: 17px; font-weight: 600; appearance: none; -webkit-appearance: none; }
+.dx-in.sel::after { content: "▾"; color: var(--apoio); }
+.dx-in.txt input { font-size: 18px; font-weight: 600; }
+.dx-in:focus-within { box-shadow: 0 0 0 2px var(--verde); }
+.dx-in input::placeholder { color: #A9B4C2; font-weight: 500; }
+.dx-grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.dx-f { min-width: 0; }
+.dx-in input { width: 100%; }
+.dx-grid2 .dx-in { padding: 0 10px; }
+.dx-grid2 .dx-in span { font-size: 15px; margin-right: 4px; }
+.dx-grid2 .dx-in input { font-size: 19px; }
+
+.dx-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.dx-chip { min-height: 44px; padding: 10px 16px; border-radius: 99px; border: 1.5px solid var(--linha); background: var(--card); font-size: 15px; font-weight: 500; cursor: pointer; text-align: left; }
+.dx-chip[aria-pressed="true"] { background: var(--verde-esc); border-color: var(--verde-esc); color: #fff; font-weight: 600; }
+.dx-chip:focus-visible, .dx-btn:focus-visible, .dx-link:focus-visible { outline: 3px solid var(--laranja); outline-offset: 2px; }
+
+.dx-checks { display: grid; gap: 10px; }
+.dx-check { display: flex; align-items: center; gap: 14px; width: 100%; min-height: 64px; padding: 12px 14px; border-radius: 14px; border: 1.5px solid var(--linha); background: var(--card); text-align: left; cursor: pointer; }
+.dx-check b { display: block; font-size: 16px; font-weight: 700; }
+.dx-check small { display: block; font-size: 13.5px; color: var(--apoio); margin-top: 2px; }
+.dx-box { width: 26px; height: 26px; border-radius: 7px; border: 2px solid #A9B4C2; flex: none; display: grid; place-items: center; background: var(--card); }
+.dx-box svg { opacity: 0; }
+.dx-check[aria-checked="true"] { border-color: var(--verde-esc); background: #F1FBF5; }
+.dx-check[aria-checked="true"] .dx-box { background: var(--verde-esc); border-color: var(--verde-esc); }
+.dx-check[aria-checked="true"] .dx-box svg { opacity: 1; }
+.dx-check:focus-visible { outline: 3px solid var(--laranja); outline-offset: 2px; }
+.dx-item { border: 1.5px solid var(--linha); border-radius: 14px; padding: 14px; display: grid; gap: 16px; }
+.dx-item-h { display: flex; justify-content: space-between; align-items: center; font-weight: 700; }
+.dx-del { border: 0; background: none; color: var(--vermelho); font-weight: 600; font-size: 14px; padding: 8px; cursor: pointer; }
+.dx-add { border: 1.5px dashed var(--verde-esc); background: transparent; color: var(--verde-esc); border-radius: 14px; min-height: 52px; font-weight: 700; font-size: 15px; cursor: pointer; }
+
+.dx-live { background: #E9F9F0; border-radius: 14px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 14px; font-size: 15px; }
+.dx-live b { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
+
+/* rodapé */
+.dx-nav { padding: 8px 16px calc(32px + env(safe-area-inset-bottom)); }
+.dx-nav-in { max-width: 528px; margin: 0 auto; display: flex; gap: 10px; }
+.dx-btn { min-height: 54px; border-radius: 14px; border: 0; font-size: 17px; font-weight: 700; cursor: pointer; padding: 0 20px; }
+.dx-btn.pri { background: var(--verde-esc); color: #fff; flex: 1; }
+.dx-btn.pri:active { background: #1F9452; }
+.dx-btn.sec { background: var(--card); color: var(--texto); box-shadow: inset 0 0 0 1.5px var(--linha); }
+.dx-btn.full { width: 100%; }
+.dx-btn:disabled { opacity: .5; cursor: default; }
+.dx-link { background: none; border: 0; color: var(--verde-esc); font-weight: 700; font-size: 15px; cursor: pointer; padding: 6px 0; }
+
+/* início */
+.dx-welcome { background: linear-gradient(150deg, var(--verde) 0%, var(--verde-esc) 70%, var(--esmeralda) 100%); color: #fff; border-radius: 20px; padding: 26px 20px; margin: 12px 0 14px; }
+.dx-welcome h1 { margin: 0 0 10px; font-size: 30px; }
+.dx-welcome p { margin: 0; font-size: 16px; opacity: .95; }
+.dx-welcome .dx-tempo { display: inline-block; margin-top: 16px; background: rgba(255,255,255,.2); border-radius: 99px; padding: 6px 12px; font-weight: 600; font-size: 14px; }
+.dx-welcome.dx-branco { background: var(--card); color: var(--texto); box-shadow: 0 2px 14px rgba(26,35,50,.06); }
+.dx-welcome.dx-branco p { color: var(--apoio); opacity: 1; }
+.dx-welcome.dx-branco .dx-tempo { background: #E9F9F0; color: #1E8C4E; }
+body .dx-live.dx-verde, body.dx-laranja .dx-live.dx-verde { background: #E9F9F0; margin-bottom: 10px; }
+.dx-borrado { filter: blur(6px); user-select: none; pointer-events: none; }
+.dx-regra { padding: 10px 0 12px; border-top: 1px solid var(--linha); }
+.dx-regra:first-of-type { border-top: 0; }
+.dx-regra-h { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; }
+.dx-regra-h b { display: block; font-size: 16px; }
+.dx-regra-h small { display: block; font-size: 13px; color: var(--apoio); }
+.dx-regra-v { font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.dx-regra-b { position: relative; height: 12px; background: var(--campo); border-radius: 0 6px 6px 0; margin-top: 8px; }
+.dx-regra-b i { display: block; height: 100%; border-radius: 0 6px 6px 0; }
+.dx-regra-b u { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--texto); border-radius: 2px; }
+.dx-regra-s { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--apoio); margin-top: 6px; font-weight: 500; }
+.dx-apo { background: linear-gradient(150deg, var(--verde) 0%, var(--verde-esc) 100%); color: #fff; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; }
+.dx-apo span { display: block; font-size: 13px; opacity: .9; font-weight: 500; }
+.dx-apo b { display: block; font-size: 32px; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.dx-apo em { font-style: normal; font-size: 13px; opacity: .9; }
+.dx-br-b.dx-meta { position: relative; overflow: visible; }
+.dx-br-b.dx-meta u { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--texto); border-radius: 2px; }
+.dx-meta-t { font-size: 11.5px; color: var(--apoio); margin-top: 4px; white-space: nowrap; transform: translateX(-1px); }
+.dx-erro { color: #B53B2A; font-size: 14px; font-weight: 600; margin: -6px 0 0; }
+.dx-pop { position: fixed; inset: 0; z-index: 20; display: flex; align-items: flex-end; justify-content: center; }
+.dx-pop-fundo { position: absolute; inset: 0; background: rgba(26,35,50,.45); }
+.dx-pop-card { position: relative; background: var(--card); width: 100%; max-width: 560px; border-radius: 20px 20px 0 0; padding: 24px 20px calc(20px + env(safe-area-inset-bottom)); box-shadow: 0 -8px 30px rgba(26,35,50,.18); animation: dxSobe .25s ease-out; }
+@media (min-width: 600px) { .dx-pop { align-items: center; } .dx-pop-card { border-radius: 20px; } }
+@keyframes dxSobe { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .dx-pop-card { animation: none; } }
+.dx-pop-card h3 { font-size: 21px; font-weight: 800; line-height: 1.25; margin: 0 28px 14px 0; text-wrap: balance; }
+.dx-pop-card h3 b { color: var(--verde-esc); }
+.dx-pop-card ol { margin: 0 0 18px; padding-left: 22px; display: grid; gap: 10px; font-size: 15.5px; }
+.dx-pop-card li::marker { font-weight: 800; color: var(--laranja); }
+.dx-pop-x { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border: 0; border-radius: 50%; background: var(--campo); font-size: 24px; line-height: 1; cursor: pointer; color: var(--texto); }
+.dx-pop-btn { display: flex; align-items: center; justify-content: center; text-decoration: none; }
+.dx-fim-ol { margin: 4px 0 16px; padding-left: 22px; display: grid; gap: 8px; opacity: .95; }
+.dx-fim-ol li::marker { font-weight: 800; color: var(--laranja); }
+.dx-fim-btn { display: flex; align-items: center; justify-content: center; text-decoration: none; background: var(--verde); color: var(--texto); }
+.dx-pop-card li b, .dx-fim-ol li b { font-weight: 700; }
+.dx-alerta { background: #FDE8E5; border-radius: 14px; padding: 14px 16px; font-size: 15px; margin: 4px 0 10px; color: var(--texto); }
+.dx-alerta b { display: block; color: #B53B2A; font-size: 16px; margin-bottom: 4px; }
+.dx-alerta.dx-alerta-y { background: #FEF1DC; }
+.dx-alerta.dx-alerta-y b { color: #B86E00; }
+.dx-segs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+.dx-seg { background: var(--card); border-radius: 16px; padding: 14px; box-shadow: 0 2px 14px rgba(26,35,50,.06); }
+.dx-seg b { display: block; font-size: 15px; }
+.dx-seg span { font-size: 13px; color: var(--apoio); }
+.dx-seg i { display: block; width: 26px; height: 4px; border-radius: 4px; background: var(--verde); margin-bottom: 10px; }
+.dx-privado { font-size: 13.5px; color: var(--apoio); margin: 14px 0 0; }
+.dx-stack { display: grid; gap: 10px; }
+
+/* revisão */
+.dx-rev { display: grid; gap: 0; }
+.dx-rev-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--linha); }
+.dx-rev-row:last-child { border-bottom: 0; }
+.dx-rev-row span { color: var(--apoio); font-size: 14px; }
+.dx-rev-row b { display: block; font-size: 17px; font-variant-numeric: tabular-nums; }
+.dx-aviso { background: #FFF6E6; border-radius: 14px; padding: 14px 16px; font-size: 14.5px; margin-bottom: 14px; }
+.dx-aviso b { display: block; margin-bottom: 4px; }
+.dx-aviso ul { margin: 6px 0 0; padding-left: 18px; }
+
+/* relatório */
+.dx-hero { background: linear-gradient(150deg, var(--verde) 0%, var(--verde-esc) 65%, var(--esmeralda) 100%); color: #fff; border-radius: 20px; padding: 22px 20px 24px; margin-top: 12px; }
+.dx-hero small { font-size: 14px; font-weight: 500; opacity: .9; }
+.dx-hero h1 { margin: 4px 0 14px; font-size: 24px; }
+.dx-nota { display: flex; align-items: baseline; gap: 6px; }
+.dx-nota b { font-size: 76px; line-height: .9; font-weight: 800; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.dx-nota span { font-size: 20px; font-weight: 600; opacity: .85; }
+.dx-faixa { display: inline-block; margin-top: 14px; background: #fff; color: var(--verde-esc); font-weight: 800; border-radius: 99px; padding: 6px 14px; font-size: 15px; }
+.dx-hero p { margin: 10px 0 0; font-size: 16px; }
+.dx-exemplo { background: #FFF6E6; border-radius: 14px; padding: 12px 14px; font-size: 14px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+
+.dx-kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.dx-kpi { background: var(--card); border-radius: 16px; padding: 14px; box-shadow: 0 2px 14px rgba(26,35,50,.06); }
+.dx-kpi.wide { grid-column: 1 / -1; }
+.dx-kpi span { display: block; font-size: 13px; color: var(--apoio); font-weight: 500; }
+.dx-kpi b { display: block; font-size: 22px; font-weight: 800; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; margin-top: 2px; }
+.dx-kpi.wide b { font-size: 30px; }
+.dx-kpi em { display: block; font-style: normal; font-size: 12.5px; color: var(--apoio); margin-top: 2px; }
+.dx-kpi.neg b { color: var(--vermelho); }
+
+.dx-segcard { background: var(--card); border-radius: 16px; box-shadow: 0 2px 14px rgba(26,35,50,.06); padding: 18px 16px; margin-bottom: 14px; }
+.dx-sc-h { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.dx-sc-h h3 { margin: 0; font-size: 19px; font-weight: 800; }
+.dx-sc-n { font-size: 30px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.dx-sc-n small { font-size: 14px; color: var(--apoio); font-weight: 600; }
+.dx-sc-bar { height: 8px; border-radius: 99px; background: var(--linha); margin: 10px 0 14px; overflow: hidden; }
+.dx-sc-bar i { display: block; height: 100%; border-radius: 99px; }
+.dx-sem { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.dx-pill { display: inline-flex; align-items: center; gap: 6px; background: var(--campo); border-radius: 99px; padding: 5px 10px; font-size: 12.5px; font-weight: 500; }
+.dx-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.dx-blk { margin-top: 12px; }
+.dx-blk-t { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--apoio); margin-bottom: 6px; }
+.dx-msg { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; font-size: 15px; }
+.dx-msg .dx-dot { margin-top: 7px; }
+.dx-falta { font-size: 13px; color: var(--apoio); margin-top: 10px; }
+.dx-info { font-size: 14px; background: var(--campo); border-radius: 12px; padding: 10px 12px; margin-top: 10px; }
+
+.dx-chart { background: var(--card); border-radius: 16px; box-shadow: 0 2px 14px rgba(26,35,50,.06); padding: 16px; margin-bottom: 14px; }
+.dx-chart-t { font-weight: 700; font-size: 16px; margin: 0 0 4px; }
+.dx-chart-s { font-size: 13.5px; color: var(--apoio); margin: 0 0 12px; }
+.dx-chart svg { width: 100%; height: auto; display: block; }
+.dx-leg { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12.5px; color: var(--apoio); margin-top: 8px; }
+.dx-leg span { display: inline-flex; align-items: center; gap: 6px; }
+.dx-leg i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.dx-leg i.ln { height: 0; border-top: 2px dashed var(--texto); border-radius: 0; width: 14px; }
+.dx-br { padding: 7px 0; }
+.dx-br-t { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; }
+.dx-br-t b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.dx-br-t small { color: var(--apoio); font-weight: 500; }
+.dx-br-b { height: 10px; background: var(--campo); border-radius: 0 6px 6px 0; margin-top: 5px; }
+.dx-br-b i { display: block; height: 100%; border-radius: 0 4px 4px 0; }
+.dx-tabs { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+.dx-tabs .dx-chip { min-height: 36px; padding: 6px 12px; font-size: 13.5px; }
+
+.dx-obj { border-top: 1px solid var(--linha); padding: 12px 0; display: grid; gap: 4px; }
+.dx-obj:first-of-type { border-top: 0; padding-top: 0; }
+.dx-obj-h { display: flex; justify-content: space-between; gap: 10px; font-weight: 700; }
+.dx-tag { font-size: 12.5px; font-weight: 700; border-radius: 99px; padding: 3px 10px; white-space: nowrap; }
+.dx-obj p { margin: 0; font-size: 14px; color: var(--apoio); }
+
+.dx-passo { display: grid; grid-template-columns: 44px 1fr; gap: 12px; background: var(--card); border-radius: 16px; box-shadow: 0 2px 14px rgba(26,35,50,.06); padding: 16px; margin-bottom: 12px; border-left: 4px solid var(--laranja); }
+.dx-passo-n { width: 44px; height: 44px; border-radius: 12px; background: #FEF1DC; color: #B86E00; font-weight: 800; font-size: 22px; display: grid; place-items: center; }
+.dx-passo h4 { margin: 0 0 4px; font-size: 17px; font-weight: 700; }
+.dx-passo p { margin: 0; font-size: 15px; color: var(--texto); }
+
+.dx-fim { background: var(--texto); color: #fff; border-radius: 20px; padding: 22px 20px; margin-top: 22px; }
+.dx-fim h3 { margin: 0 0 8px; font-size: 20px; font-weight: 800; }
+.dx-fim p { margin: 0; opacity: .9; }
+.dx-legal { font-size: 12.5px; color: var(--apoio); margin: 16px 0 8px; }
+.dx-toast { position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%); background: var(--texto); color: #fff; padding: 10px 16px; border-radius: 12px; font-size: 14px; font-weight: 600; z-index: 9; }
+
+/* telas de gastos e dívidas em laranja */
+body.dx-laranja .dx-bar i { background: var(--laranja); }
+body.dx-laranja .dx-chip[aria-pressed="true"] { background: var(--laranja); border-color: var(--laranja); }
+body.dx-laranja .dx-in:focus-within { box-shadow: 0 0 0 2px var(--laranja); }
+body.dx-laranja .dx-live { background: #FEF1DC; }
+body.dx-laranja .dx-add { border-color: var(--laranja); color: #B86E00; }
+body.dx-laranja .dx-btn.pri { background: var(--laranja); }
+body.dx-laranja .dx-btn.pri:active { background: #D9860B; }
+/* enquanto digita no celular, o rodapé some para não cobrir os campos */
+html { scroll-padding-bottom: 24px; }
+@media (min-width: 480px) { .dx-kpis { grid-template-columns: 1fr 1fr 1fr; } .dx-kpi.wide { grid-column: 1 / -1; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media print {
+  .dx-top, .dx-nav, .dx-exemplo, .dx-acoes, .dx-tabs { display: none !important; }
+  body { background: #fff; }
+  .dx-segcard, .dx-chart, .dx-passo { break-inside: avoid; box-shadow: none; border: 1px solid var(--linha); }
+}
+</style>
+</head>
+<body>
+<header class="dx-top" id="topo">
+  <div class="dx-top-in">
+    <div class="dx-top-row"><a class="dx-logo-link" href="/#/" target="_top" aria-label="Voltar para o site orienta.vc"><img class="dx-logo" src="/logo-orienta.png" alt="orienta.vc"></a><div class="dx-etapa" id="etapa"></div></div>
+    <div class="dx-bar"><i id="barra" style="width:0%"></i></div>
+  </div>
+</header>
+<main class="dx-wrap" id="tela"></main>
+<nav class="dx-nav" id="nav">
+  <div class="dx-nav-in">
+    <button class="dx-btn sec" id="voltar" type="button">Voltar</button>
+    <button class="dx-btn pri" id="seguir" type="button">Continuar</button>
+  </div>
+</nav>
+
+<script>
+/* ====================== CONFIG ====================== */
+/* Faixas são referências iniciais, a validar com um planejador financeiro. */
+const CONFIG = {
+  mesesReserva: 6,
+  /* Conta ilustrativa da aposentadoria: rendimento acima da inflação e retirada anual. Valores de hoje, sem contar o INSS. */
+  aposentadoria: { idadeAlvo: 60, anosSeAcima50: 10, rendimentoReal: 0.04, retirada: 0.04 },
+  regra: { essenciais: 0.5, livres: 0.3, investimentos: 0.2 },
+  faixas: [
+    { ate: 39, nome: "Hora de arrumar a base", frase: "Você já deu o primeiro passo: agora sabe por onde começar." },
+    { ate: 69, nome: "No caminho", frase: "A base existe. Alguns ajustes deixam o mês mais tranquilo." },
+    { ate: 100, nome: "Base firme", frase: "Seu dinheiro já tem um sistema. Agora é fazer ele render mais." }
+  ]
+};
+/* Google Forms: as respostas são enviadas quando a pessoa toca em "Ver meu diagnóstico".
+   Só funciona com a página hospedada fora do claude.ai (lá os envios para outros sites são bloqueados). */
+const FORMULARIO = {
+  url: "https://docs.google.com/forms/d/e/1FAIpQLSdeOHlS45ud5ocl4nWcSqqCOOl2Lj5_lkHWGjt7haJAPM0kHw/formResponse",
+  campos: {
+    email: "entry.1367695340", nome: "entry.601424802", idade: "entry.1277605326", trabalho: "entry.1030105379",
+    renda: "entry.911533002", irregular: "entry.1357167340", pior4: "entry.850357587",
+    essenciais: "entry.763166301", livres: "entry.896472886", outros: "entry.1410202259", guardar: "entry.1455017008",
+    contas: "entry.221122453", apoValor: "entry.1653337337", apoFonte: "entry.1301458951", apoGuardado: "entry.1012397840",
+    apoOnde: "entry.2004466054", nota: "entry.188334666"
+  }
+};
+const CORES = { g: "var(--verde)", y: "var(--laranja)", r: "var(--vermelho)", n: "var(--cinza)" };
+const APO_TIPOS = { tesouro: "Tesouro direto", bancarios: "Bancários (LCA, LCI e CDB)", poupanca: "Poupança", fundo: "Fundo de investimento", bolsa: "Ações, FII ou ETF", previdencia: "Previdência privada", cripto: "Cripto", outro: "Outro" };
+
+/* ====================== ESTADO ====================== */
+function novo() {
+  return {
+    perfil: { nome: "", idade: null, trabalho: [], trabalhoOutro: "", email: "" },
+    aposentadoria: { renda: null, fonte: [], guardado: null, tipos: [] },
+    renda: { media: null, irregular: null, pior4: null },
+    gastos: { essenciais: null, livres: null, outros: null, guardar: null, contas: null }
+  };
+}
+let D = novo();
+let step = 0;
+const KEY = "orientavc-diagnostico-rapido-v1";
+function salvar() { try { localStorage.setItem(KEY, JSON.stringify({ D, step })); } catch (e) {} }
+function limpar() { try { localStorage.removeItem(KEY); } catch (e) {} }
+
+function get(path) { return path.split(".").reduce((o, k) => (o == null ? undefined : o[k]), D); }
+function setPath(path, v) {
+  const ks = path.split(".");
+  let o = D;
+  for (let i = 0; i < ks.length - 1; i++) { if (o[ks[i]] == null) o[ks[i]] = {}; o = o[ks[i]]; }
+  o[ks.at(-1)] = v;
+  salvar();
+}
+
+/* ====================== FORMATOS ====================== */
+const has = v => typeof v === "number" && !isNaN(v);
+const n0 = v => (has(v) ? v : 0);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function fmt(v) { if (!has(v)) return "—"; const s = Math.round(Math.abs(v)).toLocaleString("pt-BR"); return (v < 0 ? "− " : "") + "R$ " + s; }
+function pct(x) { return has(x) ? Math.round(x * 100) + "%" : "—"; }
+const arred50 = x => Math.ceil(x / 50) * 50;
+const plural = (q, um, varios) => (q === 1 ? um : varios);
+
+/* ====================== CÁLCULO ====================== */
+function calcular(D) {
+  const trab = D.perfil.trabalho || [];
+  const autonomo = !(trab.length === 1 && trab[0] === "clt");
+  const pior4 = D.renda.irregular === "sim" && has(D.renda.pior4) ? D.renda.pior4 : null;
+  const usaPior4 = pior4 != null;
+  const media = usaPior4 ? pior4 : has(D.renda.media) ? D.renda.media : null;
+  const G = D.gastos;
+  const essenciais = n0(G.essenciais), livres = n0(G.livres), outros = n0(G.outros);
+  const guardar = has(G.guardar) ? G.guardar : null;
+  const gastos = essenciais + livres + outros;
+  const sobra = media != null && gastos > 0 ? media - gastos : null;
+  const reservaMeta = gastos > 0 ? CONFIG.mesesReserva * gastos : null;
+  const categorias = [
+    { label: "Essenciais", valor: essenciais, cor: "var(--verde-esc)" },
+    { label: "Livres", valor: livres, cor: "#8FA3B8" },
+    { label: "Outros", valor: outros, cor: "#B8C2CF" },
+    { label: "Investimentos e reserva", valor: n0(guardar), cor: "var(--verde)" }
+  ].filter(c => c.valor > 0);
+  return { autonomo, media, pior4, usaPior4, essenciais, livres, outros, guardar, gastos, sobra, reservaMeta, categorias };
+}
+
+function aposentadoriaConta(D, C) {
+  const A = D.aposentadoria, cfg = CONFIG.aposentadoria;
+  const meio = { "10": 18, "20": 25, "30": 35, "40": 45 };
+  const faixa = D.perfil.idade;
+  if (!has(A.renda) || A.renda <= 0 || !faixa) return null;
+  const anos = meio[faixa] != null ? cfg.idadeAlvo - meio[faixa] : cfg.anosSeAcima50;
+  const idadeAposentar = meio[faixa] != null ? cfg.idadeAlvo : null;
+  const capital = (A.renda * 12) / cfg.retirada;
+  const r = Math.pow(1 + cfg.rendimentoReal, 1 / 12) - 1, m = anos * 12;
+  const jaTem = (A.fonte || []).includes("investimentos") ? n0(A.guardado) : 0;
+  const futuroJaTem = jaTem * Math.pow(1 + r, m);
+  const falta = Math.max(0, capital - futuroJaTem);
+  const aporte = falta > 0 ? falta * r / (Math.pow(1 + r, m) - 1) : 0;
+  return { anos, idadeAposentar, capital, jaTem, aporte };
+}
+
+function indicadores(D, C) {
+  const L = [], add = o => L.push(o);
+  const R = CONFIG.regra, base = C.media > 0 ? C.media : null;
+  const pE = base ? C.essenciais / base : null, pL = base ? (C.livres + C.outros) / base : null, pI = base && has(C.guardar) ? C.guardar / base : null;
+  add({ cat: 2, grupo: "regra", nome: "Essenciais", pct: pE, meta: R.essenciais, cor: pE == null ? "n" : pE <= R.essenciais ? "g" : pE <= 0.6 ? "y" : "r",
+    msg: pE == null ? "Faltou informar a renda ou os essenciais." : pE <= R.essenciais ? `Seus essenciais levam ${pct(pE)} da renda, dentro dos 50%.` : `Seus essenciais levam ${pct(pE)} da renda. O ideal é até 50%.`,
+    passo: { t: "Diminua os essenciais", d: "" } });
+  add({ cat: 3, grupo: "regra", nome: "Lazer e outros", pct: pL, meta: R.livres, cor: pL == null ? "n" : pL <= R.livres ? "g" : pL <= 0.4 ? "y" : "r",
+    msg: pL == null ? "Faltou informar a renda." : pL <= R.livres ? `Lazer e outros gastos levam ${pct(pL)} da renda, dentro dos 30%.` : `Lazer e outros gastos levam ${pct(pL)} da renda. O ideal é até 30%.`,
+    passo: { t: "Ajuste o lazer", d: "" } });
+  add({ cat: 1, grupo: "regra", nome: "Investimentos", pct: pI, meta: R.investimentos, cor: pI == null ? "n" : pI >= R.investimentos ? "g" : pI >= 0.1 ? "y" : "r",
+    msg: pI == null ? "Faltou dizer quanto você guarda por mês." : pI >= R.investimentos ? `Você investe ${pct(pI)} da renda. Quanto mais, melhor.` : `Você investe ${pct(pI)} da renda. O mínimo é 20%, e quanto mais, melhor.`,
+    passo: { t: "Invista mais", d: "" } });
+  {
+    const c = D.gastos.contas, n = c === "tres" ? 3 : c === "duas" ? 2 : c === "uma" ? 1 : null;
+    add({ cat: 4, grupo: "envelopes", nome: "Envelopes", usados: n, cor: n == null ? "n" : n === 3 ? "g" : n === 2 ? "y" : "r",
+      msg: n == null ? "Faltou dizer como você organiza as contas." : n === 3 ? "Cada tipo de gasto tem sua conta ou cartão. O dinheiro não se mistura." : n === 2 ? "Você usa 2 envelopes. Falta separar um tipo de gasto." : "Todo o dinheiro está num envelope só. Fica difícil ver para onde ele vai.",
+      passo: { t: "Separe em envelopes", d: "" } });
+  }
+  {
+    const P = aposentadoriaConta(D, C);
+    const g = n0(C.guardar);
+    const cor = !P ? "n" : P.aporte === 0 || g >= P.aporte ? "g" : g >= P.aporte * 0.5 ? "y" : "r";
+    add({ cat: 5, grupo: "apos", nome: "Aposentadoria", conta: P, cor,
+      msg: !P ? "Faltou informar sua idade ou quanto quer receber na aposentadoria." : "",
+      passo: { t: "Planeje a aposentadoria", d: "" } });
+  }
+  return L;
+}
+const PTS = { g: 100, y: 50, r: 0 };
+function pontuar(L) {
+  const v = L.filter(i => PTS[i.cor] != null).map(i => PTS[i.cor]);
+  const geral = v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length) : null;
+  return { geral, faixa: geral == null ? null : CONFIG.faixas.find(f => geral <= f.ate) };
+}
+function escolherPassos(L) {
+  const out = L.filter(i => i.cor === "r" || i.cor === "y").sort((a, b) => (a.cor === "r" ? 0 : 1) - (b.cor === "r" ? 0 : 1) || a.cat - b.cat).map(i => i.passo);
+  if (out.length < 3) L.filter(i => i.cor === "n").forEach(i => out.push(i.passo));
+  if (out.length < 3) out.push({ t: "Mantenha o sistema funcionando", d: "Refaça este diagnóstico a cada 6 meses ou quando a vida mudar." });
+  return out.slice(0, 3);
+}
+
+/* ====================== COMPONENTES ====================== */
+const idOf = p => "f-" + p.replace(/\./g, "-");
+function campo(label, inner, hint) { return `<div class="dx-f"><label class="dx-l" for="${inner.id}">${label}</label>${inner.html}${hint ? `<span class="dx-h">${hint}</span>` : ""}</div>`; }
+function money(p, label, hint, ph) {
+  const v = get(p), id = idOf(p);
+  return campo(label, { id, html: `<div class="dx-in"><span>R$</span><input id="${id}" data-path="${p}" data-type="money" inputmode="numeric" enterkeyhint="next" autocomplete="off" placeholder="${ph || "0"}" value="${has(v) ? v.toLocaleString("pt-BR") : ""}"></div>` }, hint);
+}
+function texto(p, label, ph) {
+  const v = get(p), id = idOf(p);
+  return campo(label, { id, html: `<div class="dx-in txt"><input id="${id}" data-path="${p}" data-type="text" enterkeyhint="next" autocomplete="off" placeholder="${esc(ph || "")}" value="${esc(v || "")}"></div>` });
+}
+function chips(p, label, opts, o = {}) {
+  const v = get(p);
+  const sel = k => (o.multi ? (v || []).includes(k) : String(v) === String(k));
+  return `<div class="dx-f" role="group" aria-labelledby="${idOf(p)}-l"><span class="dx-l" id="${idOf(p)}-l">${label}</span>${o.hint ? `<span class="dx-h">${o.hint}</span>` : ""}<div class="dx-chips">${opts.map(([k, t]) => `<button type="button" class="dx-chip" data-chip="${p}" data-val="${k}"${o.multi ? ' data-multi="1"' : ""} aria-pressed="${sel(k)}">${t}</button>`).join("")}</div></div>`;
+}
+function checks(p, label, opts) {
+  const v = get(p) || [];
+  return `<div class="dx-f" role="group" aria-labelledby="${idOf(p)}-l"><span class="dx-l" id="${idOf(p)}-l">${label}</span><div class="dx-checks">${opts.map(([k, t]) => `<button type="button" class="dx-check" role="checkbox" data-chip="${p}" data-val="${k}" data-multi="1" aria-checked="${v.includes(k)}"><span class="dx-box" aria-hidden="true"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>${t}</b></span></button>`).join("")}</div></div>`;
+}
+const simnao = (p, label) => chips(p, label, [["sim", "Sim"], ["nao", "Não"]]);
+const card = (inner, titulo) => `<section class="dx-card">${titulo ? `<p class="dx-ct">${titulo}</p>` : ""}${inner}</section>`;
+
+/* ====================== TELAS ====================== */
+const SCREENS = [
+  { id: "inicio", seg: "", titulo: "", html: telaInicio },
+  { id: "perfil", seg: "1 de 3", titulo: "Vamos começar por você", html: telaPerfil },
+  { id: "renda", seg: "2 de 3", titulo: "Quanto dinheiro entra", html: telaRenda },
+  { id: "gastos", seg: "3 de 3", titulo: "Para onde o dinheiro vai", html: telaGastos },
+  { id: "relatorio", seg: "Seu diagnóstico", titulo: "", html: telaRelatorio }
+];
+const REL = SCREENS.length - 1;
+
+function telaInicio() {
+  return `<div class="dx-welcome dx-branco"><h1>Seu diagnóstico financeiro rápido</h1>
+  <p>Três perguntas sobre o seu dinheiro e um resultado na hora, de graça.</p>
+  <span class="dx-tempo">Leva uns 3 minutos</span></div>
+  <button class="dx-btn pri full" type="button" data-acao="comecar">Começar</button>`;
+}
+function telaPerfil() {
+  const P = D.perfil, A = D.aposentadoria;
+  return card(texto("perfil.nome", "Como você quer ser chamado?", "Seu nome")
+      + chips("perfil.idade", "Sua idade", [["10", "Abaixo de 20 anos"], ["20", "20 a 29 anos"], ["30", "30 a 39 anos"], ["40", "40 a 49 anos"], ["50", "50 a 59 anos"], ["60", "60 a 69 anos"], ["70", "70 anos ou mais"]]))
+    + card(chips("perfil.trabalho", "Como você trabalha hoje?", [["autonomo", "Autônomo sem CNPJ"], ["empresa", "MEI, ME ou PJ"], ["outra_empresa", "Outro tipo de empresa"], ["clt", "Carteira assinada"], ["outros", "Outros"]], { multi: true })
+      + ((P.trabalho || []).includes("outros") ? texto("perfil.trabalhoOutro", "Qual?", "Escreva como você trabalha") : ""))
+    + card(money("aposentadoria.renda", "Quanto você espera receber por mês quando se aposentar?", "em valores de hoje", "4.000")
+      + checks("aposentadoria.fonte", "De onde vai vir esse dinheiro?", [["inss", "INSS"], ["investimentos", "Meus investimentos"]])
+      + ((A.fonte || []).includes("investimentos") ? money("aposentadoria.guardado", "Quanto você tem hoje guardado para a aposentadoria?")
+        + chips("aposentadoria.tipos", "Onde está esse dinheiro?", Object.entries(APO_TIPOS), { multi: true }) : ""), "Aposentadoria");
+}
+function telaRenda() {
+  return card(money("renda.media", "Em média, quanto dinheiro entra por mês?", "", "3.000"))
+    + card(simnao("renda.irregular", "Sua renda é irregular, você não sabe quanto vai ganhar em um mês?"))
+    + (D.renda.irregular !== "sim" ? "" : card(money("renda.pior4", "Pensando no último ano, quanto entrou no seu 4º pior mês?", "", "2.000")));
+}
+function telaGastos() {
+  return card(money("gastos.essenciais", "Essenciais", "moradia, contas da casa, comida e transporte", "4.000")
+      + money("gastos.livres", "Livres", "lazer, restaurante, assinaturas, compras", "800")
+      + money("gastos.outros", "Outros", "o que não entra nos dois acima", "200")
+      + money("gastos.guardar", "Investimentos e reserva", "quanto você separa por mês para guardar ou investir", "300"), "Gastos do mês")
+    + card(chips("gastos.contas", "Seus gastos ficam em contas separadas ou juntos numa só conta?", [["uma", "Tudo numa só conta"], ["duas", "Em 2 contas e cartões"], ["tres", "Em 3 ou mais contas e cartões"]]))
+    + (() => { const C = calcular(D); return `<div class="dx-live dx-verde"><span>${C.usaPior4 ? "Sua renda (4º pior mês)" : "Renda média"}</span><b>${fmt(C.media)}</b></div>`; })()
+    + `<div class="dx-live"><span>Total por mês</span><b data-live="total">—</b></div>`
+    + card(campo("Qual é o seu e-mail?", { id: "f-perfil-email", html: `<div class="dx-in txt"><input id="f-perfil-email" data-path="perfil.email" data-type="text" type="email" inputmode="email" autocomplete="email" enterkeyhint="done" placeholder="seu@email.com" value="${esc(D.perfil.email || "")}"></div>` }) + `<p class="dx-erro" id="erro-email" hidden>Escreva um e-mail válido para ver seu diagnóstico.</p>`, "Contato");
+}
+
+/* ====================== RELATÓRIO ====================== */
+function barras(items, total) {
+  const max = Math.max(...items.map(i => i.valor), 1);
+  return items.map(i => `<div class="dx-br"><div class="dx-br-t"><span>${esc(i.label)}</span><b>${fmt(i.valor)}${total ? ` <small>${pct(i.valor / total)}</small>` : ""}</b></div><div class="dx-br-b"><i style="width:${Math.max(1.5, (i.valor / max) * 100)}%;background:${i.cor}"></i></div></div>`).join("");
+}
+const STATUS = { g: "Dentro da meta", y: "Perto da meta", r: "Fora da meta", n: "Faltou informar" };
+function blocoRegra(L, C) {
+  const its = L.filter(i => i.grupo === "regra");
+  const cores = { "Essenciais": "var(--verde-esc)", "Lazer e outros": "#8FA3B8", "Investimentos": "var(--verde)" };
+  const valores = { "Essenciais": C.essenciais, "Lazer e outros": C.livres + C.outros, "Investimentos": C.guardar };
+  const nomes = { "Essenciais": "Essenciais", "Lazer e outros": "Lazer e outros", "Investimentos": "Investimentos e reserva" };
+  const linha = i => {
+    const v = i.pct, w = has(v) ? Math.max(1.5, Math.min(100, v * 100)) : 0, alvo = i.meta * 100;
+    return `<div class="dx-br"><div class="dx-br-t"><span>${nomes[i.nome]}</span><b>${fmt(valores[i.nome])}${has(v) ? ` <small>${pct(v)}</small>` : ""}</b></div>
+      <div class="dx-br-b dx-meta"><i style="width:${w}%;background:${cores[i.nome]}"></i><u style="left:${alvo}%"></u></div>
+      <div class="dx-meta-t" style="padding-left:${alvo}%">meta ${i.nome === "Investimentos" ? "mínima" : "máxima"} ${Math.round(alvo)}%</div></div>`;
+  };
+  const faltam = its.filter(i => i.cor !== "g");
+  const guardaPor100 = C.media > 0 && has(C.guardar) ? Math.round(C.guardar / C.media * 100) : null;
+  const saidas = C.gastos + n0(C.guardar);
+  let alerta = "";
+  if (C.media > 0 && C.gastos > C.media) {
+    alerta = `<div class="dx-alerta"><b>Você gasta mais do que recebe</b>Seus gastos somam ${fmt(C.gastos)} por mês e entram ${fmt(C.media)}. Faltam ${fmt(C.gastos - C.media)} todo mês${n0(C.guardar) > 0 ? `, sem contar os ${fmt(C.guardar)} que você separa para guardar` : ""}. Essa diferença costuma virar dívida no cartão ou no cheque especial.</div>`;
+  } else if (C.media > 0 && saidas > C.media) {
+    alerta = `<div class="dx-alerta dx-alerta-y"><b>A conta não fecha</b>Somando os gastos (${fmt(C.gastos)}) e o que você separa para guardar (${fmt(C.guardar)}), saem ${fmt(saidas)} e entram ${fmt(C.media)}. Faltam ${fmt(saidas - C.media)} por mês.</div>`;
+  }
+  return `<div class="dx-segcard"><div class="dx-sc-h"><h3>Para onde vai o dinheiro</h3></div>
+    <p class="dx-chart-s" style="margin:6px 0 10px"></p>
+    ${alerta}
+    ${its.map(linha).join("")}
+    ${faltam.length ? `<div class="dx-blk">${faltam.map(i => `<div class="dx-msg"><span class="dx-dot" style="background:${CORES[i.cor]}"></span><span>${i.msg}</span></div>`).join("")}</div>`
+      : `<div class="dx-msg"><span class="dx-dot" style="background:var(--verde)"></span><span>Você está dentro das três metas da regra 50/30/20.</span></div>`}</div>`;
+}
+function envelopeSVG(x, cheio, nome) {
+  const w = 92, h = 62, y = 10;
+  const stroke = cheio ? "#27AE60" : "#B8C2CF", fill = cheio ? "#E9F9F0" : "#F7F9FC", dash = cheio ? "" : ' stroke-dasharray="5 4"';
+  return `<g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="7" fill="${fill}" stroke="${stroke}" stroke-width="2"${dash}/>
+    <path d="M${x + 4} ${y + 4} L${x + w / 2} ${y + h * 0.55} L${x + w - 4} ${y + 4}" fill="none" stroke="${stroke}" stroke-width="2" stroke-linejoin="round"${dash}/>
+    ${cheio ? `<circle cx="${x + w - 10}" cy="${y + h - 10}" r="9" fill="#27AE60"/><path d="M${x + w - 14} ${y + h - 10} l3 3 l5 -6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>` : ""}
+    <text x="${x + w / 2}" y="${y + h + 22}" text-anchor="middle" font-size="12.5" font-weight="600" fill="${cheio ? "#1A2332" : "#8A97A8"}">${nome}</text></g>`;
+}
+function blocoEnvelopes(L) {
+  const i = L.find(x => x.grupo === "envelopes"), n = i.usados;
+  const nomes = ["Essenciais", "Lazer", "Investimentos"];
+  const svg = `<svg viewBox="0 0 340 104" role="img" aria-label="${n == null ? "Envelopes" : `Você usa ${n} de 3 envelopes`}">${nomes.map((nm, k) => envelopeSVG(14 + k * 110, n != null && k < n, nm)).join("")}</svg>`;
+  return `<div class="dx-segcard"><div class="dx-sc-h"><h3>Seus envelopes</h3><div class="dx-sc-n">${n ?? "—"}<small>/3</small></div></div>
+    <p class="dx-chart-s" style="margin:6px 0 12px">O ideal é cada tipo de gasto numa conta ou cartão diferente.</p>
+    <div class="dx-chart" style="box-shadow:none;padding:0;margin:0">${svg}</div>
+    <div class="dx-msg"><span class="dx-dot" style="background:${CORES[i.cor]}"></span><span>${i.msg}</span></div></div>`;
+}
+function blocoAposentadoria(L, C, D) {
+  const i = L.find(x => x.grupo === "apos"), P = i.conta, A = D.aposentadoria;
+  if (!P) return `<div class="dx-segcard"><div class="dx-sc-h"><h3>Aposentadoria</h3></div><div class="dx-msg"><span class="dx-dot" style="background:var(--cinza)"></span><span>${i.msg}</span></div></div>`;
+  const quando = P.idadeAposentar ? `aos ${P.idadeAposentar} anos` : `daqui a ${P.anos} anos`;
+  const g = n0(C.guardar);
+  const comp = P.aporte === 0 ? "O que você já tem guardado deve bastar, se continuar rendendo."
+    : g >= P.aporte ? `Hoje você guarda ${fmt(g)} por mês. Se tudo isso for para a aposentadoria, você chega lá.`
+    : `Hoje você guarda ${fmt(g)} por mês. Faltam ${fmt(P.aporte - g)} por mês.`;
+  return `<div class="dx-segcard"><div class="dx-sc-h"><h3>Aposentadoria ${quando}</h3></div>
+    <p class="dx-chart-s" style="margin:6px 0 10px">Para receber ${fmt(A.renda)} por mês, você precisa juntar cerca de ${fmt(P.capital)}${P.jaTem > 0 ? ` (você já tem ${fmt(P.jaTem)})` : ""}.</p>
+    <div class="dx-apo"><span>Guarde por mês</span><b>${fmt(P.aporte)}</b><em>por ${P.anos} anos</em></div>
+    <div class="dx-msg"><span class="dx-dot" style="background:${CORES[i.cor]}"></span><span>${comp}${(A.fonte || []).includes("inss") ? " O INSS pode ajudar, mas não entrou na conta." : ""}</span></div></div>`;
+}
+function telaRelatorio() {
+  const C = calcular(D), L = indicadores(D, C), P = pontuar(L), passos = escolherPassos(L);
+  const nome = (D.perfil.nome || "").trim();
+  const hoje = new Date().toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
+  const ordem = { r: 0, y: 1, g: 2, n: 3 };
+  const fortes = L.filter(i => i.cor === "g");
+  const alertas = L.filter(i => i.cor === "r" || i.cor === "y").sort((a, b) => ordem[a.cor] - ordem[b.cor]);
+  const faltam = L.filter(i => i.cor === "n");
+  let h = `<div class="dx-hero"><small>${hoje}</small><h1>${nome ? "Diagnóstico de " + esc(nome) : "Seu diagnóstico financeiro"}</h1>
+    <div class="dx-nota"><b>${P.geral == null ? "—" : P.geral}</b><span>/100</span></div>
+    ${P.faixa ? `<span class="dx-faixa">${P.faixa.nome}</span><p>${P.faixa.frase}</p>` : `<p>Preencha mais informações para calcular a nota.</p>`}</div>`;
+  h += `<div class="dx-kpis">
+    <div class="dx-kpi wide"><span>Reserva dinâmica ideal</span><b>${fmt(C.reservaMeta)}</b></div>
+  </div>`;
+  h += blocoRegra(L, C) + blocoEnvelopes(L) + blocoAposentadoria(L, C, D);
+  if (C.autonomo && has(C.pior4)) h += `<div class="dx-info" style="margin-bottom:14px">Seu pagamento fixo sugerido é <b>${fmt(C.pior4)} por mês</b>, o valor do seu 4º pior mês. Todo dinheiro recebido vai para a reserva dinâmica, e ela paga você esse valor no fim do mês.</div>`;
+  const lorem = [
+    ["Lorem ipsum dolor sit amet", "Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."],
+    ["Ut enim ad minim veniam", "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute."],
+    ["Excepteur sint occaecat", "Cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."]
+  ];
+  h += `<h2>Seus 3 próximos passos</h2><div class="dx-borrado" aria-hidden="true">` + lorem.map(([t, d], i) => `<div class="dx-passo"><div class="dx-passo-n">${i + 1}</div><div><h4>${t}</h4><p>${d}</p></div></div>`).join("") + `</div>`;
+  h += `<div class="dx-fim"><h3>Quer um diagnóstico completo?</h3><ol class="dx-fim-ol"><li>Conte pra gente o que achou dessa ferramenta como <b>comentário no nosso último post</b>!</li><li>Tire um <b>print do comentário</b> e mande por mensagem no nosso Instagram (@orienta.vc)</li><li>Vamos te encaminhar as próximas instruções</li></ol>
+      <a class="dx-btn full dx-fim-btn" href="https://www.instagram.com/orienta.vc/" target="_blank" rel="noopener">Abrir o Instagram</a></div>
+    <div class="dx-stack dx-acoes" style="margin-top:16px"><button class="dx-btn pri full" type="button" data-acao="compartilhar">Compartilhar resultado</button><button class="dx-btn sec full" type="button" data-acao="editar">Editar respostas</button><button class="dx-btn sec full" type="button" data-acao="recomecar">Começar do zero</button></div>
+    <p class="dx-legal">Este diagnóstico é uma simulação educativa feita com os dados que você informou. Ele não é recomendação de investimento e não substitui um contador ou uma consultoria individual.</p>
+    <p class="dx-legal">Conta de aposentadoria ilustrativa, em valores de hoje: rendimento de ${Math.round(CONFIG.aposentadoria.rendimentoReal * 100)}% ao ano acima da inflação e retirada de ${Math.round(CONFIG.aposentadoria.retirada * 100)}% ao ano do valor juntado.</p>`;
+  return h;
+}
+function resumoTexto() {
+  const C = calcular(D), L = indicadores(D, C), P = pontuar(L), passos = escolherPassos(L);
+  const l = [`Diagnóstico rápido orienta.vc${D.perfil.nome ? " de " + D.perfil.nome : ""}${D.perfil.email ? " (" + D.perfil.email.trim() + ")" : ""}`, `Nota: ${P.geral ?? "—"}/100${P.faixa ? " (" + P.faixa.nome + ")" : ""}`, "",
+    `${C.usaPior4 ? "Renda (4º pior mês)" : "Renda média"}: ${fmt(C.media)}`, `Gasto do mês: ${fmt(C.gastos)}`, `Sobra: ${fmt(C.sobra)}`, `Guarda por mês: ${fmt(C.guardar)}`, `Reserva dinâmica ideal (6 meses): ${fmt(C.reservaMeta)}`];
+  return l.join("\n");
+}
+
+/* ====================== NAVEGAÇÃO ====================== */
+const $ = s => document.querySelector(s);
+function render(manter) {
+  const y = window.scrollY, s = SCREENS[step];
+  $("#tela").innerHTML = (s.titulo ? `<h1>${s.titulo}</h1>` : "") + s.html();
+  document.body.classList.toggle("dx-laranja", s.id === "gastos");
+  $("#etapa").textContent = s.seg;
+  $("#barra").style.width = Math.round((step / REL) * 100) + "%";
+  $("#nav").style.display = step === 0 || step === REL ? "none" : "";
+  $("#seguir").textContent = step === REL - 1 ? "Ver meu diagnóstico" : "Continuar";
+  atualizarLive();
+  window.scrollTo(0, manter ? y : 0);
+}
+let enviado = false;
+function enviarRespostas() {
+  if (enviado || !FORMULARIO.url) return;
+  enviado = true;
+  const C = calcular(D), P = pontuar(indicadores(D, C));
+  const IDADES = { "10": "Abaixo de 20", "20": "20 a 29", "30": "30 a 39", "40": "40 a 49", "50": "50 a 59", "60": "60 a 69", "70": "70 ou mais" };
+  const TRAB = { autonomo: "Autônomo sem CNPJ", empresa: "MEI, ME ou PJ", outra_empresa: "Outro tipo de empresa", clt: "Carteira assinada", outros: "Outros" };
+  const CONTAS = { uma: "Tudo numa só conta", duas: "2 contas e cartões", tres: "3 ou mais contas e cartões" };
+  const FONTE = { inss: "INSS", investimentos: "Meus investimentos" };
+  const num = v => (has(v) ? String(v) : "");
+  const A = D.aposentadoria, G = D.gastos;
+  const trab = (D.perfil.trabalho || []).map(k => k === "outros" && D.perfil.trabalhoOutro ? "Outros: " + D.perfil.trabalhoOutro : TRAB[k]).join(", ");
+  const v = {
+    email: (D.perfil.email || "").trim(), nome: (D.perfil.nome || "").trim(), idade: IDADES[D.perfil.idade] || "", trabalho: trab,
+    renda: num(D.renda.media), irregular: D.renda.irregular === "sim" ? "Sim" : D.renda.irregular === "nao" ? "Não" : "", pior4: D.renda.irregular === "sim" ? num(D.renda.pior4) : "",
+    essenciais: num(G.essenciais), livres: num(G.livres), outros: num(G.outros), guardar: num(G.guardar), contas: CONTAS[G.contas] || "",
+    apoValor: num(A.renda), apoFonte: (A.fonte || []).map(k => FONTE[k]).join(", "), apoGuardado: (A.fonte || []).includes("investimentos") ? num(A.guardado) : "",
+    apoOnde: (A.fonte || []).includes("investimentos") ? (A.tipos || []).map(k => APO_TIPOS[k]).join(", ") : "", nota: P.geral == null ? "" : String(P.geral)
+  };
+  const corpo = new URLSearchParams();
+  Object.entries(FORMULARIO.campos).forEach(([k, id]) => corpo.append(id, v[k] || ""));
+  try { fetch(FORMULARIO.url, { method: "POST", mode: "no-cors", body: corpo }).catch(() => {}); } catch (e) {}
+}
+let popupVisto = false;
+function mostrarPopup() {
+  if (popupVisto || document.querySelector(".dx-pop")) return;
+  popupVisto = true;
+  const el = document.createElement("div");
+  el.className = "dx-pop";
+  el.innerHTML = `<div class="dx-pop-fundo" data-fechar="1"></div>
+    <div class="dx-pop-card" role="dialog" aria-modal="true" aria-labelledby="dx-pop-t">
+      <button type="button" class="dx-pop-x" data-fechar="1" aria-label="Fechar">×</button>
+      <h3 id="dx-pop-t">Quer um diagnóstico completo <b>gratuito</b>, <b>validado</b> por um profissional?</h3>
+      <ol>
+        <li>Conte pra gente o que achou dessa ferramenta como <b>comentário no nosso último post</b>!</li>
+        <li>Tire um <b>print do comentário</b> e mande por mensagem no nosso Instagram (@orienta.vc)</li>
+        <li>Vamos te encaminhar as próximas instruções</li>
+      </ol>
+      <a class="dx-btn pri full dx-pop-btn" href="https://www.instagram.com/orienta.vc/" target="_blank" rel="noopener">Abrir o Instagram</a>
+    </div>`;
+  document.body.appendChild(el);
+  el.addEventListener("click", e => { if (e.target.closest("[data-fechar]")) el.remove(); });
+}
+window.addEventListener("scroll", () => {
+  if (SCREENS[step] && SCREENS[step].id === "relatorio" && window.scrollY > 400) mostrarPopup();
+}, { passive: true });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { const p = document.querySelector(".dx-pop"); if (p) p.remove(); } });
+/* ====================== IMAGEM PARA COMPARTILHAR ====================== */
+function quebrar(ctx, texto, larg) {
+  const pal = texto.split(" "), linhas = []; let l = "";
+  pal.forEach(p => { const t = l ? l + " " + p : p; if (ctx.measureText(t).width > larg && l) { linhas.push(l); l = p; } else l = t; });
+  if (l) linhas.push(l); return linhas;
+}
+function caixa(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+async function gerarImagem() {
+  try { await Promise.all(["400", "500", "700", "800"].map(w => document.fonts.load(`${w} 40px "Work Sans"`))); } catch (e) {}
+  const C = calcular(D), L = indicadores(D, C), P = pontuar(L);
+  const W = 1080, H = 1350, cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const ctx = cv.getContext("2d"), F = '"Work Sans", system-ui, sans-serif';
+  ctx.fillStyle = "#F7F9FC"; ctx.fillRect(0, 0, W, H);
+  const cx = 72, cy = 96, cw = W - 144, ch = 840;
+  const g = ctx.createLinearGradient(cx, cy, cx + cw, cy + ch);
+  g.addColorStop(0, "#2ECC71"); g.addColorStop(0.65, "#27AE60"); g.addColorStop(1, "#13A36A");
+  caixa(ctx, cx, cy, cw, ch, 48); ctx.fillStyle = g; ctx.fill();
+  ctx.fillStyle = "#fff"; ctx.textBaseline = "alphabetic";
+  const pad = cx + 64; let y = cy + 110;
+  ctx.globalAlpha = 0.9; ctx.font = `500 38px ${F}`;
+  ctx.fillText(new Date().toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" }), pad, y);
+  ctx.globalAlpha = 1; y += 86; ctx.font = `800 64px ${F}`;
+  const nome = (D.perfil.nome || "").trim();
+  quebrar(ctx, nome ? "Diagnóstico de " + nome : "Seu diagnóstico financeiro", cw - 128).forEach(l => { ctx.fillText(l, pad, y); y += 74; });
+  y += 170; ctx.font = `800 260px ${F}`;
+  const nota = P.geral == null ? "—" : String(P.geral);
+  ctx.fillText(nota, pad - 8, y); const nw = ctx.measureText(nota).width;
+  ctx.globalAlpha = 0.85; ctx.font = `600 64px ${F}`; ctx.fillText("/100", pad + nw + 8, y); ctx.globalAlpha = 1;
+  y += 60;
+  if (P.faixa) {
+    ctx.font = `800 44px ${F}`; const tw = ctx.measureText(P.faixa.nome).width;
+    caixa(ctx, pad, y, tw + 64, 84, 42); ctx.fillStyle = "#fff"; ctx.fill();
+    ctx.fillStyle = "#27AE60"; ctx.fillText(P.faixa.nome, pad + 32, y + 57); y += 150;
+    ctx.fillStyle = "#fff"; ctx.font = `400 42px ${F}`;
+    quebrar(ctx, P.faixa.frase, cw - 128).forEach(l => { ctx.fillText(l, pad, y); y += 56; });
+  } else {
+    y += 40; ctx.font = `400 42px ${F}`;
+    quebrar(ctx, "Preencha mais informações para calcular a nota.", cw - 128).forEach(l => { ctx.fillText(l, pad, y); y += 56; });
+  }
+  const logo = document.querySelector(".dx-logo");
+  if (logo && logo.complete && logo.naturalWidth) {
+    const lh = 120, lw = logo.naturalWidth * lh / logo.naturalHeight;
+    ctx.drawImage(logo, (W - lw) / 2, cy + ch + (H - cy - ch - lh) / 2, lw, lh);
+  }
+  return new Promise(res => cv.toBlob(b => res(b), "image/png"));
+}
+function mostrarImagem(blob) {
+  const url = URL.createObjectURL(blob);
+  const el = document.createElement("div");
+  el.className = "dx-pop";
+  el.innerHTML = `<div class="dx-pop-fundo" data-fechar="1"></div><div class="dx-pop-card" role="dialog" aria-modal="true" aria-label="Imagem do resultado">
+    <button type="button" class="dx-pop-x" data-fechar="1" aria-label="Fechar">×</button>
+    <h3>Seu resultado</h3><img src="${url}" alt="Imagem do seu diagnóstico" style="width:100%;border-radius:12px;display:block;margin-bottom:12px">
+    <p class="dx-chart-s" style="margin:0">No celular, toque e segure a imagem para salvar ou compartilhar.</p></div>`;
+  document.body.appendChild(el);
+  el.addEventListener("click", e => { if (e.target.closest("[data-fechar]")) { el.remove(); URL.revokeObjectURL(url); } });
+}
+function baixarImagem(blob) {
+  const url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = "meu-diagnostico-orienta.png";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+async function compartilhar(btn) {
+  const txt = btn.textContent; btn.disabled = true; btn.textContent = "Preparando imagem…";
+  try {
+    const blob = await gerarImagem();
+    const file = new File([blob], "meu-diagnostico-orienta.png", { type: "image/png" });
+    try {
+      if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: "Meu diagnóstico financeiro" }); return; }
+    } catch (e) { if (e && e.name === "AbortError") return; }
+    if (window.matchMedia("(pointer: coarse)").matches) mostrarImagem(blob);
+    else baixarImagem(blob);
+  } finally { btn.disabled = false; btn.textContent = txt; }
+}
+function ir(n) { step = Math.max(0, Math.min(REL, n)); salvar(); render(false); }
+function atualizarLive() { const C = calcular(D); document.querySelectorAll("[data-live=total]").forEach(el => (el.textContent = fmt(C.gastos + n0(C.guardar)))); }
+function toast(msg) { const t = document.createElement("div"); t.className = "dx-toast"; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2200); }
+
+document.addEventListener("input", e => {
+  const t = e.target, p = t.dataset && t.dataset.path; if (!p) return;
+  if (t.dataset.type === "money") { const dig = t.value.replace(/\D/g, "").slice(0, 10); const v = dig === "" ? null : parseInt(dig, 10); t.value = v == null ? "" : v.toLocaleString("pt-BR"); setPath(p, v); }
+  else setPath(p, t.value);
+  if (p === "perfil.email" && emailOk(t.value)) { const er = $("#erro-email"); if (er) er.hidden = true; }
+  atualizarLive();
+});
+document.addEventListener("keydown", e => {
+  if (e.key !== "Enter" || !e.target.matches || !e.target.matches("#tela input")) return;
+  e.preventDefault();
+  const campos = [...document.querySelectorAll("#tela input")], prox = campos[campos.indexOf(e.target) + 1];
+  if (prox) prox.focus(); else e.target.blur();
+});
+document.addEventListener("focusin", e => { if (e.target.matches && e.target.matches("input")) setTimeout(() => { try { e.target.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (err) {} }, 300); });
+document.addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b || b.disabled) return;
+  if (b.dataset.chip) {
+    const p = b.dataset.chip, v = b.dataset.val;
+    if (b.dataset.multi) { const arr = (get(p) || []).slice(), i = arr.indexOf(v); if (i >= 0) arr.splice(i, 1); else arr.push(v); setPath(p, arr); }
+    else setPath(p, String(get(p)) === String(v) ? null : v);
+    render(true); return;
+  }
+  const a = b.dataset.acao;
+  if (a === "comecar" || a === "recomecar") { limpar(); D = novo(); popupVisto = false; enviado = false; ir(1); }
+  else if (a === "editar") ir(1);
+  else if (a === "compartilhar") compartilhar(b);
+  else if (a === "copiar") { try { navigator.clipboard.writeText(resumoTexto()).then(() => toast("Resumo copiado"), () => toast("Não deu para copiar neste aparelho")); } catch (err) { toast("Não deu para copiar neste aparelho"); } }
+});
+$("#voltar").addEventListener("click", () => ir(step - 1));
+const emailOk = e => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test((e || "").trim());
+$("#seguir").addEventListener("click", () => {
+  if (SCREENS[step].id === "gastos" && !emailOk(D.perfil.email)) {
+    const er = $("#erro-email"), inp = $("#f-perfil-email");
+    if (er) er.hidden = false;
+    if (inp) { inp.focus(); inp.scrollIntoView({ block: "center", behavior: "smooth" }); }
+    return;
+  }
+  if (SCREENS[step].id === "gastos") enviarRespostas();
+  ir(step + 1);
+});
+render(false);
+</script>
+</body>
+</html>

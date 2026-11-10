@@ -24,6 +24,8 @@ import CotacaoSeguro from "./pages/seguros/CotacaoSeguro";
 import SegurosConteudo from "./pages/seguros/SegurosConteudo";
 import SeguroVidaLanding from "./pages/seguros/SeguroVidaLanding";
 import SeguroVidaCotacaoLanding from "./pages/seguros/SeguroVidaCotacaoLanding";
+import DiagnosticoFinanceiroMeiLanding from "./pages/planejamento/DiagnosticoFinanceiroMeiLanding";
+import DiagnosticoFinanceiroMei from "./pages/planejamento/DiagnosticoFinanceiroMei";
 import PlanejamentoConteudo from "./pages/planejamento/PlanejamentoConteudo";
 import PossoComprar from "./pages/imoveis/PossoComprar";
 import PoliticaPrivacidade from "./pages/PoliticaPrivacidade";
@@ -49,6 +51,8 @@ const App = () => (
           <Route path="/planejamento/calculadoras/milhao" element={<Milhao />} />
           <Route path="/planejamento/calculadoras/clt-pj" element={<CltPj />} />
           <Route path="/planejamento/calculadoras/reserva-dinamica" element={<ReservaDinamica />} />
+          <Route path="/planejamento/diagnostico-financeiro-mei" element={<DiagnosticoFinanceiroMeiLanding />} />
+          <Route path="/planejamento/diagnostico-financeiro-mei/diagnostico" element={<DiagnosticoFinanceiroMei />} />
           <Route path="/planejamento/conteudos" element={<PlanejamentoConteudo />} />
           <Route path="/impostos" element={<Imposto />} />
           <Route path="/investimentos/acoes" element={<Acoes />} />
