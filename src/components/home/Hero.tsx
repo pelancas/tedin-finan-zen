@@ -46,6 +46,12 @@ export function Hero() {
           guias especializados ao seu lado.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
+          <Button asChild size="lg" className="rounded-full font-bold">
+            <Link to="/planejamento/diagnostico-financeiro-mei">
+              Diagnóstico Financeiro MEI
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
         </div>
         <div className="flex items-center gap-4 text-sm text-slate-400">
           <div className="flex -space-x-2">

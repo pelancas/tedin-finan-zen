@@ -145,14 +145,24 @@ export default function DiagnosticoFinanceiroMeiLanding() {
 
         .dfl-grid {
           max-width: 72rem; margin: 0 auto; position: relative; z-index: 1;
-          display: grid; grid-template-columns: 1fr; gap: 2.5rem; align-items: center;
+          display: grid; grid-template-columns: 1fr; gap: 1.25rem; align-items: center;
+          grid-template-areas: "text" "visual" "cta";
           width: 100%;
         }
+        .dfl-text { grid-area: text; }
+        .dfl-right { grid-area: visual; }
+        .dfl-cta-block { grid-area: cta; }
         @media (min-width: 1024px) {
-          .dfl-grid { grid-template-columns: 1fr minmax(0, 420px); gap: 3.5rem; }
+          .dfl-grid {
+            grid-template-columns: 1fr minmax(0, 357px); column-gap: 2.38rem; row-gap: 0;
+            grid-template-areas: "text visual" "cta visual";
+            grid-template-rows: auto auto;
+          }
+          .dfl-text { align-self: end; }
+          .dfl-cta-block { align-self: start; }
         }
 
-        .dfl-badges { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem; }
+        .dfl-badges { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
         .dfl-badge {
           display: inline-flex; align-items: center; gap: 0.45rem;
           background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);
@@ -165,12 +175,22 @@ export default function DiagnosticoFinanceiroMeiLanding() {
           font-size: clamp(2rem, 4.5vw, 3.25rem); font-weight: 900; line-height: 1.15;
           letter-spacing: -0.02em; color: #fff; margin-bottom: 1.25rem;
         }
+        /* mobile: título e gráfico ficam 28% mais próximos (3,25rem → 2,34rem) */
+        .dfl-title { margin-bottom: 0.34rem; }
+        @media (min-width: 1024px) { .dfl-title { margin-bottom: 1.25rem; } }
         .dfl-title .accent { color: var(--vt-light); }
         .dfl-title .accent-alt { color: var(--vt-mid); }
 
         .dfl-sub {
           font-size: 1.05rem; line-height: 1.65; color: #a3b8ac;
           max-width: 34rem; margin-bottom: 2rem;
+        }
+
+        .dfl-sub-mobile { display: block; margin: 1.25rem 0 0; }
+        .dfl-sub-desktop { display: none; }
+        @media (min-width: 1024px) {
+          .dfl-sub-mobile { display: none; }
+          .dfl-sub-desktop { display: block; }
         }
 
         .dfl-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
@@ -195,16 +215,33 @@ export default function DiagnosticoFinanceiroMeiLanding() {
 
         .dfl-note { margin-top: 1rem; font-size: 0.85rem; color: #8aab96; }
 
-        .dfl-right { position: relative; width: 100%; max-width: 420px; margin: 0 auto; padding: 0 0 1.5rem; }
-        .dfl-post {
-          display: block; width: 100%; height: auto; border-radius: 1.25rem;
-          box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+        .dfl-right { position: relative; width: 100%; max-width: 357px; margin: 0 auto; padding: 0 0 1.5rem; }
+        .dfl-chart {
+          display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: end;
+          height: 17.85rem; padding-bottom: 2rem; position: relative;
         }
-        .dfl-post-back {
-          position: absolute; top: 1.5rem; left: 0; width: 88%;
-          transform: rotate(-6deg); opacity: 0.55; z-index: 0;
+        .dfl-chart-col {
+          position: relative; height: 100%; display: flex; flex-direction: column;
+          justify-content: flex-end;
         }
-        .dfl-post-front { position: relative; z-index: 1; transform: rotate(3deg); width: 88%; margin-left: 12%; }
+        .dfl-chart-num {
+          font-size: clamp(2.21rem, 7.65vw, 3.06rem); font-weight: 900; line-height: 1;
+          letter-spacing: -0.03em; color: #fff; margin-bottom: 0.5rem;
+        }
+        .dfl-chart-bar {
+          border-radius: 1rem 1rem 0 0; display: flex; align-items: flex-start;
+          padding: 0.75rem; border-bottom: 2px solid #fff;
+        }
+        .dfl-chart-bar-sem { background: rgba(29,175,102,0.55); }
+        .dfl-chart-bar-com { background: #fff; }
+        .dfl-chart-pill {
+          background: var(--vt-mid); color: var(--vt-darker); font-weight: 900;
+          font-size: 0.77rem; line-height: 1.3; padding: 0.43rem 0.72rem; border-radius: 1rem;
+        }
+        .dfl-chart-label {
+          position: absolute; left: 0; bottom: -2rem; font-size: 0.75rem; font-weight: 800;
+          letter-spacing: 0.06em; text-transform: uppercase; color: #d9e6de; white-space: nowrap;
+        }
 
         .dfl-hero-blob {
           position: absolute; right: -4rem; top: -4rem; width: 28rem; height: 28rem;
@@ -262,36 +299,44 @@ export default function DiagnosticoFinanceiroMeiLanding() {
         {/* Hero */}
         <section className="dfl-hero">
           <div className="dfl-grid">
-            <div>
-              <div className="dfl-badges">
-                <span className="dfl-badge"><Gift size={16} />100% gratuito</span>
-                <span className="dfl-badge"><Clock size={16} />Leva 3 minutos</span>
-                <span className="dfl-badge"><Briefcase size={16} />Para quem trabalha por conta própria</span>
-              </div>
-
+            <div className="dfl-text">
               <h1 className="dfl-title">
                 Como estão as suas <span className="accent-alt">finanças</span>?{" "}
                 Descubra em <span className="accent">3 minutos</span>
               </h1>
+            </div>
 
-              <p className="dfl-sub">
-                Diagnóstico financeiro gratuito para autônomos, MEIs, PJs e freelancers.
-                Responda a perguntas rápidas e saiba onde você está e por onde começar,
-                mesmo com renda que muda todo mês.
-              </p>
+            <div className="dfl-right">
+              <div className="dfl-chart" role="img" aria-label={POSTS[0].alt}>
+                <div className="dfl-chart-col">
+                  <span className="dfl-chart-num">34%</span>
+                  <div className="dfl-chart-bar dfl-chart-bar-sem" style={{ height: "34%" }} />
+                  <span className="dfl-chart-label">Sem orientação</span>
+                </div>
+                <div className="dfl-chart-col">
+                  <span className="dfl-chart-num">65%</span>
+                  <div className="dfl-chart-bar dfl-chart-bar-com" style={{ height: "65%" }}>
+                    <span className="dfl-chart-pill">quase 2x mais MEIs sobrevivem 5 anos, quando têm orientação</span>
+                  </div>
+                  <span className="dfl-chart-label">Com orientação</span>
+                </div>
+              </div>
+            </div>
 
+            <div className="dfl-cta-block">
               <div className="dfl-actions">
                 <Link className="dfl-btn" to={DIAGNOSTICO_URL}>
                   Fazer meu diagnóstico
                   <ArrowRight size={20} />
                 </Link>
               </div>
-              <p className="dfl-note">Gratuito, leva cerca de 3 minutos e o resultado aparece na hora.</p>
-            </div>
+              <p className="dfl-note">Para quem trabalha por conta própria, freelancers, autônomos, pequenos empreendedores.</p>
 
-            <div className="dfl-right">
-              <img src={postDesafio} alt="" aria-hidden="true" className="dfl-post dfl-post-back" />
-              <img src={postMeis} alt={POSTS[0].alt} className="dfl-post dfl-post-front" />
+              <div className="dfl-badges">
+                <span className="dfl-badge"><Gift size={16} />100% gratuito</span>
+                <span className="dfl-badge"><Clock size={16} />Leva 3 minutos</span>
+                <span className="dfl-badge"><Briefcase size={16} />Para quem trabalha por conta própria</span>
+              </div>
             </div>
           </div>
 

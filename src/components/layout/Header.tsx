@@ -1,10 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, Star, Wrench, FileText, Info, Building2, Shield, TrendingUp, Calculator, Phone, Mail } from "lucide-react";
+import { Menu, X, ChevronDown, Star, Wrench, FileText, Info, Building2, Shield, TrendingUp, Calculator } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Logo from "@/assets/logo-no-bg-sm.png";
-import { EMPRESA, WHATSAPP_URL, EMAIL_URL } from "@/lib/empresa";
+import { EMPRESA } from "@/lib/empresa";
 
 export const INSTAGRAM_URL = EMPRESA.instagramUrl;
 
@@ -148,24 +148,7 @@ export function Header() {
       "sticky top-0 z-50 w-full bg-white border-b border-border relative transition-transform duration-300",
       !headerVisible && "-translate-y-full"
     )}>
-      {/* Barra de contato — identificação do atendimento em todas as páginas */}
-      <div className="bg-background-dark text-white/70">
-        <div className="container flex h-8 items-center justify-center gap-4 text-xs sm:justify-end">
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-primary">
-            <Phone className="h-3 w-3" />
-            {EMPRESA.telefone}
-          </a>
-          <a href={EMAIL_URL} className="hidden items-center gap-1.5 hover:text-primary sm:flex">
-            <Mail className="h-3 w-3" />
-            {EMPRESA.email}
-          </a>
-          <Link to="/sobre#contato" className="font-semibold text-white/80 underline-offset-2 hover:text-primary hover:underline">
-            Contato
-          </Link>
-        </div>
-      </div>
-
-      <div className="container flex h-20 items-center justify-between">
+      <div className="container flex h-16 md:h-20 items-center justify-between">
         <Link to="/" className="flex items-center">
           <img src={Logo} alt="Logo" className="hidden md:block h-[6.79rem] translate-x-[20%]" />
           <img src="/favicon.png" alt="Logo" className="md:hidden h-10" />
