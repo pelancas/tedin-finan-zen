@@ -1,3 +1,4 @@
+import { ABRIR_COOKIES } from "@/components/CookieBanner";
 import { Link } from "react-router-dom";
 import Logo from "@/assets/logo-no-bg.png";
 import { Instagram, Youtube, Building2, Shield, TrendingUp, Calculator } from "lucide-react";
@@ -178,6 +179,14 @@ export function Footer() {
             <Link to="/termos-de-uso" className="underline underline-offset-2 hover:text-primary">
               Termos de Uso
             </Link>
+            {" · "}
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event(ABRIR_COOKIES))}
+              className="underline underline-offset-2 hover:text-primary"
+            >
+              Preferências de cookies
+            </button>
             {" · "}
             <Link to="/sobre#contato" className="underline underline-offset-2 hover:text-primary">
               Contato

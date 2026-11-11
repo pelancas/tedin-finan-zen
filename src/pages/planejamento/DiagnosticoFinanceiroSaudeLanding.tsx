@@ -222,6 +222,9 @@ export default function DiagnosticoFinanceiroSaudeLanding() {
         }
 
         .dfs-note { margin-top: 1rem; font-size: 0.85rem; color: #8aab96; }
+        .dfs-privacy { margin-top: 0.6rem; font-size: 0.78rem; color: #8aab96; }
+        .dfs-privacy a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+        .dfs-privacy-dark { margin-top: 1rem; color: #a3b8ac; }
 
         .dfs-right { position: relative; width: 100%; max-width: 560px; margin: 0 auto; align-self: end; }
         .dfs-media { position: relative; width: 100%; max-width: 219px; margin: 0 auto; }
@@ -337,6 +340,10 @@ export default function DiagnosticoFinanceiroSaudeLanding() {
                 </Link>
               </div>
               <p className="dfs-note">Para profissionais de saúde que trabalham por conta própria, com renda que muda de mês a mês.</p>
+              <p className="dfs-privacy">
+                Ao continuar, você concorda com a nossa{" "}
+                <Link to="/politica-de-privacidade">Política de Privacidade</Link>.
+              </p>
 
               <div className="dfs-badges">
                 <span className="dfs-badge"><Gift size={16} />100% gratuito</span>
@@ -459,6 +466,10 @@ export default function DiagnosticoFinanceiroSaudeLanding() {
             Avaliar minhas finanças
             <ArrowRight size={20} />
           </Link>
+          <p className="dfs-privacy dfs-privacy-dark">
+            Ao continuar, você concorda com a nossa{" "}
+            <Link to="/politica-de-privacidade">Política de Privacidade</Link>.
+          </p>
         </section>
       </div>
     </ToolPageLayout>

@@ -224,6 +224,9 @@ export default function DiagnosticoFinanceiroCltLanding() {
         }
 
         .dfl-note { margin-top: 1rem; font-size: 0.85rem; color: #8aab96; }
+        .dfl-privacy { margin-top: 0.6rem; font-size: 0.78rem; color: #8aab96; }
+        .dfl-privacy a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+        .dfl-privacy-dark { margin-top: 1rem; color: #a3b8ac; }
 
         .dfl-right { position: relative; width: 100%; max-width: 560px; margin: 0 auto; align-self: end; }
         .dfl-glow {
@@ -328,6 +331,10 @@ export default function DiagnosticoFinanceiroCltLanding() {
                 </Link>
               </div>
               <p className="dfl-note">Para quem deixou o emprego com carteira assinada e agora trabalha por conta própria.</p>
+              <p className="dfl-privacy">
+                Ao continuar, você concorda com a nossa{" "}
+                <Link to="/politica-de-privacidade">Política de Privacidade</Link>.
+              </p>
 
               <div className="dfl-badges">
                 <span className="dfl-badge"><Gift size={16} />100% gratuito</span>
@@ -424,6 +431,10 @@ export default function DiagnosticoFinanceiroCltLanding() {
             Avaliar minhas finanças
             <ArrowRight size={20} />
           </Link>
+          <p className="dfl-privacy dfl-privacy-dark">
+            Ao continuar, você concorda com a nossa{" "}
+            <Link to="/politica-de-privacidade">Política de Privacidade</Link>.
+          </p>
         </section>
       </div>
     </ToolPageLayout>

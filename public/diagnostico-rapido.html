@@ -136,6 +136,8 @@ body .dx-live.dx-verde, body.dx-laranja .dx-live.dx-verde { background: #E9F9F0;
 .dx-br-b.dx-meta u { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--texto); border-radius: 2px; }
 .dx-meta-t { font-size: 11.5px; color: var(--apoio); margin-top: 4px; white-space: nowrap; transform: translateX(-1px); }
 .dx-erro { color: #B53B2A; font-size: 14px; font-weight: 600; margin: -6px 0 0; }
+.dx-priv { font-size: 13px; line-height: 1.5; color: #607060; margin: 10px 0 0; }
+.dx-priv a { color: inherit; text-decoration: underline; }
 .dx-pop { position: fixed; inset: 0; z-index: 20; display: flex; align-items: flex-end; justify-content: center; }
 .dx-pop-fundo { position: absolute; inset: 0; background: rgba(26,35,50,.45); }
 .dx-pop-card { position: relative; background: var(--card); width: 100%; max-width: 560px; border-radius: 20px 20px 0 0; padding: 24px 20px calc(20px + env(safe-area-inset-bottom)); box-shadow: 0 -8px 30px rgba(26,35,50,.18); animation: dxSobe .25s ease-out; }
@@ -484,7 +486,7 @@ function telaGastos() {
     + card(chips("gastos.contas", "Seus gastos ficam em contas separadas ou juntos numa só conta?", [["uma", "Tudo numa só conta"], ["duas", "Em 2 contas e cartões"], ["tres", "Em 3 ou mais contas e cartões"]]))
     + (() => { const C = calcular(D); return `<div class="dx-live dx-verde"><span>${C.usaPior4 ? "Sua renda (4º pior mês)" : "Renda média"}</span><b>${fmt(C.media)}</b></div>`; })()
     + `<div class="dx-live"><span>Total por mês</span><b data-live="total">—</b></div>`
-    + card(campo("Qual é o seu e-mail?", { id: "f-perfil-email", html: `<div class="dx-in txt"><input id="f-perfil-email" data-path="perfil.email" data-type="text" type="email" inputmode="email" autocomplete="email" enterkeyhint="done" placeholder="seu@email.com" value="${esc(D.perfil.email || "")}"></div>` }) + `<p class="dx-erro" id="erro-email" hidden>Escreva um e-mail válido para ver seu diagnóstico.</p>`, "Contato");
+    + card(campo("Qual é o seu e-mail?", { id: "f-perfil-email", html: `<div class="dx-in txt"><input id="f-perfil-email" data-path="perfil.email" data-type="text" type="email" inputmode="email" autocomplete="email" enterkeyhint="done" placeholder="seu@email.com" value="${esc(D.perfil.email || "")}"></div>` }) + `<p class="dx-erro" id="erro-email" hidden>Escreva um e-mail válido para ver seu diagnóstico.</p><p class="dx-priv">Ao ver seu diagnóstico, você concorda que a Orienta registre seu nome, e-mail e respostas, conforme a nossa <a href="/#/politica-de-privacidade" target="_top">Política de Privacidade</a>.</p>`, "Contato");
 }
 
 /* ====================== RELATÓRIO ====================== */

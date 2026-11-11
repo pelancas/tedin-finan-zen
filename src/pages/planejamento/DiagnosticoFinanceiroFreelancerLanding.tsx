@@ -221,6 +221,9 @@ export default function DiagnosticoFinanceiroFreelancerLanding() {
         }
 
         .dff-note { margin-top: 1rem; font-size: 0.85rem; color: #8aab96; }
+        .dff-privacy { margin-top: 0.6rem; font-size: 0.78rem; color: #8aab96; }
+        .dff-privacy a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+        .dff-privacy-dark { margin-top: 1rem; color: #a3b8ac; }
 
         .dff-right { position: relative; width: 100%; max-width: 560px; margin: 0 auto; align-self: end; }
         .dff-media { position: relative; width: 100%; max-width: 420px; margin: 0 auto; }
@@ -336,6 +339,10 @@ export default function DiagnosticoFinanceiroFreelancerLanding() {
                 </Link>
               </div>
               <p className="dff-note">Diagnóstico financeiro, para freelancers e autônomos com renda que muda de mês a mês.</p>
+              <p className="dff-privacy">
+                Ao continuar, você concorda com a nossa{" "}
+                <Link to="/politica-de-privacidade">Política de Privacidade</Link>.
+              </p>
 
               <div className="dff-badges">
                 <span className="dff-badge"><Gift size={16} />100% gratuito</span>
@@ -453,6 +460,10 @@ export default function DiagnosticoFinanceiroFreelancerLanding() {
             Avaliar minhas finanças
             <ArrowRight size={20} />
           </Link>
+          <p className="dff-privacy dff-privacy-dark">
+            Ao continuar, você concorda com a nossa{" "}
+            <Link to="/politica-de-privacidade">Política de Privacidade</Link>.
+          </p>
         </section>
       </div>
     </ToolPageLayout>

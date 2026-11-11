@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { Analytics } from "@/components/Analytics";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { CookieBanner } from "@/components/CookieBanner";
 import Index from "./pages/Index";
 import Sobre from "./pages/Sobre";
 import Despesas from "./pages/planejamento/Despesas";
@@ -45,6 +46,7 @@ const App = () => (
       <HashRouter future={{ v7_relativeSplatPath: true }}>
         <ScrollToTop />
         <Analytics />
+        <CookieBanner />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/sobre" element={<Sobre />} />
