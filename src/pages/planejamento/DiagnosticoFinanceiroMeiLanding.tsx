@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Clock, Gift, Briefcase, ArrowRight, ChevronDown, ChevronUp,
@@ -10,6 +10,10 @@ import postMeis from "@/assets/post-meis-orientacao.png";
 import postDesafio from "@/assets/post-desafio-conta-propria.png";
 import postGuardam from "@/assets/post-brasileiros-guardam.png";
 import postPreocupacao from "@/assets/post-maior-preocupacao.png";
+
+// Meta Pixel (fbq é carregado no index.html)
+const fbq = (...args: unknown[]) => (window as unknown as { fbq?: (...a: unknown[]) => void }).fbq?.(...args);
+const trackInicio = () => fbq("trackCustom", "IniciouDiagnostico", { publico: "pj" });
 
 const DIAGNOSTICO_URL = "/planejamento/diagnostico-financeiro-mei/diagnostico";
 
@@ -105,7 +109,7 @@ const FAQ = [
   },
   {
     pergunta: "Quando a ferramenta será lançada?",
-    resposta: "Já está no ar. Clique em “Fazer meu diagnóstico” e responda em cerca de 3 minutos.",
+    resposta: "Já está no ar. Clique em “Avaliar minhas finanças” e responda em cerca de 3 minutos.",
   },
 ];
 
@@ -120,6 +124,10 @@ export default function DiagnosticoFinanceiroMeiLanding() {
     "Diagnóstico Financeiro MEI Grátis para Autônomos e MEIs | Orienta",
     "Descubra em 3 minutos como estão as finanças de quem trabalha por conta própria. Diagnóstico financeiro gratuito para autônomos, MEIs, PJs e freelancers.",
   );
+
+  useEffect(() => {
+    fbq("track", "ViewContent", { content_category: "pj" });
+  }, []);
 
   return (
     <ToolPageLayout>
@@ -325,8 +333,8 @@ export default function DiagnosticoFinanceiroMeiLanding() {
 
             <div className="dfl-cta-block">
               <div className="dfl-actions">
-                <Link className="dfl-btn" to={DIAGNOSTICO_URL}>
-                  Fazer meu diagnóstico
+                <Link className="dfl-btn" to={DIAGNOSTICO_URL} onClick={trackInicio}>
+                  Avaliar minhas finanças
                   <ArrowRight size={20} />
                 </Link>
               </div>
@@ -419,8 +427,8 @@ export default function DiagnosticoFinanceiroMeiLanding() {
         <section className="dfl-cta">
           <h2>Dê rumo à sua vida financeira</h2>
           <p>Faça o diagnóstico gratuito e descubra por onde começar.</p>
-          <Link className="dfl-btn" to={DIAGNOSTICO_URL}>
-            Fazer meu diagnóstico
+          <Link className="dfl-btn" to={DIAGNOSTICO_URL} onClick={trackInicio}>
+            Avaliar minhas finanças
             <ArrowRight size={20} />
           </Link>
         </section>
