@@ -310,7 +310,7 @@ export default function DiagnosticoFinanceiroFreelancerLanding() {
                 O cliente não pagou. Você está <span className="accent-alt">preparado para isso?</span>
               </h1>
               <p className="dff-sub dff-sub-desktop" style={{ marginBottom: 0 }}>
-                Descubra em <strong style={{ color: "#fff" }}>3 minutos</strong> como estão suas finanças e por onde começar.
+                Descubra em <strong style={{ color: "#fff" }}>3 minutos</strong> como estão suas finanças.
               </p>
             </div>
 
