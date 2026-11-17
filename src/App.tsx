@@ -29,6 +29,7 @@ import DiagnosticoFinanceiroMeiLanding from "./pages/planejamento/DiagnosticoFin
 import DiagnosticoFinanceiroSaudeLanding from "./pages/planejamento/DiagnosticoFinanceiroSaudeLanding";
 import DiagnosticoFinanceiroCltLanding from "./pages/planejamento/DiagnosticoFinanceiroCltLanding";
 import DiagnosticoFinanceiroFreelancerLanding from "./pages/planejamento/DiagnosticoFinanceiroFreelancerLanding";
+import DiagnosticoFinanceiroVendedorLanding from "./pages/planejamento/DiagnosticoFinanceiroVendedorLanding";
 import DiagnosticoFinanceiroMei from "./pages/planejamento/DiagnosticoFinanceiroMei";
 import PlanejamentoConteudo from "./pages/planejamento/PlanejamentoConteudo";
 import PossoComprar from "./pages/imoveis/PossoComprar";
@@ -60,6 +61,7 @@ const App = () => (
           <Route path="/planejamento/diagnostico-financeiro-saude" element={<DiagnosticoFinanceiroSaudeLanding />} />
           <Route path="/planejamento/diagnostico-financeiro-clt" element={<DiagnosticoFinanceiroCltLanding />} />
           <Route path="/planejamento/diagnostico-financeiro-freelancer" element={<DiagnosticoFinanceiroFreelancerLanding />} />
+          <Route path="/planejamento/diagnostico-financeiro-vendedor" element={<DiagnosticoFinanceiroVendedorLanding />} />
           <Route path="/planejamento/diagnostico-financeiro-mei/diagnostico" element={<DiagnosticoFinanceiroMei />} />
           <Route path="/planejamento/conteudos" element={<PlanejamentoConteudo />} />
           <Route path="/impostos" element={<Imposto />} />
