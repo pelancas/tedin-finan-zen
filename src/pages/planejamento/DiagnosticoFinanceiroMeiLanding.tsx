@@ -341,7 +341,7 @@ export default function DiagnosticoFinanceiroMeiLanding() {
                   <ArrowRight size={20} />
                 </Link>
               </div>
-              <p className="dfl-note">Para quem trabalha por conta própria, freelancers, autônomos, pequenos empreendedores.</p>
+              <p className="dfl-note">Para quem não sabe quanto vai ganhar todo mês, freelancers, vendedores, autônomos, pequenos empreendedores.</p>
               <p className="dfl-privacy">
                 Ao continuar, você concorda com a nossa{" "}
                 <Link to="/politica-de-privacidade">Política de Privacidade</Link>.
