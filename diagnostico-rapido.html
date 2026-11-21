@@ -574,8 +574,8 @@ function telaRelatorio() {
     ["Excepteur sint occaecat", "Cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."]
   ];
   h += `<h2>Seus 3 próximos passos</h2><div class="dx-borrado" aria-hidden="true">` + lorem.map(([t, d], i) => `<div class="dx-passo"><div class="dx-passo-n">${i + 1}</div><div><h4>${t}</h4><p>${d}</p></div></div>`).join("") + `</div>`;
-  h += `<div class="dx-fim"><h3>Quer um diagnóstico completo?</h3><ol class="dx-fim-ol"><li>Conte pra gente o que achou dessa ferramenta como <b>comentário no nosso último post</b>!</li><li>Tire um <b>print do comentário</b> e mande por mensagem no nosso Instagram (@orienta.vc)</li><li>Vamos te encaminhar as próximas instruções</li></ol>
-      <a class="dx-btn full dx-fim-btn" href="https://www.instagram.com/orienta.vc/" target="_blank" rel="noopener">Abrir o Instagram</a></div>
+  h += `<div class="dx-fim"><h3>Quer um diagnóstico completo?</h3>
+      <a class="dx-btn full dx-fim-btn" href="https://www.instagram.com/orienta.vc/" target="_blank" rel="noopener">Seguir no Instagram</a></div>
     <div class="dx-stack dx-acoes" style="margin-top:16px"><button class="dx-btn pri full" type="button" data-acao="compartilhar">Compartilhar resultado</button><button class="dx-btn sec full" type="button" data-acao="editar">Editar respostas</button><button class="dx-btn sec full" type="button" data-acao="recomecar">Começar do zero</button></div>
     <p class="dx-legal">Este diagnóstico é uma simulação educativa feita com os dados que você informou. Ele não é recomendação de investimento e não substitui um contador ou uma consultoria individual.</p>
     <p class="dx-legal">Conta de aposentadoria ilustrativa, em valores de hoje: rendimento de ${Math.round(CONFIG.aposentadoria.rendimentoReal * 100)}% ao ano acima da inflação e retirada de ${Math.round(CONFIG.aposentadoria.retirada * 100)}% ao ano do valor juntado.</p>`;
@@ -633,13 +633,8 @@ function mostrarPopup() {
   el.innerHTML = `<div class="dx-pop-fundo" data-fechar="1"></div>
     <div class="dx-pop-card" role="dialog" aria-modal="true" aria-labelledby="dx-pop-t">
       <button type="button" class="dx-pop-x" data-fechar="1" aria-label="Fechar">×</button>
-      <h3 id="dx-pop-t">Quer um diagnóstico completo <b>gratuito</b>, <b>validado</b> por um profissional?</h3>
-      <ol>
-        <li>Conte pra gente o que achou dessa ferramenta como <b>comentário no nosso último post</b>!</li>
-        <li>Tire um <b>print do comentário</b> e mande por mensagem no nosso Instagram (@orienta.vc)</li>
-        <li>Vamos te encaminhar as próximas instruções</li>
-      </ol>
-      <a class="dx-btn pri full dx-pop-btn" href="https://www.instagram.com/orienta.vc/" target="_blank" rel="noopener">Abrir o Instagram</a>
+      <h3 id="dx-pop-t">Nos siga no Instagram!</h3>
+      <a class="dx-btn pri full dx-pop-btn" href="https://www.instagram.com/orienta.vc/" target="_blank" rel="noopener">Seguir no Instagram</a>
     </div>`;
   document.body.appendChild(el);
   el.addEventListener("click", e => { if (e.target.closest("[data-fechar]")) el.remove(); });
