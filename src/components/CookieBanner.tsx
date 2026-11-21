@@ -6,7 +6,7 @@ const CHAVE = "orienta-cookies";
 export const ABRIR_COOKIES = "orienta:abrir-cookies";
 
 type Escolha = "aceito" | "recusado";
-type JanelaPixel = Window & { carregarMetaPixel?: () => void };
+type JanelaPixel = Window & { carregarMetaPixel?: () => void; carregarGoogleTag?: () => void };
 
 const ler = (): Escolha | null => {
   try {
@@ -41,8 +41,9 @@ export function CookieBanner() {
     setVisivel(false);
     if (nova === "aceito") {
       (window as JanelaPixel).carregarMetaPixel?.();
+      (window as JanelaPixel).carregarGoogleTag?.();
     } else if (anterior === "aceito") {
-      // O Pixel já foi carregado nesta visita: recarregar é a forma de interrompê-lo.
+      // O Pixel e o Google já foram carregados nesta visita: recarregar é a forma de interrompê-lo.
       window.location.reload();
     }
   };
@@ -58,8 +59,8 @@ export function CookieBanner() {
     >
       <div className="mx-auto flex max-w-5xl flex-col gap-3 md:flex-row md:items-center md:gap-6">
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Usamos cookies para entender como o site é usado e, com a sua permissão, o Pixel da Meta
-          para medir e melhorar nossos anúncios. Você pode aceitar ou recusar. Saiba mais na{" "}
+          Usamos cookies para entender como o site é usado e, com a sua permissão, o Google Analytics e o
+          Pixel da Meta para medir o uso do site e melhorar nossos anúncios. Você pode aceitar ou recusar. Saiba mais na{" "}
           <Link
             to="/politica-de-privacidade"
             className="font-semibold text-primary underline underline-offset-2"

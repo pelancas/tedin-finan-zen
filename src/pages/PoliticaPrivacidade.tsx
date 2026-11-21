@@ -64,8 +64,8 @@ export default function PoliticaPrivacidade() {
           </p>
           <h3>Dados de navegação e cookies</h3>
           <p>
-            Usamos o Google Analytics para medir, de forma agregada, quais páginas são visitadas,
-            e o Cloudflare Turnstile para impedir uso automatizado (robôs) dos formulários. Essas
+            Se você aceitar os cookies, usamos o Google Analytics para medir, de forma agregada, quais
+            páginas são visitadas. Usamos também o Cloudflare Turnstile para impedir uso automatizado (robôs) dos formulários. Essas
             ferramentas podem usar cookies e dados técnicos do dispositivo, conforme as políticas
             do Google e da Cloudflare.
           </p>
@@ -110,7 +110,7 @@ export default function PoliticaPrivacidade() {
           <h2>5. Com quem compartilhamos</h2>
           <p>
             Os dados são processados pelos prestadores de serviço que utilizamos: Google
-            (Analytics, Forms e Planilhas), Cloudflare e, se você aceitar, Meta (Pixel).
+            (Forms e Planilhas), Cloudflare e, se você aceitar, Google (Analytics) e Meta (Pixel).
             Alguns desses prestadores armazenam dados em servidores fora do Brasil, como nos
             Estados Unidos. Nesses casos, a transferência ocorre conforme a LGPD. Podemos
             compartilhar dados quando exigido por lei ou ordem judicial.
